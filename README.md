@@ -18,8 +18,8 @@ Writer Classic's *.zip file is a zipped folder including **main.py** (the app it
 
 ## What do I need to be able to use Writer Classic?
 You need:
-* [] Python 3 
-* [] Any Linux distro
+* [ ] Python 3 
+* [ ] Any Linux distro
   
 ## Feature requests
 If you would like to open Writer Classic and discover a new functionality suggested by you, please check the Issues in this Repository.
