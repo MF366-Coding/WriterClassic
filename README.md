@@ -16,7 +16,7 @@ I also would love if you waste some time testing Writer Classic or just explorin
 ## What's on the releases' zip file? :file_folder:
 Writer Classic's zip file is a zipped folder including **main.py** (the app itself), folder **data** (including everything that isn't a setting) and the folder __config__ (including every single configuration file).
 
-## What do I need to be able to use Writer Classic? :heavy_check_mark:
+## What do I need to be able to be able to use Writer Classic? :heavy_check_mark:
 You need:
 * [X] Python 3 
 * [X] Any Linux distro
