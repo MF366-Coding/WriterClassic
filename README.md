@@ -28,6 +28,6 @@ If you would like to open Writer Classic and discover a new functionality sugges
 If you found a bug, please tell me the details by creating a new Issue in this Repository.
 
 ## Help
-### h
+### Open
 
 Once again, thank you for ckecking out this repository. :+1:
