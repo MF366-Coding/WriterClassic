@@ -30,13 +30,13 @@ If you found a bug, please tell me the details by creating a new Issue in this R
 ## Help
 ### Features
 #### Open
-With Writer Classic you can open files (in no particular order):  
+Writer Classic it's a basic text editor yet very fun to use and offering a lot of features while it's development is happening at a very fast pace.  
+With Writer Classic you can open files of type (in no particular order):  
 * text
 * python
 * markdown
 * html
 * xml  
-Writer Classic it's a basic text editor yet very fun to use and offering a lot of features while it's development is happening at a very fast pace.
 #### Edit
 You can make changes to text files, python files, markdown files and save them, either with new name and extension or replacing existent files.
 #### Looks
