@@ -36,6 +36,9 @@ With Writer Classic you can open files of type (in no particular order):
 * python
 * markdown
 * html
+* javascript
+* ini
+* desktop
 * xml  
 #### Edit
 You can make changes to text files, python files, markdown files and save them, either with new name and extension or replacing existent files.
