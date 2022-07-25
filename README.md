@@ -27,4 +27,7 @@ If you would like to open Writer Classic and discover a new functionality sugges
 ## Let me know of any bug you find
 If you found a bug, please tell me the details by creating a new Issue in this Repository.
 
+## Help
+### h
+
 Once again, thank you for ckecking out this repository. :+1:
