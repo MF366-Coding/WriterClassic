@@ -54,4 +54,20 @@ Within settings you can choose from several languages. For now it's only availab
 #### Information
 Here you can find help, some about information and the links for the official repo and website. Stay up to date, don't forget to read what's going on with Writer Classic.
 
+
+### Shortcuts
+#### Useful shortcuts
+You can use some useful shortcuts instead of menu itens to use Writer Classic faster.
+All of those make use of control key plus another key so that you have to press both at once. **Ctrl** stands for control key. Here are some of the mos useful shortcuts available:  
+* __Ctrl + S__ - Save the file
+* __Ctrl + Z__ - Save as, allowing to give a different name to the file you're saving
+* __Ctrl + O__ - Open file
+* __Ctrl + W__ - Closes the window / editor
+* __Ctrl + L__ - Changes to light mode
+* __CTRL + D__ - Changes to dark mode
+* __Ctrl + G__ - Chooses default window size (600x400 px)
+* __Ctrl + H__ - Leads you to help
+* __Ctrl + A__ - Opens about dialog
+* __Ctrl + R__ - Opens the clock plugin
+
 Once again, thank you for ckecking out this repository. :+1:
