@@ -48,7 +48,6 @@ You can choose from several themes and change interface / window size. So taht y
 Writer Classic author and programmer is always dveloping new plugins in order to make this simple editor more and more powerful and in line with the features you most use and wish. For the time being you can choosefrom:
 * notepad (you can take notes aside what you're writing and editing)
 * clock (because it's always useful to know if it's time to start coding)
-* a calculator (to calculate how much you'll spend for pizza this night)
 #### Settings
 Within settings you can choose from several languages. For now it's only available in English and Portuguese (european) but more translations are in its way!
 #### Information
