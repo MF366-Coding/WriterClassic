@@ -382,7 +382,7 @@ if __name__ == '__main__':
     a_m.add_command(label='English (UK)', command=lambda:
         mudaIdioma('en', janela))
     a_m.add_command(label='Español(España)', command=lambda:
-        quickway())
+        mudaIdioma('es', janela))
     a_m.add_command(label='Français (France)', command=lambda:
         quickway())
     a_m.add_command(label='Italiano (Italia)', command=lambda:
