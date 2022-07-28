@@ -1,4 +1,4 @@
-# WriterClassic
+# Writer Classic
 Writer Classic's GitHub repository.
 
 Great news! Writer Classic has arrived to GitHub! :tada:
