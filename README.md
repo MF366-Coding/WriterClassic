@@ -30,7 +30,7 @@ If you found a bug, please tell me the details by creating a new Issue in this R
 ## Help :question:
 ### Features
 #### Open :open_file_folder:
-Writer Classic it's a basic text editor yet very fun to use and offering a lot of features while it's development is happening at a very fast pace.  
+Writer Classic is a basic text editor yet very fun to use and offering a lot of features while it's development is happening at a very fast pace.  
 With Writer Classic you can open files of type (in no particular order):  
 * text
 * python
@@ -57,7 +57,7 @@ Here you can find help, some about information and the links for the official re
 ### Shortcuts :keyboard:
 #### Useful shortcuts
 You can use some useful shortcuts instead of menu itens to use Writer Classic faster.
-All of those make use of control key plus another key so that you have to press both at once. **Ctrl** stands for control key. Here are some of the mos useful shortcuts available:  
+All of those make use of control key plus another key so that you have to press both at once. **Ctrl** stands for control key. Here are some of the most useful shortcuts available:  
 * __Ctrl + S__ - Save the file :floppy_disk:
 * __Ctrl + Z__ - Save as, allowing to give a different name to the file you're saving :floppy_disk:
 * __Ctrl + O__ - Open file :open_file_folder:
