@@ -20,6 +20,9 @@ Writer Classic's zip file is a zipped folder including **main.py** (the app itse
 You need:
 * [X] Python 3 
 * [X] Any Linux distro
+* [X] tkinter (Python3 Module)
+* [X] webbrowser (Python3 Module)
+* [X] datetime (Python3 Module)
   
 ## Feature requests :heavy_plus_sign:
 If you would like to open Writer Classic and discover a new functionality suggested by you, please check the Issues in this Repository.
@@ -73,6 +76,6 @@ All of those make use of control key plus another key so that you have to press 
 ### Hidden Features
 #### Font (type and size)
 Now, you can change font type and size (only affects the editor - not the edited file). To do this, go to the config folder of Writer Classic. Open both font-type.txt and font-size.txt.
-In font-type, you should type a name of a font you have installed (examples: Arial, Ubuntu Mono, Verdana, ...). In the other file, type a number for the font size (no limits, but it's not convenient to have number 500 as font size xD.
+In font-type, you should type a name of a font you have installed (examples: Arial, Ubuntu Mono, Verdana, ...). In the other file, type a number for the font size (no limits, but it's not convenient to have number 500 as font size xD ).
 
 Once again, thank you for ckecking out this repository. :+1:
