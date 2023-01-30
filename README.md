@@ -69,4 +69,10 @@ All of those make use of control key plus another key so that you have to press 
 * __Ctrl + A__ - Opens about dialog :information_source:
 * __Ctrl + R__ - Opens the clock plugin :clock2:
 
+
+### Hidden Features
+#### Font (type and size)
+Now, you can change font type and size (only affects the editor - not the edited file). To do this, go to the config folder of Writer Classic. Open both font-type.txt and font-size.txt.
+In font-type, you should type a name of a font you have installed (examples: Arial, Ubuntu Mono, Verdana, ...). In the other file, type a number for the font size (no limits, but it's not convenient to have number 500 as font size xD.
+
 Once again, thank you for ckecking out this repository. :+1:
