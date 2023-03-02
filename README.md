@@ -5,7 +5,7 @@ Great news! Writer Classic has arrived to GitHub! :tada:
 
 Writer Classic is a small Python file that, together with some config files, bring to the user a whole new text editor experience. :thinking:
 
-IMPORTANT INFO: Due to Python resources that are only available on Linux, Writer Classic is Linux only. :cry:
+IMPORTANT INFO: Due to Python resources that are only available on Linux, Writer Classic is Linux only.
 
 This is a garage project that is constantly growing, so I am moving to GitHub.
 

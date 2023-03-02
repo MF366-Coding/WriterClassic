@@ -196,7 +196,7 @@ def website():
 
 #Abrir o repositório
 def repo():
-    ourRepo = "https://github.com/MegaInformatica2022/WriterClassic/"
+    ourRepo = "https://github.com/MF366-Coding/WriterClassic/"
 
     webbrowser.open(ourRepo, 2)
 
@@ -288,7 +288,7 @@ def sair(raiz):
 
 #Abrir os Créditos
 def creditos_abertos():
-    mb.showinfo(title=dd[44], message="Mega Informática\n\nThis app was made in Python by Mega Informática.\n\nA big 'Thank you!' to Docs Department for building the help and language files.\n\nThanks to Graphics Department, Writer has that good-looking appearence and those beautiful themes.\n\nFinally, thank you, dear customer, for using this nice app.")
+    mb.showinfo(title=dd[44], message="MF366 Coding\n\nThis app was made in Python by MF366 Coding.")
 
 #Abrir o Easter Egg
 def surprise_egg():
@@ -302,7 +302,7 @@ def surprise_egg():
 
 #Abrir a Ajuda
 def ajuda():
-    ourWebsite = "https://github.com/MegaInformatica2022/WriterClassic#help"
+    ourWebsite = "https://github.com/MF366-Coding/WriterClassic#help"
 
     webbrowser.open(ourWebsite, 2)
 

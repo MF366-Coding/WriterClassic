@@ -3,12 +3,12 @@ Name=Writer Classic
 Name[pt]=Writer Classic
 Comment=Edit text files.
 Comment[pt]=Editar ficheiros de texto.
-Exec=cd ~/Python/WriterClassic && python3 main.py
+Exec=cd filepath for program && python3 main.py
 Terminal=true
 Type=Application
 StartupNotify=false
-Icon=/home/mateus/Python/WriterClassic/data/Writer_Classic.png
+Icon=Your file path for icon goes here.
 Categories=GTK;Utility;TextEditor;Office;
-Keywords=text;editor;code;files;notepad;xed;python;java;js;html;geany;spyder;py;writer;escritor;futuro;futurista;classico;future;bonito;incrível;beautiful;incredible;color
+Keywords=text;editor;code;files;notepad
 
 Name[pt_PT]=writer-classic.desktop
