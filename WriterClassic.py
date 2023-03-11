@@ -188,12 +188,6 @@ def new_window():
 
     newWindow.mainloop()
 
-#Abrir o website no web browser pré-definido
-def website():
-    ourMainWebsite = "https://sites.google.com/view/megati"
-
-    webbrowser.open(ourMainWebsite, 2)
-
 #Abrir o repositório
 def repo():
     ourRepo = "https://github.com/MF366-Coding/WriterClassic/"
@@ -292,12 +286,12 @@ def creditos_abertos():
 
 #Abrir o Easter Egg
 def surprise_egg():
-    mensagem = "Have you seen Wedenesday?"
-    segundo = "Then watch this!"
-    titulo = 'Cringe or laugh - ' + dd[44]
+    mensagem = "void"
+    segundo = "nothing"
+    titulo = 'empty - ' + dd[44]
     palavras_leva_as_o_vento = mb.askokcancel(title=titulo, message=mensagem+'\n\n'+segundo)
     if palavras_leva_as_o_vento:
-        hisWebsite = "https://www.youtube.com/watch?v=FWR61k9scHQ"
+        hisWebsite = "https://bing.com"
         webbrowser.open(hisWebsite, 2)
 
 #Abrir a Ajuda
@@ -375,7 +369,6 @@ if __name__ == '__main__':
         sobre('data/about.txt', 'r'))
     editar_menu.add_command(label=dd[17], command=lambda:
         ajuda())
-    editar_menu.add_command(label=dd[40], command=website)
     editar_menu.add_command(label=dd[41], command=repo)
     editar_menu.add_separator()
     editar_menu.add_command(label=dd[43], command=creditos_abertos)
@@ -418,7 +411,7 @@ if __name__ == '__main__':
     a_m = Menu(barra_menu)
     a_m.add_command(label='English (UK)', command=lambda:
         mudaIdioma('en', janela))
-    a_m.add_command(label='Español(España)', command=lambda:
+    a_m.add_command(label='Español (España)', command=lambda:
         mudaIdioma('es', janela))
     a_m.add_command(label='Français (France)', command=lambda:
         mudaIdioma('fr', janela))
@@ -514,8 +507,8 @@ ver_menu.add_cascade(label=dd[26], menu=ver_5_m)
 ver_5_m.add_cascade(label=dd[27], menu=ver_4_m)
 ver_5_m.add_cascade(label=dd[29], menu=ver_7_m)
 ver_menu.add_cascade(label=dd[30], menu=ver_2_m)
-barra_menu.add_cascade(label='Plugins', menu=b_m)
-b_m.add_cascade(label='Community Themes', menu=z_m)
+barra_menu.add_cascade(label=dd[45], menu=b_m)
+b_m.add_cascade(label=dd[46], menu=z_m)
 barra_menu.add_cascade(label=dd[31], menu=a_m)
 barra_menu.add_cascade(label=dd[32], menu=editar_menu)
 

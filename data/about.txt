@@ -1,10 +1,8 @@
 App name: Writer Classic
 Developer: MF366 Coding
-Version number: 2.2.1
-
-https://sites.google.com/view/megati/
+Version number: 2.3.0
+Powered by: Python 3.10.8
 
 https://github.com/MF366-Coding/WriterClassic
 
 Thank you for using Writer Classic!
-Obrigado por usar o Writer Classic!
