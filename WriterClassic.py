@@ -2,7 +2,15 @@
 
 Writer Classic
 
-Made in Python 3
+Powered by: in Python 3.10.8
+
+Official Repo:
+    https://github.com/MF366-Coding/WriterClassic
+
+Find me in this spots:
+    https://github.com/MF366-Coding
+    Discord: MF366#8679
+    https://www.youtube.com/channel/UC-eyGQUY7mICmAuLSI2ZO5A/
 
 Original idea by: MF366
 Developed by: MF366
@@ -12,6 +20,7 @@ Developed by: MF366
 #Importar os módulos necessários
 from tkinter import *
 from tkinter.ttk import *
+from tkinter import simpledialog as sdg
 import tkinter.filedialog as dlg
 import tkinter.messagebox as mb
 import webbrowser
@@ -84,11 +93,14 @@ langset.close()
 
 
 #Definir o tamanho da janela
-def janelageometrica1(indicar,usar,nao):
-    indicar.geometry(str(usar)+'x'+str(nao))
+def janelageometrica1():
+    widthSet = sdg.askinteger("Writer Classic", "Pick a width value for the main window.")
+    heightSet = sdg.askinteger("Writer Classic", "Pick a height value for the main window.")
+    texto.configure(width=widthSet, height=heightSet)
+    janela.geometry(str(widthSet)+'x'+str(heightSet))
     with open('config/geom.txt', 'w') as geomdata:
         geomdata.write('')
-        geom = geomdata.write(str(usar)+'x'+str(nao))
+        geomdata.write(str(widthSet)+'x'+str(heightSet))
     geomdata.close()
 
 #Definir o tema
@@ -222,7 +234,22 @@ def relogio():
 
     relog.mainloop()
 
-#Abrir um ficheiro
+# Change the text font and size
+def fontEdit(winType):
+    if winType == 1:
+        fontSize = sdg.askinteger("Writer Classic - Change Font Size", "Please pick a number for Writer's font size with a minimum of 1.", minvalue=1)
+        with open('config/font-size.txt', 'w') as fontSizeEdit:
+            fontSizeEdit.write(str(fontSize))
+            fontSizeEdit.close()
+            mb.showinfo("Writer Classic", "You must restart to apply the changes.")
+    else:
+        fontType = sdg.askstring("Writer Classic - Change Font Family", "Please type the name of a font family you have installed on your device.")
+        with open('config/font-type.txt', 'w', encoding='utf-8') as fontTypeEdit:
+            fontTypeEdit.write(fontType)
+            fontTypeEdit.close()
+            mb.showinfo("Writer Classic", "You must restart to apply the changes.")
+
+# Abrir um ficheiro
 def abrir(raiz):
     fich = dlg.askopenfilename(parent=raiz, filetypes=[(dd[1], '*.txt'), ('Config Files', '*.cfg'), ('Config Files', '*.config'), ('Cascading Style Sheet', '*.css'), ('Comma-Separated Values File', '*.csv'), ('Hypertext Markup Language File', '*.html'), ('Setup Information File', '*.inf'), ('Generic Information File', '*.info'), ('Windows Initialization File', '*.ini'), ('JavaScript File', '*.js'), ('Python Script', '*.py*'), ('Log File', '*.log'), ('XML File', '*.xml'), ('Readme File', '*.1st'), ('Static Library', '*.a'), ('Anim8or Script', '*.a8s'), ('ANSI Text File', '*.ans'), ('Quake 3 Engine Arena File', '*.arena'), ('ActionScript File', '*.as'), ('ASP Configuration File', '*.asa'), ('Assembly Language Source Code File', '.asm'), ('Markdown Files', '*.md'), ('Markdown Files', '*.mdown')])
     fich_ent2 = open(fich, 'r')
@@ -286,13 +313,11 @@ def creditos_abertos():
 
 #Abrir o Easter Egg
 def surprise_egg():
-    mensagem = "void"
-    segundo = "nothing"
-    titulo = 'empty - ' + dd[44]
-    palavras_leva_as_o_vento = mb.askokcancel(title=titulo, message=mensagem+'\n\n'+segundo)
-    if palavras_leva_as_o_vento:
-        hisWebsite = "https://bing.com"
-        webbrowser.open(hisWebsite, 2)
+    askNow = sdg.askstring("Easter Egg", "Type the SPECIAL code string to open the surpise Easter Egg...")
+    if askNow == '69':
+        webbrowser.open('https://www.youtube.com/watch?v=W6FG7yVUaKQ')
+    elif askNow == 'Scan':
+        mb.showerror("Your PC has virus!", "Press Alt+F4 to remove all viruses!!!\nDo it!!!")
 
 #Abrir a Ajuda
 def ajuda():
@@ -379,13 +404,21 @@ if __name__ == '__main__':
     #Adicionar as configurações necessárias para os outros menus
     ver_menu = Menu(barra_menu)
     ver_1_m = Menu(ver_menu)
-    ver_2_m = Menu(ver_menu)
     ver_3_m = Menu(ver_1_m)
     ver_5_m = Menu(ver_menu)
     ver_4_m = Menu(ver_5_m)
     ver_7_m = Menu(ver_5_m)
+    newMenuEdit = Menu(ver_menu)
     b_m = Menu(barra_menu)
     z_m = Menu(b_m)
+
+    ver_menu.add_command(label="Main window's size", command=janelageometrica1)
+
+    # menu fonts
+    newMenuEdit.add_command(label="Change size", command=lambda:
+                            fontEdit(1))
+    newMenuEdit.add_command(label="Change family font", command=lambda:
+                            fontEdit(2))
 
     #Adicionar o Menu Plugins
     b_m.add_command(label=dd[38], command=new_window)
@@ -451,51 +484,16 @@ if __name__ == '__main__':
     ver_7_m.add_command(label='Silent Night', command=lambda:
         mudacor('#020421','pink', 'pink', '#020312', '#ebd1ed'))
 
-    #Adicionar tamanhos DEFAULT
-    ver_2_m.add_command(label=dd[23],command=lambda:
-        janelageometrica1(janela,600,400))
-    ver_2_m.add_separator()
-    ver_2_m.add_command(label='400x200',command=lambda:
-        janelageometrica1(janela,400,200))
-    ver_2_m.add_command(label='600x400',command=lambda:
-        janelageometrica1(janela,600,400))
-    ver_2_m.add_command(label='800x600',command=lambda:
-        janelageometrica1(janela,800,600))
-    ver_2_m.add_command(label='1000x800',command=lambda:
-        janelageometrica1(janela,1000,800))
-    ver_2_m.add_separator()
-    ver_2_m.add_command(label='400x600',command=lambda:
-        janelageometrica1(janela,400,600))
-    ver_2_m.add_command(label='600x800',command=lambda:
-        janelageometrica1(janela,600,800))
-    ver_2_m.add_command(label='800x1000',command=lambda:
-        janelageometrica1(janela,800,1000))
-    ver_2_m.add_separator()
-    ver_2_m.add_command(label='400x400',command=lambda:
-        janelageometrica1(janela,400,400))
-    ver_2_m.add_command(label='500x500',command=lambda:
-        janelageometrica1(janela,500,500))
-    ver_2_m.add_command(label='600x600',command=lambda:
-        janelageometrica1(janela,600,600))
-    ver_2_m.add_command(label='700x700',command=lambda:
-        janelageometrica1(janela,700,700))
-    ver_2_m.add_command(label='800x800',command=lambda:
-        janelageometrica1(janela,800,800))
-    ver_2_m.add_command(label='900x900',command=lambda:
-        janelageometrica1(janela,900,900))
-    ver_2_m.add_command(label='1000x1000',command=lambda:
-        janelageometrica1(janela,1000,1000))
-
     #Configurar cores do Menu
     ficheiro_menu.configure(background=corMenu, foreground=colorFg)
     editar_menu.configure(background=corMenu, foreground=colorFg)
     ver_menu.configure(background=corMenu, foreground=colorFg)
     ver_1_m.configure(background=corMenu, foreground=colorFg)
-    ver_2_m.configure(background=corMenu, foreground=colorFg)
     ver_3_m.configure(background=corMenu, foreground=colorFg)
     ver_4_m.configure(background=corMenu, foreground=colorFg)
     ver_5_m.configure(background=corMenu, foreground=colorFg)
     ver_7_m.configure(background=corMenu, foreground=colorFg)
+    newMenuEdit.configure(background=corMenu, foreground=colorFg)
     a_m.configure(background=corMenu, foreground=colorFg)
     b_m.configure(background=corMenu, foreground=colorFg)
     z_m.configure(background=corMenu, foreground=colorFg)
@@ -506,7 +504,7 @@ barra_menu.add_cascade(label=dd[25],menu=ver_menu)
 ver_menu.add_cascade(label=dd[26], menu=ver_5_m)
 ver_5_m.add_cascade(label=dd[27], menu=ver_4_m)
 ver_5_m.add_cascade(label=dd[29], menu=ver_7_m)
-ver_menu.add_cascade(label=dd[30], menu=ver_2_m)
+ver_menu.add_cascade(label="Change Fonts", menu=newMenuEdit)
 barra_menu.add_cascade(label=dd[45], menu=b_m)
 b_m.add_cascade(label=dd[46], menu=z_m)
 barra_menu.add_cascade(label=dd[31], menu=a_m)

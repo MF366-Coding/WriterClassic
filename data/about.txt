@@ -1,6 +1,6 @@
 App name: Writer Classic
 Developer: MF366 Coding
-Version number: 2.3.0
+Version number: 3.0.0 Developer Beta Edition
 Powered by: Python 3.10.8
 
 https://github.com/MF366-Coding/WriterClassic
