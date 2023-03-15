@@ -53,7 +53,12 @@ Writer Classic author and programmer is always dveloping new plugins in order to
 Within settings you can choose from several languages. For now it's only available in English and Portuguese (european) but more translations are in its way!
 #### Information :information_source:
 Here you can find help, some about information and the links for the official repo and website. Stay up to date, don't forget to read what's going on with Writer Classic.
+### Change the font (type and size)
+Now, you can change font type and size **FROM THE APP** (only affects the editor - not the edited file).
 
+You can find this feature in the *Appearence* settings.
+
+Once again, thank you for ckecking out this repository. :+1:
 
 ### Shortcuts :keyboard:
 #### Useful shortcuts
@@ -71,9 +76,3 @@ All of those make use of control key plus another key so that you have to press 
 * __Ctrl + R__ - Opens the clock plugin :clock2:
 
 
-### Hidden Features
-#### Font (type and size)
-Now, you can change font type and size (only affects the editor - not the edited file). To do this, go to the config folder of Writer Classic. Open both font-type.txt and font-size.txt.
-In font-type, you should type a name of a font you have installed (examples: Arial, Ubuntu Mono, Verdana, ...). In the other file, type a number for the font size (no limits, but it's not convenient to have number 500 as font size xD ).
-
-Once again, thank you for ckecking out this repository. :+1:

@@ -2,7 +2,15 @@
 
 Writer Classic
 
-Made in Python 3
+Powered by: in Python 3.10.8
+
+Official Repo:
+    https://github.com/MF366-Coding/WriterClassic
+
+Find me in this spots:
+    https://github.com/MF366-Coding
+    Discord: MF366#8679
+    https://www.youtube.com/channel/UC-eyGQUY7mICmAuLSI2ZO5A/
 
 Original idea by: MF366
 Developed by: MF366
@@ -12,6 +20,7 @@ Developed by: MF366
 #Importar os módulos necessários
 from tkinter import *
 from tkinter.ttk import *
+from tkinter import simpledialog as sdg
 import tkinter.filedialog as dlg
 import tkinter.messagebox as mb
 import webbrowser
@@ -84,8 +93,10 @@ langset.close()
 
 
 #Definir o tamanho da janela
-def janelageometrica1(indicar,usar,nao):
-    indicar.geometry(str(usar)+'x'+str(nao))
+def janelageometrica1():
+    sdg.askinteger("Writer Classic", "Pick a width value for the main window.")
+    texto.configure(width=, height=)
+    janela.geometry(str(usar)+'x'+str(nao))
     with open('config/geom.txt', 'w') as geomdata:
         geomdata.write('')
         geom = geomdata.write(str(usar)+'x'+str(nao))
@@ -222,7 +233,22 @@ def relogio():
 
     relog.mainloop()
 
-#Abrir um ficheiro
+# Change the text font and size
+def fontEdit(winType):
+    if winType == 1:
+        fontSize = sdg.askinteger("Writer Classic - Change Font Size", "Please pick a number for Writer's font size with a minimum of 1.", minvalue=1)
+        with open('config/font-size.txt', 'w') as fontSizeEdit:
+            fontSizeEdit.write(str(fontSize))
+            fontSizeEdit.close()
+            mb.showinfo("Writer Classic", "You must restart to apply the changes.")
+    else:
+        fontType = sdg.askstring("Writer Classic - Change Font Family", "Please type the name of a font family you have installed on your device.")
+        with open('config/font-type.txt', 'w', encoding='utf-8') as fontTypeEdit:
+            fontTypeEdit.write(fontType)
+            fontTypeEdit.close()
+            mb.showinfo("Writer Classic", "You must restart to apply the changes.")
+
+# Abrir um ficheiro
 def abrir(raiz):
     fich = dlg.askopenfilename(parent=raiz, filetypes=[(dd[1], '*.txt'), ('Config Files', '*.cfg'), ('Config Files', '*.config'), ('Cascading Style Sheet', '*.css'), ('Comma-Separated Values File', '*.csv'), ('Hypertext Markup Language File', '*.html'), ('Setup Information File', '*.inf'), ('Generic Information File', '*.info'), ('Windows Initialization File', '*.ini'), ('JavaScript File', '*.js'), ('Python Script', '*.py*'), ('Log File', '*.log'), ('XML File', '*.xml'), ('Readme File', '*.1st'), ('Static Library', '*.a'), ('Anim8or Script', '*.a8s'), ('ANSI Text File', '*.ans'), ('Quake 3 Engine Arena File', '*.arena'), ('ActionScript File', '*.as'), ('ASP Configuration File', '*.asa'), ('Assembly Language Source Code File', '.asm'), ('Markdown Files', '*.md'), ('Markdown Files', '*.mdown')])
     fich_ent2 = open(fich, 'r')
@@ -384,8 +410,15 @@ if __name__ == '__main__':
     ver_5_m = Menu(ver_menu)
     ver_4_m = Menu(ver_5_m)
     ver_7_m = Menu(ver_5_m)
+    newMenuEdit = Menu(ver_menu)
     b_m = Menu(barra_menu)
     z_m = Menu(b_m)
+
+    # menu fonts
+    newMenuEdit.add_command(label="Change size", command=lambda:
+                            fontEdit(1))
+    newMenuEdit.add_command(label="Change family font", command=lambda:
+                            fontEdit(2))
 
     #Adicionar o Menu Plugins
     b_m.add_command(label=dd[38], command=new_window)
@@ -496,6 +529,7 @@ if __name__ == '__main__':
     ver_4_m.configure(background=corMenu, foreground=colorFg)
     ver_5_m.configure(background=corMenu, foreground=colorFg)
     ver_7_m.configure(background=corMenu, foreground=colorFg)
+    newMenuEdit.configure(background=corMenu, foreground=colorFg)
     a_m.configure(background=corMenu, foreground=colorFg)
     b_m.configure(background=corMenu, foreground=colorFg)
     z_m.configure(background=corMenu, foreground=colorFg)
@@ -507,6 +541,7 @@ ver_menu.add_cascade(label=dd[26], menu=ver_5_m)
 ver_5_m.add_cascade(label=dd[27], menu=ver_4_m)
 ver_5_m.add_cascade(label=dd[29], menu=ver_7_m)
 ver_menu.add_cascade(label=dd[30], menu=ver_2_m)
+ver_menu.add_cascade(label="Change Fonts", menu=newMenuEdit)
 barra_menu.add_cascade(label=dd[45], menu=b_m)
 b_m.add_cascade(label=dd[46], menu=z_m)
 barra_menu.add_cascade(label=dd[31], menu=a_m)
