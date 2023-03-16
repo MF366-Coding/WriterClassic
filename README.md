@@ -83,19 +83,46 @@ Within settings you can choose from several languages. For now it's only availab
 - Spanish
 - Italian
 
-And more translations are coming, like Slovak.
+And **more translations are coming**, like Slovak.
 
 #### Information :information_source:
 Here you can find help, some about information and the links for the official repo and website. Stay up to date, don't forget to read what's going on with Writer Classic.
+
+#### Command Menu
+You can press **Ctrl + W** (check the Shotcuts area for more info) to open this **hidden** feature.
+
+In here, you can type a command and click 'OK' and something will happen.
+
+Available commands:
+
+- **open** or **openfile** - Opens the 'Open a file to read' dialog
+- **about** - Opens the 'About' dialog
+- **help** - Opens the Help at GitHub
+- **fun** or **egg** - Opens the Super Secret Easter Egg (a.k.a *SSEE*)
+- **data** - Opens the 'Who made this app?' dialog (hint: it was me LMAO)
+- **exit** or **quit** - Shows the 'Confirm exit' dialog
+- **clear** - Opens the 'Pick a file to erase' dialog
+- **savefile** - Saves current file
+- **save** - Shows the 'Save as' dialog
+- **WriterClassic.Plugin.clock.RUN()** - Opens the Clock Plugin
+- **FontEdit.family()** - Shows the 'Pick a font family' dialog
+- **FontEdit.size()** - Shows the 'Pick a font size' dialog
+- **ragequit** - Kills the app without confirmation **(NOT RECOMMENDED)**
+- **repo** - Opens the GitHub repo
+- **notes** - Opens the 'Notes' Plugin
+- **WINDOW.geometry** - Shows the 'Pick window dimensions/size' dialog
+
+In case you don't pick any of these, you'll just get an error.
 
 ### Shortcuts :keyboard:
 #### Useful shortcuts
 You can use some useful shortcuts instead of menu itens to use Writer Classic faster.
 All of those make use of control key plus another key so that you have to press both at once. **Ctrl** stands for control key. Here are some of the most useful shortcuts available:  
+
 * __Ctrl + S__ - Save the file :floppy_disk:
 * __Ctrl + Z__ - Save as, allowing to give a different name to the file you're saving :floppy_disk:
 * __Ctrl + O__ - Open file :open_file_folder:
-* __Ctrl + W__ - Closes the window / editor :x:
+* __Ctrl + W__ - Opens the Command Menu 💻️
 * __Ctrl + L__ - Changes to light mode :sunny:
 * __CTRL + D__ - Changes to dark mode :crescent_moon:
 * __Ctrl + G__ - Chooses default window size (600x400 px) :desktop_computer:

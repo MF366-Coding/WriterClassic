@@ -314,11 +314,16 @@ def creditos_abertos():
 #Abrir o Easter Egg
 def surprise_egg():
     askNow = sdg.askstring("Easter Egg", "Type the SPECIAL code string to open the surpise Easter Egg...")
+    
     if askNow == '69':
         webbrowser.open('https://www.youtube.com/watch?v=W6FG7yVUaKQ')
+    
     elif askNow == 'Scan':
         mb.showerror("Your PC has virus!", "Press Alt+F4 to remove all viruses!!!\nDo it!!!")
-
+    
+    else:
+        mb.showerror("Easter Egg", "Trouble finding the Easter Egg?\nNobody said it would be easy...")
+    
 #Abrir a Ajuda
 def ajuda():
     ourWebsite = "https://github.com/MF366-Coding/WriterClassic#help"
@@ -332,6 +337,59 @@ def sobre(thing2, thing3):
     mb.showinfo(title=dd[10], message=about_data)
     about_d.close()
 
+def commandPrompt():
+    askNow = sdg.askstring("Writer Classic - CommandMenu", "Type a command for Writer's Command Menu.")
+    
+    if askNow == 'open' or askNow == 'openfile':
+        abrir(janela)
+        
+    elif askNow == 'about':
+        sobre('data/about.txt', 'r')
+        
+    elif askNow == 'help':
+        ajuda()
+        
+    elif askNow == 'fun' or askNow == 'egg':
+        surprise_egg()
+        
+    elif askNow == 'data':
+        creditos_abertos()
+        
+    elif askNow == 'exit' or askNow == 'quit':
+        sair(janela)
+        
+    elif askNow == 'clear':
+        formatar(janela)
+
+    elif askNow == 'savefile':
+        salvarA(janela, texto)
+
+    elif askNow == 'save':
+        salvar(janela, texto)
+        
+    elif askNow == 'WriterClassic.Plugin.clock.RUN()':
+        relogio()
+        
+    elif askNow == 'FontEdit.family()':
+        fontEdit(2)
+        
+    elif askNow == 'FontEdit.size()':
+        fontEdit(1)
+        
+    elif askNow == 'ragequit':
+        quickway()
+        
+    elif askNow == 'repo':
+        repo()
+        
+    elif askNow == 'notes':
+        new_window()
+        
+    elif askNow == 'WINDOW.geometry()':
+        janelageometrica1()
+        
+    else:
+        mb.showerror("Writer Classic - CommandMenu", "User Error:\nNot a Writer Classic command.")
 
 #Atalhos de Teclado
 janela.bind('<Control-s>', lambda a:
@@ -342,9 +400,6 @@ janela.bind('<Control-o>', lambda b:
 
 janela.bind('<Control-z>', lambda c:
     salvar(janela, texto))
-
-janela.bind('<Control-w>', lambda d:
-    sair(janela))
 
 janela.bind('<Control-a>', lambda e:
     sobre('data/about.txt', 'r'))
@@ -363,6 +418,9 @@ janela.bind('<Control-g>', lambda j:
 
 janela.bind('<Control-r>', lambda l:
     relogio())
+    
+janela.bind('<Control-w>', lambda m:
+    commandPrompt())
 
 
 #Ao abrir o Writer, isto acontecerá...
