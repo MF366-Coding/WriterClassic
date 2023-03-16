@@ -3,7 +3,9 @@ Writer Classic's GitHub repository.
 
 Writer Classic is a small Python file that, together with some config files, bring to the user a whole new text editor experience. :thinking:
 
-IMPORTANT INFO: Due to Python resources that are only available on Linux, Writer Classic is Linux only.
+**IMPORTANT INFO!**
+
+Due to Python resources that are only available on Linux, Writer Classic is Linux only.
 
 This is a garage project that is constantly growing, so I am moving to GitHub.
 
@@ -16,11 +18,17 @@ Writer Classic's zip file is a zipped folder including **main.py** (the app itse
 
 ## What do I need to be able to be able to use Writer Classic? :heavy_check_mark:
 You need:
+
 * [X] Python 3 
+
 * [X] Any Linux distro
+
 * [X] tkinter (Python3 Module)
+
 * [X] webbrowser (Python3 Module)
+
 * [X] datetime (Python3 Module)
+
   
 ## Feature requests :heavy_plus_sign:
 If you would like to open Writer Classic and discover a new functionality suggested by you, please check the Issues in this Repository.
@@ -29,10 +37,13 @@ If you would like to open Writer Classic and discover a new functionality sugges
 If you found a bug, please tell me the details by creating a new Issue in this Repository.
 
 ## Help :question:
+Here, you can find all sorts of help topics about Writer Classic.
+
 ### Features
 #### Open :open_file_folder:
 Writer Classic is a basic text editor yet very fun to use and offering a lot of features while it's development is happening at a very fast pace.  
-With Writer Classic you can open files of type (in no particular order):  
+With Writer Classic you can open files of type (in no particular order):
+  
 * text
 * python
 * markdown
@@ -40,20 +51,42 @@ With Writer Classic you can open files of type (in no particular order):
 * javascript
 * ini
 * desktop
-* xml  
+* xml
+* ...
+
 #### Edit :memo:
 You can make changes to text files, python files, markdown files and save them, either with new name and extension or replacing existent files.
+
 #### Looks :paintbrush:
 You can choose from several themes and change interface / window size. So taht you will always be confortable and use Writer Classic the way you want and fits your taste and feelings.
+
+
+##### Change the font (type and size)
+Now, you can change font type and size **FROM THE APP** (only affects the editor - not the edited file).
+
+You can find this feature in the *Appearence* settings.
+
+Once again, thank you for ckecking out this repository. :+1:
+
 #### Plugins :heavy_plus_sign:
 Writer Classic author and programmer is always dveloping new plugins in order to make this simple editor more and more powerful and in line with the features you most use and wish. For the time being you can choosefrom:
+
 * notepad (you can take notes aside what you're writing and editing)
 * clock (because it's always useful to know if it's time to start coding)
+
 #### Settings :hammer_and_wrench:
-Within settings you can choose from several languages. For now it's only available in English and Portuguese (european) but more translations are in its way!
+Within settings you can choose from several languages. For now it's only available in:
+
+- English
+- Portuguese (european and brazilian)
+- French
+- Spanish
+- Italian
+
+And more translations are coming, like Slovak.
+
 #### Information :information_source:
 Here you can find help, some about information and the links for the official repo and website. Stay up to date, don't forget to read what's going on with Writer Classic.
-
 
 ### Shortcuts :keyboard:
 #### Useful shortcuts
@@ -70,10 +103,3 @@ All of those make use of control key plus another key so that you have to press 
 * __Ctrl + A__ - Opens about dialog :information_source:
 * __Ctrl + R__ - Opens the clock plugin :clock2:
 
-
-### Hidden Features
-#### Font (type and size)
-Now, you can change font type and size (only affects the editor - not the edited file). To do this, go to the config folder of Writer Classic. Open both font-type.txt and font-size.txt.
-In font-type, you should type a name of a font you have installed (examples: Arial, Ubuntu Mono, Verdana, ...). In the other file, type a number for the font size (no limits, but it's not convenient to have number 500 as font size xD ).
-
-Once again, thank you for ckecking out this repository. :+1:
