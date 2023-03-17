@@ -1,3 +1,8 @@
+
+# NOT USABLE YET!!
+# We're creating a whole new way to use the language files...
+''' :-) '''
+
 '''
 
 Writer Classic
