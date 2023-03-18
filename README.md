@@ -1,6 +1,3 @@
-# REALLY IMPORTANT INFO!!!
-**I AM CURRENTLY UPDATING THE WAY LANGUAGE FILES WORK: THIS APP IS NOT USABLE YET!!!!**
-
 # Writer Classic
 Writer Classic's GitHub repository.
 
@@ -36,6 +33,23 @@ Open the Terminal in the folder with the extracted content.
 Type <code>python3 WriterClassic.py</code> and you can now use Writer Classic.
 
 This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Linux, <code>python</code> is Python 2).
+
+You're now good to go...
+
+## Unstable Releases
+Maybe you are a developer who wants acess to the latest update to Writer...
+
+### 1. Clone the repo
+Open the Terminal and use <code>git clone https://github.com/MF366-Coding/WriterClassic.git</code>.
+
+If you don't have <code>git</code> installed, please install it using your ditro's package manager.
+
+### 2. Run the program
+Open the folder where the repo was cloned on the Terminal and type <code>python3 WriterClassic.py</code> and you can now use Writer Classic.
+
+This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Linux, <code>python</code> is Python 2).
+
+You're now good to go...
 
 ## What's on the releases' zip file? :file_folder:
 Writer Classic's zip file is a zipped folder including **main.py** (the app itself), folder **data** (including everything that isn't a setting) and the folder __config__ (including every single configuration file).
