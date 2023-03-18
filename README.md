@@ -25,7 +25,19 @@ To install Writer, you can choose between 2 ways of installing.
 Choose this instalation method for a non-crashing environment.
 
 ### 1. Downloading
-Go to 
+Go to https://github.com/MF366-Coding/WriterClassic/releases/latest to get the latest release and download the <code>*.zip</code> file.
+
+### 2. Extraction
+With the file on your computer, extract it to a folder you have or to the same location of the zipped file.
+
+All files and folders inside the zipped one **must** be on the same location!
+
+### 3. Running the program
+Open the Terminal in the folder with the extracted content.
+
+Type <code>python3 WriterClassic.py</code> and you can now use Writer Classic.
+
+This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Linux, <code>python</code> is Python 2.
 
 ## What's on the releases' zip file? :file_folder:
 Writer Classic's zip file is a zipped folder including **main.py** (the app itself), folder **data** (including everything that isn't a setting) and the folder __config__ (including every single configuration file).
