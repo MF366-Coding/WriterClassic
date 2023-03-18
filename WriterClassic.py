@@ -1,8 +1,3 @@
-
-# NOT USABLE YET!!
-# We're creating a whole new way to use the language files...
-''' :-) '''
-
 '''
 
 Writer Classic
@@ -64,7 +59,7 @@ with open('config/font-size.txt', 'r', encoding='utf-8') as fonteeee:
     Fontee = fonteeee.read()
     
 #Configurar o texto e a janela
-janela.title(dd[0])
+janela.title(dd[1])
 
 fonte = Font(family=fontee, size=Fontee)
 
@@ -99,8 +94,8 @@ langset.close()
 
 #Definir o tamanho da janela
 def janelageometrica1():
-    widthSet = sdg.askinteger("Writer Classic", "Pick a width value for the main window.")
-    heightSet = sdg.askinteger("Writer Classic", "Pick a height value for the main window.")
+    widthSet = sdg.askinteger(dd[1], dd[56])
+    heightSet = sdg.askinteger(dd[1], dd[57])
     texto.configure(width=widthSet, height=heightSet)
     janela.geometry(str(widthSet)+'x'+str(heightSet))
     with open('config/geom.txt', 'w') as geomdata:
@@ -132,7 +127,7 @@ def mudacor(cor, fgcor, cc, bar, bar_sec):
     again3.close()
     again4.close()
     again5.close()
-    aguardaResposta = mb.askyesno(parent=janela, title='Writer Classic - Exit now?', message='You must reopen Writer to apply the changes!\nRestart now?')
+    aguardaResposta = mb.askyesno(parent=janela, title=dd[30], message=dd[31])
     if aguardaResposta:
         janela.destroy()
 
@@ -145,7 +140,7 @@ def mudaIdioma(idioma, raiz):
     with open('config/lang.txt', 'w') as deleteThat:
         deleteThat.write('')
         deleteThat.write(idioma)
-    kkkkSemRiso = mb.askyesno(parent=raiz, title='Writer Classic - Exit now?', message='You must reopen Writer to apply the changes!\nRestart now?')
+    kkkkSemRiso = mb.askyesno(parent=raiz, title=dd[30], message=dd[31])
     if kkkkSemRiso:
         raiz.destroy()
 
@@ -173,7 +168,7 @@ def new_window():
         colorFg = corFgLer.read()
 
     #Configurar o texto e a newWindow
-    newWindow.title(dd[38])
+    newWindow.title(dd[22])
 
     texto = Text(newWindow)
 
@@ -217,46 +212,38 @@ def relogio():
     #Abrir os ficheiros de configuração
 
     #Configurar o texto e a newWindow
-    relog.title(dd[39])
+    relog.title(dd[23])
 
     texto = Label(relog)
-    dias = Label(relog)
 
     texto.configure(text=datetime.datetime.now())
-    dias.configure(text="It's time to see the Easter Egg...")
     texto.configure(
         font=(100)
-        )
-
-    dias.configure(
-        font=(11)
         )
 
     relog.geometry('275x65')
 
     texto.pack()
-    dias.pack()
-
     relog.mainloop()
 
 # Change the text font and size
 def fontEdit(winType):
     if winType == 1:
-        fontSize = sdg.askinteger("Writer Classic - Change Font Size", "Please pick a number for Writer's font size with a minimum of 1.", minvalue=1)
+        fontSize = sdg.askinteger(dd[58], dd[59], minvalue=1)
         with open('config/font-size.txt', 'w') as fontSizeEdit:
             fontSizeEdit.write(str(fontSize))
             fontSizeEdit.close()
-            mb.showinfo("Writer Classic", "You must restart to apply the changes.")
+            mb.showinfo(dd[1], dd[62])
     else:
-        fontType = sdg.askstring("Writer Classic - Change Font Family", "Please type the name of a font family you have installed on your device.")
+        fontType = sdg.askstring(dd[60], dd[61])
         with open('config/font-type.txt', 'w', encoding='utf-8') as fontTypeEdit:
             fontTypeEdit.write(fontType)
             fontTypeEdit.close()
-            mb.showinfo("Writer Classic", "You must restart to apply the changes.")
+            mb.showinfo(dd[1], dd[62])
 
 # Abrir um ficheiro
 def abrir(raiz):
-    fich = dlg.askopenfilename(parent=raiz, filetypes=[(dd[1], '*.txt'), ('Config Files', '*.cfg'), ('Config Files', '*.config'), ('Cascading Style Sheet', '*.css'), ('Comma-Separated Values File', '*.csv'), ('Hypertext Markup Language File', '*.html'), ('Setup Information File', '*.inf'), ('Generic Information File', '*.info'), ('Windows Initialization File', '*.ini'), ('JavaScript File', '*.js'), ('Python Script', '*.py*'), ('Log File', '*.log'), ('XML File', '*.xml'), ('Readme File', '*.1st'), ('Static Library', '*.a'), ('Anim8or Script', '*.a8s'), ('ANSI Text File', '*.ans'), ('Quake 3 Engine Arena File', '*.arena'), ('ActionScript File', '*.as'), ('ASP Configuration File', '*.asa'), ('Assembly Language Source Code File', '.asm'), ('Markdown Files', '*.md'), ('Markdown Files', '*.mdown')])
+    fich = dlg.askopenfilename(parent=raiz, filetypes=[(dd[32], '*.txt'), (dd[33], '*.cfg'), (dd[33], '*.config'), (dd[34], '*.css'), (dd[35], '*.csv'), (dd[36], '*.html'), (dd[37], '*.inf'), (dd[38], '*.info'), (dd[39], '*.ini'), (dd[40], '*.js'), (dd[41], '*.py*'), (dd[42], '*.log'), (dd[43], '*.xml'), (dd[44], '*.1st'), (dd[45], '*.a'), (dd[46], '*.a8s'), (dd[47], '*.ans'), (dd[48], '*.arena'), (dd[49], '*.as'), (dd[50], '*.asa'), (dd[51], '.asm'), (dd[52], '*.md'), (dd[52], '*.mdown')])
     fich_ent2 = open(fich, 'r')
     resultado = fich_ent2.read()
     if len(resultado) > 1:
@@ -278,7 +265,7 @@ def abrir(raiz):
 #Guardar como
 def salvar(raiz,texto):
     dados = texto.get('0.0', END)
-    ficheiro = dlg.asksaveasfilename(parent=raiz, filetypes=[(dd[1], '*.txt'), ('Config Files', '*.cfg'), ('Config Files', '*.config'), ('Cascading Style Sheet', '*.css'), ('Comma-Separated Values File', '*.csv'), ('Hypertext Markup Language File', '*.html'), ('Setup Information File', '*.inf'), ('Generic Information File', '*.info'), ('Windows Initialization File', '*.ini'), ('JavaScript File', '*.js'), ('Python Script', '*.py*'), ('Log File', '*.log'), ('XML File', '*.xml'), ('Readme File', '*.1st'), ('Static Library', '*.a'), ('Anim8or Script', '*.a8s'), ('ANSI Text File', '*.ans'), ('Quake 3 Engine Arena File', '*.arena'), ('ActionScript File', '*.as'), ('ASP Configuration File', '*.asa'), ('Assembly Language Source Code File', '.asm'), ('Markdown Files', '*.md'), ('Markdown Files', '*.mdown')])
+    ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(dd[32], '*.txt'), (dd[33], '*.cfg'), (dd[33], '*.config'), (dd[34], '*.css'), (dd[35], '*.csv'), (dd[36], '*.html'), (dd[37], '*.inf'), (dd[38], '*.info'), (dd[39], '*.ini'), (dd[40], '*.js'), (dd[41], '*.py*'), (dd[42], '*.log'), (dd[43], '*.xml'), (dd[44], '*.1st'), (dd[45], '*.a'), (dd[46], '*.a8s'), (dd[47], '*.ans'), (dd[48], '*.arena'), (dd[49], '*.as'), (dd[50], '*.asa'), (dd[51], '.asm'), (dd[52], '*.md'), (dd[52], '*.mdown')])
     fich_saida = open(ficheiro, 'w')
     fich_saida.write(dados)
     fich_saida.close()
@@ -286,7 +273,7 @@ def salvar(raiz,texto):
 #Guardar ficheiro
 def salvarA(raiz, texto):
     dados = texto.get('0.0', END)
-    ficheiro = dlg.asksaveasfilename(parent=raiz, filetypes=[(dd[1], '*.txt'), ('Config Files', '*.cfg'), ('Config Files', '*.config'), ('Cascading Style Sheet', '*.css'), ('Comma-Separated Values File', '*.csv'), ('Hypertext Markup Language File', '*.html'), ('Setup Information File', '*.inf'), ('Generic Information File', '*.info'), ('Windows Initialization File', '*.ini'), ('JavaScript File', '*.js'), ('Python Script', '*.py*'), ('Log File', '*.log'), ('XML File', '*.xml'), ('Readme File', '*.1st'), ('Static Library', '*.a'), ('Anim8or Script', '*.a8s'), ('ANSI Text File', '*.ans'), ('Quake 3 Engine Arena File', '*.arena'), ('ActionScript File', '*.as'), ('ASP Configuration File', '*.asa'), ('Assembly Language Source Code File', '.asm'), ('Markdown Files', '*.md'), ('Markdown Files', '*.mdown')])
+    ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(dd[32], '*.txt'), (dd[33], '*.cfg'), (dd[33], '*.config'), (dd[34], '*.css'), (dd[35], '*.csv'), (dd[36], '*.html'), (dd[37], '*.inf'), (dd[38], '*.info'), (dd[39], '*.ini'), (dd[40], '*.js'), (dd[41], '*.py*'), (dd[42], '*.log'), (dd[43], '*.xml'), (dd[44], '*.1st'), (dd[45], '*.a'), (dd[46], '*.a8s'), (dd[47], '*.ans'), (dd[48], '*.arena'), (dd[49], '*.as'), (dd[50], '*.asa'), (dd[51], '.asm'), (dd[52], '*.md'), (dd[52], '*.mdown')])
     fich_saida = open(ficheiro, 'a')
     fich_saida.write(dados)
     fich_saida.close()
@@ -295,7 +282,7 @@ def salvarA(raiz, texto):
 def formatar(raiz):
     pois = mb.askyesno(title=dd[5], message=dd[6])
     if pois:
-        ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(dd[1], '*.txt'), ('Config Files', '*.cfg'), ('Config Files', '*.config'), ('Cascading Style Sheet', '*.css'), ('Comma-Separated Values File', '*.csv'), ('Hypertext Markup Language File', '*.html'), ('Setup Information File', '*.inf'), ('Generic Information File', '*.info'), ('Windows Initialization File', '*.ini'), ('JavaScript File', '*.js'), ('Python Script', '*.py*'), ('Log File', '*.log'), ('XML File', '*.xml'), ('Readme File', '*.1st'), ('Static Library', '*.a'), ('Anim8or Script', '*.a8s'), ('ANSI Text File', '*.ans'), ('Quake 3 Engine Arena File', '*.arena'), ('ActionScript File', '*.as'), ('ASP Configuration File', '*.asa'), ('Assembly Language Source Code File', '.asm'), ('Markdown Files', '*.md'), ('Markdown Files', '*.mdown')])
+        ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(dd[32], '*.txt'), (dd[33], '*.cfg'), (dd[33], '*.config'), (dd[34], '*.css'), (dd[35], '*.csv'), (dd[36], '*.html'), (dd[37], '*.inf'), (dd[38], '*.info'), (dd[39], '*.ini'), (dd[40], '*.js'), (dd[41], '*.py*'), (dd[42], '*.log'), (dd[43], '*.xml'), (dd[44], '*.1st'), (dd[45], '*.a'), (dd[46], '*.a8s'), (dd[47], '*.ans'), (dd[48], '*.arena'), (dd[49], '*.as'), (dd[50], '*.asa'), (dd[51], '.asm'), (dd[52], '*.md'), (dd[52], '*.mdown')])
         fich_teste = open(ficheiro, 'r')
         fich_test = fich_teste.read()
         if len(fich_test) != 0:
@@ -314,20 +301,20 @@ def sair(raiz):
 
 #Abrir os Créditos
 def creditos_abertos():
-    mb.showinfo(title=dd[44], message="MF366 Coding\n\nThis app was made in Python by MF366 Coding.")
+    mb.showinfo(title=dd[28], message=dd[65])
 
 #Abrir o Easter Egg
 def surprise_egg():
-    askNow = sdg.askstring("Easter Egg", "Type the SPECIAL code string to open the surpise Easter Egg...")
+    askNow = sdg.askstring(dd[29], dd[66])
     
-    if askNow == '69':
+    if askNow == 'Nice stuff!!':
         webbrowser.open('https://www.youtube.com/watch?v=W6FG7yVUaKQ')
     
     elif askNow == 'Scan':
         mb.showerror("Your PC has virus!", "Press Alt+F4 to remove all viruses!!!\nDo it!!!")
     
     else:
-        mb.showerror("Easter Egg", "Trouble finding the Easter Egg?\nNobody said it would be easy...")
+        mb.showerror(dd[29], dd[67])
     
 #Abrir a Ajuda
 def ajuda():
@@ -343,7 +330,7 @@ def sobre(thing2, thing3):
     about_d.close()
 
 def commandPrompt():
-    askNow = sdg.askstring("Writer Classic - CommandMenu", "Type a command for Writer's Command Menu.")
+    askNow = sdg.askstring(dd[68], dd[69])
     
     if askNow == 'open' or askNow == 'openfile':
         abrir(janela)
@@ -394,7 +381,7 @@ def commandPrompt():
         janelageometrica1()
         
     else:
-        mb.showerror("Writer Classic - CommandMenu", "User Error:\nNot a Writer Classic command.")
+        mb.showerror(dd[68], dd[70])
 
 #Atalhos de Teclado
 janela.bind('<Control-s>', lambda a:
@@ -475,17 +462,17 @@ if __name__ == '__main__':
     b_m = Menu(barra_menu)
     z_m = Menu(b_m)
 
-    ver_menu.add_command(label="Main window's size", command=janelageometrica1)
+    ver_menu.add_command(label=dd[12], command=janelageometrica1)
 
     # menu fonts
-    newMenuEdit.add_command(label="Change size", command=lambda:
+    newMenuEdit.add_command(label=dd[20], command=lambda:
                             fontEdit(1))
-    newMenuEdit.add_command(label="Change family font", command=lambda:
+    newMenuEdit.add_command(label=dd[21], command=lambda:
                             fontEdit(2))
 
     #Adicionar o Menu Plugins
-    b_m.add_command(label=dd[38], command=new_window)
-    b_m.add_command(label=dd[39], command=relogio)
+    b_m.add_command(label=dd[22], command=new_window)
+    b_m.add_command(label=dd[23], command=relogio)
     
     #Adicionar temas da comunidade
     z_m.add_command(label='Black Hole', command=lambda:
@@ -517,14 +504,16 @@ if __name__ == '__main__':
         mudaIdioma('br', janela))
     a_m.add_command(label='Português (Portugal)', command=lambda:
         mudaIdioma('pt', janela))
+    a_m.add_command(label='Slovenčina (Slovensko)', command=lambda:
+        mudaIdioma('sk', janela))
 
     #Adicionar os Temas (Temas Regulares)
-    ver_4_m.add_command(label=dd[18], command=lambda:
+    ver_4_m.add_command(label=dd[16], command=lambda:
         mudacor('white', 'black', 'black', 'black', 'white'))
-    ver_4_m.add_command(label=dd[19], command=lambda:
+    ver_4_m.add_command(label=dd[17], command=lambda:
         mudacor('black', 'white', 'white', 'dark grey', 'black'))
     ver_4_m.add_separator()
-    ver_4_m.add_command(label=dd[21], command=lambda:
+    ver_4_m.add_command(label=dd[18], command=lambda:
         mudacor('grey', 'black', 'black', 'black', 'white'))
 
     #Adicionar os Temas (Temas Modernos)
@@ -562,16 +551,16 @@ if __name__ == '__main__':
     z_m.configure(background=corMenu, foreground=colorFg)
 
 #Adicionar menus "cascade"
-barra_menu.add_cascade(label=dd[24],menu=ficheiro_menu)
-barra_menu.add_cascade(label=dd[25],menu=ver_menu)
-ver_menu.add_cascade(label=dd[26], menu=ver_5_m)
-ver_5_m.add_cascade(label=dd[27], menu=ver_4_m)
-ver_5_m.add_cascade(label=dd[29], menu=ver_7_m)
-ver_menu.add_cascade(label="Change Fonts", menu=newMenuEdit)
-barra_menu.add_cascade(label=dd[45], menu=b_m)
-b_m.add_cascade(label=dd[46], menu=z_m)
-barra_menu.add_cascade(label=dd[31], menu=a_m)
-barra_menu.add_cascade(label=dd[32], menu=editar_menu)
+barra_menu.add_cascade(label=dd[2],menu=ficheiro_menu)
+barra_menu.add_cascade(label=dd[3],menu=ver_menu)
+ver_menu.add_cascade(label=dd[13], menu=ver_5_m)
+ver_5_m.add_cascade(label=dd[15], menu=ver_4_m)
+ver_5_m.add_cascade(label=dd[19], menu=ver_7_m)
+ver_menu.add_cascade(label=dd[14], menu=newMenuEdit)
+barra_menu.add_cascade(label=dd[4], menu=b_m)
+b_m.add_cascade(label=dd[24], menu=z_m)
+barra_menu.add_cascade(label=dd[5], menu=a_m)
+barra_menu.add_cascade(label=dd[6], menu=editar_menu)
 
 #Configurar o menu da janela
 janela.configure(menu=barra_menu)

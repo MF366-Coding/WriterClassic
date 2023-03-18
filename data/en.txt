@@ -1,5 +1,4 @@
-
-Writer Classic
+\nWriter Classic
 File
 Appearence
 Plugins
@@ -34,6 +33,7 @@ Text file
 Config files
 Cascading Style Sheet
 Comma-Separated Values File
+HTML File
 Setup Information File
 Generic Information File
 Windows Initialization File
