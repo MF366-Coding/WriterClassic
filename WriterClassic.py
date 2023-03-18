@@ -43,7 +43,7 @@ with open('config/lang.txt', 'r') as langset:
 
 with open('data/'+str(thisLang[0:2])+'.txt', 'r', encoding='utf-8') as myLang2:
     myLang = myLang2.read()
-    dd = myLang.split('//')
+    dd = myLang.split('/n')
 
 with open('config/menu.txt', 'r', encoding='utf-8') as menuColor:
     mBg = menuColor.read()
