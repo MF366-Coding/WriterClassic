@@ -18,6 +18,15 @@ By the way, thanks for visiting this repository. :+1:
 
 I also would love if you waste some time testing Writer Classic or just exploring this GitHub repository.
 
+# Installing Writer Classic
+To install Writer, you can choose between 2 ways of installing.
+
+## Stable Releases
+Choose this instalation method for a non-crashing environment.
+
+### 1. Downloading
+Go to 
+
 ## What's on the releases' zip file? :file_folder:
 Writer Classic's zip file is a zipped folder including **main.py** (the app itself), folder **data** (including everything that isn't a setting) and the folder __config__ (including every single configuration file).
 
