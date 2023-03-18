@@ -1,8 +1,6 @@
 # REALLY IMPORTANT INFO!!!
 **I AM CURRENTLY UPDATING THE WAY LANGUAGE FILES WORK: THIS APP IS NOT USABLE YET!!!!**
 
-**+ I AM ADDING NEW STUFF TO THIS README FILE SOON, LIKE PROPER INSTALLATION INSTRUCTIONS ;-)**
-
 # Writer Classic
 Writer Classic's GitHub repository.
 
@@ -37,7 +35,7 @@ Open the Terminal in the folder with the extracted content.
 
 Type <code>python3 WriterClassic.py</code> and you can now use Writer Classic.
 
-This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Linux, <code>python</code> is Python 2.
+This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Linux, <code>python</code> is Python 2).
 
 ## What's on the releases' zip file? :file_folder:
 Writer Classic's zip file is a zipped folder including **main.py** (the app itself), folder **data** (including everything that isn't a setting) and the folder __config__ (including every single configuration file).
