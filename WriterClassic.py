@@ -35,10 +35,11 @@ with open('config/lang.txt', 'r') as langset:
     thisLang = langset.read()
     #print(thisLang[0:2])
     #thisLang2 = thisLang[-12:-10]
-
+    
 with open('data/'+str(thisLang[0:2])+'.txt', 'r', encoding='utf-8') as myLang2:
     myLang = myLang2.read()
-    dd = myLang.split('/n')
+    dd = myLang.split('\n')
+    #print(dd)
 
 with open('config/menu.txt', 'r', encoding='utf-8') as menuColor:
     mBg = menuColor.read()
@@ -94,8 +95,8 @@ langset.close()
 
 #Definir o tamanho da janela
 def janelageometrica1():
-    widthSet = sdg.askinteger(dd[1], dd[56])
-    heightSet = sdg.askinteger(dd[1], dd[57])
+    widthSet = sdg.askinteger(dd[1], dd[57])
+    heightSet = sdg.askinteger(dd[1], dd[58])
     texto.configure(width=widthSet, height=heightSet)
     janela.geometry(str(widthSet)+'x'+str(heightSet))
     with open('config/geom.txt', 'w') as geomdata:
@@ -229,17 +230,17 @@ def relogio():
 # Change the text font and size
 def fontEdit(winType):
     if winType == 1:
-        fontSize = sdg.askinteger(dd[58], dd[59], minvalue=1)
+        fontSize = sdg.askinteger(dd[59], dd[60], minvalue=1)
         with open('config/font-size.txt', 'w') as fontSizeEdit:
             fontSizeEdit.write(str(fontSize))
             fontSizeEdit.close()
-            mb.showinfo(dd[1], dd[62])
+            mb.showinfo(dd[1], dd[63])
     else:
-        fontType = sdg.askstring(dd[60], dd[61])
+        fontType = sdg.askstring(dd[61], dd[62])
         with open('config/font-type.txt', 'w', encoding='utf-8') as fontTypeEdit:
             fontTypeEdit.write(fontType)
             fontTypeEdit.close()
-            mb.showinfo(dd[1], dd[62])
+            mb.showinfo(dd[1], dd[63])
 
 # Abrir um ficheiro
 def abrir(raiz):
@@ -258,7 +259,7 @@ def abrir(raiz):
         fich_entrada = open(fich,'a')
         fich_ent2.close()
     else:
-        mb.showinfo(title=dd[36], message=dd[35])
+        mb.showinfo(title=dd[1], message=dd[71])
         fich_entrada = open(fich,'a')
         fich_ent2.close()
 
@@ -280,7 +281,7 @@ def salvarA(raiz, texto):
 
 #Formatar ficheiro
 def formatar(raiz):
-    pois = mb.askyesno(title=dd[5], message=dd[6])
+    pois = mb.askyesno(title=dd[55], message=dd[56])
     if pois:
         ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(dd[32], '*.txt'), (dd[33], '*.cfg'), (dd[33], '*.config'), (dd[34], '*.css'), (dd[35], '*.csv'), (dd[36], '*.html'), (dd[37], '*.inf'), (dd[38], '*.info'), (dd[39], '*.ini'), (dd[40], '*.js'), (dd[41], '*.py*'), (dd[42], '*.log'), (dd[43], '*.xml'), (dd[44], '*.1st'), (dd[45], '*.a'), (dd[46], '*.a8s'), (dd[47], '*.ans'), (dd[48], '*.arena'), (dd[49], '*.as'), (dd[50], '*.asa'), (dd[51], '.asm'), (dd[52], '*.md'), (dd[52], '*.mdown')])
         fich_teste = open(ficheiro, 'r')
@@ -290,12 +291,12 @@ def formatar(raiz):
             fich_saida.write('')
             fich_saida.close()
         else:
-            mb.showinfo(title=dd[36], message=dd[35])
+            mb.showinfo(title=dd[1], message=dd[71])
             fich_teste.close()
 
 #Sair do Writer
 def sair(raiz):
-    confirm = mb.askyesno(title=dd[7], message=dd[8])
+    confirm = mb.askyesno(title=dd[53], message=dd[54])
     if confirm:
         raiz.destroy()
 
@@ -326,7 +327,7 @@ def ajuda():
 def sobre(thing2, thing3):
     with open(thing2, thing3, encoding='utf-8') as about_d:
         about_data = about_d.read()
-    mb.showinfo(title=dd[10], message=about_data)
+    mb.showinfo(title=dd[64], message=about_data)
     about_d.close()
 
 def commandPrompt():
@@ -424,31 +425,31 @@ if __name__ == '__main__':
 
     #Adicionar o Menu Ficheiro
     ficheiro_menu = Menu(barra_menu)
-    ficheiro_menu.add_command(label=dd[11], command=lambda:
+    ficheiro_menu.add_command(label=dd[7], command=lambda:
         abrir(janela))
     ficheiro_menu.add_separator()
-    ficheiro_menu.add_command(label=dd[13], command=lambda:
+    ficheiro_menu.add_command(label=dd[8], command=lambda:
         salvarA(janela, texto))
-    ficheiro_menu.add_command(label = dd[12], command=lambda:
+    ficheiro_menu.add_command(label = dd[9], command=lambda:
         salvar(janela,texto))
     ficheiro_menu.add_separator()
-    ficheiro_menu.add_command(label=dd[14], command=lambda:
+    ficheiro_menu.add_command(label=dd[10], command=lambda:
         formatar(janela))
     ficheiro_menu.add_separator()
-    ficheiro_menu.add_command(label=dd[15], command=lambda:
+    ficheiro_menu.add_command(label=dd[11], command=lambda:
         sair(janela))
 
     #Adicionar o Menu Informações
     editar_menu = Menu(barra_menu)
-    editar_menu.add_command(label=dd[16], command=lambda:
+    editar_menu.add_command(label=dd[25], command=lambda:
         sobre('data/about.txt', 'r'))
-    editar_menu.add_command(label=dd[17], command=lambda:
+    editar_menu.add_command(label=dd[26], command=lambda:
         ajuda())
-    editar_menu.add_command(label=dd[41], command=repo)
+    editar_menu.add_command(label=dd[27], command=repo)
     editar_menu.add_separator()
-    editar_menu.add_command(label=dd[43], command=creditos_abertos)
+    editar_menu.add_command(label=dd[28], command=creditos_abertos)
     editar_menu.add_separator()
-    editar_menu.add_command(label=dd[44], command=surprise_egg)
+    editar_menu.add_command(label=dd[29], command=surprise_egg)
 
 
     #Adicionar as configurações necessárias para os outros menus
