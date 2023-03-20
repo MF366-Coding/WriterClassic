@@ -148,13 +148,6 @@ def mudaIdioma(idioma, raiz):
 #Abrir as Notas
 def new_window():
     newWindow = Toplevel(janela)
-    #Abrir os ficheiros de configuração
-    with open('config/lang.txt', 'r') as langset:
-        thisLang = langset.read()
-
-    with open('data/'+str(thisLang)+'.txt', 'r', encoding='utf-8') as myLang2:
-        myLang = myLang2.read()
-        dd = myLang.split('//')
 
     with open('config/menu.txt', 'r', encoding='utf-8') as menuColor:
         mBg = menuColor.read()
