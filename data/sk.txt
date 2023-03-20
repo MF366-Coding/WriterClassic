@@ -1,4 +1,5 @@
-\nWriter Classic
+
+Writer Classic
 Súbor
 Vzhľad
 Rozšírenia
@@ -33,6 +34,7 @@ Textový súbor
 Súbor nastavení
 Kaskádové štýly
 Súbor hodnôt oddelených čiarkou
+Súbor HTML
 Súbor Setup Information
 Súbor Generic Information
 Súbor Windows Initialization
@@ -67,3 +69,4 @@ Tažko sa ti hladá Easter Egg? Nikdo nepovedal že to bude lahké...
 Writer Classic - Príkazové menu
 Napíšte platný príkaz do Writerho príkazového menu.
 Používatelská chyba: Nie je príkaz platný v Writer Classic..
+Súbor je prázdny.

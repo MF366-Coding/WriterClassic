@@ -1,1 +1,72 @@
-Writer Classic//Ficheiros de texto//Ficheiros HTML//Writer Classic - Dados do ficheiro//Dados do ficheiro://Writer Classic - Eliminar dados do ficheiro//Tem a certeza que pretende eliminar todos os dados de um ficheiro?//Writer Classic - Sair da app//Tem a certeza que pretende sair do Writer?//Writer Classic - Ajuda//Writer Classic - Sobre a app//Abrir...//Guardar como...//Guardar...//Formatar ficheiro...//Sair//Sobre o Writer//Ajuda//Modo claro//Modo escuro//Cinzento claro//Cinzento//Cinzento escuro//Pré-definição//Ficheiro//Aparência//Temas//Temas pré-definidos//Temas coloridos//Temas do Writer//Tamanho da janela//Definições//Informações//Formatar a app//Guardar//Este ficheiro está vazio!//Ficheiro vazio//Nova janela//Bloco de Notas//Relógio//Website oficial//Repositório GitHub//Calculadora//Créditos//Easter Egg//Extensões//Temas da Comunidade
+
+Writer Classic
+Ficheiro
+Aparência
+Extensões
+Definições
+Informações
+Abrir...
+Guardar
+Guardar como...
+Limpar ficheiro...
+Sair
+Tamanho da janela
+Temas
+Mudar fontes
+Temas pré-definidos
+Modo claro
+Modo escuro
+Modo cinza
+Temas modernos
+Mudar tamanho
+Mudar tipo
+Bloco de Notas
+Relógio
+Temas da Comunidade
+Sobre...
+Ajuda
+Repositório
+Créditos
+Easter Egg
+Writer Classic - Sair?
+É preciso reiniciar o Writer para aplicar as definições! Reiniciar agora?
+Ficheiro de texto simples
+Ficheiro de configuração
+Folha de estilo em cascata
+Ficheiro de Valores Separados por Vírgula
+Ficheiro HTML
+Ficheiro de Informações de Setup
+Ficheiro de Informações Generalizadas
+Ficheiro de Inicialização do Windows
+Ficheiro JavaScript
+Script de Python
+Ficheiro de Histórico Log
+Ficheiro XML
+Ficheiro Readme
+Ficheiro de Biblioteca Estática
+Script de Anim8or
+Ficheiro de texto ANSI
+Ficheiro de Quake 3 Engine Arena
+Ficheiro ActionScript
+Ficheiro de configuração ASP
+Ficheiro de código fonte Assembly
+Ficheiros Markdown
+Writer Classic - Sair?
+Tem a certeza que quer fechar Writer Classic?
+Writer Classic - Limpar um ficheiro...
+Tem a certeza que quer limpar o conteúdo de um ficheiro na sua totalidade?
+Insira um valor para a largura da janela.
+Insira um valor para a altura da janela.
+Writer Classic - Escolher tamanho da letra...
+Insira um valor para o tipo de letra do Writer Classic (mínimo de 1).
+Writer Classic - Escolher tipo de letra...
+Insira o nome de um tipo de letra instalado no seu dispositivo.
+É necessário reiniciar para aplicar as definições.
+Sobre o Writer Classic
+Este programa foi feito por MF366 e programado em Python 3.10.8.
+Insira o código ESPECIAL para desbloquear o Easter Egg Secreto.
+Está com problemas em encontrar o Easter Egg? Ninguém disse que seria fácil...
+Writer Classic - Modo Admin
+Insira um comando para o Modo Admin do Writer Classic.
+Erro! O comando inserido não se encontra na lista de comandos disponíveis.
+O ficheiro escolhido encontra-se vazio.

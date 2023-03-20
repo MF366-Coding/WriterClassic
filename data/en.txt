@@ -1,4 +1,5 @@
-\nWriter Classic
+
+Writer Classic
 File
 Appearence
 Plugins
@@ -68,3 +69,4 @@ Trouble finding the Easter Egg? Nobody said it would be easy...
 Writer Classic - Command Menu
 Type a command for Writer's Command Menu.
 User Error: Not a Writer Classic command.
+This file is empty.

@@ -1,4 +1,5 @@
-\nWriter Classic
+
+Writer Classic
 Arquivo
 Looks
 Extensões
@@ -68,3 +69,4 @@ Sem surpresa? Ninguém disse que era fácil encontrar ela...
 Writer Classic - Modo Comando
 Insira um comando de Writer Classic.
 Erro de usuário: Não é comando de Writer Classic.
+Arquivo vazio.
