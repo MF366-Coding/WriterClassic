@@ -42,7 +42,7 @@ Maybe you are a developer who wants acess to the latest update to Writer...
 ### 1. Clone the repo
 Open the Terminal and use <code>git clone https://github.com/MF366-Coding/WriterClassic.git</code>.
 
-If you don't have <code>git</code> installed, please install it using your ditro's package manager.
+If you don't have <code>git</code> installed, please install it using your distro's package manager.
 
 ### 2. Run the program
 Open the folder where the repo was cloned on the Terminal and type <code>python3 WriterClassic.py</code> and you can now use Writer Classic.
