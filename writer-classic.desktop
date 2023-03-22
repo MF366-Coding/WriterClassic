@@ -1,13 +1,11 @@
 [Desktop Entry]
 Name=Writer Classic
-Name[pt]=Writer Classic
-Comment=Edit text files.
-Comment[pt]=Editar ficheiros de texto.
-Exec=cd filepath for program && python3 main.py
+Comment=Python text editor by MF366.
+Exec=cd <filepath-goes-here> && python3 WriterClassic.py
 Terminal=true
 Type=Application
 StartupNotify=false
-Icon=Your file path for icon goes here.
+Icon=<icon-filepath-goes-here>
 Categories=GTK;Utility;TextEditor;Office;
 Keywords=text;editor;code;files;notepad
 

@@ -51,10 +51,10 @@ This app only runs os Python 3, so using the command <code>python WriterClassic.
 
 You're now good to go...
 
-## What's on the releases' zip file? :file_folder:
+# What's on the releases' zip file? :file_folder:
 Writer Classic's zip file is a zipped folder including **main.py** (the app itself), folder **data** (including everything that isn't a setting) and the folder __config__ (including every single configuration file).
 
-## What do I need to be able to be able to use Writer Classic? :heavy_check_mark:
+# What do I need to be able to be able to use Writer Classic? :heavy_check_mark:
 You need:
 
 * [X] Python 3 
@@ -68,17 +68,20 @@ You need:
 * [X] datetime (Python3 Module)
 
   
-## Feature requests :heavy_plus_sign:
+# Feature requests :heavy_plus_sign:
 If you would like to open Writer Classic and discover a new functionality suggested by you, please check the Issues in this Repository.
 
-## Let me know of any bug you find :desktop_computer:
+# Translations
+Check the Pinned Issues in _Issues_ for more information on how you can help translating Writer Classic...
+
+# Let me know of any bug you find :desktop_computer:
 If you found a bug, please tell me the details by creating a new Issue in this Repository.
 
-## Help :question:
+# Help :question:
 Here, you can find all sorts of help topics about Writer Classic.
 
-### Features
-#### Open :open_file_folder:
+## Features
+### Open :open_file_folder:
 Writer Classic is a basic text editor yet very fun to use and offering a lot of features while it's development is happening at a very fast pace.  
 With Writer Classic you can open files of type (in no particular order):
   
@@ -92,41 +95,47 @@ With Writer Classic you can open files of type (in no particular order):
 * xml
 * ...
 
-#### Edit :memo:
+### Edit :memo:
 You can make changes to text files, python files, markdown files and save them, either with new name and extension or replacing existent files.
 
-#### Looks :paintbrush:
+### Looks :paintbrush:
 You can choose from several themes and change interface / window size. So taht you will always be confortable and use Writer Classic the way you want and fits your taste and feelings.
 
 
-##### Change the font (type and size)
+#### Change the font (type and size)
 Now, you can change font type and size **FROM THE APP** (only affects the editor - not the edited file).
 
 You can find this feature in the *Appearence* settings.
 
 Once again, thank you for ckecking out this repository. :+1:
 
-#### Plugins :heavy_plus_sign:
+### Plugins :heavy_plus_sign:
 Writer Classic author and programmer is always dveloping new plugins in order to make this simple editor more and more powerful and in line with the features you most use and wish. For the time being you can choosefrom:
 
 * notepad (you can take notes aside what you're writing and editing)
 * clock (because it's always useful to know if it's time to start coding)
 
-#### Settings :hammer_and_wrench:
+### Settings :hammer_and_wrench:
 Within settings you can choose from several languages. For now it's only available in:
 
 - English
+
 - Portuguese (european and brazilian)
+
 - French
+
 - Spanish
+
 - Italian
 
-And **more translations are coming**, like Slovak.
+- Slovak
 
-#### Information :information_source:
-Here you can find help, some about information and the links for the official repo and website. Stay up to date, don't forget to read what's going on with Writer Classic.
+### Information :information_source:
+Here you can find help, some about information and the links for the official repo and website.
 
-#### Command Menu
+Stay up to date, don't forget to read what's going on with Writer Classic.
+
+### Command Menu
 You can press **Ctrl + W** (check the Shotcuts area for more info) to open this **hidden** feature.
 
 In here, you can type a command and click 'OK' and something will happen.
@@ -152,8 +161,8 @@ Available commands:
 
 In case you don't pick any of these, you'll just get an error.
 
-### Shortcuts :keyboard:
-#### Useful shortcuts
+## Shortcuts :keyboard:
+### Useful shortcuts
 You can use some useful shortcuts instead of menu itens to use Writer Classic faster.
 All of those make use of control key plus another key so that you have to press both at once. **Ctrl** stands for control key. Here are some of the most useful shortcuts available:  
 
