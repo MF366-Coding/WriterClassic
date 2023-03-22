@@ -138,9 +138,7 @@ class UpdateCheck:
             writeStartup('1')
 
 if startApp == '1':
-    aFU = mb.askyesno(dd[72], dd[73])
-    if aFU:
-        webbrowser.open('https://github.com/MF366-Coding/WriterClassic/releases/latest')
+    UpdateCheck.check()
     
 # Windowing... one more time...
 def janelageometrica1():
