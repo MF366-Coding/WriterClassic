@@ -1,3 +1,12 @@
+"""
+RELEASE INFO
+- Italian, Spanish and French are not available yet...
+- Check for Updates has been added!
+
+"""
+
+# TRANSLATIONS WERE UPDATED AFTER 10000000000000 YEARS OF WAITING
+
 '''
 
 Writer Classic
@@ -17,20 +26,31 @@ Developed by: MF366
 
 '''
 
-#Importar os módulos necessários
-from tkinter import *
-from tkinter.ttk import *
-from tkinter import simpledialog as sdg
-import tkinter.filedialog as dlg
-import tkinter.messagebox as mb
-import webbrowser
-import datetime
-from tkinter.font import Font
+# Improting the goodies
+from tkinter import * # Window
+from tkinter.ttk import * # Not sure
+from tkinter import simpledialog as sdg # Inputs with GUI
+import tkinter.filedialog as dlg # File Dialogs were never this easy...
+import tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
+import webbrowser # Isn't is obvious...
+import datetime # Really, bro?
+from tkinter.font import Font # Ouchie mama (font, daaah)
+import requests # it's a module
+import json # search it up
 
-#Criar a janela
+# Windowing
 janela = Tk()
 
-#Abrir os ficheiros de configuração
+with open('config/startup.txt', 'r', encoding='utf-8') as startupFile:
+    startAppData = startupFile.read()
+    startApp = startAppData[0:1]
+    #print(startApp)
+
+response = requests.get('https://api.github.com/repos/MF366-Coding/WriterClassic/releases/latest')
+data = json.loads(response.text)
+latest_version = data['tag_name']
+
+# Config files
 with open('config/lang.txt', 'r') as langset:
     thisLang = langset.read()
     #print(thisLang[0:2])
@@ -40,6 +60,11 @@ with open('data/'+str(thisLang[0:2])+'.txt', 'r', encoding='utf-8') as myLang2:
     myLang = myLang2.read()
     dd = myLang.split('\n')
     #print(dd)
+    
+with open('data/version.txt', 'r', encoding='utf-8') as versionFile:
+    appVersionGet = versionFile.read()
+    appV = appVersionGet[0:6]
+    #print(appV)
 
 with open('config/menu.txt', 'r', encoding='utf-8') as menuColor:
     mBg = menuColor.read()
@@ -59,7 +84,7 @@ with open('config/font-type.txt', 'r', encoding='utf-8') as fonteee:
 with open('config/font-size.txt', 'r', encoding='utf-8') as fonteeee:
     Fontee = fonteeee.read()
     
-#Configurar o texto e a janela
+# Windowing... again
 janela.title(dd[1])
 
 fonte = Font(family=fontee, size=Fontee)
@@ -85,15 +110,39 @@ janela.geometry(geom2)
 texto.configure(bg=cbg2, fg=fogr, width=ff[0], height=ff[1], insertbackground=oc)
 texto.pack()
 
-#Fechar os ficheiros
+# Closing the configs
 cbg.close()
 fgcnf.close()
 gbg.close()
 ccc.close()
 langset.close()
 
+def writeStartup(text):
+    with open('config/startup.txt', 'w', encoding='utf-8') as startupWriteFile:
+        startupWriteFile.write(text)
+        startupWriteFile.close()
 
-#Definir o tamanho da janela
+# Check for Updates
+class UpdateCheck:
+    def check():
+        if appV != latest_version:
+            askForUpdate = mb.askyesno(dd[72], dd[73])
+            if askForUpdate:
+                webbrowser.open('https://github.com/MF366-Coding/WriterClassic/releases/latest')
+
+    def change():
+        global startApp
+        if startApp == '1':
+            writeStartup('0')
+        else:
+            writeStartup('1')
+
+if startApp == '1':
+    aFU = mb.askyesno(dd[72], dd[73])
+    if aFU:
+        webbrowser.open('https://github.com/MF366-Coding/WriterClassic/releases/latest')
+    
+# Windowing... one more time...
 def janelageometrica1():
     widthSet = sdg.askinteger(dd[1], dd[57])
     heightSet = sdg.askinteger(dd[1], dd[58])
@@ -104,7 +153,7 @@ def janelageometrica1():
         geomdata.write(str(widthSet)+'x'+str(heightSet))
     geomdata.close()
 
-#Definir o tema
+# Theme Picker
 def mudacor(cor, fgcor, cc, bar, bar_sec):
     with open('config/colour.txt', 'w') as again1:
         again1.write('')
@@ -132,11 +181,11 @@ def mudacor(cor, fgcor, cc, bar, bar_sec):
     if aguardaResposta:
         janela.destroy()
 
-#Fechar a janela sem confirmação
+# ragequit
 def quickway():
     janela.destroy()
 
-#Mudar o idioma
+# Setup (Lang files)
 def mudaIdioma(idioma, raiz):
     with open('config/lang.txt', 'w') as deleteThat:
         deleteThat.write('')
@@ -145,7 +194,7 @@ def mudaIdioma(idioma, raiz):
     if kkkkSemRiso:
         raiz.destroy()
 
-#Abrir as Notas
+# Notepad
 def new_window():
     newWindow = Toplevel(janela)
 
@@ -161,7 +210,7 @@ def new_window():
     with open('config/mfg.txt', 'r', encoding='utf-8') as corFgLer:
         colorFg = corFgLer.read()
 
-    #Configurar o texto e a newWindow
+    # Windowing... yet once more LMAO...
     newWindow.title(dd[22])
 
     texto = Text(newWindow)
@@ -185,7 +234,7 @@ def new_window():
     texto.configure(bg=cbg2, fg=fogr, width=ff[0], height=ff[1], insertbackground=oc)
     texto.pack()
 
-    #Fechar os ficheiros
+    # Closing what I no longer need
     cbg.close()
     fgcnf.close()
     gbg.close()
@@ -194,18 +243,18 @@ def new_window():
 
     newWindow.mainloop()
 
-#Abrir o repositório
+# Repo
 def repo():
     ourRepo = "https://github.com/MF366-Coding/WriterClassic/"
 
     webbrowser.open(ourRepo, 2)
 
-#Abrir o relógio
+# Clock
 def relogio():
     relog = Toplevel(janela)
-    #Abrir os ficheiros de configuração
+    #Stuff
 
-    #Configurar o texto e a newWindow
+    #Windowing
     relog.title(dd[23])
 
     texto = Label(relog)
@@ -220,7 +269,7 @@ def relogio():
     texto.pack()
     relog.mainloop()
 
-# Change the text font and size
+# Text font
 def fontEdit(winType):
     if winType == 1:
         fontSize = sdg.askinteger(dd[59], dd[60], minvalue=1)
@@ -235,7 +284,7 @@ def fontEdit(winType):
             fontTypeEdit.close()
             mb.showinfo(dd[1], dd[63])
 
-# Abrir um ficheiro
+# Open the PACKAGE
 def abrir(raiz):
     fich = dlg.askopenfilename(parent=raiz, filetypes=[(dd[32], '*.txt'), (dd[33], '*.cfg'), (dd[33], '*.config'), (dd[34], '*.css'), (dd[35], '*.csv'), (dd[36], '*.html'), (dd[37], '*.inf'), (dd[38], '*.info'), (dd[39], '*.ini'), (dd[40], '*.js'), (dd[41], '*.py*'), (dd[42], '*.log'), (dd[43], '*.xml'), (dd[44], '*.1st'), (dd[45], '*.a'), (dd[46], '*.a8s'), (dd[47], '*.ans'), (dd[48], '*.arena'), (dd[49], '*.as'), (dd[50], '*.asa'), (dd[51], '.asm'), (dd[52], '*.md'), (dd[52], '*.mdown')])
     fich_ent2 = open(fich, 'r')
@@ -256,7 +305,7 @@ def abrir(raiz):
         fich_entrada = open(fich,'a')
         fich_ent2.close()
 
-#Guardar como
+# Saving as
 def salvar(raiz,texto):
     dados = texto.get('0.0', END)
     ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(dd[32], '*.txt'), (dd[33], '*.cfg'), (dd[33], '*.config'), (dd[34], '*.css'), (dd[35], '*.csv'), (dd[36], '*.html'), (dd[37], '*.inf'), (dd[38], '*.info'), (dd[39], '*.ini'), (dd[40], '*.js'), (dd[41], '*.py*'), (dd[42], '*.log'), (dd[43], '*.xml'), (dd[44], '*.1st'), (dd[45], '*.a'), (dd[46], '*.a8s'), (dd[47], '*.ans'), (dd[48], '*.arena'), (dd[49], '*.as'), (dd[50], '*.asa'), (dd[51], '.asm'), (dd[52], '*.md'), (dd[52], '*.mdown')])
@@ -264,7 +313,7 @@ def salvar(raiz,texto):
     fich_saida.write(dados)
     fich_saida.close()
 
-#Guardar ficheiro
+# Saving
 def salvarA(raiz, texto):
     dados = texto.get('0.0', END)
     ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(dd[32], '*.txt'), (dd[33], '*.cfg'), (dd[33], '*.config'), (dd[34], '*.css'), (dd[35], '*.csv'), (dd[36], '*.html'), (dd[37], '*.inf'), (dd[38], '*.info'), (dd[39], '*.ini'), (dd[40], '*.js'), (dd[41], '*.py*'), (dd[42], '*.log'), (dd[43], '*.xml'), (dd[44], '*.1st'), (dd[45], '*.a'), (dd[46], '*.a8s'), (dd[47], '*.ans'), (dd[48], '*.arena'), (dd[49], '*.as'), (dd[50], '*.asa'), (dd[51], '.asm'), (dd[52], '*.md'), (dd[52], '*.mdown')])
@@ -272,7 +321,7 @@ def salvarA(raiz, texto):
     fich_saida.write(dados)
     fich_saida.close()
 
-#Formatar ficheiro
+# Whatever... (File Eraser)
 def formatar(raiz):
     pois = mb.askyesno(title=dd[55], message=dd[56])
     if pois:
@@ -287,7 +336,7 @@ def formatar(raiz):
             mb.showinfo(title=dd[1], message=dd[71])
             fich_teste.close()
 
-#Sair do Writer
+# Non-raged quit
 def sair(raiz):
     confirm = mb.askyesno(title=dd[53], message=dd[54])
     if confirm:
@@ -434,6 +483,9 @@ if __name__ == '__main__':
 
     #Adicionar o Menu Informações
     editar_menu = Menu(barra_menu)
+    editar_menu.add_command(label=dd[75], command=lambda:
+        UpdateCheck.check())
+    editar_menu.add_separator()
     editar_menu.add_command(label=dd[25], command=lambda:
         sobre('data/about.txt', 'r'))
     editar_menu.add_command(label=dd[26], command=lambda:
@@ -486,20 +538,23 @@ if __name__ == '__main__':
 
     #Adicionar o Menu Definições
     a_m = Menu(barra_menu)
-    a_m.add_command(label='English (UK)', command=lambda:
+    a_m.add_command(label='English', command=lambda:
         mudaIdioma('en', janela))
-    a_m.add_command(label='Español (España)', command=lambda:
-        mudaIdioma('es', janela))
-    a_m.add_command(label='Français (France)', command=lambda:
-        mudaIdioma('fr', janela))
-    a_m.add_command(label='Italiano (Italia)', command=lambda:
-        mudaIdioma('it', janela))
+    #a_m.add_command(label='Español (España)', command=lambda:
+    #    mudaIdioma('es', janela))
+    #a_m.add_command(label='Français (France)', command=lambda:
+    #    mudaIdioma('fr', janela))
+    #a_m.add_command(label='Italiano (Italia)', command=lambda:
+   #     mudaIdioma('it', janela))
     a_m.add_command(label='Português (Brasil)', command=lambda:
         mudaIdioma('br', janela))
     a_m.add_command(label='Português (Portugal)', command=lambda:
         mudaIdioma('pt', janela))
     a_m.add_command(label='Slovenčina (Slovensko)', command=lambda:
         mudaIdioma('sk', janela))
+    a_m.add_separator()
+    a_m.add_command(label=dd[74], command=lambda:
+        UpdateCheck.change())
 
     #Adicionar os Temas (Temas Regulares)
     ver_4_m.add_command(label=dd[16], command=lambda:

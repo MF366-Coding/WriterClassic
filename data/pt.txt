@@ -70,3 +70,7 @@ Writer Classic - Modo Admin
 Insira um comando para o Modo Admin do Writer Classic.
 Erro! O comando inserido não se encontra na lista de comandos disponíveis.
 O ficheiro escolhido encontra-se vazio.
+Writer Classic - Procurar atualizações
+Está a utilizar uma versão mais antiga ou uma versão instável. Recomenda-se, no entanto, que atualize para a versão estável mais recente. Atualizar agora?
+Desligar/ligar atualizações no arranque
+Procurar atualizações

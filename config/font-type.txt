@@ -1,1 +1,1 @@
-Verdana
+Ubuntu Mono

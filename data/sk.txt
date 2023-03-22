@@ -70,3 +70,7 @@ Writer Classic - Príkazové menu
 Napíšte platný príkaz do Writerho príkazového menu.
 Používatelská chyba: Nie je príkaz platný v Writer Classic..
 Súbor je prázdny.
+Writer Classic - Kontrola aktualizácií
+Buď používate staršiu verziu, alebo nestabilnú verziu. Odporúča sa však aktualizovať na najnovšiu stabilnú verziu. Aktualizovať teraz?
+Vypnutie/zapnutie aktualizácií pri spustení
+Kontrola aktualizácií

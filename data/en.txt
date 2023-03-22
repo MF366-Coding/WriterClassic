@@ -70,3 +70,7 @@ Writer Classic - Command Menu
 Type a command for Writer's Command Menu.
 User Error: Not a Writer Classic command.
 This file is empty.
+Writer Classic - Check for Updates
+You are either using an older version or an unstable one. It is recommended you update to the latest stable though. Update now?
+Turn off/on updates at startup
+Check for Updates
