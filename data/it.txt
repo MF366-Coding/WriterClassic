@@ -1,1 +1,76 @@
-Writer Classic//Dati dei file//File HTML//Writer Classic - Dati dei file//Dati dei file://Writer Classic - Eliminare i dati dei file//Siete sicuri di voler eliminare tutti i dati dei file?//Writer Classic - Chiudere l'app//Siete sicuri di voler abbandonare l'app?//Writer Classic - Aiuta//Writer Classic - Informazioni sulla app//Aprire. ..//Salva come...//Salva il file...//Cancellazione di dati di file...//Uscire//Informazioni sulla app//Aiuta//Modalità luce//Modalità scura//Grigio chiaro//Grigio//Grigio scuro//Preimpostato//File//Aspetto//Temi//Temi predefiniti//Temi colorati//Temi Writer//Dimensione della finestra principale//Impostazioni//Informazioni//Formattare l'applicazione//Risparmiare//Questo file è vuoto!//File vuoto//Nuova finestra//Note//Orologio//Sito web//Repositorio GitHub//Calcolatrice//Crediti//Uovo di Pasqua//Plugins//Community Themes
+
+Writer Classic
+File
+Aspetto
+Plugin
+Impostazioni
+Informazioni
+Aprire...
+Salva file...
+Salva con nome...
+Formatta il file...
+Esci
+Dimensioni della finestra
+Temi
+Modifica dei caratteri
+Temi predefiniti
+Modo chiaro
+Modo scuro
+Modo grigio
+Temi moderni
+Cambia dimensione
+Cambia famiglia
+Note
+Orologio
+Temi della comunità
+Informazioni su
+Aiuto
+Repo
+Crediti
+Uovo di Pasqua
+Writer Classic - Esci ora?
+Devi riaprire Writer per applicare le modifiche! Riavviare ora?
+File di testo
+File di configurazione
+Foglio di stile a cascata
+File con valori separati da virgole
+File HTML
+File di informazioni di configurazione
+File di informazioni generiche
+File di inizializzazione di Windows
+File JavaScript
+Script Python
+File di registro
+File XML
+File Readme
+File di libreria statica
+Script Anim8or
+File di testo ANSI
+File dell'Arena del motore di Quake 3
+File ActionScript
+File di configurazione ASP
+File di codice sorgente in linguaggio assembly
+File Markdown
+Writer Classic - Uscire?
+Siete sicuri di voler uscire da Writer?
+Writer Classic - Cancellazione dei file
+Siete sicuri di voler cancellare un file?
+Scegliete un valore di larghezza per la finestra principale.
+Scegliete un valore di altezza per la finestra principale.
+Writer Classic - Modifica delle dimensioni dei caratteri
+Scegliere un numero (minimo 1).
+Writer Classic - Cambia famiglia
+Digitare il nome di un carattere installato sul dispositivo.
+È necessario riavviare per applicare le modifiche.
+Writer Classic - Informazioni
+Questa applicazione è stata realizzata da MF366 ed è alimentata da Python 3.10.8.
+Digitate la stringa di codice SPECIALE per ottenere l'uovo di Pasqua...
+Problemi a trovare l'uovo di Pasqua? Nessuno ha detto che sarebbe stato facile...
+Writer Classic - Menu dei comandi
+Digitare un comando per il menu dei comandi di Writer.
+Errore dell'utente: Non è un comando di Writer Classic.
+Il file è vuoto.
+Writer Classic - Verifica aggiornamenti
+Si sta utilizzando una versione precedente o una versione instabile. Si consiglia di aggiornare all'ultima versione stabile. Aggiornare ora?
+Disattivare/attivare gli aggiornamenti all'avvio
+Verifica aggiornamenti
