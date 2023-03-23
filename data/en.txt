@@ -74,3 +74,6 @@ Writer Classic - Check for Updates
 You are either using an older version or an unstable one. It is recommended you update to the latest stable though. Update now?
 Turn off/on updates at startup
 Check for Updates
+Clear Data
+Writer Classic - Clear data?
+Are you sure you want to clear ALL data from Writer Classic?

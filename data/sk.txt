@@ -74,3 +74,6 @@ Writer Classic - Kontrola aktualizácií
 Buď používate staršiu verziu, alebo nestabilnú verziu. Odporúča sa však aktualizovať na najnovšiu stabilnú verziu. Aktualizovať teraz?
 Vypnutie/zapnutie aktualizácií pri spustení
 Kontrola aktualizácií
+Vymazanie údajov
+Writer Classic - Vymazanie údajov?
+Ste si istí, že chcete vymazať VŠETKY údaje z Writer Classic?

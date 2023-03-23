@@ -1,11 +1,3 @@
-"""
-RELEASE INFO
-- Italian, Spanish and French are not available yet...
-- Check for Updates has been added!
-
-"""
-
-# TRANSLATIONS WERE UPDATED AFTER 10000000000000 YEARS OF WAITING
 
 '''
 
@@ -370,6 +362,27 @@ def sobre(thing2, thing3):
     mb.showinfo(title=dd[64], message=about_data)
     about_d.close()
 
+def resetWriter(rootWin):
+    askSOS = mb.askyesno(dd[77], dd[78])
+    if askSOS:
+        with open('config/font-size.txt', 'w') as fontSizeEdit:
+            fontSizeEdit.write('12')
+            fontSizeEdit.close()
+                    
+        with open('config/font-type.txt', 'w', encoding='utf-8') as fontTypeEdit:
+            fontTypeEdit.write('Ubuntu Mono')
+            fontTypeEdit.close()
+        
+        mudaIdioma('en', rootWin)
+        
+        mudacor('black', 'white', 'white', 'black', 'white')
+        
+        janela.geometry('600x400')
+        with open('config/geom.txt', 'w') as geomdata:
+            geomdata.write('')
+            geomdata.write('600x400')
+            geomdata.close()
+
 def commandPrompt():
     askNow = sdg.askstring(dd[68], dd[69])
     
@@ -424,14 +437,12 @@ def commandPrompt():
     else:
         mb.showerror(dd[68], dd[70])
 
-#Atalhos de Teclado
-janela.bind('<Control-s>', lambda a:
-    salvarA(janela, texto))
+# Key bindings
 
 janela.bind('<Control-o>', lambda b:
     abrir(janela))
 
-janela.bind('<Control-z>', lambda c:
+janela.bind('<Control-s>', lambda c:
     salvar(janela, texto))
 
 janela.bind('<Control-a>', lambda e:
@@ -553,6 +564,9 @@ if __name__ == '__main__':
     a_m.add_separator()
     a_m.add_command(label=dd[74], command=lambda:
         UpdateCheck.change())
+    a_m.add_separator()
+    a_m.add_command(label=dd[76], command=lambda:
+        resetWriter(janela))
 
     #Adicionar os Temas (Temas Regulares)
     ver_4_m.add_command(label=dd[16], command=lambda:

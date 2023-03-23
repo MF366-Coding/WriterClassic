@@ -74,3 +74,6 @@ Writer Classic - Procura de updates
 Você está usando uma versão mais antiga ou uma versão instável. No entanto, é recomendável que você atualize para a mais recente versão estável. Atualizar agora?
 Desligar/ligar atualizações na inicialização
 Procura de updates
+Limpar dados
+Writer Classic - Limpar dados?
+Você tem certeza que quer limpar TODOS os dados do Writer Classic?

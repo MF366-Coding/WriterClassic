@@ -74,3 +74,7 @@ Writer Classic - Vérifier les mises à jour
 Vous utilisez soit une ancienne version, soit une version instable. Il est recommandé de mettre à jour vers la dernière version stable. Mettre à jour maintenant ?
 Désactiver/activer les mises à jour au démarrage
 Vérifier les mises à jour
+Effacer les données
+Writer Classic - Effacer les données ?
+Êtes-vous sûr de vouloir effacer TOUTES les données de Writer Classic ?
+

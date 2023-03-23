@@ -166,8 +166,7 @@ In case you don't pick any of these, you'll just get an error.
 You can use some useful shortcuts instead of menu itens to use Writer Classic faster.
 All of those make use of control key plus another key so that you have to press both at once. **Ctrl** stands for control key. Here are some of the most useful shortcuts available:  
 
-* __Ctrl + S__ - Save the file :floppy_disk:
-* __Ctrl + Z__ - Save as, allowing to give a different name to the file you're saving :floppy_disk:
+* __Ctrl + S__ - Save the file/save as :floppy_disk:
 * __Ctrl + O__ - Open file :open_file_folder:
 * __Ctrl + W__ - Opens the Command Menu 💻️
 * __Ctrl + L__ - Changes to light mode :sunny:

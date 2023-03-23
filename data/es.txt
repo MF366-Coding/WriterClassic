@@ -74,3 +74,6 @@ Writer Classic - Buscar actualizaciones
 Estás utilizando una versión antigua o inestable. Sin embargo, se recomienda actualizar a la última versión estable. ¿Actualizar ahora?
 Desactivar/activar actualizaciones al inicio
 Buscar actualizaciones
+Borrar datos
+Writer Classic - ¿Borrar datos?
+¿Estás seguro de que quieres borrar TODOS los datos de Writer Classic?

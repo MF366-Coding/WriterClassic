@@ -74,3 +74,6 @@ Writer Classic - Verifica aggiornamenti
 Si sta utilizzando una versione precedente o una versione instabile. Si consiglia di aggiornare all'ultima versione stabile. Aggiornare ora?
 Disattivare/attivare gli aggiornamenti all'avvio
 Verifica aggiornamenti
+Cancellazione dei dati
+Writer Classic - Cancellare i dati?
+Siete sicuri di voler cancellare TUTTI i dati da Writer Classic?
