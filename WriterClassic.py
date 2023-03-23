@@ -538,12 +538,12 @@ if __name__ == '__main__':
     a_m = Menu(barra_menu)
     a_m.add_command(label='English', command=lambda:
         mudaIdioma('en', janela))
-    #a_m.add_command(label='Español (España)', command=lambda:
-    #    mudaIdioma('es', janela))
-    #a_m.add_command(label='Français (France)', command=lambda:
-    #    mudaIdioma('fr', janela))
-    #a_m.add_command(label='Italiano (Italia)', command=lambda:
-   #     mudaIdioma('it', janela))
+    a_m.add_command(label='Español (España)', command=lambda:
+        mudaIdioma('es', janela))
+    a_m.add_command(label='Français (France)', command=lambda:
+        mudaIdioma('fr', janela))
+    a_m.add_command(label='Italiano (Italia)', command=lambda:
+        mudaIdioma('it', janela))
     a_m.add_command(label='Português (Brasil)', command=lambda:
         mudaIdioma('br', janela))
     a_m.add_command(label='Português (Portugal)', command=lambda:
