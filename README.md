@@ -103,17 +103,18 @@ You can choose from several themes and change interface / window size. So taht y
 
 
 #### Change the font (type and size)
-Now, you can change font type and size **FROM THE APP** (only affects the editor - not the edited file).
+Now, you can change font type and size (only affects the editor - not the edited file).
 
 You can find this feature in the *Appearence* settings.
 
 Once again, thank you for ckecking out this repository. :+1:
 
 ### Plugins :heavy_plus_sign:
-Writer Classic author and programmer is always dveloping new plugins in order to make this simple editor more and more powerful and in line with the features you most use and wish. For the time being you can choosefrom:
+Writer Classic author and programmer is always developing new plugins in order to make this simple editor more and more powerful and in line with the features you most use and wish. For the time being you can choose from:
 
-* notepad (you can take notes aside what you're writing and editing)
-* clock (because it's always useful to know if it's time to start coding)
+* **Notepad** (you can take notes aside what you're writing and editing)
+* **Clock** (because it's always useful to know if it's time to start coding)
+* **Alt Themes** (some really good themes you can also choose from)
 
 ### Settings :hammer_and_wrench:
 Within settings you can choose from several languages. For now it's only available in:
