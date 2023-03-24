@@ -16,9 +16,12 @@ Find me in this spots:
 Original idea by: MF366
 Developed by: MF366
 
+Contibutors:
+    Norb (norbcodes at GitHub)
+    Zeca70 (Zeca70 at GitHub)
 '''
 
-# Improting the goodies
+# Importing the goodies
 from tkinter import * # Window
 from tkinter.ttk import * # Not sure
 from tkinter import simpledialog as sdg # Inputs with GUI
@@ -383,6 +386,24 @@ def resetWriter(rootWin):
             geomdata.write('600x400')
             geomdata.close()
 
+class InternetOnWriter:
+    def Website():
+        askForLink = sdg.askstring(dd[80], dd[91])
+        if askForLink != ' ' or askForLink != '':
+            webbrowser.open(askForLink)
+
+    def Search(engine):
+        if engine == 'google':
+            askForTyping = sdg.askstring(dd[83], dd[90])
+            i = ' '
+            typed = 'NULL'
+            if askForTyping != '':
+                for i in askForTyping:
+                    typed = askForTyping.replace(' ', '+')
+                webbrowser.open('https://www.google.com/search?q='+typed)       
+                
+a = InternetOnWriter
+                
 def commandPrompt():
     askNow = sdg.askstring(dd[68], dd[69])
     
@@ -515,6 +536,7 @@ if __name__ == '__main__':
     ver_7_m = Menu(ver_5_m)
     newMenuEdit = Menu(ver_menu)
     b_m = Menu(barra_menu)
+    c_m = Menu(b_m)
     z_m = Menu(b_m)
 
     ver_menu.add_command(label=dd[12], command=janelageometrica1)
@@ -528,6 +550,12 @@ if __name__ == '__main__':
     #Adicionar o Menu Plugins
     b_m.add_command(label=dd[22], command=new_window)
     b_m.add_command(label=dd[23], command=relogio)
+    
+    c_m.add_command(label=dd[81], command=lambda:
+                    a.Website())
+    c_m.add_separator()
+    c_m.add_command(label=dd[87], command=lambda:
+                    a.Search('google'))
     
     #Adicionar temas da comunidade
     z_m.add_command(label='Black Hole', command=lambda:
@@ -609,6 +637,7 @@ if __name__ == '__main__':
     newMenuEdit.configure(background=corMenu, foreground=colorFg)
     a_m.configure(background=corMenu, foreground=colorFg)
     b_m.configure(background=corMenu, foreground=colorFg)
+    c_m.configure(background=corMenu, foreground=colorFg)
     z_m.configure(background=corMenu, foreground=colorFg)
 
 #Adicionar menus "cascade"
@@ -620,6 +649,7 @@ ver_5_m.add_cascade(label=dd[19], menu=ver_7_m)
 ver_menu.add_cascade(label=dd[14], menu=newMenuEdit)
 barra_menu.add_cascade(label=dd[4], menu=b_m)
 b_m.add_cascade(label=dd[24], menu=z_m)
+b_m.add_cascade(label=dd[79], menu=c_m)
 barra_menu.add_cascade(label=dd[5], menu=a_m)
 barra_menu.add_cascade(label=dd[6], menu=editar_menu)
 

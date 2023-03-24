@@ -77,3 +77,16 @@ Check for Updates
 Clear Data
 Writer Classic - Clear data?
 Are you sure you want to clear ALL data from Writer Classic?
+Internet
+Writer Classic - Go to URL
+Go to URL...
+Writer Classic - Search with Bing
+Writer Classic - Search with Google
+Writer Classic - Search with DuckDuckGo
+Writer Classic - Search with Yahoo!
+Search with Bing
+Search with Google
+Search with DuckDuckGo
+Search with Yahoo!
+What would you like to search on the Web?
+Type an URL to open in your default web browser.

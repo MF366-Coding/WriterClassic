@@ -77,3 +77,17 @@ Verifica aggiornamenti
 Cancellazione dei dati
 Writer Classic - Cancellare i dati?
 Siete sicuri di voler cancellare TUTTI i dati da Writer Classic?
+Internet
+Writer Classic - Vai all'URL
+Vai all'URL...
+Writer Classic - Ricerca con Bing
+Writer Classic - Ricerca con Google
+Scrittore classico - Ricerca con DuckDuckGo
+Writer Classic - Ricerca con Yahoo!
+Ricerca con Bing
+Ricerca con Google
+Ricerca con DuckDuckGo
+Ricerca con Yahoo!
+Cosa si desidera cercare sul Web?
+Digitare un URL da aprire nel browser Web predefinito.
+

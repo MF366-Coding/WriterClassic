@@ -77,3 +77,17 @@ Procura de updates
 Limpar dados
 Writer Classic - Limpar dados?
 Você tem certeza que quer limpar TODOS os dados do Writer Classic?
+Internet
+Writer Classic - Ir para URL
+Ir para o URL...
+Writer Classic - Busca com Bing
+Writer Classic - Pesquisa com Google
+Writer Classic - Pesquisa com DuckDuckGo
+Writer Classic - Pesquise com o Yahoo!
+Pesquisar com Bing
+Pesquisar com o Google
+Busca com DuckDuckGo
+Pesquise com o Yahoo!
+O que você gostaria de pesquisar na Web?
+Digite uma URL para abrir em seu navegador da web padrão.
+

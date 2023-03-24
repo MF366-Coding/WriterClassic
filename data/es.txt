@@ -77,3 +77,28 @@ Buscar actualizaciones
 Borrar datos
 Writer Classic - ¿Borrar datos?
 ¿Estás seguro de que quieres borrar TODOS los datos de Writer Classic?
+Internet
+Writer Classic - Ir a URL
+Ir a URL...
+Writer Classic - Buscar con Bing
+Writer Classic - Buscar con Google
+Writer Classic - Buscar con DuckDuckGo
+Writer Classic - Buscar con Yahoo
+Buscar con Bing
+Buscar con Google
+Buscar con DuckDuckGo
+Buscar con Yahoo
+Internet
+Writer Classic - Ir a URL
+Ir a URL...
+Writer Classic - Buscar con Bing
+Writer Classic - Buscar con Google
+Writer Classic - Buscar con DuckDuckGo
+Writer Classic - Buscar con Yahoo
+Buscar con Bing
+Buscar con Google
+Buscar con DuckDuckGo
+Buscar con Yahoo
+¿Qué quieres buscar en la Web?
+Escribe una URL para abrirla en tu navegador web predeterminado.
+
