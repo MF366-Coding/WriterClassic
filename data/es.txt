@@ -1,1 +1,104 @@
-Writer Classic//Archivos de texto//Archivos HTML//Writer Classic - Datos del archivo//Datos del archivo://Writer Classic - Eliminar datos del archivo//Tiene la certeza de que quiere eliminar todos los datos del archivo?//Writer Classic - Salir de la app//Tiene la certeza de que quiere salir del Writer?//Writer Classic - Ayuda//Writer Classic - Sobre la app//Abrir...//Guardar como...//Guardar...//Formatar archivo...//Salir//Sobre el Writer Classic//Ayuda//Tema claro//Tema oscuro//Gris claro//Gris//Gris oscuro//Tema predefinido//Archivo//Apariencia//Temas//Temas predefinidos//Temas coloridos//Temas del Writer//Tamaño de la ventana//Ajustes//Informaciones//Formatar la app//Guardar//Este archivo está vacio!//Archivo vacio//Nova ventana//Cuaderno//Reloj//Sitio web oficial//Repositorio GitHub//Calculadora//Créditos//Huevos de Pascua//Plugins//Community Themes
+
+Writer Classic
+Archivo
+Apariencia
+Plugins
+Configuración
+Información
+Abrir...
+Guardar archivo...
+Guardar como...
+Formatear archivo...
+Salir de
+Dimensiones de la ventana
+Temas
+Cambiar fuentes
+Temas por defecto
+Modo claro
+Modo oscuro
+Modo gris
+Temas modernos
+Cambiar tamaño
+Cambiar familia
+Notas
+Reloj
+Temas comunitarios
+Acerca de
+Ayuda
+Repo
+Créditos
+Huevo de Pascua
+Writer Classic - ¿Salir ahora?
+Debes volver a abrir Writer para aplicar los cambios. ¿Reiniciar ahora?
+Archivo de texto
+Archivos de configuración
+Hoja de estilo en cascada
+Archivo de valores separados por comas
+Archivo HTML
+Archivo de información de configuración
+Archivo de información genérica
+Archivo de inicialización de Windows
+Archivo JavaScript
+Script Python
+Archivo Log
+Archivo XML
+Archivo Léame
+Archivo de biblioteca estática
+Anim8or Script
+Archivo de texto ANSI
+Archivo Quake 3 Engine Arena
+Archivo ActionScript
+Archivo ASP Config
+Archivo de código fuente en lenguaje ensamblador
+Archivos Markdown
+Writer Classic - ¿Salir?
+¿Estás seguro de que quieres salir de Writer?
+Writer Classic - Borrador de Archivos
+¿Estás seguro de que quieres borrar un archivo?
+Elija un valor de anchura para la ventana principal.
+Elija un valor de altura para la ventana principal.
+Writer Classic - Cambiar tamaño de fuente
+Elija un número (mínimo 1).
+Writer Classic - Cambiar familia
+Por favor, escriba el nombre de una fuente que tenga instalada en su dispositivo.
+Debe reiniciar para aplicar los cambios.
+Writer Classic - Acerca de
+Esta aplicación ha sido creada por MF366 y funciona con Python 3.10.8.
+Escribe la cadena de código ESPECIAL para conseguir el Huevo de Pascua...
+¿Problemas para encontrar el Huevo de Pascua? Nadie dijo que sería fácil...
+Writer Classic - Menú de comandos
+Escribe un comando para el Menú de Comandos de Writer.
+Error de usuario: No es un comando de Writer Classic.
+El archivo está vacío.
+Writer Classic - Buscar actualizaciones
+Estás utilizando una versión antigua o inestable. Sin embargo, se recomienda actualizar a la última versión estable. ¿Actualizar ahora?
+Desactivar/activar actualizaciones al inicio
+Buscar actualizaciones
+Borrar datos
+Writer Classic - ¿Borrar datos?
+¿Estás seguro de que quieres borrar TODOS los datos de Writer Classic?
+Internet
+Writer Classic - Ir a URL
+Ir a URL...
+Writer Classic - Buscar con Bing
+Writer Classic - Buscar con Google
+Writer Classic - Buscar con DuckDuckGo
+Writer Classic - Buscar con Yahoo
+Buscar con Bing
+Buscar con Google
+Buscar con DuckDuckGo
+Buscar con Yahoo
+Internet
+Writer Classic - Ir a URL
+Ir a URL...
+Writer Classic - Buscar con Bing
+Writer Classic - Buscar con Google
+Writer Classic - Buscar con DuckDuckGo
+Writer Classic - Buscar con Yahoo
+Buscar con Bing
+Buscar con Google
+Buscar con DuckDuckGo
+Buscar con Yahoo
+¿Qué quieres buscar en la Web?
+Escribe una URL para abrirla en tu navegador web predeterminado.
+

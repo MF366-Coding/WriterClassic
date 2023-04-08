@@ -1,1 +1,92 @@
-Writer Classic//File data//HTML files//Writer Classic - File data//File data://Writer Classic - Delete file data//Are you sure you want to delete all data from a file?//Writer Classic - Quit the app//Are you sure you want to quit Writer?//Writer Classic - Help//Writer Classic - About the app//Open. ..//Save as...//Save file...//Format file...//Exit//About Writer//Help//Light mode//Dark mode//Light grey//Grey//Dark grey//Pre-set//File//Appearance//Themes//Pre-set themes// Colored themes//Writer themes//Main window's size//Settings//Information//Format the app//Save//This file is empty!//Empty file//New Window//Notes//Clock//Website//GitHub Repository//Calculator//Credits//Easter Egg//Plugins//Community Themes
+
+Writer Classic
+File
+Appearence
+Plugins
+Settings
+Information
+Open...
+Save file...
+Save as...
+Format file...
+Exit
+Window dimensions
+Themes
+Change fonts
+Default themes
+Light mode
+Dark mode
+Grey mode
+Modern themes
+Change size
+Change family
+Notes
+Clock
+Community Themes
+About
+Help
+Repo
+Credits
+Easter Egg
+Writer Classic - Exit now?
+You must reopen Writer to apply the changes! Restart now?
+Text file
+Config files
+Cascading Style Sheet
+Comma-Separated Values File
+HTML File
+Setup Information File
+Generic Information File
+Windows Initialization File
+JavaScript File
+Python Script
+Log File
+XML File
+Readme File
+Static Library File
+Anim8or Script
+ANSI Text File
+Quake 3 Engine Arena File
+ActionScript File
+ASP Config File
+Assembly Language Source Code File
+Markdown Files
+Writer Classic - Quit?
+Are you sure you want to quit Writer?
+Writer Classic - File Eraser
+Are you sure you want to erase a file?
+Pick a width value for the main window.
+Pick a height value for the main window.
+Writer Classic - Change Font Size
+Please pick a number (minimum of 1).
+Writer Classic - Change Family
+Please type the name of a font you have installed on your device.
+You must restart to apply the changes.
+Writer Classic - About
+This app was made by MF366 and powered by Python 3.10.8.
+Type the SPECIAL code string to get the Easter Egg...
+Trouble finding the Easter Egg? Nobody said it would be easy...
+Writer Classic - Command Menu
+Type a command for Writer's Command Menu.
+User Error: Not a Writer Classic command.
+This file is empty.
+Writer Classic - Check for Updates
+You are either using an older version or an unstable one. It is recommended you update to the latest stable though. Update now?
+Turn off/on updates at startup
+Check for Updates
+Clear Data
+Writer Classic - Clear data?
+Are you sure you want to clear ALL data from Writer Classic?
+Internet
+Writer Classic - Go to URL
+Go to URL...
+Writer Classic - Search with Bing
+Writer Classic - Search with Google
+Writer Classic - Search with DuckDuckGo
+Writer Classic - Search with Yahoo!
+Search with Bing
+Search with Google
+Search with DuckDuckGo
+Search with Yahoo!
+What would you like to search on the Web?
+Type an URL to open in your default web browser.

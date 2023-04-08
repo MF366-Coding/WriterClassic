@@ -1,1 +1,80 @@
-Writer Classic//Fichiers de texte//Fichiers HTML//Writer Classic - Données du fichier//Données du fichier://Writer Classic - Supprimer les données du fichier//Voulez-vous vraiment supprimer les données du fichier?//Writer Classic - Quitter l'application//Êtes-vous sûr de vouloir quitter l'application?//Writer Classic - Aide//Writer Classic - À propos de l'application //Ouvrir...//Sauvegarder comme...//Sauvegarder...//Effacer fichier...//Quitter//À propos du Writer//Aide//Thème lumineux//Thème sombre//Gris clair//Gris//Gris foncé//Préréglée//Fichier//Apparence//Thèmes//Thèmes prédéfinis//Thèmes colorés//Thèmes du Writer//Taille de la fenêtre//Paramètres//Informations//Effacer l'application//Sauvegarder//Ce fichier est vide!//Fichier vide//Nouvelle fenêtre//Notepad//Montre//Site web officiel//Dépôt d'archives GitHub//Calculatrice//Crédits//Oeufs de Pâques//Plugins//Community Themes
+
+Writer Classic
+Dossier
+Apparence
+Plugins
+Paramètres
+Informations
+Ouvrir...
+Enregistrer le fichier...
+Enregistrer sous...
+Formater le fichier...
+Quitter
+Dimensions de la fenêtre
+Thèmes
+Modifier les caractères
+Thèmes par défaut
+Mode clair
+Mode sombre
+Mode gris
+Thèmes modernes
+Modifier la taille
+Changer de famille
+Notes
+Horloge
+Thèmes communautaires
+A propos de
+Aide
+Repo
+Crédits
+Œuf de Pâques
+Writer Classic - Quitter maintenant ?
+Vous devez rouvrir Writer pour appliquer les changements ! Redémarrer maintenant ?
+Fichier texte
+Fichiers de configuration
+Feuille de style en cascade
+Fichier de valeurs séparées par des virgules
+Fichier HTML
+Fichier d'information sur l'installation
+Fichier d'information générique
+Fichier d'initialisation Windows
+Fichier JavaScript
+Script Python
+Fichier journal
+Fichier XML
+Fichier Readme
+Fichier de bibliothèque statique
+Script Anim8or
+Fichier texte ANSI
+Fichier Quake 3 Engine Arena
+Fichier ActionScript
+Fichier de configuration ASP
+Fichier de code source en langage d'assemblage
+Fichiers Markdown
+Writer Classic - Quitter ?
+Êtes-vous sûr de vouloir quitter Writer ?
+Writer Classic - Effaceur de fichiers
+Êtes-vous sûr de vouloir effacer un fichier ?
+Choisissez une valeur de largeur pour la fenêtre principale.
+Choisissez une valeur de hauteur pour la fenêtre principale.
+Writer Classic - Changer la taille de la fonte
+Veuillez choisir un nombre (minimum de 1).
+Writer Classic - Changer la famille
+Veuillez saisir le nom d'une police que vous avez installée sur votre appareil.
+Vous devez redémarrer pour appliquer les changements.
+Writer Classic - À propos
+Cette application a été réalisée par MF366 et fonctionne avec Python 3.10.8.
+Tapez la chaîne de code SPÉCIALE pour obtenir l'œuf de Pâques...
+Vous avez du mal à trouver l'œuf de Pâques ? Personne n'a dit que ce serait facile...
+Writer Classic - Menu de commande
+Tapez une commande pour le menu de commande de Writer.
+Erreur de l'utilisateur : Ce n'est pas une commande de Writer Classic.
+Le fichier est vide.
+Writer Classic - Vérifier les mises à jour
+Vous utilisez soit une ancienne version, soit une version instable. Il est recommandé de mettre à jour vers la dernière version stable. Mettre à jour maintenant ?
+Désactiver/activer les mises à jour au démarrage
+Vérifier les mises à jour
+Effacer les données
+Writer Classic - Effacer les données ?
+Êtes-vous sûr de vouloir effacer TOUTES les données de Writer Classic ?
+
