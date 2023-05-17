@@ -1,22 +1,23 @@
 
 '''
-
 Writer Classic
 
-Powered by: in Python 3.10.8
+Powered by: Python 3.10.11 (in my Windows computer)
+
+The colored menu seems to only work on Linux.
+But the app works on Windows and Mac, without the colored menu thought.
 
 Official Repo:
     https://github.com/MF366-Coding/WriterClassic
 
 Find me in this spots:
     https://github.com/MF366-Coding
-    Discord: MF366#8679
-    https://www.youtube.com/channel/UC-eyGQUY7mICmAuLSI2ZO5A/
+    https://www.youtube.com/@mf_366
 
 Original idea by: MF366
-Developed by: MF366
+Fully developed by: MF366
 
-Contibutors:
+Small contributions by:
     Norb (norbcodes at GitHub)
     Zeca70 (Zeca70 at GitHub)
 '''
@@ -34,7 +35,7 @@ import requests # it's a module
 import json # search it up
 
 # Windowing
-janela = Tk()
+desktop_win = Tk()
 
 with open('config/startup.txt', 'r', encoding='utf-8') as startupFile:
     startAppData = startupFile.read()
@@ -46,14 +47,14 @@ data = json.loads(response.text)
 latest_version = data['tag_name']
 
 # Config files
-with open('config/lang.txt', 'r') as langset:
-    thisLang = langset.read()
-    #print(thisLang[0:2])
-    #thisLang2 = thisLang[-12:-10]
+with open('config/lang.txt', 'r') as configLangFile:
+    setLang = configLangFile.read()
+    #print(setLang[0:2])
+    #thisLang2 = setLang[-12:-10]
     
-with open('data/'+str(thisLang[0:2])+'.txt', 'r', encoding='utf-8') as myLang2:
-    myLang = myLang2.read()
-    dd = myLang.split('\n')
+with open('data/'+str(setLang[0:2])+'.txt', 'r', encoding='utf-8') as usedLangFile:
+    usedLang = usedLangFile.read()
+    lang = usedLang.split('\n')
     #print(dd)
     
 with open('data/version.txt', 'r', encoding='utf-8') as versionFile:
@@ -61,56 +62,56 @@ with open('data/version.txt', 'r', encoding='utf-8') as versionFile:
     appV = appVersionGet[0:6]
     #print(appV)
 
-with open('config/menu.txt', 'r', encoding='utf-8') as menuColor:
-    mBg = menuColor.read()
+with open('config/menu.txt', 'r', encoding='utf-8') as textColor:
+    mBg = textColor.read()
 
 with open('config/mfg.txt', 'r', encoding='utf-8') as menuFg:
     mFg = menuFg.read()
 
-with open('config/menu.txt', 'r', encoding='utf-8') as corLeitura:
-    corMenu = corLeitura.read()
+with open('config/menu.txt', 'r', encoding='utf-8') as textColor:
+    MenuColor = textColor.read()
 
-with open('config/mfg.txt', 'r', encoding='utf-8') as corFgLer:
-    colorFg = corFgLer.read()
+with open('config/mfg.txt', 'r', encoding='utf-8') as readColor:
+    ForegroundColor = readColor.read()
 
-with open('config/font-type.txt', 'r', encoding='utf-8') as fonteee:
-    fontee = fonteee.read()
+with open('config/font-type.txt', 'r', encoding='utf-8') as fontFile_1:
+    FontFamily = fontFile_1.read()
     
-with open('config/font-size.txt', 'r', encoding='utf-8') as fonteeee:
-    Fontee = fonteeee.read()
+with open('config/font-size.txt', 'r', encoding='utf-8') as fontFile_2:
+    FontSize = fontFile_2.read()
     
 # Windowing... again
-janela.title(dd[1])
+desktop_win.title(lang[1])
 
-fonte = Font(family=fontee, size=Fontee)
+FontSet = Font(family=FontFamily, size=FontSize)
 
-texto = Text(janela, font=fonte)
+TextWidget = Text(desktop_win, font=FontSet)
 
-with open('config/colour.txt', 'r') as cbg:
-    cbg2 = cbg.read()
+with open('config/colour.txt', 'r') as color_bg:
+    colorBgData = color_bg.read()
 
-with open('config/geom.txt', 'r') as gbg:
-    geom2 = gbg.read()
+with open('config/geom.txt', 'r') as geom_bg:
+    geomValue = geom_bg.read()
 
-with open('config/fg.txt', 'r') as fgcnf:
-    fogr = fgcnf.read()
+with open('config/fg.txt', 'r') as fgConfig:
+    foregorundData = fgConfig.read()
 
-with open('config/ct.txt', 'r') as ccc:
-    oc = ccc.read()
+with open('config/ct.txt', 'r') as ctConfig:
+    ctData = ctConfig.read()
 
-ff = geom2.split('x')
+GeomValues = geomValue.split('x')
 
-janela.geometry(geom2)
+desktop_win.geometry(geomValue)
 
-texto.configure(bg=cbg2, fg=fogr, width=ff[0], height=ff[1], insertbackground=oc)
-texto.pack()
+TextWidget.configure(bg=colorBgData, fg=foregorundData, width=GeomValues[0], height=GeomValues[1], insertbackground=ctData)
+TextWidget.pack()
 
 # Closing the configs
-cbg.close()
-fgcnf.close()
-gbg.close()
-ccc.close()
-langset.close()
+color_bg.close()
+fgConfig.close()
+geom_bg.close()
+ctConfig.close()
+configLangFile.close()
 
 def writeStartup(text):
     with open('config/startup.txt', 'w', encoding='utf-8') as startupWriteFile:
@@ -119,12 +120,14 @@ def writeStartup(text):
 
 # Check for Updates
 class UpdateCheck:
+    @staticmethod
     def check():
         if appV != latest_version:
-            askForUpdate = mb.askyesno(dd[72], dd[73])
+            askForUpdate = mb.askyesno(lang[72], lang[73])
             if askForUpdate:
                 webbrowser.open('https://github.com/MF366-Coding/WriterClassic/releases/latest')
 
+    @staticmethod
     def change():
         global startApp
         if startApp == '1':
@@ -136,11 +139,11 @@ if startApp == '1':
     UpdateCheck.check()
     
 # Windowing... one more time...
-def janelageometrica1():
-    widthSet = sdg.askinteger(dd[1], dd[57])
-    heightSet = sdg.askinteger(dd[1], dd[58])
-    texto.configure(width=widthSet, height=heightSet)
-    janela.geometry(str(widthSet)+'x'+str(heightSet))
+def SetWinSize():
+    widthSet = sdg.askinteger(lang[1], lang[57])
+    heightSet = sdg.askinteger(lang[1], lang[58])
+    TextWidget.configure(width=widthSet, height=heightSet)
+    desktop_win.geometry(str(widthSet)+'x'+str(heightSet))
     with open('config/geom.txt', 'w') as geomdata:
         geomdata.write('')
         geomdata.write(str(widthSet)+'x'+str(heightSet))
@@ -157,8 +160,8 @@ def mudacor(cor, fgcor, cc, bar, bar_sec):
     with open('config/ct.txt', 'w') as again2:
         again2.write('')
         again2.write(cc)
-    texto.configure(bg=cor, fg=fgcor, insertbackground=cc)
-    texto.pack()
+    TextWidget.configure(bg=cor, fg=fgcor, insertbackground=cc)
+    TextWidget.pack()
     with open('config/menu.txt', 'w') as again4:
         again4.write('')
         again4.write(bar)
@@ -170,69 +173,69 @@ def mudacor(cor, fgcor, cc, bar, bar_sec):
     again3.close()
     again4.close()
     again5.close()
-    aguardaResposta = mb.askyesno(parent=janela, title=dd[30], message=dd[31])
+    aguardaResposta = mb.askyesno(parent=desktop_win, title=lang[30], message=lang[31])
     if aguardaResposta:
-        janela.destroy()
+        desktop_win.destroy()
 
 # ragequit
 def quickway():
-    janela.destroy()
+    desktop_win.destroy()
 
 # Setup (Lang files)
 def mudaIdioma(idioma, raiz):
     with open('config/lang.txt', 'w') as deleteThat:
         deleteThat.write('')
         deleteThat.write(idioma)
-    kkkkSemRiso = mb.askyesno(parent=raiz, title=dd[30], message=dd[31])
+    kkkkSemRiso = mb.askyesno(parent=raiz, title=lang[30], message=lang[31])
     if kkkkSemRiso:
         raiz.destroy()
 
 # Notepad
 def new_window():
-    newWindow = Toplevel(janela)
+    newWindow = Toplevel(desktop_win)
 
-    with open('config/menu.txt', 'r', encoding='utf-8') as menuColor:
-        mBg = menuColor.read()
+    with open('config/menu.txt', 'r', encoding='utf-8') as textColor:
+        mBg = textColor.read()
 
     with open('config/mfg.txt', 'r', encoding='utf-8') as menuFg:
         mFg = menuFg.read()
 
-    with open('config/menu.txt', 'r', encoding='utf-8') as corLeitura:
-        corMenu = corLeitura.read()
+    with open('config/menu.txt', 'r', encoding='utf-8') as textColor:
+        MenuColor = textColor.read()
 
-    with open('config/mfg.txt', 'r', encoding='utf-8') as corFgLer:
-        colorFg = corFgLer.read()
+    with open('config/mfg.txt', 'r', encoding='utf-8') as readColor:
+        ForegroundColor = readColor.read()
 
     # Windowing... yet once more LMAO...
-    newWindow.title(dd[22])
+    newWindow.title(lang[22])
 
-    texto = Text(newWindow)
+    TextWidget = Text(newWindow)
 
-    with open('config/colour.txt', 'r') as cbg:
-        cbg2 = cbg.read()
+    with open('config/colour.txt', 'r') as color_bg:
+        colorBgData = color_bg.read()
 
-    with open('config/geom.txt', 'r') as gbg:
-        geom2 = gbg.read()
+    with open('config/geom.txt', 'r') as geom_bg:
+        geomValue = geom_bg.read()
 
-    with open('config/fg.txt', 'r') as fgcnf:
-        fogr = fgcnf.read()
+    with open('config/fg.txt', 'r') as fgConfig:
+        foregorundData = fgConfig.read()
 
-    with open('config/ct.txt', 'r') as ccc:
-        oc = ccc.read()
+    with open('config/ct.txt', 'r') as ctConfig:
+        ctData = ctConfig.read()
 
-    ff = geom2.split('x')
+    GeomValues = geomValue.split('x')
 
-    newWindow.geometry(geom2)
+    newWindow.geometry(geomValue)
 
-    texto.configure(bg=cbg2, fg=fogr, width=ff[0], height=ff[1], insertbackground=oc)
-    texto.pack()
+    TextWidget.configure(bg=colorBgData, fg=foregorundData, width=GeomValues[0], height=GeomValues[1], insertbackground=ctData)
+    TextWidget.pack()
 
     # Closing what I no longer need
-    cbg.close()
-    fgcnf.close()
-    gbg.close()
-    ccc.close()
-    langset.close()
+    color_bg.close()
+    fgConfig.close()
+    geom_bg.close()
+    ctConfig.close()
+    configLangFile.close()
 
     newWindow.mainloop()
 
@@ -244,81 +247,81 @@ def repo():
 
 # Clock
 def relogio():
-    relog = Toplevel(janela)
+    relog = Toplevel(desktop_win)
     #Stuff
 
     #Windowing
-    relog.title(dd[23])
+    relog.title(lang[23])
 
-    texto = Label(relog)
+    TextWidget = Label(relog)
 
-    texto.configure(text=datetime.datetime.now())
-    texto.configure(
+    TextWidget.configure(text=datetime.datetime.now())
+    TextWidget.configure(
         font=(100)
         )
 
     relog.geometry('275x65')
 
-    texto.pack()
+    TextWidget.pack()
     relog.mainloop()
 
 # Text font
 def fontEdit(winType):
     if winType == 1:
-        fontSize = sdg.askinteger(dd[59], dd[60], minvalue=1)
+        fontSize = sdg.askinteger(lang[59], lang[60], minvalue=1)
         with open('config/font-size.txt', 'w') as fontSizeEdit:
             fontSizeEdit.write(str(fontSize))
             fontSizeEdit.close()
-            mb.showinfo(dd[1], dd[63])
+            mb.showinfo(lang[1], lang[63])
     else:
-        fontType = sdg.askstring(dd[61], dd[62])
+        fontType = sdg.askstring(lang[61], lang[62])
         with open('config/font-type.txt', 'w', encoding='utf-8') as fontTypeEdit:
             fontTypeEdit.write(fontType)
             fontTypeEdit.close()
-            mb.showinfo(dd[1], dd[63])
+            mb.showinfo(lang[1], lang[63])
 
 # Open the PACKAGE
 def abrir(raiz):
-    fich = dlg.askopenfilename(parent=raiz, filetypes=[(dd[32], '*.txt'), (dd[33], '*.cfg'), (dd[33], '*.config'), (dd[34], '*.css'), (dd[35], '*.csv'), (dd[36], '*.html'), (dd[37], '*.inf'), (dd[38], '*.info'), (dd[39], '*.ini'), (dd[40], '*.js'), (dd[41], '*.py*'), (dd[42], '*.log'), (dd[43], '*.xml'), (dd[44], '*.1st'), (dd[45], '*.a'), (dd[46], '*.a8s'), (dd[47], '*.ans'), (dd[48], '*.arena'), (dd[49], '*.as'), (dd[50], '*.asa'), (dd[51], '.asm'), (dd[52], '*.md'), (dd[52], '*.mdown')])
+    fich = dlg.askopenfilename(parent=raiz, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
     fich_ent2 = open(fich, 'r')
     resultado = fich_ent2.read()
     if len(resultado) > 1:
-        abertura = Toplevel(janela)
-        abertura.title(dd[3])
+        abertura = Toplevel(desktop_win)
+        abertura.title(lang[3])
         abertura.geometry('615x500')
         quadrado = Frame(abertura)
         quadrado.pack()
         etiqueta_aberta = Label(quadrado, text=resultado, wrap=600)
         etiqueta_aberta.pack()
-        #mb.showinfo(title=dd[3], message=resultado)
+        #mb.showinfo(title=lang[3], message=resultado)
         fich_entrada = open(fich,'a')
         fich_ent2.close()
     else:
-        mb.showinfo(title=dd[1], message=dd[71])
+        mb.showinfo(title=lang[1], message=lang[71])
         fich_entrada = open(fich,'a')
         fich_ent2.close()
 
 # Saving as
-def salvar(raiz,texto):
-    dados = texto.get('0.0', END)
-    ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(dd[32], '*.txt'), (dd[33], '*.cfg'), (dd[33], '*.config'), (dd[34], '*.css'), (dd[35], '*.csv'), (dd[36], '*.html'), (dd[37], '*.inf'), (dd[38], '*.info'), (dd[39], '*.ini'), (dd[40], '*.js'), (dd[41], '*.py*'), (dd[42], '*.log'), (dd[43], '*.xml'), (dd[44], '*.1st'), (dd[45], '*.a'), (dd[46], '*.a8s'), (dd[47], '*.ans'), (dd[48], '*.arena'), (dd[49], '*.as'), (dd[50], '*.asa'), (dd[51], '.asm'), (dd[52], '*.md'), (dd[52], '*.mdown')])
+def salvar(raiz,TextWidget):
+    dados = TextWidget.get('0.0', END)
+    ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
     fich_saida = open(ficheiro, 'w')
     fich_saida.write(dados)
     fich_saida.close()
 
 # Saving
-def salvarA(raiz, texto):
-    dados = texto.get('0.0', END)
-    ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(dd[32], '*.txt'), (dd[33], '*.cfg'), (dd[33], '*.config'), (dd[34], '*.css'), (dd[35], '*.csv'), (dd[36], '*.html'), (dd[37], '*.inf'), (dd[38], '*.info'), (dd[39], '*.ini'), (dd[40], '*.js'), (dd[41], '*.py*'), (dd[42], '*.log'), (dd[43], '*.xml'), (dd[44], '*.1st'), (dd[45], '*.a'), (dd[46], '*.a8s'), (dd[47], '*.ans'), (dd[48], '*.arena'), (dd[49], '*.as'), (dd[50], '*.asa'), (dd[51], '.asm'), (dd[52], '*.md'), (dd[52], '*.mdown')])
+def salvarA(raiz, TextWidget):
+    dados = TextWidget.get('0.0', END)
+    ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
     fich_saida = open(ficheiro, 'a')
     fich_saida.write(dados)
     fich_saida.close()
 
 # Whatever... (File Eraser)
 def formatar(raiz):
-    pois = mb.askyesno(title=dd[55], message=dd[56])
+    pois = mb.askyesno(title=lang[55], message=lang[56])
     if pois:
-        ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(dd[32], '*.txt'), (dd[33], '*.cfg'), (dd[33], '*.config'), (dd[34], '*.css'), (dd[35], '*.csv'), (dd[36], '*.html'), (dd[37], '*.inf'), (dd[38], '*.info'), (dd[39], '*.ini'), (dd[40], '*.js'), (dd[41], '*.py*'), (dd[42], '*.log'), (dd[43], '*.xml'), (dd[44], '*.1st'), (dd[45], '*.a'), (dd[46], '*.a8s'), (dd[47], '*.ans'), (dd[48], '*.arena'), (dd[49], '*.as'), (dd[50], '*.asa'), (dd[51], '.asm'), (dd[52], '*.md'), (dd[52], '*.mdown')])
+        ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
         fich_teste = open(ficheiro, 'r')
         fich_test = fich_teste.read()
         if len(fich_test) != 0:
@@ -326,22 +329,22 @@ def formatar(raiz):
             fich_saida.write('')
             fich_saida.close()
         else:
-            mb.showinfo(title=dd[1], message=dd[71])
+            mb.showinfo(title=lang[1], message=lang[71])
             fich_teste.close()
 
 # Non-raged quit
 def sair(raiz):
-    confirm = mb.askyesno(title=dd[53], message=dd[54])
+    confirm = mb.askyesno(title=lang[53], message=lang[54])
     if confirm:
         raiz.destroy()
 
 #Abrir os Créditos
 def creditos_abertos():
-    mb.showinfo(title=dd[28], message=dd[65])
+    mb.showinfo(title=lang[28], message=lang[65])
 
 #Abrir o Easter Egg
 def surprise_egg():
-    askNow = sdg.askstring(dd[29], dd[66])
+    askNow = sdg.askstring(lang[29], lang[66])
     
     if askNow == 'Nice stuff!!':
         webbrowser.open('https://www.youtube.com/watch?v=W6FG7yVUaKQ')
@@ -350,7 +353,7 @@ def surprise_egg():
         mb.showerror("Your PC has virus!", "Press Alt+F4 to remove all viruses!!!\nDo it!!!")
     
     else:
-        mb.showerror(dd[29], dd[67])
+        mb.showerror(lang[29], lang[67])
     
 #Abrir a Ajuda
 def ajuda():
@@ -362,11 +365,11 @@ def ajuda():
 def sobre(thing2, thing3):
     with open(thing2, thing3, encoding='utf-8') as about_d:
         about_data = about_d.read()
-    mb.showinfo(title=dd[64], message=about_data)
+    mb.showinfo(title=lang[64], message=about_data)
     about_d.close()
 
 def resetWriter(rootWin):
-    askSOS = mb.askyesno(dd[77], dd[78])
+    askSOS = mb.askyesno(lang[77], lang[78])
     if askSOS:
         with open('config/font-size.txt', 'w') as fontSizeEdit:
             fontSizeEdit.write('12')
@@ -380,21 +383,23 @@ def resetWriter(rootWin):
         
         mudacor('black', 'white', 'white', 'black', 'white')
         
-        janela.geometry('600x400')
+        desktop_win.geometry('600x400')
         with open('config/geom.txt', 'w') as geomdata:
             geomdata.write('')
             geomdata.write('600x400')
             geomdata.close()
 
 class InternetOnWriter:
+    @staticmethod
     def Website():
-        askForLink = sdg.askstring(dd[80], dd[91])
+        askForLink = sdg.askstring(lang[80], lang[91])
         if askForLink != ' ' or askForLink != '':
             webbrowser.open(askForLink)
 
+    @staticmethod
     def Search(engine):
         if engine == 'google':
-            askForTyping = sdg.askstring(dd[83], dd[90])
+            askForTyping = sdg.askstring(lang[83], lang[90])
             i = ' '
             typed = 'NULL'
             if askForTyping != '':
@@ -405,10 +410,10 @@ class InternetOnWriter:
 a = InternetOnWriter
                 
 def commandPrompt():
-    askNow = sdg.askstring(dd[68], dd[69])
+    askNow = sdg.askstring(lang[68], lang[69])
     
     if askNow == 'open' or askNow == 'openfile':
-        abrir(janela)
+        abrir(desktop_win)
         
     elif askNow == 'about':
         sobre('data/about.txt', 'r')
@@ -423,16 +428,16 @@ def commandPrompt():
         creditos_abertos()
         
     elif askNow == 'exit' or askNow == 'quit':
-        sair(janela)
+        sair(desktop_win)
         
     elif askNow == 'clear':
-        formatar(janela)
+        formatar(desktop_win)
 
     elif askNow == 'savefile':
-        salvarA(janela, texto)
+        salvarA(desktop_win, TextWidget)
 
     elif askNow == 'save':
-        salvar(janela, texto)
+        salvar(desktop_win, TextWidget)
         
     elif askNow == 'WriterClassic.Plugin.clock.RUN()':
         relogio()
@@ -453,38 +458,38 @@ def commandPrompt():
         new_window()
         
     elif askNow == 'WINDOW.geometry()':
-        janelageometrica1()
+        SetWinSize()
         
     else:
-        mb.showerror(dd[68], dd[70])
+        mb.showerror(lang[68], lang[70])
 
 # Key bindings
 
-janela.bind('<Control-o>', lambda b:
-    abrir(janela))
+desktop_win.bind('<Control-o>', lambda b:
+    abrir(desktop_win))
 
-janela.bind('<Control-s>', lambda c:
-    salvar(janela, texto))
+desktop_win.bind('<Control-s>', lambda c:
+    salvar(desktop_win, TextWidget))
 
-janela.bind('<Control-a>', lambda e:
+desktop_win.bind('<Control-a>', lambda e:
     sobre('data/about.txt', 'r'))
 
-janela.bind('<Control-h>', lambda f:
+desktop_win.bind('<Control-h>', lambda f:
     ajuda())
 
-janela.bind('<Control-d>', lambda g:
+desktop_win.bind('<Control-d>', lambda g:
     mudacor('black', 'white', 'white', 'dark grey', 'black'))
 
-janela.bind('<Control-l>', lambda h:
+desktop_win.bind('<Control-l>', lambda h:
     mudacor('white', 'black', 'black', 'black', 'white'))
 
-janela.bind('<Control-g>', lambda j:
-    janelageometrica1(janela,600,400))
+desktop_win.bind('<Control-g>', lambda j:
+    SetWinSize())
 
-janela.bind('<Control-r>', lambda l:
+desktop_win.bind('<Control-r>', lambda l:
     relogio())
     
-janela.bind('<Control-w>', lambda m:
+desktop_win.bind('<Control-w>', lambda m:
     commandPrompt())
 
 
@@ -492,39 +497,39 @@ janela.bind('<Control-w>', lambda m:
 if __name__ == '__main__':
 
     #Configurar a barra de menu
-    barra_menu = Menu(janela)
+    barra_menu = Menu(desktop_win)
     barra_menu.configure(background=mBg, foreground=mFg)
 
     #Adicionar o Menu Ficheiro
     ficheiro_menu = Menu(barra_menu)
-    ficheiro_menu.add_command(label=dd[7], command=lambda:
-        abrir(janela))
+    ficheiro_menu.add_command(label=lang[7], command=lambda:
+        abrir(desktop_win))
     ficheiro_menu.add_separator()
-    ficheiro_menu.add_command(label=dd[8], command=lambda:
-        salvarA(janela, texto))
-    ficheiro_menu.add_command(label = dd[9], command=lambda:
-        salvar(janela,texto))
+    ficheiro_menu.add_command(label=lang[8], command=lambda:
+        salvarA(desktop_win, TextWidget))
+    ficheiro_menu.add_command(label = lang[9], command=lambda:
+        salvar(desktop_win,TextWidget))
     ficheiro_menu.add_separator()
-    ficheiro_menu.add_command(label=dd[10], command=lambda:
-        formatar(janela))
+    ficheiro_menu.add_command(label=lang[10], command=lambda:
+        formatar(desktop_win))
     ficheiro_menu.add_separator()
-    ficheiro_menu.add_command(label=dd[11], command=lambda:
-        sair(janela))
+    ficheiro_menu.add_command(label=lang[11], command=lambda:
+        sair(desktop_win))
 
     #Adicionar o Menu Informações
     editar_menu = Menu(barra_menu)
-    editar_menu.add_command(label=dd[75], command=lambda:
+    editar_menu.add_command(label=lang[75], command=lambda:
         UpdateCheck.check())
     editar_menu.add_separator()
-    editar_menu.add_command(label=dd[25], command=lambda:
+    editar_menu.add_command(label=lang[25], command=lambda:
         sobre('data/about.txt', 'r'))
-    editar_menu.add_command(label=dd[26], command=lambda:
+    editar_menu.add_command(label=lang[26], command=lambda:
         ajuda())
-    editar_menu.add_command(label=dd[27], command=repo)
+    editar_menu.add_command(label=lang[27], command=repo)
     editar_menu.add_separator()
-    editar_menu.add_command(label=dd[28], command=creditos_abertos)
+    editar_menu.add_command(label=lang[28], command=creditos_abertos)
     editar_menu.add_separator()
-    editar_menu.add_command(label=dd[29], command=surprise_egg)
+    editar_menu.add_command(label=lang[29], command=surprise_egg)
 
 
     #Adicionar as configurações necessárias para os outros menus
@@ -539,22 +544,22 @@ if __name__ == '__main__':
     c_m = Menu(b_m)
     z_m = Menu(b_m)
 
-    ver_menu.add_command(label=dd[12], command=janelageometrica1)
+    ver_menu.add_command(label=lang[12], command=SetWinSize)
 
     # menu fonts
-    newMenuEdit.add_command(label=dd[20], command=lambda:
+    newMenuEdit.add_command(label=lang[20], command=lambda:
                             fontEdit(1))
-    newMenuEdit.add_command(label=dd[21], command=lambda:
+    newMenuEdit.add_command(label=lang[21], command=lambda:
                             fontEdit(2))
 
     #Adicionar o Menu Plugins
-    b_m.add_command(label=dd[22], command=new_window)
-    b_m.add_command(label=dd[23], command=relogio)
+    b_m.add_command(label=lang[22], command=new_window)
+    b_m.add_command(label=lang[23], command=relogio)
     
-    c_m.add_command(label=dd[81], command=lambda:
+    c_m.add_command(label=lang[81], command=lambda:
                     a.Website())
     c_m.add_separator()
-    c_m.add_command(label=dd[87], command=lambda:
+    c_m.add_command(label=lang[87], command=lambda:
                     a.Search('google'))
     
     #Adicionar temas da comunidade
@@ -576,33 +581,33 @@ if __name__ == '__main__':
     #Adicionar o Menu Definições
     a_m = Menu(barra_menu)
     a_m.add_command(label='English', command=lambda:
-        mudaIdioma('en', janela))
+        mudaIdioma('en', desktop_win))
     a_m.add_command(label='Español (España)', command=lambda:
-        mudaIdioma('es', janela))
+        mudaIdioma('es', desktop_win))
     a_m.add_command(label='Français (France)', command=lambda:
-        mudaIdioma('fr', janela))
+        mudaIdioma('fr', desktop_win))
     a_m.add_command(label='Italiano (Italia)', command=lambda:
-        mudaIdioma('it', janela))
+        mudaIdioma('it', desktop_win))
     a_m.add_command(label='Português (Brasil)', command=lambda:
-        mudaIdioma('br', janela))
+        mudaIdioma('br', desktop_win))
     a_m.add_command(label='Português (Portugal)', command=lambda:
-        mudaIdioma('pt', janela))
+        mudaIdioma('pt', desktop_win))
     a_m.add_command(label='Slovenčina (Slovensko)', command=lambda:
-        mudaIdioma('sk', janela))
+        mudaIdioma('sk', desktop_win))
     a_m.add_separator()
-    a_m.add_command(label=dd[74], command=lambda:
+    a_m.add_command(label=lang[74], command=lambda:
         UpdateCheck.change())
     a_m.add_separator()
-    a_m.add_command(label=dd[76], command=lambda:
-        resetWriter(janela))
+    a_m.add_command(label=lang[76], command=lambda:
+        resetWriter(desktop_win))
 
     #Adicionar os Temas (Temas Regulares)
-    ver_4_m.add_command(label=dd[16], command=lambda:
+    ver_4_m.add_command(label=lang[16], command=lambda:
         mudacor('white', 'black', 'black', 'black', 'white'))
-    ver_4_m.add_command(label=dd[17], command=lambda:
+    ver_4_m.add_command(label=lang[17], command=lambda:
         mudacor('black', 'white', 'white', 'dark grey', 'black'))
     ver_4_m.add_separator()
-    ver_4_m.add_command(label=dd[18], command=lambda:
+    ver_4_m.add_command(label=lang[18], command=lambda:
         mudacor('grey', 'black', 'black', 'black', 'white'))
 
     #Adicionar os Temas (Temas Modernos)
@@ -626,35 +631,35 @@ if __name__ == '__main__':
         mudacor('#020421','pink', 'pink', '#020312', '#ebd1ed'))
 
     #Configurar cores do Menu
-    ficheiro_menu.configure(background=corMenu, foreground=colorFg)
-    editar_menu.configure(background=corMenu, foreground=colorFg)
-    ver_menu.configure(background=corMenu, foreground=colorFg)
-    ver_1_m.configure(background=corMenu, foreground=colorFg)
-    ver_3_m.configure(background=corMenu, foreground=colorFg)
-    ver_4_m.configure(background=corMenu, foreground=colorFg)
-    ver_5_m.configure(background=corMenu, foreground=colorFg)
-    ver_7_m.configure(background=corMenu, foreground=colorFg)
-    newMenuEdit.configure(background=corMenu, foreground=colorFg)
-    a_m.configure(background=corMenu, foreground=colorFg)
-    b_m.configure(background=corMenu, foreground=colorFg)
-    c_m.configure(background=corMenu, foreground=colorFg)
-    z_m.configure(background=corMenu, foreground=colorFg)
+    ficheiro_menu.configure(background=MenuColor, foreground=ForegroundColor)
+    editar_menu.configure(background=MenuColor, foreground=ForegroundColor)
+    ver_menu.configure(background=MenuColor, foreground=ForegroundColor)
+    ver_1_m.configure(background=MenuColor, foreground=ForegroundColor)
+    ver_3_m.configure(background=MenuColor, foreground=ForegroundColor)
+    ver_4_m.configure(background=MenuColor, foreground=ForegroundColor)
+    ver_5_m.configure(background=MenuColor, foreground=ForegroundColor)
+    ver_7_m.configure(background=MenuColor, foreground=ForegroundColor)
+    newMenuEdit.configure(background=MenuColor, foreground=ForegroundColor)
+    a_m.configure(background=MenuColor, foreground=ForegroundColor)
+    b_m.configure(background=MenuColor, foreground=ForegroundColor)
+    c_m.configure(background=MenuColor, foreground=ForegroundColor)
+    z_m.configure(background=MenuColor, foreground=ForegroundColor)
 
 #Adicionar menus "cascade"
-barra_menu.add_cascade(label=dd[2],menu=ficheiro_menu)
-barra_menu.add_cascade(label=dd[3],menu=ver_menu)
-ver_menu.add_cascade(label=dd[13], menu=ver_5_m)
-ver_5_m.add_cascade(label=dd[15], menu=ver_4_m)
-ver_5_m.add_cascade(label=dd[19], menu=ver_7_m)
-ver_menu.add_cascade(label=dd[14], menu=newMenuEdit)
-barra_menu.add_cascade(label=dd[4], menu=b_m)
-b_m.add_cascade(label=dd[24], menu=z_m)
-b_m.add_cascade(label=dd[79], menu=c_m)
-barra_menu.add_cascade(label=dd[5], menu=a_m)
-barra_menu.add_cascade(label=dd[6], menu=editar_menu)
+barra_menu.add_cascade(label=lang[2],menu=ficheiro_menu)
+barra_menu.add_cascade(label=lang[3],menu=ver_menu)
+ver_menu.add_cascade(label=lang[13], menu=ver_5_m)
+ver_5_m.add_cascade(label=lang[15], menu=ver_4_m)
+ver_5_m.add_cascade(label=lang[19], menu=ver_7_m)
+ver_menu.add_cascade(label=lang[14], menu=newMenuEdit)
+barra_menu.add_cascade(label=lang[4], menu=b_m)
+b_m.add_cascade(label=lang[24], menu=z_m)
+b_m.add_cascade(label=lang[79], menu=c_m)
+barra_menu.add_cascade(label=lang[5], menu=a_m)
+barra_menu.add_cascade(label=lang[6], menu=editar_menu)
 
-#Configurar o menu da janela
-janela.configure(menu=barra_menu)
+#Configurar o menu da desktop_win
+desktop_win.configure(menu=barra_menu)
 
-#Efetuar o mainloop da janela
-janela.mainloop()
+#Efetuar o mainloop da desktop_win
+desktop_win.mainloop()
