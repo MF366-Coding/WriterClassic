@@ -23,6 +23,7 @@ Small contributions by:
 '''
 
 # Importing the goodies
+import sys
 from tkinter import * # Window
 from tkinter.ttk import * # Not sure
 from tkinter import simpledialog as sdg # Inputs with GUI
@@ -51,12 +52,12 @@ with open('config/lang.txt', 'r') as configLangFile:
     setLang = configLangFile.read()
     #print(setLang[0:2])
     #thisLang2 = setLang[-12:-10]
-    
+
 with open('data/'+str(setLang[0:2])+'.txt', 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
     lang = usedLang.split('\n')
     #print(dd)
-    
+
 with open('data/version.txt', 'r', encoding='utf-8') as versionFile:
     appVersionGet = versionFile.read()
     appV = appVersionGet[0:6]
@@ -76,10 +77,10 @@ with open('config/mfg.txt', 'r', encoding='utf-8') as readColor:
 
 with open('config/font-type.txt', 'r', encoding='utf-8') as fontFile_1:
     FontFamily = fontFile_1.read()
-    
+
 with open('config/font-size.txt', 'r', encoding='utf-8') as fontFile_2:
     FontSize = fontFile_2.read()
-    
+
 # Windowing... again
 desktop_win.title(lang[1])
 
@@ -137,7 +138,7 @@ class UpdateCheck:
 
 if startApp == '1':
     UpdateCheck.check()
-    
+
 # Windowing... one more time...
 def SetWinSize():
     widthSet = sdg.askinteger(lang[1], lang[57])
@@ -345,16 +346,16 @@ def creditos_abertos():
 #Abrir o Easter Egg
 def surprise_egg():
     askNow = sdg.askstring(lang[29], lang[66])
-    
+
     if askNow == 'Nice stuff!!':
         webbrowser.open('https://www.youtube.com/watch?v=W6FG7yVUaKQ')
-    
+
     elif askNow == 'Scan':
         mb.showerror("Your PC has virus!", "Press Alt+F4 to remove all viruses!!!\nDo it!!!")
-    
+
     else:
         mb.showerror(lang[29], lang[67])
-    
+
 #Abrir a Ajuda
 def ajuda():
     ourWebsite = "https://github.com/MF366-Coding/WriterClassic#help"
@@ -374,15 +375,15 @@ def resetWriter(rootWin):
         with open('config/font-size.txt', 'w') as fontSizeEdit:
             fontSizeEdit.write('12')
             fontSizeEdit.close()
-                    
+
         with open('config/font-type.txt', 'w', encoding='utf-8') as fontTypeEdit:
             fontTypeEdit.write('Ubuntu Mono')
             fontTypeEdit.close()
-        
+
         mudaIdioma('en', rootWin)
-        
+
         mudacor('black', 'white', 'white', 'black', 'white')
-        
+
         desktop_win.geometry('600x400')
         with open('config/geom.txt', 'w') as geomdata:
             geomdata.write('')
@@ -394,42 +395,51 @@ class InternetOnWriter:
     def Website():
         askForLink = sdg.askstring(lang[80], lang[91])
         if askForLink != ' ' or askForLink != '':
-            webbrowser.open(askForLink)
+            if sys.platform == "win32":
+                webbrowser.open(askForLink)
+                # for some reason this opens IExplorer in Windows 10?!
+                # which will send you to Edge?!
+            elif sys.platform == "linux" or "darwin":
+                webbrowser.open(askForLink)
 
     @staticmethod
     def Search(engine):
         if engine == 'google':
             askForTyping = sdg.askstring(lang[83], lang[90])
-            i = ' '
-            typed = 'NULL'
             if askForTyping != '':
                 for i in askForTyping:
                     typed = askForTyping.replace(' ', '+')
-                webbrowser.open('https://www.google.com/search?q='+typed)       
-                
-a = InternetOnWriter
-                
+                webbrowser.open('https://www.google.com/search?q='+typed)
+        elif engine == 'bing':
+            askForTyping = sdg.askstring(lang[82], lang[90])
+            if askForTyping != '':
+                for i in askForTyping:
+                    typed = askForTyping.replace(' ', '+')
+                webbrowser.open('https://www.bing.com/search?q='+typed)
+
+InternetOnWriter
+
 def commandPrompt():
     askNow = sdg.askstring(lang[68], lang[69])
-    
+
     if askNow == 'open' or askNow == 'openfile':
         abrir(desktop_win)
-        
+
     elif askNow == 'about':
         sobre('data/about.txt', 'r')
-        
+
     elif askNow == 'help':
         ajuda()
-        
+
     elif askNow == 'fun' or askNow == 'egg':
         surprise_egg()
-        
+
     elif askNow == 'data':
         creditos_abertos()
-        
+
     elif askNow == 'exit' or askNow == 'quit':
         sair(desktop_win)
-        
+
     elif askNow == 'clear':
         formatar(desktop_win)
 
@@ -438,28 +448,28 @@ def commandPrompt():
 
     elif askNow == 'save':
         salvar(desktop_win, TextWidget)
-        
+
     elif askNow == 'WriterClassic.Plugin.clock.RUN()':
         relogio()
-        
+
     elif askNow == 'FontEdit.family()':
         fontEdit(2)
-        
+
     elif askNow == 'FontEdit.size()':
         fontEdit(1)
-        
+
     elif askNow == 'ragequit':
         quickway()
-        
+
     elif askNow == 'repo':
         repo()
-        
+
     elif askNow == 'notes':
         new_window()
-        
+
     elif askNow == 'WINDOW.geometry()':
         SetWinSize()
-        
+
     else:
         mb.showerror(lang[68], lang[70])
 
@@ -488,7 +498,7 @@ desktop_win.bind('<Control-g>', lambda j:
 
 desktop_win.bind('<Control-r>', lambda l:
     relogio())
-    
+
 desktop_win.bind('<Control-w>', lambda m:
     commandPrompt())
 
@@ -555,13 +565,15 @@ if __name__ == '__main__':
     #Adicionar o Menu Plugins
     b_m.add_command(label=lang[22], command=new_window)
     b_m.add_command(label=lang[23], command=relogio)
-    
+
     c_m.add_command(label=lang[81], command=lambda:
-                    a.Website())
+                    InternetOnWriter.Website())
     c_m.add_separator()
     c_m.add_command(label=lang[87], command=lambda:
-                    a.Search('google'))
-    
+                    InternetOnWriter.Search('google'))
+    c_m.add_command(label=lang[86], command=lambda:
+                    InternetOnWriter.Search('bing'))
+
     #Adicionar temas da comunidade
     z_m.add_command(label='Black Hole', command=lambda:
         mudacor('black', 'white', 'white', 'black', 'white'))
