@@ -5,11 +5,9 @@ Writer Classic is a small Python file that, together with some config files, bri
 
 **IMPORTANT INFO!**
 
-Due to Python resources that are only available on Linux, Writer Classic is Linux only.
+Writer works in Windows, MacOS and Linux, but there are some bugs in menus and features in both Windows and Mac.
 
-This is a garage project that is constantly growing, so I am moving to GitHub.
-
-By the way, thanks for visiting this repository. :+1:
+Thanks for visiting this repository. :+1:
 
 I also would love if you waste some time testing Writer Classic or just exploring this GitHub repository.
 
@@ -28,13 +26,15 @@ With the file on your computer, extract it to a folder you have or to the same l
 All files and folders inside the zipped one **must** be on the same location!
 
 ### 3. Running the program
-Open the Terminal in the folder with the extracted content.
+Go to the right folder.
 
+#### For Linux and MacOS
 Type <code>python3 WriterClassic.py</code> and you can now use Writer Classic.
 
-This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Linux, <code>python</code> is Python 2).
+This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Unix based OSes, <code>python</code> is Python 2).
 
-You're now good to go...
+#### For Windows
+If you're running Windows thought, just click on the file and pick **Open with...** Python 3.xx (depends on your version).
 
 ## Unstable Releases
 Maybe you are a developer who wants acess to the latest update to Writer...
@@ -42,14 +42,18 @@ Maybe you are a developer who wants acess to the latest update to Writer...
 ### 1. Clone the repo
 Open the Terminal and use <code>git clone https://github.com/MF366-Coding/WriterClassic.git</code>.
 
-If you don't have <code>git</code> installed, please install it using your distro's package manager.
+That will only work if you have Git installed on your device...
 
-### 2. Run the program
-Open the folder where the repo was cloned on the Terminal and type <code>python3 WriterClassic.py</code> and you can now use Writer Classic.
+### 2. Running the program
+Go to the folder where the repo was cloned.
 
-This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Linux, <code>python</code> is Python 2).
+#### For Linux and MacOS
+Type <code>python3 WriterClassic.py</code> and you can now use Writer Classic.
 
-You're now good to go...
+This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Unix based OSes, <code>python</code> is Python 2).
+
+#### For Windows
+If you're running Windows thought, just click on the file and pick **Open with...** Python 3.xx (depends on your version).
 
 # What's on the releases' zip file? :file_folder:
 Writer Classic's zip file is a zipped folder including **main.py** (the app itself), folder **data** (including everything that isn't a setting) and the folder __config__ (including every single configuration file).
@@ -59,15 +63,18 @@ You need:
 
 * [X] Python 3 
 
-* [X] Any Linux distro
-
 * [X] tkinter (Python3 Module)
 
 * [X] webbrowser (Python3 Module)
 
 * [X] datetime (Python3 Module)
 
-  
+* [X] sys (Python3 Module)
+
+* [X] requests (Python3 Module)
+
+* [X] json (Python3 Module)
+
 # Feature requests :heavy_plus_sign:
 If you would like to open Writer Classic and discover a new functionality suggested by you, please check the Issues in this Repository.
 
@@ -93,7 +100,8 @@ With Writer Classic you can open files of type (in no particular order):
 * ini
 * desktop
 * xml
-* ...
+
+... and much more!
 
 ### Edit :memo:
 You can make changes to text files, python files, markdown files and save them, either with new name and extension or replacing existent files.
