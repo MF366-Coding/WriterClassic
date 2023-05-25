@@ -43,6 +43,8 @@ with open('config/startup.txt', 'r', encoding='utf-8') as startupFile:
     startApp = startAppData[0:1]
     #print(startApp)
 
+desktop_win.iconbitmap("data/app_icon.ico")
+
 response = requests.get('https://api.github.com/repos/MF366-Coding/WriterClassic/releases/latest')
 data = json.loads(response.text)
 latest_version = data['tag_name']
@@ -399,6 +401,7 @@ class InternetOnWriter:
                 webbrowser.open(askForLink)
                 # for some reason this opens IExplorer in Windows 10?!
                 # which will send you to Edge?!
+                # ill try to fix this in the future
             elif sys.platform == "linux" or "darwin":
                 webbrowser.open(askForLink)
 
