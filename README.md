@@ -78,10 +78,7 @@ Type <code>python3 WriterClassic.py</code> and you can now use Writer Classic.
 This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Unix based OSes, <code>python</code> is Python 2).
 
 #### For Windows
-If you're running Windows thought, just click on the file and pick **Open with...** Python 3.xx (depends on your version).
-
-# What's on the releases' zip file? :file_folder:
-Writer Classic's zip file is a zipped folder including **main.py** (the app itself), folder **data** (including everything that isn't a setting) and the folder __config__ (including every single configuration file).
+Follow the steps in [here](https://github.com/MF366-Coding/WriterClassic#additional-setup-start-menu-shortcut) after cloning the repo and getting everything set.
 
 # What do I need to be able to be able to use Writer Classic? :heavy_check_mark:
 You need:
@@ -90,15 +87,15 @@ You need:
 
 * [X] tkinter (Python3 Module)
 
-* [X] webbrowser (Python3 Module)
+* [X] webbrowser (Python3 Module - Standard, usually)
 
-* [X] datetime (Python3 Module)
+* [X] datetime (Python3 Module - Standard, usually)
 
-* [X] sys (Python3 Module)
+* [X] sys (Python3 Module, Standard, usually)
 
 * [X] requests (Python3 Module)
 
-* [X] json (Python3 Module)
+* [X] json (Python3 Module - Standard, usually)
 
 # Feature requests :heavy_plus_sign:
 If you would like to open Writer Classic and discover a new functionality suggested by you, please check the Issues in this Repository.
