@@ -29,12 +29,37 @@ All files and folders inside the zipped one **must** be on the same location!
 Go to the right folder.
 
 #### For Linux and MacOS
-Type <code>python3 WriterClassic.py</code> and you can now use Writer Classic.
+Type `python3 WriterClassic.py` and you can now use Writer Classic.
 
-This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Unix based OSes, <code>python</code> is Python 2).
+This app only runs os Python 3, so using the command `python WriterClassic.py` won't work (in Unix based OSes, <code>python</code> is Python 2).
 
 #### For Windows
-If you're running Windows thought, just click on the file and pick **Open with...** Python 3.xx (depends on your version).
+For Windows, the setup might be a bit more complicated.
+
+The Python app has been converted into an executable for easier acess.
+
+Download the zipped folder in Releases (only v4.2.1+ have the Windows converted executable).
+
+The zipped folder should contain several folders and *.py files.
+
+Extract **EVERYTHING** to a different folder.
+
+Then run the executable named `WriterClassic.exe`.
+
+Note running the file does **NOT** install any shortcuts or dependencies. You mustn't remove anything from the now extracted folder!
+
+##### Additional Setup: Start Menu Shortcut
+**NOTE:** *this doesn't reffer to the "Pin in Start Menu", however feel free to use that one if you prefer.*
+
+To make a Start Menu shortcut, you must follow the following steps:
+
+1. Open two windows of **File Explorer**.
+2. In one of them, go to the location `C:\Users\<NAME>\AppData\Roaming\Microsoft\Windows\Start Menu`, where "`<NAME>`" refers to **YOUR** Windows username.
+3. In the other File Explorer window, go to the folder where you extracted WriterClassic's Windows-only zipped folder.
+4. Now, place the windows side-by-side (not necessary but makes the process a bit easier).
+5. Finally, and most important of all, **while holding `Ctrl` and `Shift` at the same time**, grab the `WriterClassic.exe` file and throw it into the `StartMenu` folder.
+6. You should probably rename the file to "`WriterClassic`" for easier acess, that is, without the file extension (because it's a shortcut - the extension is hidden in Windows by default and is not `*.exe`).
+7. You can, afterwards, make shortcuts in Desktop, Pin in Start Menu, Taskbar, as you wish...
 
 ## Unstable Releases
 Maybe you are a developer who wants acess to the latest update to Writer...
@@ -42,7 +67,7 @@ Maybe you are a developer who wants acess to the latest update to Writer...
 ### 1. Clone the repo
 Open the Terminal and use <code>git clone https://github.com/MF366-Coding/WriterClassic.git</code>.
 
-That will only work if you have Git installed on your device...
+However, that will only work if you have Git installed on your device...
 
 ### 2. Running the program
 Go to the folder where the repo was cloned.
