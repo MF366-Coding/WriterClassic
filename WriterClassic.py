@@ -50,7 +50,7 @@ data = json.loads(response.text)
 latest_version = data['tag_name']
 
 # Config files
-with open('config/lang.txt', 'r') as configLangFile:
+with open('config/lang.txt', 'r', encoding="utf-8") as configLangFile:
     setLang = configLangFile.read()
     #print(setLang[0:2])
     #thisLang2 = setLang[-12:-10]
@@ -90,16 +90,16 @@ FontSet = Font(family=FontFamily, size=FontSize)
 
 TextWidget = Text(desktop_win, font=FontSet)
 
-with open('config/colour.txt', 'r') as color_bg:
+with open('config/colour.txt', 'r', encoding='utf-8') as color_bg:
     colorBgData = color_bg.read()
 
-with open('config/geom.txt', 'r') as geom_bg:
+with open('config/geom.txt', 'r', encoding='utf-8') as geom_bg:
     geomValue = geom_bg.read()
 
-with open('config/fg.txt', 'r') as fgConfig:
+with open('config/fg.txt', 'r', encoding='utf-8') as fgConfig:
     foregorundData = fgConfig.read()
 
-with open('config/ct.txt', 'r') as ctConfig:
+with open('config/ct.txt', 'r', encoding='utf-8') as ctConfig:
     ctData = ctConfig.read()
 
 GeomValues = geomValue.split('x')
@@ -147,37 +147,37 @@ def SetWinSize():
     heightSet = sdg.askinteger(lang[1], lang[58])
     TextWidget.configure(width=widthSet, height=heightSet)
     desktop_win.geometry(str(widthSet)+'x'+str(heightSet))
-    with open('config/geom.txt', 'w') as geomdata:
+    with open('config/geom.txt', 'w', encoding='utf-8') as geomdata:
         geomdata.write('')
         geomdata.write(str(widthSet)+'x'+str(heightSet))
     geomdata.close()
 
 # Theme Picker
-def mudacor(cor, fgcor, cc, bar, bar_sec):
-    with open('config/colour.txt', 'w') as again1:
-        again1.write('')
-        again1.write(cor)
-    with open('config/fg.txt', 'w') as again3:
-        again3.write('')
-        again3.write(fgcor)
-    with open('config/ct.txt', 'w') as again2:
-        again2.write('')
-        again2.write(cc)
-    TextWidget.configure(bg=cor, fg=fgcor, insertbackground=cc)
+def mudacor(colour_first, colour_second, colour_third, colour_fourth, colour_fifth):
+    with open('config/colour.txt', 'w', encoding='utf-8') as file1:
+        file1.write('')
+        file1.write(colour_first)
+    with open('config/fg.txt', 'w', encoding='utf-8') as file2:
+        file2.write('')
+        file2.write(colour_second)
+    with open('config/ct.txt', 'w', encoding='utf-8') as file3:
+        file3.write('')
+        file3.write(colour_third)
+    TextWidget.configure(bg=colour_first, fg=colour_second, insertbackground=colour_third)
     TextWidget.pack()
-    with open('config/menu.txt', 'w') as again4:
-        again4.write('')
-        again4.write(bar)
-    with open('config/mfg.txt', 'w') as again5:
-        again5.write('')
-        again5.write(bar_sec)
-    again1.close()
-    again2.close()
-    again3.close()
-    again4.close()
-    again5.close()
-    aguardaResposta = mb.askyesno(parent=desktop_win, title=lang[30], message=lang[31])
-    if aguardaResposta:
+    with open('config/menu.txt', 'w', encoding='utf-8') as file4:
+        file4.write('')
+        file4.write(colour_fourth)
+    with open('config/mfg.txt', 'w', encoding='utf-8') as file5:
+        file5.write('')
+        file5.write(colour_fifth)
+    file1.close()
+    file2.close()
+    file3.close()
+    file4.close()
+    file5.close()
+    waitResponse = mb.askyesno(parent=desktop_win, title=lang[30], message=lang[31])
+    if waitResponse:
         desktop_win.destroy()
 
 # ragequit
@@ -185,16 +185,16 @@ def quickway():
     desktop_win.destroy()
 
 # Setup (Lang files)
-def mudaIdioma(idioma, raiz):
-    with open('config/lang.txt', 'w') as deleteThat:
+def mudaIdioma(language_set, root_win):
+    with open('config/lang.txt', 'w', encoding='utf-8') as deleteThat:
         deleteThat.write('')
-        deleteThat.write(idioma)
-    kkkkSemRiso = mb.askyesno(parent=raiz, title=lang[30], message=lang[31])
-    if kkkkSemRiso:
-        raiz.destroy()
+        deleteThat.write(language_set)
+    popup_define = mb.askyesno(parent=root_win, title=lang[30], message=lang[31])
+    if popup_define:
+        root_win.destroy()
 
 # Notepad
-def new_window():
+def new_window():    
     newWindow = Toplevel(desktop_win)
 
     with open('config/menu.txt', 'r', encoding='utf-8') as textColor:
@@ -284,48 +284,29 @@ def fontEdit(winType):
             mb.showinfo(lang[1], lang[63])
 
 # Open the PACKAGE
-def abrir(raiz):
-    fich = dlg.askopenfilename(parent=raiz, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
-    fich_ent2 = open(fich, 'r')
-    resultado = fich_ent2.read()
-    if len(resultado) > 1:
-        abertura = Toplevel(desktop_win)
-        abertura.title(lang[3])
-        abertura.geometry('615x500')
-        quadrado = Frame(abertura)
-        quadrado.pack()
-        etiqueta_aberta = Label(quadrado, text=resultado, wrap=600)
-        etiqueta_aberta.pack()
-        #mb.showinfo(title=lang[3], message=resultado)
-        fich_entrada = open(fich,'a')
-        fich_ent2.close()
-    else:
-        mb.showinfo(title=lang[1], message=lang[71])
-        fich_entrada = open(fich,'a')
-        fich_ent2.close()
+def abrir(root_win):
+    file = dlg.askopenfilename(parent=root_win, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
+    file_input = open(file, 'r', encoding='utf-8')
+    file_data = file_input.read()
+    TextWidget.delete(index1=0.0, index2=END)
+    TextWidget.insert(chars=file_data, index=0.0)
+    file.close()
 
 # Saving as
-def salvar(raiz,TextWidget):
+def salvar(root_win):
+    global TextWidget
     dados = TextWidget.get('0.0', END)
-    ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
-    fich_saida = open(ficheiro, 'w')
-    fich_saida.write(dados)
-    fich_saida.close()
-
-# Saving
-def salvarA(raiz, TextWidget):
-    dados = TextWidget.get('0.0', END)
-    ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
-    fich_saida = open(ficheiro, 'a')
+    ficheiro = dlg.askopenfilename(parent=root_win, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
+    fich_saida = open(ficheiro, 'w', encoding='utf-8')
     fich_saida.write(dados)
     fich_saida.close()
 
 # Whatever... (File Eraser)
-def formatar(raiz):
+def formatar(root_win):
     pois = mb.askyesno(title=lang[55], message=lang[56])
     if pois:
-        ficheiro = dlg.askopenfilename(parent=raiz, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
-        fich_teste = open(ficheiro, 'r')
+        ficheiro = dlg.askopenfilename(parent=root_win, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
+        fich_teste = open(ficheiro, 'r', encoding='utf-8')
         fich_test = fich_teste.read()
         if len(fich_test) != 0:
             fich_saida = open(ficheiro, 'w')
@@ -336,10 +317,10 @@ def formatar(raiz):
             fich_teste.close()
 
 # Non-raged quit
-def sair(raiz):
+def sair(root_win):
     confirm = mb.askyesno(title=lang[53], message=lang[54])
     if confirm:
-        raiz.destroy()
+        root_win.destroy()
 
 #Abrir os Créditos
 def creditos_abertos():
@@ -419,8 +400,20 @@ class InternetOnWriter:
                 for i in askForTyping:
                     typed = askForTyping.replace(' ', '+')
                 webbrowser.open('https://www.bing.com/search?q='+typed)
-
-InternetOnWriter
+        elif engine == 'ysearch':
+            # stands for Yahoo!
+            askForTyping = sdg.askstring(lang[85], lang[90])
+            if askForTyping != '':
+                for i in askForTyping:
+                    typed = askForTyping.replace(' ', '+')
+                webbrowser.open("https://search.yahoo.com/search?p="+typed)
+        elif engine == 'ddgo':
+            # stands for DuckDuckGo
+            askForTyping = sdg.askstring(lang[84], lang[90])
+            if askForTyping != '':
+                for i in askForTyping:
+                    typed = askForTyping.replace(' ', '+')
+                webbrowser.open("https://duckduckgo.com/?q="+typed)
 
 def commandPrompt():
     askNow = sdg.askstring(lang[68], lang[69])
@@ -446,11 +439,8 @@ def commandPrompt():
     elif askNow == 'clear':
         formatar(desktop_win)
 
-    elif askNow == 'savefile':
-        salvarA(desktop_win, TextWidget)
-
     elif askNow == 'save':
-        salvar(desktop_win, TextWidget)
+        salvar(desktop_win)
 
     elif askNow == 'WriterClassic.Plugin.clock.RUN()':
         relogio()
@@ -482,7 +472,7 @@ desktop_win.bind('<Control-o>', lambda b:
     abrir(desktop_win))
 
 desktop_win.bind('<Control-s>', lambda c:
-    salvar(desktop_win, TextWidget))
+    salvar(desktop_win))
 
 desktop_win.bind('<Control-a>', lambda e:
     sobre('data/about.txt', 'r'))
@@ -518,10 +508,8 @@ if __name__ == '__main__':
     ficheiro_menu.add_command(label=lang[7], command=lambda:
         abrir(desktop_win))
     ficheiro_menu.add_separator()
-    ficheiro_menu.add_command(label=lang[8], command=lambda:
-        salvarA(desktop_win, TextWidget))
-    ficheiro_menu.add_command(label = lang[9], command=lambda:
-        salvar(desktop_win,TextWidget))
+    ficheiro_menu.add_command(label = lang[8], command=lambda:
+        salvar(desktop_win))
     ficheiro_menu.add_separator()
     ficheiro_menu.add_command(label=lang[10], command=lambda:
         formatar(desktop_win))
@@ -569,13 +557,16 @@ if __name__ == '__main__':
     b_m.add_command(label=lang[22], command=new_window)
     b_m.add_command(label=lang[23], command=relogio)
 
-    c_m.add_command(label=lang[81], command=lambda:
-                    InternetOnWriter.Website())
+    c_m.add_command(label=lang[81], command=InternetOnWriter.Website)
     c_m.add_separator()
     c_m.add_command(label=lang[87], command=lambda:
                     InternetOnWriter.Search('google'))
     c_m.add_command(label=lang[86], command=lambda:
                     InternetOnWriter.Search('bing'))
+    c_m.add_command(label=lang[89], command=lambda:
+                    InternetOnWriter.Search('ysearch'))
+    c_m.add_command(label=lang[88], command=lambda:
+                    InternetOnWriter.Search('ddgo'))
 
     #Adicionar temas da comunidade
     z_m.add_command(label='Black Hole', command=lambda:

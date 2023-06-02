@@ -1,7 +1,8 @@
 App name: Writer Classic
-Developer: MF366 Coding
-Version number: 4.2.1
+Developer: MF366 (at GitHub: MF366-Coding)
+Version number: 5.0.0
 Powered by: Python 3.10.11
+Tested on: Windows (*.exe and *.py), Linux (*.py only)
 
 https://github.com/MF366-Coding/WriterClassic
 
