@@ -1,5 +1,5 @@
 
-Writer Classic
+WriterClassic
 File
 Aspetto
 Plugin
@@ -14,9 +14,9 @@ Dimensioni della finestra
 Temi
 Modifica dei caratteri
 Temi predefiniti
-Modo chiaro
-Modo scuro
-Modo grigio
+Modalità chiara
+Modalità scura
+Modalità grigia
 Temi moderni
 Cambia dimensione
 Cambia famiglia
@@ -28,7 +28,7 @@ Aiuto
 Repo
 Crediti
 Uovo di Pasqua
-Writer Classic - Esci ora?
+WriterClassic - Esci ora?
 Devi riaprire Writer per applicare le modifiche! Riavviare ora?
 File di testo
 File di configurazione
@@ -51,43 +51,45 @@ File ActionScript
 File di configurazione ASP
 File di codice sorgente in linguaggio assembly
 File Markdown
-Writer Classic - Uscire?
+WriterClassic - Uscire?
 Siete sicuri di voler uscire da Writer?
-Writer Classic - Cancellazione dei file
+WriterClassic - Cancellazione dei file
 Siete sicuri di voler cancellare un file?
 Scegliete un valore di larghezza per la finestra principale.
 Scegliete un valore di altezza per la finestra principale.
-Writer Classic - Modifica delle dimensioni dei caratteri
-Scegliere un numero (minimo 1).
-Writer Classic - Cambia famiglia
+WriterClassic - Cambia dimensione dei caratteri
+Scegliete un numero (minimo 1).
+WriterClassic - Cambia famiglia
 Digitare il nome di un carattere installato sul dispositivo.
-È necessario riavviare per applicare le modifiche.
-Writer Classic - Informazioni
-Questa applicazione è stata realizzata da MF366 ed è alimentata da Python 3.10.8.
+Per applicare le modifiche è necessario riavviare.
+WriterClassic - Informazioni
+Questa applicazione è stata realizzata da MF366 ed è alimentata da Python 3.10.11.
 Digitate la stringa di codice SPECIALE per ottenere l'uovo di Pasqua...
 Problemi a trovare l'uovo di Pasqua? Nessuno ha detto che sarebbe stato facile...
-Writer Classic - Menu dei comandi
-Digitare un comando per il menu dei comandi di Writer.
-Errore dell'utente: Non è un comando di Writer Classic.
-Il file è vuoto.
-Writer Classic - Verifica aggiornamenti
+WriterClassic - Menu dei comandi
+Digitate un comando per il menu dei comandi di Writer.
+Non è un comando di WriterClassic.
+Questo file è vuoto.
+WriterClassic - Verifica aggiornamenti
 Si sta utilizzando una versione precedente o una versione instabile. Si consiglia di aggiornare all'ultima versione stabile. Aggiornare ora?
 Disattivare/attivare gli aggiornamenti all'avvio
-Verifica aggiornamenti
-Cancellazione dei dati
-Writer Classic - Cancellare i dati?
-Siete sicuri di voler cancellare TUTTI i dati da Writer Classic?
+Controlla gli aggiornamenti
+Cancella i dati
+WriterClassic - Cancellare i dati?
+Siete sicuri di voler cancellare TUTTI i dati da WriterClassic?
 Internet
-Writer Classic - Vai all'URL
+WriterClassic - Vai all'URL
 Vai all'URL...
-Writer Classic - Ricerca con Bing
-Writer Classic - Ricerca con Google
-Scrittore classico - Ricerca con DuckDuckGo
-Writer Classic - Ricerca con Yahoo!
+WriterClassic - Ricerca con Bing
+WriterClassic - Ricerca con Google
+WriterClassic - Ricerca con DuckDuckGo
+WriterClassic - Ricerca con Yahoo!
 Ricerca con Bing
 Ricerca con Google
 Ricerca con DuckDuckGo
 Ricerca con Yahoo!
-Cosa si desidera cercare sul Web?
-Digitare un URL da aprire nel browser Web predefinito.
-
+Cosa volete cercare sul Web?
+Digitate un URL per aprirlo nel vostro browser web predefinito.
+La versione di WriterClassic è aggiornata.
+WriterClassic - Aggiornato
+Nuovo file

@@ -61,8 +61,8 @@ with open('data/'+str(setLang[0:2])+'.txt', 'r', encoding='utf-8') as usedLangFi
     #print(dd)
 
 with open('data/version.txt', 'r', encoding='utf-8') as versionFile:
-    appVersionGet = versionFile.read()
-    appV = appVersionGet[0:6]
+    appVGet = versionFile.read()
+    appV = appVGet[0:6]
     #print(appV)
 
 with open('config/menu.txt', 'r', encoding='utf-8') as textColor:
@@ -124,11 +124,20 @@ def writeStartup(text):
 # Check for Updates
 class UpdateCheck:
     @staticmethod
+    def check_other():
+        if appV != latest_version:
+            askForUpdate = mb.askyesno(lang[72], lang[73])
+            if askForUpdate:
+                webbrowser.open('https://github.com/MF366-Coding/WriterClassic/releases/latest')
+
+    @staticmethod
     def check():
         if appV != latest_version:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             if askForUpdate:
                 webbrowser.open('https://github.com/MF366-Coding/WriterClassic/releases/latest')
+        else:
+            mb.showinfo(title=lang[93], message=lang[92])
 
     @staticmethod
     def change():
@@ -139,7 +148,7 @@ class UpdateCheck:
             writeStartup('1')
 
 if startApp == '1':
-    UpdateCheck.check()
+    UpdateCheck.check_other()
 
 # Windowing... one more time...
 def SetWinSize():
@@ -214,16 +223,16 @@ def new_window():
 
     TextWidget = Text(newWindow)
 
-    with open('config/colour.txt', 'r') as color_bg:
+    with open('config/colour.txt', 'r', encoding='utf-8') as color_bg:
         colorBgData = color_bg.read()
 
-    with open('config/geom.txt', 'r') as geom_bg:
+    with open('config/geom.txt', 'r', encoding='utf-8') as geom_bg:
         geomValue = geom_bg.read()
 
-    with open('config/fg.txt', 'r') as fgConfig:
+    with open('config/fg.txt', 'r', encoding='utf-8') as fgConfig:
         foregorundData = fgConfig.read()
 
-    with open('config/ct.txt', 'r') as ctConfig:
+    with open('config/ct.txt', 'r', encoding='utf-8') as ctConfig:
         ctData = ctConfig.read()
 
     GeomValues = geomValue.split('x')
@@ -272,7 +281,7 @@ def relogio():
 def fontEdit(winType):
     if winType == 1:
         fontSize = sdg.askinteger(lang[59], lang[60], minvalue=1)
-        with open('config/font-size.txt', 'w') as fontSizeEdit:
+        with open('config/font-size.txt', 'w', encoding='utf-8') as fontSizeEdit:
             fontSizeEdit.write(str(fontSize))
             fontSizeEdit.close()
             mb.showinfo(lang[1], lang[63])
@@ -283,14 +292,23 @@ def fontEdit(winType):
             fontTypeEdit.close()
             mb.showinfo(lang[1], lang[63])
 
-# Open the PACKAGE
+
+# clears the screen
+def newFile():
+    desktop_win.title(lang[1])
+    TextWidget.delete(index1=0.0, index2=END)
+    
+
+# opens a file
 def abrir(root_win):
     file = dlg.askopenfilename(parent=root_win, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
     file_input = open(file, 'r', encoding='utf-8')
+    root_win.title(f"{lang[1]} - {file}")
     file_data = file_input.read()
     TextWidget.delete(index1=0.0, index2=END)
     TextWidget.insert(chars=file_data, index=0.0)
     file.close()
+
 
 # Saving as
 def salvar(root_win):
@@ -309,7 +327,7 @@ def formatar(root_win):
         fich_teste = open(ficheiro, 'r', encoding='utf-8')
         fich_test = fich_teste.read()
         if len(fich_test) != 0:
-            fich_saida = open(ficheiro, 'w')
+            fich_saida = open(ficheiro, 'w', encoding='utf-8')
             fich_saida.write('')
             fich_saida.close()
         else:
@@ -355,7 +373,7 @@ def sobre(thing2, thing3):
 def resetWriter(rootWin):
     askSOS = mb.askyesno(lang[77], lang[78])
     if askSOS:
-        with open('config/font-size.txt', 'w') as fontSizeEdit:
+        with open('config/font-size.txt', 'w', encoding='utf-8') as fontSizeEdit:
             fontSizeEdit.write('12')
             fontSizeEdit.close()
 
@@ -368,7 +386,7 @@ def resetWriter(rootWin):
         mudacor('black', 'white', 'white', 'black', 'white')
 
         desktop_win.geometry('600x400')
-        with open('config/geom.txt', 'w') as geomdata:
+        with open('config/geom.txt', 'w', encoding='utf-8') as geomdata:
             geomdata.write('')
             geomdata.write('600x400')
             geomdata.close()
@@ -424,6 +442,9 @@ def commandPrompt():
     elif askNow == 'about':
         sobre('data/about.txt', 'r')
 
+    elif askNow == "newfile":
+        newFile()
+
     elif askNow == 'help':
         ajuda()
 
@@ -442,13 +463,13 @@ def commandPrompt():
     elif askNow == 'save':
         salvar(desktop_win)
 
-    elif askNow == 'WriterClassic.Plugin.clock.RUN()':
+    elif askNow == 'clock open':
         relogio()
 
-    elif askNow == 'FontEdit.family()':
+    elif askNow == 'font family':
         fontEdit(2)
 
-    elif askNow == 'FontEdit.size()':
+    elif askNow == 'font size':
         fontEdit(1)
 
     elif askNow == 'ragequit':
@@ -460,7 +481,7 @@ def commandPrompt():
     elif askNow == 'notes':
         new_window()
 
-    elif askNow == 'WINDOW.geometry()':
+    elif askNow == 'win size':
         SetWinSize()
 
     else:
@@ -505,27 +526,23 @@ if __name__ == '__main__':
 
     #Adicionar o Menu Ficheiro
     ficheiro_menu = Menu(barra_menu)
+    ficheiro_menu.add_command(label=lang[94], command=newFile)
     ficheiro_menu.add_command(label=lang[7], command=lambda:
         abrir(desktop_win))
     ficheiro_menu.add_separator()
     ficheiro_menu.add_command(label = lang[8], command=lambda:
         salvar(desktop_win))
     ficheiro_menu.add_separator()
-    ficheiro_menu.add_command(label=lang[10], command=lambda:
-        formatar(desktop_win))
-    ficheiro_menu.add_separator()
     ficheiro_menu.add_command(label=lang[11], command=lambda:
         sair(desktop_win))
 
     #Adicionar o Menu Informações
     editar_menu = Menu(barra_menu)
-    editar_menu.add_command(label=lang[75], command=lambda:
-        UpdateCheck.check())
+    editar_menu.add_command(label=lang[75], command=UpdateCheck.check)
     editar_menu.add_separator()
     editar_menu.add_command(label=lang[25], command=lambda:
         sobre('data/about.txt', 'r'))
-    editar_menu.add_command(label=lang[26], command=lambda:
-        ajuda())
+    editar_menu.add_command(label=lang[26], command=ajuda)
     editar_menu.add_command(label=lang[27], command=repo)
     editar_menu.add_separator()
     editar_menu.add_command(label=lang[28], command=creditos_abertos)
@@ -568,6 +585,11 @@ if __name__ == '__main__':
     c_m.add_command(label=lang[88], command=lambda:
                     InternetOnWriter.Search('ddgo'))
 
+    b_m.add_separator()
+    b_m.add_command(label=lang[10], command=lambda:
+        formatar(desktop_win))
+    b_m.add_separator()
+
     #Adicionar temas da comunidade
     z_m.add_command(label='Black Hole', command=lambda:
         mudacor('black', 'white', 'white', 'black', 'white'))
@@ -601,8 +623,7 @@ if __name__ == '__main__':
     a_m.add_command(label='Slovenčina (Slovensko)', command=lambda:
         mudaIdioma('sk', desktop_win))
     a_m.add_separator()
-    a_m.add_command(label=lang[74], command=lambda:
-        UpdateCheck.change())
+    a_m.add_command(label=lang[74], command=UpdateCheck.change)
     a_m.add_separator()
     a_m.add_command(label=lang[76], command=lambda:
         resetWriter(desktop_win))
