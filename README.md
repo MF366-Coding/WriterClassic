@@ -180,15 +180,15 @@ Available commands:
 - **data** - Opens the 'Who made this app?' dialog (hint: it was me LMAO)
 - **exit** or **quit** - Shows the 'Confirm exit' dialog
 - **clear** - Opens the 'Pick a file to erase' dialog
-- **savefile** - Saves current file
+- **newfile** - Creates a new file
 - **save** - Shows the 'Save as' dialog
-- **WriterClassic.Plugin.clock.RUN()** - Opens the Clock Plugin
-- **FontEdit.family()** - Shows the 'Pick a font family' dialog
-- **FontEdit.size()** - Shows the 'Pick a font size' dialog
+- **clock open** - Opens the Clock Plugin
+- **font family** - Shows the 'Pick a font family' dialog
+- **font size** - Shows the 'Pick a font size' dialog
 - **ragequit** - Kills the app without confirmation **(NOT RECOMMENDED)**
 - **repo** - Opens the GitHub repo
 - **notes** - Opens the 'Notes' Plugin
-- **WINDOW.geometry** - Shows the 'Pick window dimensions/size' dialog
+- **win size** - Shows the 'Pick window dimensions/size' dialog
 
 In case you don't pick any of these, you'll just get an error.
 

@@ -1,93 +1,95 @@
 
-Writer Classic
+WriterClassic
 Ficheiro
 Aparência
-Extensões
+Plugins
 Definições
 Informações
 Abrir...
-Guardar
+Guardar ficheiro...
 Guardar como...
-Limpar ficheiro...
+Formatar ficheiro...
 Sair
-Tamanho da janela
+Dimensões da janela
 Temas
-Mudar fontes
-Temas pré-definidos
+Alterar tipos de letra
+Temas predefinidos
 Modo claro
 Modo escuro
-Modo cinza
+Modo cinzento
 Temas modernos
-Mudar tamanho
-Mudar tipo
-Bloco de Notas
+Alterar o tamanho
+Alterar família
+Notas
 Relógio
-Temas da Comunidade
-Sobre...
+Temas da comunidade
+Acerca de
 Ajuda
 Repositório
 Créditos
-Easter Egg
-Writer Classic - Sair?
-É preciso reiniciar o Writer para aplicar as definições! Reiniciar agora?
-Ficheiro de texto simples
-Ficheiro de configuração
+Ovo de Páscoa
+WriterClassic - Sair agora?
+É necessário reabrir o Writer para aplicar as alterações! Reiniciar agora?
+Ficheiro de texto
+Ficheiros de configuração
 Folha de estilo em cascata
-Ficheiro de Valores Separados por Vírgula
+Arquivo de valores separados por vírgula
 Ficheiro HTML
-Ficheiro de Informações de Setup
-Ficheiro de Informações Generalizadas
-Ficheiro de Inicialização do Windows
+Ficheiro de informações de configuração
+Ficheiro de informações genéricas
+Ficheiro de inicialização do Windows
 Ficheiro JavaScript
-Script de Python
-Ficheiro de Histórico Log
+Script Python
+Ficheiro de registo
 Ficheiro XML
 Ficheiro Readme
-Ficheiro de Biblioteca Estática
-Script de Anim8or
+Ficheiro de biblioteca estática
+Script Anim8or
 Ficheiro de texto ANSI
-Ficheiro de Quake 3 Engine Arena
+Ficheiro Quake 3 Engine Arena
 Ficheiro ActionScript
 Ficheiro de configuração ASP
-Ficheiro de código fonte Assembly
+Ficheiro de Código Fonte em Linguagem Assembly
 Ficheiros Markdown
-Writer Classic - Sair?
-Tem a certeza que quer fechar Writer Classic?
-Writer Classic - Limpar um ficheiro...
-Tem a certeza que quer limpar o conteúdo de um ficheiro na sua totalidade?
-Insira um valor para a largura da janela.
-Insira um valor para a altura da janela.
-Writer Classic - Escolher tamanho da letra...
-Insira um valor para o tipo de letra do Writer Classic (mínimo de 1).
-Writer Classic - Escolher tipo de letra...
-Insira o nome de um tipo de letra instalado no seu dispositivo.
-É necessário reiniciar para aplicar as definições.
-Sobre o Writer Classic
-Este programa foi feito por MF366 e programado em Python 3.10.8.
-Insira o código ESPECIAL para desbloquear o Easter Egg Secreto.
-Está com problemas em encontrar o Easter Egg? Ninguém disse que seria fácil...
-Writer Classic - Modo Admin
-Insira um comando para o Modo Admin do Writer Classic.
-Erro! O comando inserido não se encontra na lista de comandos disponíveis.
-O ficheiro escolhido encontra-se vazio.
-Writer Classic - Procurar atualizações
-Está a utilizar uma versão mais antiga ou uma versão instável. Recomenda-se, no entanto, que atualize para a versão estável mais recente. Atualizar agora?
-Desligar/ligar atualizações no arranque
-Procurar atualizações
+WriterClassic - Sair?
+Tem certeza de que deseja sair do Writer?
+WriterClassic - Apagador de ficheiros
+Tem a certeza que quer apagar um ficheiro?
+Escolhe um valor de largura para a janela principal.
+Escolha um valor de altura para a janela principal.
+WriterClassic - Alterar o tamanho da fonte
+Por favor, escolha um número (mínimo de 1).
+WriterClassic - Alterar família
+Introduza o nome de um tipo de letra que tenha instalado no seu dispositivo.
+É necessário reiniciar para aplicar as alterações.
+WriterClassic - Acerca de
+Esta aplicação foi criada por MF366 e é alimentada por Python 3.10.11.
+Escreve a cadeia de código ESPECIAL para obteres o Ovo da Páscoa...
+Problemas em encontrar o Ovo da Páscoa? Ninguém disse que seria fácil...
+WriterClassic - Menu de comandos
+Digite um comando para o menu de comandos do Writer.
+Não é um comando do WriterClassic.
+Este ficheiro está vazio.
+WriterClassic - Verificar se há atualizações
+Está a utilizar uma versão mais antiga ou uma versão instável. No entanto, é recomendável actualizar para a versão estável mais recente. Actualizar agora?
+Activar/desactivar as actualizações no arranque
+Verificar se há actualizações
 Limpar dados
-Writer Classic - Limpar dados?
-Tem a certeza que pretende limpar TODOS os dados do Writer Classic?
+WriterClassic - Limpar dados?
+Tem a certeza de que pretende limpar TODOS os dados do WriterClassic?
 Internet
-Writer Classic - Ir para URL
-Ir para URL...
-Writer Classic - Pesquisa com Bing
-Writer Classic - Pesquisa com Google
-Escritor Clássico - Pesquisa com DuckDuckGo
-Escritor Clássico - Pesquisar com Yahoo!
+WriterClassic - Ir para o URL
+Ir para o URL...
+WriterClassic - Pesquisar com o Bing
+WriterClassic - Pesquisar com o Google
+WriterClassic - Pesquisar com o DuckDuckGo
+WriterClassic - Pesquisar com o Yahoo!
 Pesquisar com o Bing
-Pesquisa com Google
-Pesquisa com DuckDuckGo
-Pesquisar com Yahoo!
+Pesquisar com o Google
+Pesquisar com DuckDuckGo
+Pesquisar com o Yahoo!
 O que gostaria de pesquisar na Web?
-Digite um URL para abrir no seu navegador da web predefinido.
-
+Introduza um URL para abrir no seu navegador Web predefinido.
+A sua versão do WriterClassic está atualizada.
+WriterClassic - Atualizado
+Novo ficheiro

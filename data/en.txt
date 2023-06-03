@@ -1,5 +1,5 @@
 
-Writer Classic
+WriterClassic
 File
 Appearence
 Plugins
@@ -28,7 +28,7 @@ Help
 Repo
 Credits
 Easter Egg
-Writer Classic - Exit now?
+WriterClassic - Exit now?
 You must reopen Writer to apply the changes! Restart now?
 Text file
 Config files
@@ -51,42 +51,45 @@ ActionScript File
 ASP Config File
 Assembly Language Source Code File
 Markdown Files
-Writer Classic - Quit?
+WriterClassic - Quit?
 Are you sure you want to quit Writer?
-Writer Classic - File Eraser
+WriterClassic - File Eraser
 Are you sure you want to erase a file?
 Pick a width value for the main window.
 Pick a height value for the main window.
-Writer Classic - Change Font Size
+WriterClassic - Change Font Size
 Please pick a number (minimum of 1).
-Writer Classic - Change Family
+WriterClassic - Change Family
 Please type the name of a font you have installed on your device.
 You must restart to apply the changes.
-Writer Classic - About
-This app was made by MF366 and powered by Python 3.10.8.
+WriterClassic - About
+This app was made by MF366 and powered by Python 3.10.11.
 Type the SPECIAL code string to get the Easter Egg...
 Trouble finding the Easter Egg? Nobody said it would be easy...
-Writer Classic - Command Menu
+WriterClassic - Command Menu
 Type a command for Writer's Command Menu.
-User Error: Not a Writer Classic command.
+Not a WriterClassic command.
 This file is empty.
-Writer Classic - Check for Updates
+WriterClassic - Check for Updates
 You are either using an older version or an unstable one. It is recommended you update to the latest stable though. Update now?
 Turn off/on updates at startup
 Check for Updates
 Clear Data
-Writer Classic - Clear data?
-Are you sure you want to clear ALL data from Writer Classic?
+WriterClassic - Clear data?
+Are you sure you want to clear ALL data from WriterClassic?
 Internet
-Writer Classic - Go to URL
+WriterClassic - Go to URL
 Go to URL...
-Writer Classic - Search with Bing
-Writer Classic - Search with Google
-Writer Classic - Search with DuckDuckGo
-Writer Classic - Search with Yahoo!
+WriterClassic - Search with Bing
+WriterClassic - Search with Google
+WriterClassic - Search with DuckDuckGo
+WriterClassic - Search with Yahoo!
 Search with Bing
 Search with Google
 Search with DuckDuckGo
 Search with Yahoo!
 What would you like to search on the Web?
 Type an URL to open in your default web browser.
+Your version of WriterClassic is up to date.
+WriterClassic - Up to date
+New file

@@ -1,5 +1,5 @@
 
-Writer Classic
+WriterClassic
 Archivo
 Apariencia
 Plugins
@@ -28,7 +28,7 @@ Ayuda
 Repo
 Créditos
 Huevo de Pascua
-Writer Classic - ¿Salir ahora?
+WriterClassic - ¿Salir ahora?
 Debes volver a abrir Writer para aplicar los cambios. ¿Reiniciar ahora?
 Archivo de texto
 Archivos de configuración
@@ -49,56 +49,47 @@ Archivo de texto ANSI
 Archivo Quake 3 Engine Arena
 Archivo ActionScript
 Archivo ASP Config
-Archivo de código fuente en lenguaje ensamblador
+Archivo de código fuente en lenguaje Assembly
 Archivos Markdown
-Writer Classic - ¿Salir?
+WriterClassic - ¿Salir?
 ¿Estás seguro de que quieres salir de Writer?
-Writer Classic - Borrador de Archivos
+WriterClassic - Borrador de Archivos
 ¿Estás seguro de que quieres borrar un archivo?
 Elija un valor de anchura para la ventana principal.
 Elija un valor de altura para la ventana principal.
-Writer Classic - Cambiar tamaño de fuente
+WriterClassic - Cambiar tamaño de fuente
 Elija un número (mínimo 1).
-Writer Classic - Cambiar familia
+WriterClassic - Cambiar familia
 Por favor, escriba el nombre de una fuente que tenga instalada en su dispositivo.
 Debe reiniciar para aplicar los cambios.
-Writer Classic - Acerca de
-Esta aplicación ha sido creada por MF366 y funciona con Python 3.10.8.
+WriterClassic - Acerca de
+Esta aplicación ha sido creada por MF366 y funciona con Python 3.10.11.
 Escribe la cadena de código ESPECIAL para conseguir el Huevo de Pascua...
 ¿Problemas para encontrar el Huevo de Pascua? Nadie dijo que sería fácil...
-Writer Classic - Menú de comandos
+WriterClassic - Menú de comandos
 Escribe un comando para el Menú de Comandos de Writer.
-Error de usuario: No es un comando de Writer Classic.
-El archivo está vacío.
-Writer Classic - Buscar actualizaciones
-Estás utilizando una versión antigua o inestable. Sin embargo, se recomienda actualizar a la última versión estable. ¿Actualizar ahora?
+No es un comando de WriterClassic.
+Este archivo está vacío.
+WriterClassic - Buscar Actualizaciones
+Estás utilizando una versión antigua o inestable. Se recomienda actualizar a la última versión estable. ¿Actualizar ahora?
 Desactivar/activar actualizaciones al inicio
 Buscar actualizaciones
 Borrar datos
-Writer Classic - ¿Borrar datos?
-¿Estás seguro de que quieres borrar TODOS los datos de Writer Classic?
+WriterClassic - ¿Borrar datos?
+¿Estás seguro de que quieres borrar TODOS los datos de WriterClassic?
 Internet
-Writer Classic - Ir a URL
+WriterClassic - Ir a URL
 Ir a URL...
-Writer Classic - Buscar con Bing
-Writer Classic - Buscar con Google
-Writer Classic - Buscar con DuckDuckGo
-Writer Classic - Buscar con Yahoo
+WriterClassic - Buscar con Bing
+WriterClassic - Buscar con Google
+WriterClassic - Buscar con DuckDuckGo
+¡WriterClassic - Buscar con Yahoo!
 Buscar con Bing
 Buscar con Google
 Buscar con DuckDuckGo
-Buscar con Yahoo
-Internet
-Writer Classic - Ir a URL
-Ir a URL...
-Writer Classic - Buscar con Bing
-Writer Classic - Buscar con Google
-Writer Classic - Buscar con DuckDuckGo
-Writer Classic - Buscar con Yahoo
-Buscar con Bing
-Buscar con Google
-Buscar con DuckDuckGo
-Buscar con Yahoo
+¡Buscar con Yahoo!
 ¿Qué quieres buscar en la Web?
 Escribe una URL para abrirla en tu navegador web predeterminado.
-
+Tu versión de WriterClassic está actualizada.
+WriterClassic - Actualizado
+Nuevo archivo

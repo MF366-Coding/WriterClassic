@@ -61,8 +61,8 @@ with open('data/'+str(setLang[0:2])+'.txt', 'r', encoding='utf-8') as usedLangFi
     #print(dd)
 
 with open('data/version.txt', 'r', encoding='utf-8') as versionFile:
-    appVersionGet = versionFile.read()
-    appV = appVersionGet[0:6]
+    appVGet = versionFile.read()
+    appV = appVGet[0:6]
     #print(appV)
 
 with open('config/menu.txt', 'r', encoding='utf-8') as textColor:
@@ -124,11 +124,20 @@ def writeStartup(text):
 # Check for Updates
 class UpdateCheck:
     @staticmethod
+    def check_other():
+        if appV != latest_version:
+            askForUpdate = mb.askyesno(lang[72], lang[73])
+            if askForUpdate:
+                webbrowser.open('https://github.com/MF366-Coding/WriterClassic/releases/latest')
+
+    @staticmethod
     def check():
         if appV != latest_version:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             if askForUpdate:
                 webbrowser.open('https://github.com/MF366-Coding/WriterClassic/releases/latest')
+        else:
+            mb.showinfo(title=lang[93], message=lang[92])
 
     @staticmethod
     def change():
@@ -139,7 +148,7 @@ class UpdateCheck:
             writeStartup('1')
 
 if startApp == '1':
-    UpdateCheck.check()
+    UpdateCheck.check_other()
 
 # Windowing... one more time...
 def SetWinSize():
@@ -433,6 +442,9 @@ def commandPrompt():
     elif askNow == 'about':
         sobre('data/about.txt', 'r')
 
+    elif askNow == "newfile":
+        newFile()
+
     elif askNow == 'help':
         ajuda()
 
@@ -451,13 +463,13 @@ def commandPrompt():
     elif askNow == 'save':
         salvar(desktop_win)
 
-    elif askNow == 'WriterClassic.Plugin.clock.RUN()':
+    elif askNow == 'clock open':
         relogio()
 
-    elif askNow == 'FontEdit.family()':
+    elif askNow == 'font family':
         fontEdit(2)
 
-    elif askNow == 'FontEdit.size()':
+    elif askNow == 'font size':
         fontEdit(1)
 
     elif askNow == 'ragequit':
@@ -469,7 +481,7 @@ def commandPrompt():
     elif askNow == 'notes':
         new_window()
 
-    elif askNow == 'WINDOW.geometry()':
+    elif askNow == 'win size':
         SetWinSize()
 
     else:
@@ -514,14 +526,12 @@ if __name__ == '__main__':
 
     #Adicionar o Menu Ficheiro
     ficheiro_menu = Menu(barra_menu)
+    ficheiro_menu.add_command(label=lang[94], command=newFile)
     ficheiro_menu.add_command(label=lang[7], command=lambda:
         abrir(desktop_win))
     ficheiro_menu.add_separator()
     ficheiro_menu.add_command(label = lang[8], command=lambda:
         salvar(desktop_win))
-    ficheiro_menu.add_separator()
-    ficheiro_menu.add_command(label=lang[10], command=lambda:
-        formatar(desktop_win))
     ficheiro_menu.add_separator()
     ficheiro_menu.add_command(label=lang[11], command=lambda:
         sair(desktop_win))
@@ -574,6 +584,11 @@ if __name__ == '__main__':
                     InternetOnWriter.Search('ysearch'))
     c_m.add_command(label=lang[88], command=lambda:
                     InternetOnWriter.Search('ddgo'))
+
+    b_m.add_separator()
+    b_m.add_command(label=lang[10], command=lambda:
+        formatar(desktop_win))
+    b_m.add_separator()
 
     #Adicionar temas da comunidade
     z_m.add_command(label='Black Hole', command=lambda:
