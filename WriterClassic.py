@@ -43,7 +43,8 @@ with open('config/startup.txt', 'r', encoding='utf-8') as startupFile:
     startApp = startAppData[0:1]
     #print(startApp)
 
-desktop_win.iconbitmap("data/app_icon.ico")
+if sys.platform == "win32":
+    desktop_win.iconbitmap("data/app_icon.ico")
 
 response = requests.get('https://api.github.com/repos/MF366-Coding/WriterClassic/releases/latest')
 data = json.loads(response.text)
