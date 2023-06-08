@@ -24,6 +24,7 @@ Small contributions by:
 
 # Importing the goodies
 import sys
+import os
 from tkinter import * # Window
 from tkinter.ttk import * # Not sure
 from tkinter import simpledialog as sdg # Inputs with GUI
@@ -392,6 +393,12 @@ def resetWriter(rootWin):
             geomdata.write('600x400')
             geomdata.close()
 
+class PythonOnWriter:
+    @staticmethod
+    def run_py_3():
+        os.system("cls")
+        pass
+
 class InternetOnWriter:
     @staticmethod
     def Website():
@@ -561,7 +568,6 @@ if __name__ == '__main__':
     newMenuEdit = Menu(ver_menu)
     b_m = Menu(barra_menu)
     c_m = Menu(b_m)
-    z_m = Menu(b_m)
 
     ver_menu.add_command(label=lang[12], command=SetWinSize)
 
@@ -589,23 +595,7 @@ if __name__ == '__main__':
     b_m.add_separator()
     b_m.add_command(label=lang[10], command=lambda:
         formatar(desktop_win))
-    b_m.add_separator()
 
-    #Adicionar temas da comunidade
-    z_m.add_command(label='Black Hole', command=lambda:
-        mudacor('black', 'white', 'white', 'black', 'white'))
-    z_m.add_command(label='Blue Bubble', command=lambda:
-        mudacor('white', 'blue', 'blue', 'white', 'dark blue'))
-    z_m.add_command(label='Green Bubble', command=lambda:
-        mudacor('white', 'green', 'green', 'white', 'dark green'))
-    z_m.add_command(label='Red Bubble', command=lambda:
-        mudacor('white', 'red', 'red', 'white', 'brown'))
-    z_m.add_command(label='Diving and Arriving', command=lambda:
-        mudacor('#1697a1', '#05011f', '#05011f', '#075d63', 'black'))
-    z_m.add_command(label='TOP SECRET!', command=lambda:
-        mudacor('black', '#ff2626', '#ff2626', 'black', '#fa7d7d'))
-    z_m.add_command(label='Forgotten', command=lambda:
-        mudacor('#470404', 'white', 'white', '#260202', '#e09d9d'))
 
     #Adicionar o Menu Definições
     a_m = Menu(barra_menu)
@@ -671,7 +661,6 @@ if __name__ == '__main__':
     a_m.configure(background=MenuColor, foreground=ForegroundColor)
     b_m.configure(background=MenuColor, foreground=ForegroundColor)
     c_m.configure(background=MenuColor, foreground=ForegroundColor)
-    z_m.configure(background=MenuColor, foreground=ForegroundColor)
 
 #Adicionar menus "cascade"
 barra_menu.add_cascade(label=lang[2],menu=ficheiro_menu)
@@ -681,8 +670,7 @@ ver_5_m.add_cascade(label=lang[15], menu=ver_4_m)
 ver_5_m.add_cascade(label=lang[19], menu=ver_7_m)
 ver_menu.add_cascade(label=lang[14], menu=newMenuEdit)
 barra_menu.add_cascade(label=lang[4], menu=b_m)
-b_m.add_cascade(label=lang[24], menu=z_m)
-b_m.add_cascade(label=lang[79], menu=c_m)
+barra_menu.add_cascade(label=lang[79], menu=c_m)
 barra_menu.add_cascade(label=lang[5], menu=a_m)
 barra_menu.add_cascade(label=lang[6], menu=editar_menu)
 
