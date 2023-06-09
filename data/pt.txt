@@ -93,3 +93,6 @@ Introduza um URL para abrir no seu navegador Web predefinido.
 A sua versão do WriterClassic está atualizada.
 WriterClassic - Atualizado
 Novo ficheiro
+Pesquisar com Ecosia
+Pesquisar no YouTube
+Pesquisar no Stack Overflow

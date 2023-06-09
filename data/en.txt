@@ -93,3 +93,6 @@ Type an URL to open in your default web browser.
 Your version of WriterClassic is up to date.
 WriterClassic - Up to date
 New file
+Search with Ecosia
+Search on YouTube
+Search on Stack Overflow

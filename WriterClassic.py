@@ -393,12 +393,6 @@ def resetWriter(rootWin):
             geomdata.write('600x400')
             geomdata.close()
 
-class PythonOnWriter:
-    @staticmethod
-    def run_py_3():
-        os.system("cls")
-        pass
-
 class InternetOnWriter:
     @staticmethod
     def Website():
@@ -435,6 +429,13 @@ class InternetOnWriter:
                 webbrowser.open("https://search.yahoo.com/search?p="+typed)
         elif engine == 'ddgo':
             # stands for DuckDuckGo
+            askForTyping = sdg.askstring(lang[84], lang[90])
+            if askForTyping != '':
+                for i in askForTyping:
+                    typed = askForTyping.replace(' ', '+')
+                webbrowser.open("https://duckduckgo.com/?q="+typed)
+        elif engine == "yt":
+            # stands for youtube
             askForTyping = sdg.askstring(lang[84], lang[90])
             if askForTyping != '':
                 for i in askForTyping:

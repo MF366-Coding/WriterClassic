@@ -93,3 +93,6 @@ Zadajte adresu URL, ktorá sa otvorí v predvolenom webovom prehliadači.
 Vaša verzia programu WriterClassic je aktuálna.
 WriterClassic - Aktuálne
 Nový súbor
+Vyhľadávanie s Ecosia
+Vyhľadávanie na YouTube
+Vyhľadávanie na Stack Overflow
