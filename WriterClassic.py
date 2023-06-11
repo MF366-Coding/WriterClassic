@@ -321,16 +321,16 @@ def sobre(thing2, thing3):
 def resetWriter(rootWin):
     askSOS = mb.askyesno(lang[77], lang[78])
     if askSOS:
-        with open('config/font-size.txt', 'wt', encoding='utf-8') as fontSizeEdit:
-            fontSizeEdit.write('12')
-            fontSizeEdit.close()
-
-        with open('config/font-type.txt', 'w', encoding='utf-8') as fontTypeEdit:
-            fontTypeEdit.write('Arial')
-            fontTypeEdit.close()
+        with open('config/font.json', 'wt', encoding='utf-8') as fontFileNew:
+            new_values = {
+                "font-type":"Segoe UI",
+                "font-size":12
+            }
+            json.dump(new_values, fontFileNew)
+            
+        fontFileNew.close()
 
         mudaIdioma('en', rootWin)
-
         mudacor('black', 'white', 'white', 'black', 'white')
 
         desktop_win.geometry('600x400')
@@ -360,12 +360,14 @@ class InternetOnWriter:
                 for i in askForTyping:
                     typed = askForTyping.replace(' ', '+')
                 webbrowser.open('https://www.google.com/search?q='+typed)
+                
         elif engine == 'bing':
             askForTyping = sdg.askstring(lang[82], lang[90])
             if askForTyping != '':
                 for i in askForTyping:
                     typed = askForTyping.replace(' ', '+')
                 webbrowser.open('https://www.bing.com/search?q='+typed)
+                
         elif engine == 'ysearch':
             # stands for Yahoo!
             askForTyping = sdg.askstring(lang[85], lang[90])
@@ -373,6 +375,7 @@ class InternetOnWriter:
                 for i in askForTyping:
                     typed = askForTyping.replace(' ', '+')
                 webbrowser.open("https://search.yahoo.com/search?p="+typed)
+                
         elif engine == 'ddgo':
             # stands for DuckDuckGo
             askForTyping = sdg.askstring(lang[84], lang[90])
@@ -380,13 +383,29 @@ class InternetOnWriter:
                 for i in askForTyping:
                     typed = askForTyping.replace(' ', '+')
                 webbrowser.open("https://duckduckgo.com/?q="+typed)
+                
         elif engine == "yt":
             # stands for youtube
-            askForTyping = sdg.askstring(lang[84], lang[90])
+            askForTyping = sdg.askstring(lang[99], lang[90])
             if askForTyping != '':
                 for i in askForTyping:
                     typed = askForTyping.replace(' ', '+')
-                webbrowser.open("https://duckduckgo.com/?q="+typed)
+                webbrowser.open("https://www.youtube.com/results?search_query="+typed)
+                
+        elif engine == "ecosia":
+            askForTyping = sdg.askstring(lang[98], lang[90])
+            if askForTyping != '':
+                for i in askForTyping:
+                    typed = askForTyping.replace(' ', '%20')
+                webbrowser.open("https://www.ecosia.org/search?method=index&q="+typed)
+        
+        elif engine == "stack":
+            # stands for Stack Overflow
+            askForTyping = sdg.askstring(lang[100], lang[90])
+            if askForTyping != '':
+                for i in askForTyping:
+                    typed = askForTyping.replace(' ', '+')
+                webbrowser.open("https://stackoverflow.com/search?q="+typed)
 
 def commandPrompt():
     askNow = sdg.askstring(lang[68], lang[69])
@@ -527,6 +546,9 @@ if __name__ == '__main__':
     #Adicionar o Menu Plugins
     b_m.add_command(label=lang[22], command=new_window)
     b_m.add_command(label=lang[23], command=relogio)
+    b_m.add_separator()
+    b_m.add_command(label=lang[10], command=lambda:
+        formatar(desktop_win))
 
     c_m.add_command(label=lang[81], command=InternetOnWriter.Website)
     c_m.add_separator()
@@ -538,11 +560,14 @@ if __name__ == '__main__':
                     InternetOnWriter.Search('ysearch'))
     c_m.add_command(label=lang[88], command=lambda:
                     InternetOnWriter.Search('ddgo'))
-
-    b_m.add_separator()
-    b_m.add_command(label=lang[10], command=lambda:
-        formatar(desktop_win))
-
+    c_m.add_command(label=lang[95], command=lambda:
+                    InternetOnWriter.Search("ecosia"))
+    c_m.add_separator()
+    c_m.add_command(label=lang[97], command=lambda:
+                    InternetOnWriter.Search("stack"))
+    c_m.add_separator()
+    c_m.add_command(label=lang[96], command=lambda:
+                    InternetOnWriter.Search("yt"))
 
     #Adicionar o Menu Definições
     a_m = Menu(barra_menu)

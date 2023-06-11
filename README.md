@@ -5,9 +5,11 @@ Writer Classic is a small Python file that, together with some config files, bri
 
 **IMPORTANT INFO!**
 
-Writer works in Windows, MacOS and Linux, but there are some bugs in menus and features in both Windows and Mac.
+Writer can run in Windows, MacOS and Linux, but there are some bugs in menus and features in both Windows and Mac.
 
-Thanks for visiting this repository. :+1:
+That's because the colored menu only works **correctly** on Linux.
+
+Thanks for visiting this repository. :heart:
 
 I also would love if you waste some time testing Writer Classic or just exploring this GitHub repository.
 
@@ -83,7 +85,7 @@ Follow the steps in [here](https://github.com/MF366-Coding/WriterClassic#additio
 # What do I need to be able to be able to use Writer Classic? :heavy_check_mark:
 You need:
 
-* [X] Python 3 
+* [X] Python 3 (Comes with MacOS and Linux, usually | Requires installation on Windows)
 
 * [X] tkinter (Python3 Module)
 
@@ -144,7 +146,7 @@ Writer Classic author and programmer is always developing new plugins in order t
 
 * **Notepad** (you can take notes aside what you're writing and editing)
 * **Clock** (because it's always useful to know if it's time to start coding)
-* **Alt Themes** (some really good themes you can also choose from)
+* **File Wiper** (wipes a file you pick - does not delete it)
 
 ### Settings :hammer_and_wrench:
 Within settings you can choose from several languages. For now it's only available in:
