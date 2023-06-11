@@ -67,33 +67,18 @@ with open('data/version.txt', 'r', encoding='utf-8') as versionFile:
     appV = appVGet[0:6]
     #print(appV)
 
-with open('config/menu.txt', 'r', encoding='utf-8') as textColor:
-    mBg = textColor.read()
+with open('config/theme.json', 'rt', encoding='utf-8') as textColor:
+    theme = json.load(textColor)
 
-with open('config/mfg.txt', 'r', encoding='utf-8') as menuFg:
-    mFg = menuFg.read()
-
-with open('config/menu.txt', 'r', encoding='utf-8') as textColor:
-    MenuColor = textColor.read()
-
-with open('config/mfg.txt', 'r', encoding='utf-8') as readColor:
-    ForegroundColor = readColor.read()
-
-with open('config/font-type.txt', 'r', encoding='utf-8') as fontFile_1:
-    FontFamily = fontFile_1.read()
-
-with open('config/font-size.txt', 'r', encoding='utf-8') as fontFile_2:
-    FontSize = fontFile_2.read()
+with open('config/font.json', 'rt', encoding='utf-8') as fontFile:
+    font_use = json.load(fontFile)
 
 # Windowing... again
 desktop_win.title(lang[1])
 
-FontSet = Font(family=FontFamily, size=FontSize)
+FontSet = Font(family=font_use["font-type"], size=font_use["font-size"])
 
 TextWidget = Text(desktop_win, font=FontSet)
-
-with open('config/colour.txt', 'r', encoding='utf-8') as color_bg:
-    colorBgData = color_bg.read()
 
 with open('config/geom.txt', 'r', encoding='utf-8') as geom_bg:
     geomValue = geom_bg.read()
@@ -375,12 +360,12 @@ def sobre(thing2, thing3):
 def resetWriter(rootWin):
     askSOS = mb.askyesno(lang[77], lang[78])
     if askSOS:
-        with open('config/font-size.txt', 'w', encoding='utf-8') as fontSizeEdit:
+        with open('config/font-size.txt', 'wt', encoding='utf-8') as fontSizeEdit:
             fontSizeEdit.write('12')
             fontSizeEdit.close()
 
         with open('config/font-type.txt', 'w', encoding='utf-8') as fontTypeEdit:
-            fontTypeEdit.write('Ubuntu Mono')
+            fontTypeEdit.write('Arial')
             fontTypeEdit.close()
 
         mudaIdioma('en', rootWin)
