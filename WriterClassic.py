@@ -24,7 +24,6 @@ Small contributions by:
 
 # Importing the goodies
 import sys
-import os
 from tkinter import * # Window
 from tkinter.ttk import * # Not sure
 from tkinter import simpledialog as sdg # Inputs with GUI
@@ -33,8 +32,8 @@ import tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
 import webbrowser # Isn't is obvious...
 import datetime # Really, bro?
 from tkinter.font import Font # Ouchie mama (font, daaah)
-import requests # it's a module
-import json # search it up
+import requests # it's a module yay!
+import json # google it lmfao
 
 # Windowing
 desktop_win = Tk()
@@ -83,24 +82,15 @@ TextWidget = Text(desktop_win, font=FontSet)
 with open('config/geom.txt', 'r', encoding='utf-8') as geom_bg:
     geomValue = geom_bg.read()
 
-with open('config/fg.txt', 'r', encoding='utf-8') as fgConfig:
-    foregorundData = fgConfig.read()
-
-with open('config/ct.txt', 'r', encoding='utf-8') as ctConfig:
-    ctData = ctConfig.read()
-
 GeomValues = geomValue.split('x')
 
 desktop_win.geometry(geomValue)
 
-TextWidget.configure(bg=colorBgData, fg=foregorundData, width=GeomValues[0], height=GeomValues[1], insertbackground=ctData)
+TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"])
 TextWidget.pack()
 
 # Closing the configs
-color_bg.close()
-fgConfig.close()
 geom_bg.close()
-ctConfig.close()
 configLangFile.close()
 
 def writeStartup(text):
@@ -150,28 +140,19 @@ def SetWinSize():
 
 # Theme Picker
 def mudacor(colour_first, colour_second, colour_third, colour_fourth, colour_fifth):
-    with open('config/colour.txt', 'w', encoding='utf-8') as file1:
-        file1.write('')
-        file1.write(colour_first)
-    with open('config/fg.txt', 'w', encoding='utf-8') as file2:
-        file2.write('')
-        file2.write(colour_second)
-    with open('config/ct.txt', 'w', encoding='utf-8') as file3:
-        file3.write('')
-        file3.write(colour_third)
+    with open('config/theme.json', 'wt') as fileColored:
+        new_obj = {
+            "color":str(colour_first),
+            "ct":str(colour_third),
+            "fg":str(colour_second),
+            "mfg":str(colour_fifth),
+            "menu":str(colour_fourth)
+        }
+        json.dump(new_obj, fileColored)
+    
     TextWidget.configure(bg=colour_first, fg=colour_second, insertbackground=colour_third)
     TextWidget.pack()
-    with open('config/menu.txt', 'w', encoding='utf-8') as file4:
-        file4.write('')
-        file4.write(colour_fourth)
-    with open('config/mfg.txt', 'w', encoding='utf-8') as file5:
-        file5.write('')
-        file5.write(colour_fifth)
-    file1.close()
-    file2.close()
-    file3.close()
-    file4.close()
-    file5.close()
+    
     waitResponse = mb.askyesno(parent=desktop_win, title=lang[30], message=lang[31])
     if waitResponse:
         desktop_win.destroy()
@@ -193,47 +174,16 @@ def mudaIdioma(language_set, root_win):
 def new_window():    
     newWindow = Toplevel(desktop_win)
 
-    with open('config/menu.txt', 'r', encoding='utf-8') as textColor:
-        mBg = textColor.read()
-
-    with open('config/mfg.txt', 'r', encoding='utf-8') as menuFg:
-        mFg = menuFg.read()
-
-    with open('config/menu.txt', 'r', encoding='utf-8') as textColor:
-        MenuColor = textColor.read()
-
-    with open('config/mfg.txt', 'r', encoding='utf-8') as readColor:
-        ForegroundColor = readColor.read()
-
     # Windowing... yet once more LMAO...
     newWindow.title(lang[22])
 
     TextWidget = Text(newWindow)
 
-    with open('config/colour.txt', 'r', encoding='utf-8') as color_bg:
-        colorBgData = color_bg.read()
-
-    with open('config/geom.txt', 'r', encoding='utf-8') as geom_bg:
-        geomValue = geom_bg.read()
-
-    with open('config/fg.txt', 'r', encoding='utf-8') as fgConfig:
-        foregorundData = fgConfig.read()
-
-    with open('config/ct.txt', 'r', encoding='utf-8') as ctConfig:
-        ctData = ctConfig.read()
-
-    GeomValues = geomValue.split('x')
-
-    newWindow.geometry(geomValue)
-
-    TextWidget.configure(bg=colorBgData, fg=foregorundData, width=GeomValues[0], height=GeomValues[1], insertbackground=ctData)
+    TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"])
     TextWidget.pack()
 
     # Closing what I no longer need
-    color_bg.close()
-    fgConfig.close()
     geom_bg.close()
-    ctConfig.close()
     configLangFile.close()
 
     newWindow.mainloop()
@@ -266,17 +216,29 @@ def relogio():
 
 # Text font
 def fontEdit(winType):
+    global font_use
+    
     if winType == 1:
         fontSize = sdg.askinteger(lang[59], lang[60], minvalue=1)
-        with open('config/font-size.txt', 'w', encoding='utf-8') as fontSizeEdit:
-            fontSizeEdit.write(str(fontSize))
-            fontSizeEdit.close()
+        with open('config/font.json', 'wt', encoding='utf-8') as fontFileUse:
+            font_use["font-size"] = fontSize
+            new_object = {
+                "font-type":font_use["font-type"],
+                "font-size":fontSize
+            }
+            json.dump(new_object, fontFileUse)
+            fontFileUse.close()
             mb.showinfo(lang[1], lang[63])
     else:
         fontType = sdg.askstring(lang[61], lang[62])
-        with open('config/font-type.txt', 'w', encoding='utf-8') as fontTypeEdit:
-            fontTypeEdit.write(fontType)
-            fontTypeEdit.close()
+        with open('config/font.json', 'wt', encoding='utf-8') as fontFileUse:
+            font_use["font-type"] = fontType
+            new_object = {
+                "font-type":fontType,
+                "font-size":font_use["font-size"]
+            }
+            json.dump(new_object, fontFileUse)
+            fontFileUse.close()
             mb.showinfo(lang[1], lang[63])
 
 
@@ -299,7 +261,6 @@ def abrir(root_win):
 
 # Saving as
 def salvar(root_win):
-    global TextWidget
     dados = TextWidget.get('0.0', END)
     ficheiro = dlg.askopenfilename(parent=root_win, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
     fich_saida = open(ficheiro, 'w', encoding='utf-8')
@@ -516,7 +477,7 @@ if __name__ == '__main__':
 
     #Configurar a barra de menu
     barra_menu = Menu(desktop_win)
-    barra_menu.configure(background=mBg, foreground=mFg)
+    barra_menu.configure(background=theme["menu"], foreground=theme["mfg"])
 
     #Adicionar o Menu Ficheiro
     ficheiro_menu = Menu(barra_menu)
@@ -635,18 +596,18 @@ if __name__ == '__main__':
         mudacor('#020421','pink', 'pink', '#020312', '#ebd1ed'))
 
     #Configurar cores do Menu
-    ficheiro_menu.configure(background=MenuColor, foreground=ForegroundColor)
-    editar_menu.configure(background=MenuColor, foreground=ForegroundColor)
-    ver_menu.configure(background=MenuColor, foreground=ForegroundColor)
-    ver_1_m.configure(background=MenuColor, foreground=ForegroundColor)
-    ver_3_m.configure(background=MenuColor, foreground=ForegroundColor)
-    ver_4_m.configure(background=MenuColor, foreground=ForegroundColor)
-    ver_5_m.configure(background=MenuColor, foreground=ForegroundColor)
-    ver_7_m.configure(background=MenuColor, foreground=ForegroundColor)
-    newMenuEdit.configure(background=MenuColor, foreground=ForegroundColor)
-    a_m.configure(background=MenuColor, foreground=ForegroundColor)
-    b_m.configure(background=MenuColor, foreground=ForegroundColor)
-    c_m.configure(background=MenuColor, foreground=ForegroundColor)
+    ficheiro_menu.configure(background=theme["menu"], foreground=theme["mfg"])
+    editar_menu.configure(background=theme["menu"], foreground=theme["mfg"])
+    ver_menu.configure(background=theme["menu"], foreground=theme["mfg"])
+    ver_1_m.configure(background=theme["menu"], foreground=theme["mfg"])
+    ver_3_m.configure(background=theme["menu"], foreground=theme["mfg"])
+    ver_4_m.configure(background=theme["menu"], foreground=theme["mfg"])
+    ver_5_m.configure(background=theme["menu"], foreground=theme["mfg"])
+    ver_7_m.configure(background=theme["menu"], foreground=theme["mfg"])
+    newMenuEdit.configure(background=theme["menu"], foreground=theme["mfg"])
+    a_m.configure(background=theme["menu"], foreground=theme["mfg"])
+    b_m.configure(background=theme["menu"], foreground=theme["mfg"])
+    c_m.configure(background=theme["menu"], foreground=theme["mfg"])
 
 #Adicionar menus "cascade"
 barra_menu.add_cascade(label=lang[2],menu=ficheiro_menu)

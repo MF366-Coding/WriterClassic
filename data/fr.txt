@@ -96,3 +96,6 @@ Nouveau dossier
 Recherche avec Ecosia
 Rechercher sur YouTube
 Rechercher sur Stack Overflow
+WriterClassic - Recherche avec Ecosia
+WriterClassic - Rechercher sur YouTube
+WriterClassic - Rechercher sur Stack Overflow

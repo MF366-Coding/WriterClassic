@@ -96,3 +96,6 @@ Novo ficheiro
 Pesquisar com Ecosia
 Pesquisar no YouTube
 Pesquisar no Stack Overflow
+WriterClassic - Pesquisar com Ecosia
+WriterClassic - Pesquisar no YouTube
+WriterClassic - Pesquisar no Stack Overflow
