@@ -99,6 +99,13 @@ You need:
 
 * [X] json (Python3 Module - Standard, usually)
 
+* [X] the `data` folder that comes with WriterClassic
+
+* [X] the `config` folder that comes with WriterClassic
+
+## Small information
+If you want to redistribute this software, you need its LICENSE: this is **mandatory**!
+
 # Feature requests :heavy_plus_sign:
 If you would like to open Writer Classic and discover a new functionality suggested by you, please check the Issues in this Repository.
 
