@@ -1,0 +1,101 @@
+
+WriterClassic
+Fil
+Utseende
+Plugins
+Inställningar
+Information
+Öppna...
+Spara fil...
+Spara som...
+Formatera fil...
+Avsluta
+Fönsterdimensioner
+Teman
+Ändra teckensnitt
+Standardteman
+Ljust läge
+Mörkt läge
+Grått läge
+Moderna teman
+Ändra storlek
+Ändra familj
+Anteckningar
+Klocka
+Teman för gemenskapen
+Om
+Hjälp
+Repo
+Krediter
+Påskägg
+WriterClassic - Avsluta nu?
+Du måste öppna Writer igen för att tillämpa ändringarna! Starta om nu?
+Textfil
+Konfigureringsfiler
+Stilmall för kaskad
+Fil med kommaseparerade värden
+HTML-fil
+Fil för installationsinformation
+Generisk informationsfil
+Initialiseringsfil för Windows
+JavaScript-fil
+Python-skript
+Loggfil
+XML-fil
+Readme-fil
+Statisk biblioteksfil
+Anim8or-skript
+ANSI-textfil
+Quake 3 Engine Arena-fil
+ActionScript-fil
+ASP-konfigurationsfil
+Fil med källkod för Assembly Language
+Markdown-filer
+WriterClassic - Avsluta?
+Är du säker på att du vill avsluta Writer?
+WriterClassic - Radera fil
+Är du säker på att du vill radera en fil?
+Välj ett breddvärde för huvudfönstret.
+Välj ett höjdvärde för huvudfönstret.
+WriterClassic - Ändra teckenstorlek
+Välj ett antal (minst 1).
+WriterClassic - Ändra familj
+Ange namnet på ett teckensnitt som du har installerat på din enhet.
+Du måste starta om för att ändringarna ska gälla.
+WriterClassic - Om
+Den här appen har skapats av MF366 och drivs av Python 3.10.11.
+Skriv in SPECIAL-kodsträngen för att få påskägget...
+Problem med att hitta påskägget? Ingen sa att det skulle vara lätt...
+WriterClassic - Kommandomeny
+Skriv ett kommando för Writers kommandomeny.
+Inte ett WriterClassic-kommando.
+Den här filen är tom.
+WriterClassic - Sök efter uppdateringar
+Du använder antingen en äldre version eller en instabil version. Vi rekommenderar dock att du uppdaterar till den senaste stabila versionen. Uppdatera nu?
+Stäng av/på uppdateringar vid start
+Sök efter uppdateringar
+Rensa data
+WriterClassic - Rensa data?
+Är du säker på att du vill rensa ALL data från WriterClassic?
+Internet
+WriterClassic - Gå till URL
+Gå till URL...
+WriterClassic - Sök med Bing
+WriterClassic - Sök med Google
+WriterClassic - Sök med DuckDuckGo
+WriterClassic - Sök med Yahoo!
+Sök med Bing
+Sök med Google
+Sök med DuckDuckGo
+Sök med Yahoo!
+Vad skulle du vilja söka efter på webben?
+Skriv en URL som öppnas i din standardwebbläsare.
+Din version av WriterClassic är uppdaterad.
+WriterClassic - Uppdaterad
+Ny fil
+Sök med Ecosia
+Sök på YouTube
+Sök på Stack Overflow
+WriterClassic - Sök med Ecosia
+WriterClassic - Sök på YouTube
+WriterClassic - Sök på Stack Overflow

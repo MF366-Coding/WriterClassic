@@ -585,6 +585,10 @@ if __name__ == '__main__':
         mudaIdioma('pt', desktop_win))
     a_m.add_command(label='Slovenčina (Slovensko)', command=lambda:
         mudaIdioma('sk', desktop_win))
+    a_m.add_command(label="Svenska (Sverige)", command=lambda:
+        mudaIdioma("sv", desktop_win))
+    a_m.add_command(label="Українська (Україна)", command=lambda:
+        mudaIdioma("uk", desktop_win))
     a_m.add_separator()
     a_m.add_command(label=lang[74], command=UpdateCheck.change)
     a_m.add_separator()
