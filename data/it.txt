@@ -99,3 +99,5 @@ Cerca su Stack Overflow
 WriterClassic - Ricerca con Ecosia
 WriterClassic - Ricerca su YouTube
 WriterClassic - Cerca su Stack Overflow
+Fatto.
+File JSON

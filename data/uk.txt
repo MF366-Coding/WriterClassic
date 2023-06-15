@@ -99,3 +99,5 @@ WriterClassic - Оновлення
 WriterClassic - Пошук за допомогою Ecosia
 WriterClassic - пошук на YouTube
 WriterClassic - пошук при переповненні стеку
+Домовилися.
+Файли JSON

@@ -99,3 +99,5 @@ Vyhľadávanie na Stack Overflow
 WriterClassic - Vyhľadávanie s Ecosia
 WriterClassic - Vyhľadávanie na YouTube
 WriterClassic - Vyhľadávanie na Stack Overflow
+Hotovo.
+Súbory JSON

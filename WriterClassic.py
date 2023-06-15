@@ -248,39 +248,97 @@ def newFile():
     TextWidget.delete(index1=0.0, index2=END)
     
 
+file_types = [(lang[32], '*.txt'),
+              (lang[33], '*.config'),
+              (lang[34], '*.css'),
+              (lang[35], '*.csv'),
+              (lang[36], '*.html'),
+              (lang[37], '*.inf'),
+              (lang[38], '*.info'),
+              (lang[39], '*.ini'),
+              (lang[40], '*.js'),
+              (lang[41], '*.py'),
+              (lang[42], '*.log'),
+              (lang[43], '*.xml'),
+              (lang[44], '*.1st'),
+              (lang[45], '*.a'),
+              (lang[46], '*.a8s'),
+              (lang[47], '*.ans'),
+              (lang[48], '*.arena'),
+              (lang[49], '*.as'),
+              (lang[50], '*.asa'),
+              (lang[51], '*.asm'),
+              (lang[52], '*.md'),
+              (lang[102], '*.json')]
+
 # opens a file
 def abrir(root_win):
-    file = dlg.askopenfilename(parent=root_win, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
-    file_input = open(file, 'r', encoding='utf-8')
-    root_win.title(f"{lang[1]} - {file}")
+    file_path = dlg.asksaveasfilename(parent=root_win, filetypes=file_types, defaultextension="*.*", initialfile="Open a File", confirmoverwrite=False, title=lang[7])
+
+    # Get the selected file extension
+    selected_extension = None
+    for ft in file_types:
+        if file_path.lower().endswith(ft[1]):
+            selected_extension = ft[1]
+            break
+
+    # Append the selected extension if not already included
+    if selected_extension and not file_path.lower().endswith(selected_extension):
+        file_path += selected_extension
+        
+    file_input = open(file_path, "rt")
     file_data = file_input.read()
+
+    root_win.title(f"{lang[1]} - {file_path}")
     TextWidget.delete(index1=0.0, index2=END)
     TextWidget.insert(chars=file_data, index=0.0)
-    file.close()
+    file_input.close()
 
 
 # Saving as
 def salvar(root_win):
-    dados = TextWidget.get('0.0', END)
-    ficheiro = dlg.askopenfilename(parent=root_win, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
-    fich_saida = open(ficheiro, 'w', encoding='utf-8')
-    fich_saida.write(dados)
-    fich_saida.close()
+    dados = TextWidget.get(0.0, END)
+    file_path = dlg.asksaveasfilename(parent=root_win, title=lang[8], confirmoverwrite=True, filetypes=file_types, defaultextension="*.*", initialfile="New File To Save")
+
+    # Get the selected file extension
+    selected_extension = None
+    for ft in file_types:
+        if file_path.lower().endswith(ft[1]):
+            selected_extension = ft[1]
+            break
+
+    # Append the selected extension if not already included
+    if selected_extension and not file_path.lower().endswith(selected_extension):
+        file_path += selected_extension
+        
+    file = open(file_path, "wt")
+    file.write(str(dados))
+    file.close()
+    mb.showinfo(lang[1], lang[101])
+    root_win.title(f"{lang[1]} - {file_path}")
 
 # Whatever... (File Eraser)
 def formatar(root_win):
     pois = mb.askyesno(title=lang[55], message=lang[56])
     if pois:
-        ficheiro = dlg.askopenfilename(parent=root_win, filetypes=[(lang[32], '*.txt'), (lang[33], '*.cfg'), (lang[33], '*.config'), (lang[34], '*.css'), (lang[35], '*.csv'), (lang[36], '*.html'), (lang[37], '*.inf'), (lang[38], '*.info'), (lang[39], '*.ini'), (lang[40], '*.js'), (lang[41], '*.py*'), (lang[42], '*.log'), (lang[43], '*.xml'), (lang[44], '*.1st'), (lang[45], '*.a'), (lang[46], '*.a8s'), (lang[47], '*.ans'), (lang[48], '*.arena'), (lang[49], '*.as'), (lang[50], '*.asa'), (lang[51], '.asm'), (lang[52], '*.md'), (lang[52], '*.mdown')])
-        fich_teste = open(ficheiro, 'r', encoding='utf-8')
-        fich_test = fich_teste.read()
-        if len(fich_test) != 0:
-            fich_saida = open(ficheiro, 'w', encoding='utf-8')
-            fich_saida.write('')
-            fich_saida.close()
-        else:
-            mb.showinfo(title=lang[1], message=lang[71])
-            fich_teste.close()
+        file_path = dlg.asksaveasfilename(parent=root_win, confirmoverwrite=False, filetypes=file_types, defaultextension="*.*", initialfile="File to Wipe")
+
+        # Get the selected file extension
+        selected_extension = None
+        for ft in file_types:
+            if file_path.lower().endswith(ft[1]):
+                selected_extension = ft[1]
+                break
+
+        # Append the selected extension if not already included
+        if selected_extension and not file_path.lower().endswith(selected_extension):
+            file_path += selected_extension
+        
+        file_input = open(file_path, "wt")
+        file_input.write('')
+        mb.showinfo(title=lang[1], message=lang[101])
+        root_win.title(lang[1])
+        file_input.close()
 
 # Non-raged quit
 def sair(root_win):
