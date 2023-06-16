@@ -1,6 +1,8 @@
 # Writer Classic
 Writer Classic's GitHub repository.
 
+![WriterClassic's New Logo, from v7.0.1](/data/logo.png?raw=true "WriterClassic Logo")
+
 Writer Classic is a small Python file that, together with some config files, bring to the user a whole new text editor experience. :thinking:
 
 **IMPORTANT INFO!**
