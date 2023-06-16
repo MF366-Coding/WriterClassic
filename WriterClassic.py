@@ -464,6 +464,13 @@ class InternetOnWriter:
                 for i in askForTyping:
                     typed = askForTyping.replace(' ', '+')
                 webbrowser.open("https://stackoverflow.com/search?q="+typed)
+                
+        elif engine == "soundcloud":
+            askForTyping = sdg.askstring(lang[104], lang[90])
+            if askForTyping != '':
+                for i in askForTyping:
+                    typed = askForTyping.replace(' ', '%20')
+                webbrowser.open("https://soundcloud.com/search?q="+typed)
 
 def commandPrompt():
     askNow = sdg.askstring(lang[68], lang[69])

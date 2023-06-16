@@ -101,3 +101,6 @@ WriterClassic - Pesquisar no YouTube
 WriterClassic - Pesquisar no Stack Overflow
 Feito.
 Ficheiros JSON
+Pesquisar no SoundCloud
+WriterClassic - Pesquisar no SoundCloud
+Ajuda de configuração manual

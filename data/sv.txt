@@ -101,3 +101,6 @@ WriterClassic - Sök på YouTube
 WriterClassic - Sök på Stack Overflow
 Klart.
 JSON-filer
+Sök på SoundCloud
+WriterClassic - Sök på SoundCloud
+Hjälp med manuell konfiguration

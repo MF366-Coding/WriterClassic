@@ -95,9 +95,12 @@ WriterClassic - Оновлення
 Новий файл
 Шукати за допомогою Ecosia
 Пошук на YouTube
-Пошук при переповненні стеку
+пошук на StackOverflow
 WriterClassic - Пошук за допомогою Ecosia
 WriterClassic - пошук на YouTube
-WriterClassic - пошук при переповненні стеку
+WriterClassic - пошук на StackOverflow
 Домовилися.
 Файли JSON
+Пошук на SoundCloud
+WriterClassic - пошук на SoundCloud
+Довідка з налаштування вручну

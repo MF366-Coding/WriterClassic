@@ -95,9 +95,12 @@ WriterClassic - Up to date
 New file
 Search with Ecosia
 Search on YouTube
-Search on Stack Overflow
+Search on StackOverflow
 WriterClassic - Search with Ecosia
 WriterClassic - Search on YouTube
-WriterClassic - Search on Stack Overflow
+WriterClassic - Search on StackOverflow
 Done.
 JSON Files
+Search on SoundCloud
+WriterClassic - Search on SoundCloud
+Manual Configuration Help

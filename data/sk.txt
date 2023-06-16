@@ -101,3 +101,6 @@ WriterClassic - Vyhľadávanie na YouTube
 WriterClassic - Vyhľadávanie na Stack Overflow
 Hotovo.
 Súbory JSON
+Vyhľadávanie na SoundCloude
+WriterClassic - Vyhľadávanie na SoundCloud
+Pomocník pre manuálnu konfiguráciu
