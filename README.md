@@ -3,13 +3,11 @@ Writer Classic's GitHub repository.
 
 ![WriterClassic's New Logo, from v7.0.1](/data/logo.png?raw=true "WriterClassic Logo")
 
-Writer Classic is a small Python file that, together with some config files, bring to the user a whole new text editor experience. :thinking:
+Writer Classic is a rather small Python project that brings to the user a whole new text editing experience. :thinking:
 
-**IMPORTANT INFO!**
+**IMPORTANT ANNOUCEMENT!**
 
-Writer can run in Windows, MacOS and Linux, but there are some bugs in menus and features in both Windows and Mac.
-
-That's because the colored menu only works **correctly** on Linux.
+I, MF366, FINALLY FIXED THE BUG WHERE MENUS WOULD ACT WEIRD ON WINDOWS AND MACOS BY MAKING A CONDITION THAT ONLY IF THE OS IS LINUX, THE MENUS SHOULD BE CHANGED!
 
 Thanks for visiting this repository. :heart:
 
