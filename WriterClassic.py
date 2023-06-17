@@ -136,8 +136,10 @@ class UpdateCheck:
     def change():
         if startApp == '1':
             writeStartup('0')
+            mb.showinfo(title=lang[1], message=lang[101])
         else:
             writeStartup('1')
+            mb.showinfo(title=lang[1], message=lang[101])
 
 if startApp == '1':
     UpdateCheck.check_other()
