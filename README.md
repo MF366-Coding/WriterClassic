@@ -56,7 +56,7 @@ Note running the file does **NOT** install any shortcuts or dependencies. You mu
 To make a Start Menu shortcut, you must follow the following steps:
 
 1. Open two windows of **File Explorer**.
-2. In one of them, go to the location `C:\Users\<NAME>\AppData\Roaming\Microsoft\Windows\Start Menu`, where "`<NAME>`" refers to **YOUR** Windows username.
+2. In one of them, go to the location `%AppData%\Microsoft\Windows\Start Menu`. 
 3. In the other File Explorer window, go to the folder where you extracted WriterClassic's Windows-only zipped folder.
 4. Now, place the windows side-by-side (not necessary but makes the process a bit easier).
 5. Finally, and most important of all, **while holding `Ctrl` and `Shift` at the same time**, grab the `WriterClassic.exe` file and throw it into the `StartMenu` folder.
