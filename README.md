@@ -31,7 +31,10 @@ All files and folders inside the zipped one **must** be on the same location!
 Go to the right folder.
 
 #### For Linux and MacOS
-Type `python3 WriterClassic.py` and you can now use Writer Classic.
+Use:
+```python3 WriterClassic.py```
+
+...and you can now use Writer Classic.
 
 This app only runs os Python 3, so using the command `python WriterClassic.py` won't work (in Unix based OSes, <code>python</code> is Python 2).
 
@@ -67,7 +70,8 @@ To make a Start Menu shortcut, you must follow the following steps:
 Maybe you are a developer who wants acess to the latest update to Writer...
 
 ### 1. Clone the repo
-Open the Terminal and use <code>git clone https://github.com/MF366-Coding/WriterClassic.git</code>.
+Open the Terminal and use:
+```git clone https://github.com/MF366-Coding/WriterClassic.git</```
 
 However, that will only work if you have Git installed on your device...
 
@@ -75,7 +79,8 @@ However, that will only work if you have Git installed on your device...
 Go to the folder where the repo was cloned.
 
 #### For Linux and MacOS
-Type <code>python3 WriterClassic.py</code> and you can now use Writer Classic.
+Use the following command on your commandline:
+```python3 WriterClassic.py```
 
 This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Unix based OSes, <code>python</code> is Python 2).
 
@@ -85,7 +90,7 @@ Follow the steps in [here](https://github.com/MF366-Coding/WriterClassic#additio
 # What do I need to be able to be able to use Writer Classic? :heavy_check_mark:
 You need:
 
-* [X] Python 3 (Comes with MacOS and Linux, usually | Requires installation on Windows)
+* [X] Python 3 (Comes with MacOS and Linux, usually | Requires installation on Windows, unless you use the executable version of WriterClassic)
 
 * [X] tkinter (Python3 Module)
 
@@ -102,6 +107,8 @@ You need:
 * [X] the `data` folder that comes with WriterClassic
 
 * [X] the `config` folder that comes with WriterClassic
+
+* [X] for the executable version, all the files and folders that come with WriterClassic
 
 ## Small information
 If you want to redistribute this software, you need its LICENSE: this is **mandatory**!
