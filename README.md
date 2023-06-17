@@ -106,12 +106,6 @@ You need:
 ## Small information
 If you want to redistribute this software, you need its LICENSE: this is **mandatory**!
 
-# Feature requests :heavy_plus_sign:
-If you would like to open Writer Classic and discover a new functionality suggested by you, please check the Issues in this Repository.
-
-# Translations
-Check the Pinned Issues in _Issues_ for more information on how you can help translating Writer Classic...
-
 # Let me know of any bug you find :desktop_computer:
 If you found a bug, please tell me the details by creating a new Issue in this Repository.
 
@@ -216,3 +210,30 @@ All of those make use of control key plus another key so that you have to press 
 * __Ctrl + A__ - Opens about dialog :information_source:
 * __Ctrl + R__ - Opens the clock plugin :clock2:
 
+## New stuff
+### Need some help?
+Don't have a web browser open? Need to search something? Search directly from WriterClassic using one of the available Search Engines:
+- Google
+- Bing
+- Ecosia
+- DuckDuckGo
+- Yahoo! 
+- StackOverflow
+
+### Wanna listen to some tunes?
+Maybe you just want to relax while listening to music... 
+
+You can do that using... 
+- YouTube
+- SoundCloud (v7.0.1+) 
+
+### A fresh look
+The menu bug has been fixed. They look **way** better now! (v7.0.1+)
+
+New logo for WriterClassic, truly amazing! 
+
+An exclusive color theme just for Windows, with the official colors from the Windows 10 PowerShell. 
+
+Light and Dark themes have been fixed, looking way better. 
+
+> ### Thanks for using WriterClassic! :heart:
