@@ -227,8 +227,8 @@ You can do that using...
 - YouTube
 - SoundCloud (v7.0.1+) 
 
-### A fresh look
-The menu bug has been fixed. They look **way** better now! (v7.0.1+)
+### A fresh look (v7.0.1+)
+The menu bug has been fixed. They look **way** better now! 
 
 New logo for WriterClassic, truly amazing! 
 
