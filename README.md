@@ -234,6 +234,6 @@ New logo for WriterClassic, truly amazing!
 
 An exclusive color theme just for Windows, with the official colors from the Windows 10 PowerShell. 
 
-Light and Dark themes have been fixed, looking way better. 
+Light and Dark themes have been fixed, they look better now. 
 
-> ### Thanks for using WriterClassic! :heart:
+> ## Thanks for using WriterClassic! :heart:
