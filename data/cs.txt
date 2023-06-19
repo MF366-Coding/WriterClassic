@@ -1,0 +1,110 @@
+
+WriterClassic
+Soubor
+Vzhled
+Zásuvné moduly
+Nastavení
+Informace
+Otevřít...
+Uložit soubor...
+Uložit jako...
+Formátovat soubor...
+Ukončit
+Rozměry okna
+Motivy
+Změna písma
+Výchozí motivy
+Světelný režim
+Tmavý režim
+Šedý režim
+Moderní motivy
+Změna velikosti
+Změna rodiny
+Poznámky
+Hodiny
+Motivy komunity
+O stránkách
+Nápověda
+Repo
+Kredity
+Velikonoční vejce
+WriterClassic - Ukončit nyní?
+Pro uplatnění změn musíte znovu otevřít Writer! Restartovat nyní?
+Textový soubor
+Konfigurační soubory
+Kaskádový styl
+Soubor s hodnotami oddělenými čárkou
+Soubor HTML
+Soubor s informacemi o nastavení
+Soubor s obecnými informacemi
+Inicializační soubor systému Windows
+Soubor JavaScript
+Skript jazyka Python
+Soubor protokolu
+Soubor XML
+Soubor Readme
+Soubor statické knihovny
+Anim8or Script
+Textový soubor ANSI
+Soubor Quake 3 Engine Arena
+Soubor ActionScriptu
+Konfigurační soubor ASP
+Soubor se zdrojovým kódem v assembleru
+Soubory Markdown
+WriterClassic - Ukončit?
+Jste si jisti, že chcete ukončit Writer?
+WriterClassic - Mazání souborů
+Jste si jisti, že chcete vymazat soubor?
+Zvolte hodnotu šířky hlavního okna.
+Zvolte hodnotu výšky hlavního okna.
+WriterClassic - Změna velikosti písma
+Vyberte číslo (minimálně 1).
+WriterClassic - Změnit rodinu písma
+Zadejte název písma, které máte v zařízení nainstalováno.
+Pro uplatnění změn je nutné restartovat počítač.
+WriterClassic - O aplikaci
+Tato aplikace byla vytvořena společností MF366 a je poháněna jazykem Python 3.10.11.
+Zadáním řetězce SPECIAL code získáte velikonoční vajíčko...
+Máte potíže s nalezením velikonočního vajíčka? Nikdo neříkal, že to bude snadné...
+WriterClassic - Příkazové menu
+Zadejte příkaz pro příkazovou nabídku Writeru.
+Nejedná se o příkaz aplikace WriterClassic.
+Tento soubor je prázdný.
+WriterClassic - Kontrola aktualizací
+Používáte buď starší verzi, nebo nestabilní verzi. Doporučuje se však aktualizovat na nejnovější stabilní. Aktualizovat nyní?
+Vypnout/zapnout aktualizace při spuštění
+Zkontrolovat aktualizace
+Vymazat data
+WriterClassic - Vymazat data?
+Opravdu chcete vymazat VŠECHNA data z WriterClassic?
+Internet
+WriterClassic - Přejít na adresu URL
+Přejít na URL...
+WriterClassic - Vyhledávání pomocí Bing
+WriterClassic - Vyhledávání pomocí Google
+WriterClassic - Vyhledávání pomocí DuckDuckGo
+WriterClassic - Vyhledávání pomocí Yahoo!
+Vyhledávání pomocí Bing
+Vyhledávání pomocí Google
+Vyhledávání pomocí DuckDuckGo
+Vyhledávání pomocí Yahoo!
+Co byste chtěli na webu vyhledávat?
+Zadejte adresu URL, která se otevře ve výchozím webovém prohlížeči.
+Vaše verze aplikace WriterClassic je aktuální.
+WriterClassic - Aktuální
+Nový soubor
+Vyhledávání pomocí aplikace Ecosia
+Vyhledávání na YouTube
+Hledat na StackOverflow
+WriterClassic - Hledání pomocí Ecosia
+WriterClassic - Hledání na YouTube
+WriterClassic - Hledání na StackOverflow
+Hotovo.
+Soubory JSON
+Vyhledávání na SoundCloud
+WriterClassic - Hledání na SoundCloud
+Nápověda k ruční konfiguraci
+Vyhledávání pomocí Qwant
+Vyhledávání v Internet Archive
+WriterClassic - Hledání pomocí Qwant
+WriterClassic - Vyhledávání v Internet Archive

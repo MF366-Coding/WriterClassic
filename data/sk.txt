@@ -104,3 +104,7 @@ Súbory JSON
 Vyhľadávanie na SoundCloude
 WriterClassic - Vyhľadávanie na SoundCloud
 Pomocník pre manuálnu konfiguráciu
+Vyhľadávanie pomocou Qwant
+Vyhľadávanie v internetovom archíve
+WriterClassic - Vyhľadávanie pomocou Qwant
+WriterClassic - Vyhľadávanie v internetovom archíve

@@ -198,7 +198,7 @@ def new_window():
 
     TextWidget = Text(newWindow)
 
-    TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"])
+    TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"], font=FontSet)
     TextWidget.pack()
 
     # Closing what I no longer need
@@ -423,9 +423,6 @@ class InternetOnWriter:
         if askForLink != ' ' or askForLink != '':
             if sys.platform == "win32":
                 webbrowser.open(askForLink)
-                # for some reason this opens IExplorer in Windows 10?!
-                # which will send you to Edge?!
-                # ill try to fix this in the future
             elif sys.platform == "linux" or "darwin":
                 webbrowser.open(askForLink)
 
@@ -490,6 +487,22 @@ class InternetOnWriter:
                 for i in askForTyping:
                     typed = askForTyping.replace(' ', '%20')
                 webbrowser.open("https://soundcloud.com/search?q="+typed)
+                
+        elif engine == "archive":
+            # stands for Stack Overflow
+            askForTyping = sdg.askstring(lang[109], lang[90])
+            if askForTyping != '':
+                for i in askForTyping:
+                    typed = askForTyping.replace(' ', '+')
+                webbrowser.open("https://archive.org/search?query="+typed)
+                
+        elif engine == "qwant":
+            # stands for Stack Overflow
+            askForTyping = sdg.askstring(lang[108], lang[90])
+            if askForTyping != '':
+                for i in askForTyping:
+                    typed = askForTyping.replace(' ', '+')
+                webbrowser.open("https://www.qwant.com/?q="+typed)
 
 def commandPrompt():
     askNow = sdg.askstring(lang[68], lang[69])
@@ -627,6 +640,8 @@ c_m.add_command(label=lang[88], command=lambda:
                 InternetOnWriter.Search('ddgo'))
 c_m.add_command(label=lang[95], command=lambda:
                 InternetOnWriter.Search("ecosia"))
+c_m.add_command(label=lang[106], command=lambda:
+                InternetOnWriter.Search("qwant"))
 c_m.add_separator()
 c_m.add_command(label=lang[97], command=lambda:
                 InternetOnWriter.Search("stack"))
@@ -635,10 +650,17 @@ c_m.add_command(label=lang[96], command=lambda:
                 InternetOnWriter.Search("yt"))
 c_m.add_command(label=lang[103], command=lambda:
                 InternetOnWriter.Search("soundcloud"))
+c_m.add_separator()
+c_m.add_command(label=lang[107], command=lambda:
+                InternetOnWriter.Search("archive"))
 
 #Adicionar o Menu Definições
 a_m = Menu(barra_menu)
-a_m.add_command(label='English', command=lambda:
+a_m.add_command(label="Čeština (Čechie)", command=lambda:
+    mudaIdioma("cs", desktop_win))
+a_m.add_command(label="Deutsch (Deutschland)", command=lambda:
+    mudaIdioma("de", desktop_win))
+a_m.add_command(label='English (America)', command=lambda:
     mudaIdioma('en', desktop_win))
 a_m.add_command(label='Español (España)', command=lambda:
     mudaIdioma('es', desktop_win))

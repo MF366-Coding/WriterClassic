@@ -1,0 +1,110 @@
+
+WriterClassic
+Datei
+Erscheinungsbild
+Plugins
+Einstellungen
+Informationen
+Öffnen...
+Datei speichern...
+Speichern unter...
+Datei formatieren...
+Beenden
+Fensterabmessungen
+Themen
+Schriftarten ändern
+Standardthemen
+Heller Modus
+Dunkler Modus
+Grauer Modus
+Moderne Themen
+Größe ändern
+Familie ändern
+Notizen
+Uhr
+Community-Themen
+Über
+Hilfe
+Repo
+Impressum
+Osterei
+WriterClassic - Beenden Sie jetzt?
+Sie müssen Writer erneut öffnen, um die Änderungen zu übernehmen! Jetzt neu starten?
+Text-Datei
+Config-Dateien
+Cascading Style Sheet
+Datei mit kommagetrennten Werten
+HTML-Datei
+Setup-Informationsdatei
+Allgemeine Informationsdatei
+Windows-Initialisierungsdatei
+JavaScript-Datei
+Python-Skript
+Log-Datei
+XML-Datei
+Readme-Datei
+Statische Bibliotheksdatei
+Anim8or-Schrift
+ANSI Text Datei
+Quake 3 Engine Arena Datei
+ActionScript-Datei
+ASP-Konfigurationsdatei
+Assembler-Quellcode-Datei
+Markdown-Dateien
+WriterClassic - Beenden?
+Sind Sie sicher, dass Sie Writer beenden wollen?
+WriterClassic - Dateilöscher
+Sind Sie sicher, dass Sie eine Datei löschen wollen?
+Wählen Sie eine Breite für das Hauptfenster.
+Legen Sie eine Höhe für das Hauptfenster fest.
+WriterClassic - Schriftgröße ändern
+Bitte wählen Sie eine Zahl (mindestens 1).
+WriterClassic - Schriftfamilie ändern
+Bitte geben Sie den Namen einer Schriftart ein, die Sie auf Ihrem Gerät installiert haben.
+Sie müssen neu starten, um die Änderungen zu übernehmen.
+WriterClassic - Über
+Diese Anwendung wurde von MF366 erstellt und läuft mit Python 3.10.11.
+Geben Sie die SPECIAL-Codefolge ein, um das Osterei zu finden...
+Haben Sie Probleme, das Osterei zu finden? Niemand hat gesagt, dass es einfach sein würde...
+WriterClassic - Befehlsmenü
+Geben Sie einen Befehl für das Befehlsmenü von Writer ein.
+Kein WriterClassic-Befehl.
+Diese Datei ist leer.
+WriterClassic - Auf Updates prüfen
+Sie verwenden entweder eine ältere Version oder eine instabile Version. Es wird jedoch empfohlen, dass Sie auf die neueste stabile Version aktualisieren. Jetzt aktualisieren?
+Updates beim Start ein-/ausschalten
+Auf Updates prüfen
+Daten löschen
+WriterClassic - Daten löschen?
+Sind Sie sicher, dass Sie ALLE Daten aus WriterClassic löschen möchten?
+Internet
+WriterClassic - Zur URL gehen
+Zur URL gehen...
+WriterClassic - Suche mit Bing
+WriterClassic - Suche mit Google
+WriterClassic - Suche mit DuckDuckGo
+WriterClassic - Suche mit Yahoo!
+Suche mit Bing
+Suche mit Google
+Suche mit DuckDuckGo
+Suche mit Yahoo!
+Was möchten Sie im Web suchen?
+Geben Sie eine URL ein, um sie in Ihrem Standard-Webbrowser zu öffnen.
+Ihre Version von WriterClassic ist auf dem neuesten Stand.
+WriterClassic - Auf dem neuesten Stand
+Neue Datei
+Suche mit Ecosia
+Suche auf YouTube
+Suche auf StackOverflow
+WriterClassic - Suche mit Ecosia
+WriterClassic - Suche auf YouTube
+WriterClassic - Suche auf StackOverflow
+Erledigt.
+JSON-Dateien
+Suche auf SoundCloud
+WriterClassic - Suche auf SoundCloud
+Manuelle Konfigurationshilfe
+Suche mit Qwant
+Suche im Internet Archive
+WriterClassic - Suche mit Qwant
+WriterClassic - Suche im Internet Archive

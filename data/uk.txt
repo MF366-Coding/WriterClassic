@@ -104,3 +104,7 @@ WriterClassic - пошук на StackOverflow
 Пошук на SoundCloud
 WriterClassic - пошук на SoundCloud
 Довідка з налаштування вручну
+Пошук за допомогою Qwant
+Пошук в Інтернет-архіві
+WriterClassic - Пошук за допомогою Qwant
+WriterClassic - Пошук в інтернет-архіві

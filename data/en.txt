@@ -1,80 +1,80 @@
 
 WriterClassic
 File
-Appearence
+Appearance
 Plugins
 Settings
 Information
-Open...
+Open file...
 Save file...
 Save as...
 Format file...
 Exit
 Window dimensions
 Themes
-Change fonts
+Change Fonts
 Default themes
 Light mode
-Dark mode
-Grey mode
+Dark Mode
+Gray themes
 Modern themes
 Change size
 Change family
 Notes
 Clock
-Community Themes
+Community themes
 About
 Help
-Repo
+Repository
 Credits
-Easter Egg
+Easter egg
 WriterClassic - Exit now?
 You must reopen Writer to apply the changes! Restart now?
 Text file
-Config files
-Cascading Style Sheet
-Comma-Separated Values File
-HTML File
-Setup Information File
-Generic Information File
-Windows Initialization File
-JavaScript File
-Python Script
-Log File
-XML File
-Readme File
-Static Library File
-Anim8or Script
-ANSI Text File
-Quake 3 Engine Arena File
-ActionScript File
-ASP Config File
-Assembly Language Source Code File
-Markdown Files
-WriterClassic - Quit?
-Are you sure you want to quit Writer?
+Configuration files
+Cascading style sheet
+Comma-separated values file
+HTML file
+Configuration information file
+Generic information file
+Windows startup file
+JavaScript file
+Python script
+Log file
+XML file
+Readme file
+Static library file
+Anim8or script
+ANSI text file
+Quake 3 Engine Arena file
+ActionScript file
+ASP configuration file
+Assembly language source code file
+Markdown files
+WriterClassic - Logout?
+Are you sure you want to leave Writer?
 WriterClassic - File Eraser
-Are you sure you want to erase a file?
-Pick a width value for the main window.
-Pick a height value for the main window.
-WriterClassic - Change Font Size
-Please pick a number (minimum of 1).
-WriterClassic - Change Family
-Please type the name of a font you have installed on your device.
-You must restart to apply the changes.
+Are you sure you want to delete a file?
+Choose a width value for the main window.
+Choose a height value for the main window.
+WriterClassic - Change font size
+Please choose a number (minimum of 1).
+WriterClassic - Change family
+Enter the name of a font you have installed on your device.
+You need to reboot to apply the changes.
 WriterClassic - About
-This app was made by MF366 and powered by Python 3.10.11.
-Type the SPECIAL code string to get the Easter Egg...
-Trouble finding the Easter Egg? Nobody said it would be easy...
-WriterClassic - Command Menu
-Type a command for Writer's Command Menu.
-Not a WriterClassic command.
+This application was created by MF366 and is powered by Python 3.10.11.
+Write the SPECIAL code string to get the Easter Egg...
+Problems finding the Easter Egg? Nobody said it would be easy...
+WriterClassic - Command menu
+Type a command for the Writer command menu.
+This is not a WriterClassic command.
 This file is empty.
-WriterClassic - Check for Updates
-You are either using an older version or an unstable one. It is recommended you update to the latest stable though. Update now?
-Turn off/on updates at startup
-Check for Updates
-Clear Data
+WriterClassic - Check for updates
+You are using an older version or an unstable version. However, it is recommended to upgrade to the latest stable version. Update now?
+Enable/disable updates on startup
+Check for updates
+Clear data
 WriterClassic - Clear data?
 Are you sure you want to clear ALL data from WriterClassic?
 Internet
@@ -88,19 +88,23 @@ Search with Bing
 Search with Google
 Search with DuckDuckGo
 Search with Yahoo!
-What would you like to search on the Web?
-Type an URL to open in your default web browser.
+What would you like to search for on the Web?
+Enter a URL to open in your default web browser.
 Your version of WriterClassic is up to date.
 WriterClassic - Up to date
 New file
 Search with Ecosia
-Search on YouTube
-Search on StackOverflow
+Search YouTube
+Search Stack Overflow
 WriterClassic - Search with Ecosia
-WriterClassic - Search on YouTube
-WriterClassic - Search on StackOverflow
+WriterClassic - Search YouTube
+WriterClassic - Search Stack Overflow
 Done.
-JSON Files
-Search on SoundCloud
-WriterClassic - Search on SoundCloud
-Manual Configuration Help
+JSON files
+Search SoundCloud
+WriterClassic - Search SoundCloud
+Manual configuration help
+Search with Qwant
+Search The Internet Archive
+WriterClassic - Search with Qwant
+WriterClassic - Search The Internet Archive

@@ -104,3 +104,7 @@ JSON-filer
 Sök på SoundCloud
 WriterClassic - Sök på SoundCloud
 Hjälp med manuell konfiguration
+Sök med Qwant
+Sök på Internet Archive
+WriterClassic - Sök med Qwant
+WriterClassic - Sök på Internet Archive

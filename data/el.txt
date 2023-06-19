@@ -104,3 +104,7 @@ WriterClassic - Αναζήτηση στο StackOverflow
 Αναζήτηση στο SoundCloud
 WriterClassic - Αναζήτηση στο SoundCloud
 Χειροκίνητη βοήθεια διαμόρφωσης
+Αναζήτηση με το Qwant
+Αναζήτηση στο Internet Archive
+WriterClassic - Αναζήτηση με Qwant
+WriterClassic - Αναζήτηση στο Internet Archive

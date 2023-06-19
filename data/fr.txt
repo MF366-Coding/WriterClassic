@@ -104,3 +104,7 @@ Fichiers JSON
 Recherche sur SoundCloud
 WriterClassic - Recherche sur SoundCloud
 Aide à la configuration manuelle
+Recherche avec Qwant
+Recherche sur Internet Archive
+WriterClassic - Recherche avec Qwant
+WriterClassic - Recherche sur Internet Archive
