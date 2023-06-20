@@ -108,3 +108,18 @@ WriterClassic - Αναζήτηση στο SoundCloud
 Αναζήτηση στο Internet Archive
 WriterClassic - Αναζήτηση με Qwant
 WriterClassic - Αναζήτηση στο Internet Archive
+Αρχείο θέματος Alienware AlienFX
+Αρχείο δεδομένων δημοσίευσης φόρμας Web
+Αρχείο σεναρίου AviSynth
+Αρχείο αντιγράφων ασφαλείας BerryBuzz
+Αρχείο ρυθμίσεων βαθμονόμησης Boland
+Αρχείο σελιδοδείκτη συσκευής Nokia
+Αρχείο βιβλίου Budget In Brief Book File
+Bitmap World File
+Αρχείο BSDL
+Αρχείο γλώσσας περιγραφής οριακής σάρωσης
+BeanShell Script
+Αρχείο προφίλ μοντέλου εμφάνισης χρώματος WCS
+Αρχείο σεναρίου Celestia
+Σενάριο Celestia
+Κοινή διεπαφή πύλης Script

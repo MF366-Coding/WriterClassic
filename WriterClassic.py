@@ -94,20 +94,23 @@ geom_bg.close()
 configLangFile.close()
 
 #Configurar a barra de menu
-barra_menu = Menu(desktop_win)
+menu_bar = Menu(desktop_win)
 
 if sys.platform == "linux":
-    barra_menu.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_bar.configure(background=theme["menu"], foreground=theme["mfg"])
 
-ver_menu = Menu(barra_menu)
-ver_1_m = Menu(ver_menu)
-ver_3_m = Menu(ver_1_m)
-ver_5_m = Menu(ver_menu)
-ver_4_m = Menu(ver_5_m)
-ver_7_m = Menu(ver_5_m)
-newMenuEdit = Menu(ver_menu)
-b_m = Menu(barra_menu)
-c_m = Menu(b_m)
+menu_1 = Menu(menu_bar)
+menu_2 = Menu(menu_1)
+menu_3 = Menu(menu_2)
+menu_4 = Menu(menu_1)
+menu_5 = Menu(menu_4)
+menu_6 = Menu(menu_4)
+menu_7 = Menu(menu_1)
+menu_8 = Menu(menu_bar)
+menu_9 = Menu(menu_8)
+menu_10 = Menu(menu_bar)
+menu_11 = Menu(menu_bar)
+menu_12 = Menu(menu_bar)
 
 def writeStartup(text):
     with open('config/startup.txt', 'w', encoding='utf-8') as startupWriteFile:
@@ -156,7 +159,7 @@ def SetWinSize():
     geomdata.close()
 
 # Theme Picker
-def mudacor(colour_first, colour_second, colour_third, colour_fourth, colour_fifth):
+def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fifth):
     with open('config/theme.json', 'wt') as fileColored:
         new_obj = {
             "color":str(colour_first),
@@ -179,7 +182,7 @@ def quickway():
     desktop_win.destroy()
 
 # Setup (Lang files)
-def mudaIdioma(language_set, root_win):
+def LanguageSet(language_set, root_win):
     with open('config/lang.txt', 'w', encoding='utf-8') as deleteThat:
         deleteThat.write('')
         deleteThat.write(language_set)
@@ -214,24 +217,24 @@ def repo():
     webbrowser.open(ourRepo, 2)
 
 # Clock
-def relogio():
-    relog = Toplevel(desktop_win)
+def clockPlugin():
+    clockWindow = Toplevel(desktop_win)
     #Stuff
 
     #Windowing
-    relog.title(lang[23])
+    clockWindow.title(lang[23])
 
-    TextWidget = Label(relog)
+    TextWidget = Label(clockWindow)
 
     TextWidget.configure(text=datetime.datetime.now())
     TextWidget.configure(
         font=(100)
         )
 
-    relog.geometry('275x65')
+    clockWindow.geometry('275x65')
 
     TextWidget.pack()
-    relog.mainloop()
+    clockWindow.mainloop()
 
 # Text font
 def fontEdit(winType):
@@ -291,10 +294,23 @@ file_types = [(lang[32], '*.txt'),
               (lang[102], '*.json'),
               (lang[110], '*.ath'),
               (lang[111], "*.att"),
-              (lang[112], "*.avs")]
+              (lang[112], "*.avs"),
+              (lang[113], "*.bbz"),
+              (lang[114], "*.bcs"),
+              (lang[115], "*.bmk"),
+              (lang[116], "*.book"),
+              (lang[117], "*.bpw"),
+              (lang[118], "*.bsd"),
+              (lang[119], "*.bsdl"),
+              (lang[120], "*.bsh"),
+              (lang[121], "*.camp"),
+              (lang[122], "*.cel"),
+              (lang[123], "*.celx"),
+              (lang[124], "*.cgi")
+              ]
 
 # opens a file
-def abrir(root_win):
+def OpenFile(root_win):
     file_path = dlg.asksaveasfilename(parent=root_win, filetypes=file_types, defaultextension="*.*", initialfile="Open a File", confirmoverwrite=False, title=lang[7])
 
     # Get the selected file extension
@@ -318,7 +334,7 @@ def abrir(root_win):
 
 
 # Saving as
-def salvar(root_win):
+def SaveFile(root_win):
     dados = TextWidget.get(0.0, END)
     file_path = dlg.asksaveasfilename(parent=root_win, title=lang[8], confirmoverwrite=True, filetypes=file_types, defaultextension="*.*", initialfile="New File To Save")
 
@@ -340,9 +356,9 @@ def salvar(root_win):
     root_win.title(f"{lang[1]} - {file_path}")
 
 # Whatever... (File Eraser)
-def formatar(root_win):
-    pois = mb.askyesno(title=lang[55], message=lang[56])
-    if pois:
+def WipeFile(root_win):
+    sureConfirm = mb.askyesno(title=lang[55], message=lang[56])
+    if sureConfirm:
         file_path = dlg.asksaveasfilename(parent=root_win, confirmoverwrite=False, filetypes=file_types, defaultextension="*.*", initialfile="File to Wipe")
 
         # Get the selected file extension
@@ -368,11 +384,11 @@ def sair(root_win):
     if confirm:
         root_win.destroy()
 
-#Abrir os Créditos
-def creditos_abertos():
+#OpenFile os Créditos
+def appCredits():
     mb.showinfo(title=lang[28], message=lang[65])
 
-#Abrir o Easter Egg
+#OpenFile o Easter Egg
 def surprise_egg():
     askNow = sdg.askstring(lang[29], lang[66])
 
@@ -385,14 +401,14 @@ def surprise_egg():
     else:
         mb.showerror(lang[29], lang[67])
 
-#Abrir a Ajuda
-def ajuda():
+#OpenFile a Ajuda
+def APP_HELP():
     ourWebsite = "https://github.com/MF366-Coding/WriterClassic#help"
 
     webbrowser.open(ourWebsite, 2)
 
-#Abrir as informações
-def sobre(thing2, thing3):
+#OpenFile as informações
+def aboutApp(thing2, thing3):
     with open(thing2, thing3, encoding='utf-8') as about_d:
         about_data = about_d.read()
     mb.showinfo(title=lang[64], message=about_data)
@@ -404,19 +420,19 @@ def resetWriter(rootWin):
         with open('config/font.json', 'wt', encoding='utf-8') as fontFileNew:
             new_values = {
                 "font-type":"Segoe UI",
-                "font-size":12
+                "font-size":13
             }
             json.dump(new_values, fontFileNew)
             
         fontFileNew.close()
 
-        mudaIdioma('en', rootWin)
-        mudacor('black', 'white', 'white', 'black', 'white')
+        LanguageSet('en', rootWin)
+        ThemeSet('black', 'white', 'white', 'black', 'white')
 
-        desktop_win.geometry('600x400')
+        desktop_win.geometry('700x500')
         with open('config/geom.txt', 'w', encoding='utf-8') as geomdata:
             geomdata.write('')
-            geomdata.write('600x400')
+            geomdata.write('700x500')
             geomdata.close()
 
 class InternetOnWriter:
@@ -511,34 +527,34 @@ def commandPrompt():
     askNow = sdg.askstring(lang[68], lang[69])
 
     if askNow == 'open' or askNow == 'openfile':
-        abrir(desktop_win)
+        OpenFile(desktop_win)
 
     elif askNow == 'about':
-        sobre('data/about.txt', 'r')
+        aboutApp('data/about.txt', 'r')
 
     elif askNow == "newfile":
         newFile()
 
     elif askNow == 'help':
-        ajuda()
+        APP_HELP()
 
     elif askNow == 'fun' or askNow == 'egg':
         surprise_egg()
 
     elif askNow == 'data':
-        creditos_abertos()
+        appCredits()
 
     elif askNow == 'exit' or askNow == 'quit':
         sair(desktop_win)
 
     elif askNow == 'clear':
-        formatar(desktop_win)
+        WipeFile(desktop_win)
 
     elif askNow == 'save':
-        salvar(desktop_win)
+        SaveFile(desktop_win)
 
     elif askNow == 'clock open':
-        relogio()
+        clockPlugin()
 
     elif askNow == 'font family':
         fontEdit(2)
@@ -564,201 +580,198 @@ def commandPrompt():
 # Key bindings
 
 desktop_win.bind('<Control-o>', lambda b:
-    abrir(desktop_win))
+    OpenFile(desktop_win))
 
 desktop_win.bind('<Control-s>', lambda c:
-    salvar(desktop_win))
+    SaveFile(desktop_win))
 
 desktop_win.bind('<Control-a>', lambda e:
-    sobre('data/about.txt', 'r'))
+    aboutApp('data/about.txt', 'r'))
 
 desktop_win.bind('<Control-h>', lambda f:
-    ajuda())
+    APP_HELP())
 
 desktop_win.bind('<Control-d>', lambda g:
-    mudacor('black', 'white', 'white', 'dark grey', 'black'))
+    ThemeSet('black', 'white', 'white', 'dark grey', 'black'))
 
 desktop_win.bind('<Control-l>', lambda h:
-    mudacor('white', 'black', 'black', 'black', 'white'))
+    ThemeSet('white', 'black', 'black', 'black', 'white'))
 
 desktop_win.bind('<Control-g>', lambda j:
     SetWinSize())
 
 desktop_win.bind('<Control-r>', lambda l:
-    relogio())
+    clockPlugin())
 
 desktop_win.bind('<Control-w>', lambda m:
     commandPrompt())
 
 
 #Adicionar o Menu Ficheiro
-ficheiro_menu = Menu(barra_menu)
-ficheiro_menu.add_command(label=lang[94], command=newFile)
-ficheiro_menu.add_command(label=lang[7], command=lambda:
-    abrir(desktop_win))
-ficheiro_menu.add_separator()
-ficheiro_menu.add_command(label = lang[8], command=lambda:
-    salvar(desktop_win))
-ficheiro_menu.add_separator()
-ficheiro_menu.add_command(label=lang[11], command=lambda:
+menu_10.add_command(label=lang[94], command=newFile)
+menu_10.add_command(label=lang[7], command=lambda:
+    OpenFile(desktop_win))
+menu_10.add_separator()
+menu_10.add_command(label = lang[8], command=lambda:
+    SaveFile(desktop_win))
+menu_10.add_separator()
+menu_10.add_command(label=lang[11], command=lambda:
     sair(desktop_win))
 
 #Adicionar o Menu Informações
-editar_menu = Menu(barra_menu)
-editar_menu.add_command(label=lang[75], command=UpdateCheck.check)
-editar_menu.add_separator()
-editar_menu.add_command(label=lang[25], command=lambda:
-    sobre('data/about.txt', 'r'))
-editar_menu.add_command(label=lang[26], command=ajuda)
-editar_menu.add_command(label=lang[27], command=repo)
-editar_menu.add_separator()
-editar_menu.add_command(label=lang[28], command=creditos_abertos)
-editar_menu.add_separator()
-editar_menu.add_command(label=lang[29], command=surprise_egg)
+menu_11.add_command(label=lang[75], command=UpdateCheck.check)
+menu_11.add_separator()
+menu_11.add_command(label=lang[25], command=lambda:
+    aboutApp('data/about.txt', 'r'))
+menu_11.add_command(label=lang[26], command=APP_HELP)
+menu_11.add_command(label=lang[27], command=repo)
+menu_11.add_separator()
+menu_11.add_command(label=lang[28], command=appCredits)
+menu_11.add_separator()
+menu_11.add_command(label=lang[29], command=surprise_egg)
 
-ver_menu.add_command(label=lang[12], command=SetWinSize)
+menu_1.add_command(label=lang[12], command=SetWinSize)
 
 # menu fonts
-newMenuEdit.add_command(label=lang[20], command=lambda:
+menu_7.add_command(label=lang[20], command=lambda:
                         fontEdit(1))
-newMenuEdit.add_command(label=lang[21], command=lambda:
+menu_7.add_command(label=lang[21], command=lambda:
                         fontEdit(2))
 
 #Adicionar o Menu Plugins
-b_m.add_command(label=lang[22], command=new_window)
-b_m.add_command(label=lang[23], command=relogio)
-b_m.add_separator()
-b_m.add_command(label=lang[10], command=lambda:
-    formatar(desktop_win))
+menu_8.add_command(label=lang[22], command=new_window)
+menu_8.add_command(label=lang[23], command=clockPlugin)
+menu_8.add_separator()
+menu_8.add_command(label=lang[10], command=lambda:
+    WipeFile(desktop_win))
 
-c_m.add_command(label=lang[81], command=InternetOnWriter.Website)
-c_m.add_separator()
-c_m.add_command(label=lang[87], command=lambda:
+menu_9.add_command(label=lang[81], command=InternetOnWriter.Website)
+menu_9.add_separator()
+menu_9.add_command(label=lang[87], command=lambda:
                 InternetOnWriter.Search('google'))
-c_m.add_command(label=lang[86], command=lambda:
+menu_9.add_command(label=lang[86], command=lambda:
                 InternetOnWriter.Search('bing'))
-c_m.add_command(label=lang[89], command=lambda:
+menu_9.add_command(label=lang[89], command=lambda:
                 InternetOnWriter.Search('ysearch'))
-c_m.add_command(label=lang[88], command=lambda:
+menu_9.add_command(label=lang[88], command=lambda:
                 InternetOnWriter.Search('ddgo'))
-c_m.add_command(label=lang[95], command=lambda:
+menu_9.add_command(label=lang[95], command=lambda:
                 InternetOnWriter.Search("ecosia"))
-c_m.add_command(label=lang[106], command=lambda:
+menu_9.add_command(label=lang[106], command=lambda:
                 InternetOnWriter.Search("qwant"))
-c_m.add_separator()
-c_m.add_command(label=lang[97], command=lambda:
+menu_9.add_separator()
+menu_9.add_command(label=lang[97], command=lambda:
                 InternetOnWriter.Search("stack"))
-c_m.add_separator()
-c_m.add_command(label=lang[96], command=lambda:
+menu_9.add_separator()
+menu_9.add_command(label=lang[96], command=lambda:
                 InternetOnWriter.Search("yt"))
-c_m.add_command(label=lang[103], command=lambda:
+menu_9.add_command(label=lang[103], command=lambda:
                 InternetOnWriter.Search("soundcloud"))
-c_m.add_separator()
-c_m.add_command(label=lang[107], command=lambda:
+menu_9.add_separator()
+menu_9.add_command(label=lang[107], command=lambda:
                 InternetOnWriter.Search("archive"))
 
 #Adicionar o Menu Definições
-a_m = Menu(barra_menu)
-a_m.add_command(label="Čeština (Čechie)", command=lambda:
-    mudaIdioma("cs", desktop_win))
-a_m.add_command(label="Deutsch (Deutschland)", command=lambda:
-    mudaIdioma("de", desktop_win))
-a_m.add_command(label='English (America)', command=lambda:
-    mudaIdioma('en', desktop_win))
-a_m.add_command(label='Español (España)', command=lambda:
-    mudaIdioma('es', desktop_win))
-a_m.add_command(label='Français (France)', command=lambda:
-    mudaIdioma('fr', desktop_win))
-a_m.add_command(label='Italiano (Italia)', command=lambda:
-    mudaIdioma('it', desktop_win))
-a_m.add_command(label='Ελληνικά (Ελλάδα)', command=lambda:
-    mudaIdioma("el", desktop_win))
-a_m.add_command(label='Português (Brasil)', command=lambda:
-    mudaIdioma('br', desktop_win))
-a_m.add_command(label='Português (Portugal)', command=lambda:
-    mudaIdioma('pt', desktop_win))
-a_m.add_command(label='Slovenčina (Slovensko)', command=lambda:
-    mudaIdioma('sk', desktop_win))
-a_m.add_command(label="Svenska (Sverige)", command=lambda:
-    mudaIdioma("sv", desktop_win))
-a_m.add_command(label="Українська (Україна)", command=lambda:
-    mudaIdioma("uk", desktop_win))
-a_m.add_separator()
-a_m.add_command(label=lang[74], command=UpdateCheck.change)
-a_m.add_separator()
-a_m.add_command(label=lang[76], command=lambda:
+menu_12.add_command(label="Čeština (Čechie)", command=lambda:
+    LanguageSet("cs", desktop_win))
+menu_12.add_command(label="Deutsch (Deutschland)", command=lambda:
+    LanguageSet("de", desktop_win))
+menu_12.add_command(label='English (America)', command=lambda:
+    LanguageSet('en', desktop_win))
+menu_12.add_command(label='Español (España)', command=lambda:
+    LanguageSet('es', desktop_win))
+menu_12.add_command(label='Français (France)', command=lambda:
+    LanguageSet('fr', desktop_win))
+menu_12.add_command(label='Italiano (Italia)', command=lambda:
+    LanguageSet('it', desktop_win))
+menu_12.add_command(label='Ελληνικά (Ελλάδα)', command=lambda:
+    LanguageSet("el", desktop_win))
+menu_12.add_command(label='Português (Brasil)', command=lambda:
+    LanguageSet('br', desktop_win))
+menu_12.add_command(label='Português (Portugal)', command=lambda:
+    LanguageSet('pt', desktop_win))
+menu_12.add_command(label='Slovenčina (Slovensko)', command=lambda:
+    LanguageSet('sk', desktop_win))
+menu_12.add_command(label="Svenska (Sverige)", command=lambda:
+    LanguageSet("sv", desktop_win))
+menu_12.add_command(label="Українська (Україна)", command=lambda:
+    LanguageSet("uk", desktop_win))
+menu_12.add_separator()
+menu_12.add_command(label=lang[74], command=UpdateCheck.change)
+menu_12.add_separator()
+menu_12.add_command(label=lang[76], command=lambda:
     resetWriter(desktop_win))
-a_m.add_separator()
-a_m.add_command(label=lang[105], command=lambda:
+menu_12.add_separator()
+menu_12.add_command(label=lang[105], command=lambda:
     webbrowser.open(url='https://github.com/MF366-Coding/WriterClassic/wiki/Manual-Configuration-Setup'))
 
 #Adicionar os Temas (Temas Regulares)
-ver_4_m.add_command(label=lang[16], command=lambda:
-    mudacor('white', 'black', 'black', 'black', 'white'))
-ver_4_m.add_command(label=lang[17], command=lambda:
-    mudacor('black', 'white', 'white', 'white', 'black'))
-ver_4_m.add_separator()
-ver_4_m.add_command(label=lang[18], command=lambda:
-    mudacor('grey', 'black', 'black', 'black', 'white'))
+menu_5.add_command(label=lang[16], command=lambda:
+    ThemeSet('white', 'black', 'black', 'black', 'white'))
+menu_5.add_command(label=lang[17], command=lambda:
+    ThemeSet('black', 'white', 'white', 'white', 'black'))
+menu_5.add_separator()
+menu_5.add_command(label=lang[18], command=lambda:
+    ThemeSet('grey', 'black', 'black', 'black', 'white'))
 
 #Adicionar os Temas (Temas Modernos)
-ver_7_m.add_command(label='Light Yellow', command=lambda:
-    mudacor('light yellow', 'black', 'black', '#f5b949', 'black'))
+menu_6.add_command(label='Light Yellow', command=lambda:
+    ThemeSet('light yellow', 'black', 'black', '#f5b949', 'black'))
 
-ver_7_m.add_command(label='Magic', command=lambda:
-    mudacor('purple', 'white', 'white', '#290340', 'white'))
+menu_6.add_command(label='Magic', command=lambda:
+    ThemeSet('purple', 'white', 'white', '#290340', 'white'))
 
-ver_7_m.add_command(label='Through the Sky', command=lambda:
-    mudacor('light blue', 'black', 'black', '#031882', 'white'))
+menu_6.add_command(label='Through the Sky', command=lambda:
+    ThemeSet('light blue', 'black', 'black', '#031882', 'white'))
 
-ver_7_m.add_command(label='Codetime', command=lambda:
-    mudacor('black', 'green', 'green', 'black', 'light green'))
+menu_6.add_command(label='Codetime', command=lambda:
+    ThemeSet('black', 'green', 'green', 'black', 'light green'))
 
-ver_7_m.add_command(label='Darkest Night Ever', command=lambda:
-    mudacor('#040114', '#e8a78e', '#e8a78e', 'black', '#e8a78e'))
+menu_6.add_command(label='Darkest Night Ever', command=lambda:
+    ThemeSet('#040114', '#e8a78e', '#e8a78e', 'black', '#e8a78e'))
 
-ver_7_m.add_command(label='Dark Forest', command=lambda:
-    mudacor('#0e2414', '#c0db7b', '#c0db7b', '#040d07', '#ccf0c5'))
+menu_6.add_command(label='Dark Forest', command=lambda:
+    ThemeSet('#0e2414', '#c0db7b', '#c0db7b', '#040d07', '#ccf0c5'))
 
-ver_7_m.add_command(label='Christmas Night', command=lambda:
-    mudacor('#020421', '#a5a9e8', '#a5a9e8', '#020312', '#cbcef2'))
+menu_6.add_command(label='Christmas Night', command=lambda:
+    ThemeSet('#020421', '#a5a9e8', '#a5a9e8', '#020312', '#cbcef2'))
 
-ver_7_m.add_command(label='Silent Night', command=lambda:
-    mudacor('#020421','pink', 'pink', '#020312', '#ebd1ed'))
+menu_6.add_command(label='Silent Night', command=lambda:
+    ThemeSet('#020421','pink', 'pink', '#020312', '#ebd1ed'))
 
 if sys.platform == "win32":
-    ver_7_m.add_command(label='[EXTRA] PowerShell Theme', command=lambda:
-        mudacor("#012456", "#eeedf0", "#fedba9", "#eeedf0", "#012456"))
+    menu_6.add_command(label='[EXTRA] PowerShell Theme', command=lambda:
+        ThemeSet("#012456", "#eeedf0", "#fedba9", "#eeedf0", "#012456"))
 
 if sys.platform == "linux":
     #Configurar cores do Menu
-    ficheiro_menu.configure(background=theme["menu"], foreground=theme["mfg"])
-    editar_menu.configure(background=theme["menu"], foreground=theme["mfg"])
-    ver_menu.configure(background=theme["menu"], foreground=theme["mfg"])
-    ver_1_m.configure(background=theme["menu"], foreground=theme["mfg"])
-    ver_3_m.configure(background=theme["menu"], foreground=theme["mfg"])
-    ver_4_m.configure(background=theme["menu"], foreground=theme["mfg"])
-    ver_5_m.configure(background=theme["menu"], foreground=theme["mfg"])
-    ver_7_m.configure(background=theme["menu"], foreground=theme["mfg"])
-    newMenuEdit.configure(background=theme["menu"], foreground=theme["mfg"])
-    a_m.configure(background=theme["menu"], foreground=theme["mfg"])
-    b_m.configure(background=theme["menu"], foreground=theme["mfg"])
-    c_m.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_10.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_11.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_1.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_2.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_3.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_5.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_4.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_6.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_7.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_12.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
 
 #Adicionar menus "cascade"
-barra_menu.add_cascade(label=lang[2],menu=ficheiro_menu)
-barra_menu.add_cascade(label=lang[3],menu=ver_menu)
-ver_menu.add_cascade(label=lang[13], menu=ver_5_m)
-ver_5_m.add_cascade(label=lang[15], menu=ver_4_m)
-ver_5_m.add_cascade(label=lang[19], menu=ver_7_m)
-ver_menu.add_cascade(label=lang[14], menu=newMenuEdit)
-barra_menu.add_cascade(label=lang[4], menu=b_m)
-barra_menu.add_cascade(label=lang[79], menu=c_m)
-barra_menu.add_cascade(label=lang[5], menu=a_m)
-barra_menu.add_cascade(label=lang[6], menu=editar_menu)
+menu_bar.add_cascade(label=lang[2],menu=menu_10)
+menu_bar.add_cascade(label=lang[3],menu=menu_1)
+menu_1.add_cascade(label=lang[13], menu=menu_4)
+menu_4.add_cascade(label=lang[15], menu=menu_5)
+menu_4.add_cascade(label=lang[19], menu=menu_6)
+menu_1.add_cascade(label=lang[14], menu=menu_7)
+menu_bar.add_cascade(label=lang[4], menu=menu_8)
+menu_bar.add_cascade(label=lang[79], menu=menu_9)
+menu_bar.add_cascade(label=lang[5], menu=menu_12)
+menu_bar.add_cascade(label=lang[6], menu=menu_11)
 
 #Configurar o menu da desktop_win
-desktop_win.configure(menu=barra_menu)
+desktop_win.configure(menu=menu_bar)
 
 #Efetuar o mainloop da desktop_win
 desktop_win.mainloop()

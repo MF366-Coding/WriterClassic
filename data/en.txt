@@ -111,3 +111,15 @@ WriterClassic - Search The Internet Archive
 Alienware AlienFX Theme File
 Web Form Post Data File
 AviSynth Script File
+BerryBuzz Backup File
+Boland Calibration Settings File
+Nokia Device Bookmark File
+Budget In Brief Book File
+Bitmap World File
+BSDL File
+Boundary Scan Description Language File
+BeanShell Script
+WCS Color Appearance Model Profile File
+Celestia Script File
+Celestia Script
+Common Gateway Interface Script

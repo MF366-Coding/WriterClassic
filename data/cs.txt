@@ -108,3 +108,18 @@ Vyhledávání pomocí Qwant
 Vyhledávání v Internet Archive
 WriterClassic - Hledání pomocí Qwant
 WriterClassic - Vyhledávání v Internet Archive
+Soubor s motivem Alienware AlienFX
+Datový soubor příspěvku webového formuláře
+Soubor se skriptem AviSynth
+Záložní soubor BerryBuzz
+Soubor nastavení kalibrace Boland
+Soubor záložek zařízení Nokia
+Soubor knihy Rozpočet ve zkratce
+Soubor Bitmap World
+Soubor BSDL
+Soubor Boundary Scan Description Language
+Skript BeanShell
+Soubor profilu modelu vzhledu barev WCS
+Soubor skriptu Celestia
+Celestia Script
+Common Gateway Interface Script

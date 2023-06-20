@@ -108,3 +108,18 @@ Sök med Qwant
 Sök på Internet Archive
 WriterClassic - Sök med Qwant
 WriterClassic - Sök på Internet Archive
+Temafil för Alienware AlienFX
+Fil med postdata från webbformulär
+AviSynth skriptfil
+BerryBuzz säkerhetskopieringsfil
+Fil med inställningar för Boland-kalibrering
+Nokia-enhetens bokmärkesfil
+Budget i korthet Bokfil
+Bitmap World File
+BSDL File
+Fil för beskrivning av gränsscanning
+Skript för BeanShell
+Profilfil för WCS Color Appearance Model
+Celestia skript fil
+Celestia-skript
+Skript för Common Gateway-gränssnitt

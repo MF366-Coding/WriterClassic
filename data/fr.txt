@@ -108,3 +108,18 @@ Recherche avec Qwant
 Recherche sur Internet Archive
 WriterClassic - Recherche avec Qwant
 WriterClassic - Recherche sur Internet Archive
+Fichier du thème Alienware AlienFX
+Fichier de données d'affichage de formulaire Web
+AviSynth Script File
+BerryBuzz Backup File
+Boland Calibration Settings File (Fichier des paramètres d'étalonnage de Boland)
+Nokia Device Bookmark File (fichier de signets pour appareils Nokia)
+Budget en bref Fichier livre
+Fichier Bitmap World
+Fichier BSDL
+Fichier BSDL (Boundary Scan Description Language)
+Script BeanShell
+Fichier de profil de modèle d'apparence de couleur WCS
+Fichier Script Celestia
+Script Celestia
+Script de l'interface de la passerelle commune

@@ -108,3 +108,18 @@ Suche mit Qwant
 Suche im Internet Archive
 WriterClassic - Suche mit Qwant
 WriterClassic - Suche im Internet Archive
+Alienware AlienFX Theme File
+Web Form Post Data File
+AviSynth Skript-Datei
+BerryBuzz Sicherungsdatei
+Boland Calibration Settings File
+Nokia Device Bookmark File
+Budget In Brief Book File
+Bitmap World File
+BSDL-Datei
+Boundary Scan Description Language-Datei
+BeanShell-Skript
+WCS Color Appearance Model Profil-Datei
+Celestia-Skript-Datei
+Celestia-Skript
+Gemeinsame Gateway-Schnittstelle Skript
