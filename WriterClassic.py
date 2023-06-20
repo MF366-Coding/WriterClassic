@@ -53,8 +53,6 @@ latest_version = data['tag_name']
 # Config files
 with open('config/lang.txt', 'r', encoding="utf-8") as configLangFile:
     setLang = configLangFile.read()
-    #print(setLang[0:2])
-    #thisLang2 = setLang[-12:-10]
 
 with open('data/'+str(setLang[0:2])+'.txt', 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
@@ -93,7 +91,7 @@ TextWidget.pack()
 geom_bg.close()
 configLangFile.close()
 
-#Configurar a barra de menu
+# Defining the menu bar
 menu_bar = Menu(desktop_win)
 
 if sys.platform == "linux":
@@ -219,7 +217,6 @@ def repo():
 # Clock
 def clockPlugin():
     clockWindow = Toplevel(desktop_win)
-    #Stuff
 
     #Windowing
     clockWindow.title(lang[23])
@@ -384,11 +381,11 @@ def sair(root_win):
     if confirm:
         root_win.destroy()
 
-#OpenFile os Créditos
+# credits
 def appCredits():
     mb.showinfo(title=lang[28], message=lang[65])
 
-#OpenFile o Easter Egg
+# easter egg super secret!
 def surprise_egg():
     askNow = sdg.askstring(lang[29], lang[66])
 
@@ -401,13 +398,13 @@ def surprise_egg():
     else:
         mb.showerror(lang[29], lang[67])
 
-#OpenFile a Ajuda
+# help me pls!!!
 def APP_HELP():
     ourWebsite = "https://github.com/MF366-Coding/WriterClassic#help"
 
     webbrowser.open(ourWebsite, 2)
 
-#OpenFile as informações
+# infoooooo
 def aboutApp(thing2, thing3):
     with open(thing2, thing3, encoding='utf-8') as about_d:
         about_data = about_d.read()
@@ -478,7 +475,7 @@ class InternetOnWriter:
                 webbrowser.open("https://duckduckgo.com/?q="+typed)
                 
         elif engine == "yt":
-            # stands for youtube
+            # stands for YouTube
             askForTyping = sdg.askstring(lang[99], lang[90])
             if askForTyping != '':
                 for i in askForTyping:
@@ -508,7 +505,7 @@ class InternetOnWriter:
                 webbrowser.open("https://soundcloud.com/search?q="+typed)
                 
         elif engine == "archive":
-            # stands for Stack Overflow
+            # stands for The Internet Archive
             askForTyping = sdg.askstring(lang[109], lang[90])
             if askForTyping != '':
                 for i in askForTyping:
@@ -516,7 +513,7 @@ class InternetOnWriter:
                 webbrowser.open("https://archive.org/search?query="+typed)
                 
         elif engine == "qwant":
-            # stands for Stack Overflow
+            # stands for Qwant.com
             askForTyping = sdg.askstring(lang[108], lang[90])
             if askForTyping != '':
                 for i in askForTyping:
@@ -615,7 +612,7 @@ desktop_win.bind('<Control-w>', lambda m:
     commandPrompt())
 
 
-#Adicionar o Menu Ficheiro
+# Creating the menu dropdowns and buttons
 menu_10.add_command(label=lang[94], command=newFile)
 menu_10.add_command(label=lang[7], command=lambda:
     OpenFile(desktop_win))
@@ -626,7 +623,7 @@ menu_10.add_separator()
 menu_10.add_command(label=lang[11], command=lambda:
     sair(desktop_win))
 
-#Adicionar o Menu Informações
+
 menu_11.add_command(label=lang[75], command=UpdateCheck.check)
 menu_11.add_separator()
 menu_11.add_command(label=lang[25], command=lambda:
@@ -640,13 +637,13 @@ menu_11.add_command(label=lang[29], command=surprise_egg)
 
 menu_1.add_command(label=lang[12], command=SetWinSize)
 
-# menu fonts
+
 menu_7.add_command(label=lang[20], command=lambda:
                         fontEdit(1))
 menu_7.add_command(label=lang[21], command=lambda:
                         fontEdit(2))
 
-#Adicionar o Menu Plugins
+
 menu_8.add_command(label=lang[22], command=new_window)
 menu_8.add_command(label=lang[23], command=clockPlugin)
 menu_8.add_separator()
@@ -681,7 +678,7 @@ menu_9.add_separator()
 menu_9.add_command(label=lang[107], command=lambda:
                 InternetOnWriter.Search("archive"))
 
-#Adicionar o Menu Definições
+
 menu_12.add_command(label="Čeština (Čechie)", command=lambda:
     LanguageSet("cs", desktop_win))
 menu_12.add_command(label="Deutsch (Deutschland)", command=lambda:
@@ -717,7 +714,7 @@ menu_12.add_separator()
 menu_12.add_command(label=lang[105], command=lambda:
     webbrowser.open(url='https://github.com/MF366-Coding/WriterClassic/wiki/Manual-Configuration-Setup'))
 
-# Adicionar os Temas (Temas Regulares)
+
 menu_5.add_command(label=lang[16], command=lambda:
     ThemeSet('white', 'black', 'black', 'black', 'white'))
 menu_5.add_command(label=lang[17], command=lambda:
@@ -726,7 +723,7 @@ menu_5.add_separator()
 menu_5.add_command(label=lang[18], command=lambda:
     ThemeSet('grey', 'black', 'black', 'black', 'white'))
 
-#Adicionar os Temas (Temas Modernos)
+
 menu_6.add_command(label='Light Yellow', command=lambda:
     ThemeSet('light yellow', 'black', 'black', '#f5b949', 'black'))
 
@@ -759,7 +756,7 @@ if sys.platform == "win32":
         ThemeSet("#012456", "#eeedf0", "#fedba9", "#eeedf0", "#012456"))
 
 if sys.platform == "linux":
-    #Configurar cores do Menu
+    # Themed menus in case of: Linux Python3
     menu_10.configure(background=theme["menu"], foreground=theme["mfg"])
     menu_11.configure(background=theme["menu"], foreground=theme["mfg"])
     menu_1.configure(background=theme["menu"], foreground=theme["mfg"])
@@ -773,7 +770,7 @@ if sys.platform == "linux":
     menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
     menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
 
-#Adicionar menus "cascade"
+# dropdowns/cascades
 menu_bar.add_cascade(label=lang[2],menu=menu_10)
 menu_bar.add_cascade(label=lang[3],menu=menu_1)
 menu_1.add_cascade(label=lang[13], menu=menu_4)
@@ -785,8 +782,8 @@ menu_bar.add_cascade(label=lang[79], menu=menu_9)
 menu_bar.add_cascade(label=lang[5], menu=menu_12)
 menu_bar.add_cascade(label=lang[6], menu=menu_11)
 
-#Configurar o menu da desktop_win
+# Yes, menu_bar is desktop_win's menu bar lmfao
 desktop_win.configure(menu=menu_bar)
 
-#Efetuar o mainloop da desktop_win
+# And done! Now, it will continuously mainlooping! Enjoy!
 desktop_win.mainloop()
