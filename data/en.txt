@@ -108,3 +108,6 @@ Search with Qwant
 Search The Internet Archive
 WriterClassic - Search with Qwant
 WriterClassic - Search The Internet Archive
+Alienware AlienFX Theme File
+Web Form Post Data File
+AviSynth Script File

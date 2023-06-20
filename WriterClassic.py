@@ -288,7 +288,10 @@ file_types = [(lang[32], '*.txt'),
               (lang[50], '*.asa'),
               (lang[51], '*.asm'),
               (lang[52], '*.md'),
-              (lang[102], '*.json')]
+              (lang[102], '*.json'),
+              (lang[110], '*.ath'),
+              (lang[111], "*.att"),
+              (lang[112], "*.avs")]
 
 # opens a file
 def abrir(root_win):
