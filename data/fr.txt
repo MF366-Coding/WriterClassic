@@ -123,3 +123,5 @@ Fichier de profil de modèle d'apparence de couleur WCS
 Fichier Script Celestia
 Script Celestia
 Script de l'interface de la passerelle commune
+Recherche sur Spotify en ligne
+WriterClassic - Rechercher dans Spotify en ligne

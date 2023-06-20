@@ -123,3 +123,5 @@ File del profilo del modello di aspetto del colore WCS
 File script Celestia
 Script Celestia
 Script Interfaccia gateway comune
+Cerca Spotify online
+WriterClassic - Cerca Spotify online

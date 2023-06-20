@@ -123,3 +123,5 @@ WCS Color Appearance Model Profil-Datei
 Celestia-Skript-Datei
 Celestia-Skript
 Gemeinsame Gateway-Schnittstelle Skript
+Spotify online durchsuchen
+WriterClassic - Spotify online durchsuchen

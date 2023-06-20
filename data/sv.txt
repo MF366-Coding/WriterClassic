@@ -123,3 +123,5 @@ Profilfil för WCS Color Appearance Model
 Celestia skript fil
 Celestia-skript
 Skript för Common Gateway-gränssnitt
+Sök på Spotify online
+WriterClassic - Sök Spotify online

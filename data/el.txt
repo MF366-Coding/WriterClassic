@@ -123,3 +123,5 @@ BeanShell Script
 Αρχείο σεναρίου Celestia
 Σενάριο Celestia
 Κοινή διεπαφή πύλης Script
+Αναζήτηση στο Spotify Online
+WriterClassic - Αναζήτηση στο Spotify Online

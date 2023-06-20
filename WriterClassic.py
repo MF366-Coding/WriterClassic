@@ -522,6 +522,14 @@ class InternetOnWriter:
                 for i in askForTyping:
                     typed = askForTyping.replace(' ', '+')
                 webbrowser.open("https://www.qwant.com/?q="+typed)
+                
+        elif engine == "spotify":
+            # stands for Spotify Online
+            askForTyping = sdg.askstring(lang[108], lang[90])
+            if askForTyping != '':
+                for i in askForTyping:
+                    typed = askForTyping.replace(' ', '%20')
+                webbrowser.open("https://open.spotify.com/search/"+typed)
 
 def commandPrompt():
     askNow = sdg.askstring(lang[68], lang[69])

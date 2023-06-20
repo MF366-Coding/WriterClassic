@@ -123,3 +123,5 @@ WriterClassic - Пошук в інтернет-архіві
 Файл скрипту Celestia
 Скрипт Celestia
 Скрипт інтерфейсу загального шлюзу
+Пошук Spotify в Інтернеті
+WriterClassic - пошук Spotify онлайн

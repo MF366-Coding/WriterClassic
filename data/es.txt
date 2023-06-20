@@ -123,3 +123,5 @@ Archivo WCS Color Appearance Model Profile
 Archivo de guión Celestia
 Script Celestia
 Common Gateway Interface Script
+Buscar Spotify en línea
+WriterClassic - Buscar Spotify en línea

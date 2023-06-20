@@ -123,3 +123,5 @@ Soubor profilu modelu vzhledu barev WCS
 Soubor skriptu Celestia
 Celestia Script
 Common Gateway Interface Script
+Hledání ve službě Spotify online
+WriterClassic - Hledání na Spotify online
