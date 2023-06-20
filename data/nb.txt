@@ -1,0 +1,127 @@
+Norueguês (Nota de desenvolvedor)
+WriterClassic
+Fil
+Utseende
+Plugins
+Innstillinger
+Informasjon
+Åpne fil...
+Lagre fil...
+Lagre som...
+Formater fil...
+Avslutt
+Vindusdimensjoner
+Temaer
+Endre skrifttyper
+Standardtemaer
+Lys modus
+Mørk modus
+Grå temaer
+Moderne temaer
+Endre størrelse
+Endre familie
+Merknader
+Klokke
+Fellesskapstemaer
+Om og om igjen
+Hjelp
+Repository
+Kreditter
+Påskeegg
+WriterClassic - Avslutt nå?
+Du må åpne Writer på nytt for å bruke endringene! Starte på nytt nå?
+Tekstfil
+Konfigurasjonsfiler
+Cascading style sheet
+Fil med kommaseparerte verdier
+HTML-fil
+Fil med konfigurasjonsinformasjon
+Generisk informasjonsfil
+Oppstartsfil for Windows
+JavaScript-fil
+Python-skript
+Loggfil
+XML-fil
+Readme-fil
+Statisk biblioteksfil
+Anim8or-skript
+ANSI-tekstfil
+Quake 3 Engine Arena-fil
+ActionScript-fil
+ASP-konfigurasjonsfil
+Kildekodefil i assembler-språk
+Markdown-filer
+WriterClassic - Logger du ut?
+Er du sikker på at du vil forlate Writer?
+WriterClassic - Sletting av filer
+Er du sikker på at du vil slette en fil?
+Velg en breddeverdi for hovedvinduet.
+Velg en høydeverdi for hovedvinduet.
+WriterClassic - Endre skriftstørrelse
+Velg et tall (minimum 1).
+WriterClassic - Endre skriftfamilie
+Skriv inn navnet på en skrifttype du har installert på enheten.
+Du må starte på nytt for å bruke endringene.
+WriterClassic - Om
+Denne applikasjonen ble opprettet av MF366 og drives av Python 3.10.11.
+Skriv SPESIAL-kodestrengen for å finne påskeegget...
+Har du problemer med å finne påskeegget? Ingen har sagt at det skulle være lett...
+WriterClassic - kommandomeny
+Skriv inn en kommando til Writer-kommandomenyen.
+Dette er ikke en WriterClassic-kommando.
+Denne filen er tom.
+WriterClassic - Se etter oppdateringer
+Du bruker en eldre eller ustabil versjon. Det anbefales imidlertid å oppgradere til den nyeste stabile versjonen. Oppdaterer du nå?
+Aktiver/deaktiver oppdateringer ved oppstart
+Se etter oppdateringer
+Tøm data
+WriterClassic - Slett data?
+Er du sikker på at du vil slette ALLE data fra WriterClassic?
+Internett
+WriterClassic - Gå til URL
+Gå til URL...
+WriterClassic - Søk med Bing
+WriterClassic - Søk med Google
+WriterClassic - Søk med DuckDuckGo
+WriterClassic - Søk med Yahoo!
+Søk med Bing
+Søk med Google
+Søk med DuckDuckGo
+Søk med Yahoo!
+Hva vil du søke etter på nettet?
+Skriv inn en URL som skal åpnes i din standard nettleser.
+Din versjon av WriterClassic er oppdatert.
+WriterClassic - Oppdatert
+Ny fil
+Søk med Ecosia
+Søk på YouTube
+Søk i Stack Overflow
+WriterClassic - Søk med Ecosia
+WriterClassic - Søk på YouTube
+WriterClassic - Søk i Stack Overflow
+Ferdig.
+JSON-filer
+Søk i SoundCloud
+WriterClassic - Søk i SoundCloud
+Hjelp til manuell konfigurasjon
+Søk med Qwant
+Søk i Internet Archive
+WriterClassic - Søk med Qwant
+WriterClassic - Søk i Internet Archive
+Temafil for Alienware AlienFX
+Datafil for innlegg i webskjema
+AviSynth Script-fil
+BerryBuzz sikkerhetskopifil
+Fil med innstillinger for Boland-kalibrering
+Nokia-enhetens bokmerkefil
+Filen Budget In Brief Book
+Bitmap World File
+BSDL-fil
+Boundary Scan Description Language-fil
+BeanShell-skript
+Profilfil for WCS Color Appearance Model
+Celestia Script-fil
+Celestia-skript
+Skript for felles gateway-grensesnitt
+Søk i Spotify på nettet
+WriterClassic - Søk i Spotify på nettet

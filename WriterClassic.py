@@ -525,7 +525,7 @@ class InternetOnWriter:
                 
         elif engine == "spotify":
             # stands for Spotify Online
-            askForTyping = sdg.askstring(lang[108], lang[90])
+            askForTyping = sdg.askstring(lang[126], lang[90])
             if askForTyping != '':
                 for i in askForTyping:
                     typed = askForTyping.replace(' ', '%20')
@@ -675,6 +675,8 @@ menu_9.add_command(label=lang[96], command=lambda:
                 InternetOnWriter.Search("yt"))
 menu_9.add_command(label=lang[103], command=lambda:
                 InternetOnWriter.Search("soundcloud"))
+menu_9.add_command(label=lang[125], command=lambda:
+                InternetOnWriter.Search("spotify"))
 menu_9.add_separator()
 menu_9.add_command(label=lang[107], command=lambda:
                 InternetOnWriter.Search("archive"))
@@ -694,6 +696,8 @@ menu_12.add_command(label='Italiano (Italia)', command=lambda:
     LanguageSet('it', desktop_win))
 menu_12.add_command(label='Ελληνικά (Ελλάδα)', command=lambda:
     LanguageSet("el", desktop_win))
+menu_12.add_command(label="Norsk (Norge)", command=lambda:
+    LanguageSet("nb", desktop_win))
 menu_12.add_command(label='Português (Brasil)', command=lambda:
     LanguageSet('br', desktop_win))
 menu_12.add_command(label='Português (Portugal)', command=lambda:
@@ -713,7 +717,7 @@ menu_12.add_separator()
 menu_12.add_command(label=lang[105], command=lambda:
     webbrowser.open(url='https://github.com/MF366-Coding/WriterClassic/wiki/Manual-Configuration-Setup'))
 
-#Adicionar os Temas (Temas Regulares)
+# Adicionar os Temas (Temas Regulares)
 menu_5.add_command(label=lang[16], command=lambda:
     ThemeSet('white', 'black', 'black', 'black', 'white'))
 menu_5.add_command(label=lang[17], command=lambda:
@@ -746,6 +750,9 @@ menu_6.add_command(label='Christmas Night', command=lambda:
 
 menu_6.add_command(label='Silent Night', command=lambda:
     ThemeSet('#020421','pink', 'pink', '#020312', '#ebd1ed'))
+
+menu_6.add_command(label="Penguins", command=lambda:
+    ThemeSet('#b8d8e0', '#bd5200', 'black', '#ffc738', 'black'))
 
 if sys.platform == "win32":
     menu_6.add_command(label='[EXTRA] PowerShell Theme', command=lambda:
