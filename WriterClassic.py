@@ -48,7 +48,7 @@ I decided to not use it as a module and, instead, to make it built-in WriterClas
 - Too many Python files
 - Import errors that sometimes happen in Linux
 
-The LICENSE for simple_webbrowser is here:
+The LICENSE for simple_webbrowser is the same as WriterClassic's.
 '''
 
 """
