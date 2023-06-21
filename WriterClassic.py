@@ -17,7 +17,7 @@ Find me in this spots:
 Original idea by: MF366
 Fully developed by: MF366
 
-Small contributions by:
+Small but good contributions by:
     Norb (norbcodes at GitHub)
     Zeca70 (Zeca70 at GitHub)
 '''
