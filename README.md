@@ -5,13 +5,18 @@ Writer Classic's GitHub repository.
 
 Writer Classic is a rather small Python project that brings to the user a whole new text editing experience. :thinking:
 
-**IMPORTANT ANNOUCEMENT!**
+## IMPORTANT ANNOUCEMENT!
 
 I, MF366, FINALLY FIXED THE BUG WHERE MENUS WOULD ACT WEIRD ON WINDOWS AND MACOS BY MAKING A CONDITION THAT ONLY IF THE OS IS LINUX, THE MENUS SHOULD BE CHANGED!
 
 Thanks for visiting this repository. :heart:
 
 I also would love if you waste some time testing Writer Classic or just exploring this GitHub repository.
+
+## Important info
+**VERY IMPORTANT!**
+- LICENSE -> https://github.com/MF366-Coding/WriterClassic/blob/main/LICENSE
+- `simple_webbrowser.py` (LICENSE) -> 
 
 # Installing Writer Classic
 To install Writer, you can choose between 2 ways of installing.
@@ -112,6 +117,22 @@ You need:
 
 ## Small information
 If you want to redistribute this software, you need its LICENSE: this is **mandatory**!
+
+# simple_webbrowser.py
+This project uses tecnology from a gist of mine.
+That code is licensed under a GNU GENERAL PUBLIC LICENSE v3.
+The code is here, in this file.
+
+I decided to not use it as a module and, instead, to make it built-in WriterClassic to avoid:
+- Too many Python files
+- Import errors that sometimes happen in Linux
+
+The LICENSE for `simple_webbrowser` is the same as WriterClassic's.
+That means, `simple_webbrowser` CAN'T be used in proprietary code.
+
+C'mon, be an open-source lover!
+
+Also, [here](https://gist.github.com/MF366-Coding/a91f1ea111fc22bf871afc4038f27166)'s the link to the gist (`simple_webbrowser.py`).
 
 # Let me know of any bug you find :desktop_computer:
 If you found a bug, please tell me the details by creating a new Issue in this Repository.

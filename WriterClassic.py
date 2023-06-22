@@ -1,6 +1,7 @@
+# WriterClassic.py
 
 '''
-Writer Classic
+WriterClassic
 
 Powered by: Python 3.10.11 (in my Windows computer)
 
@@ -17,7 +18,7 @@ Find me in this spots:
 Original idea by: MF366
 Fully developed by: MF366
 
-Small but good contributions by:
+Small but lovely contributions by:
     Norb (norbcodes at GitHub)
     Zeca70 (Zeca70 at GitHub)
 '''
@@ -38,20 +39,23 @@ import json # google it lmfao
 # Windowing
 desktop_win = Tk()
 
+
 '''
 This project uses tecnology from a gist of mine.
 That code is licensed under a GNU GENERAL PUBLIC LICENSE v3.
-The code is here, in this file. 
+The code is here, in this file.
 
 I decided to not use it as a module and, instead, to make it built-in WriterClassic to avoid:
 - Too many Python files
 - Import errors that sometimes happen in Linux
 
 The LICENSE for simple_webbrowser is the same as WriterClassic's.
+That means, simple_webbrowser CAN'T be used in proprietary code.
+
+C'mon, be an open-source lover!
 '''
 
-
-# now here goes the code
+# now here goes the code for simple_webbrowser.py as a class
 class simple_webbrowser:
     @staticmethod
     def Website(url):
