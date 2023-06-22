@@ -16,7 +16,8 @@ I also would love if you waste some time testing Writer Classic or just explorin
 ## Important info
 **VERY IMPORTANT!**
 - LICENSE -> https://github.com/MF366-Coding/WriterClassic/blob/main/LICENSE
-- `simple_webbrowser.py` (LICENSE) -> 
+- `simple_webbrowser.py` (LICENSE) -> https://github.com/MF366-Coding/WriterClassic#simple_webbrowserpy
+- `simple_webbrowser.py` (Code) -> https://gist.github.com/MF366-Coding/a91f1ea111fc22bf871afc4038f27166
 
 # Installing Writer Classic
 To install Writer, you can choose between 2 ways of installing.
