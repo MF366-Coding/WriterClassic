@@ -25,7 +25,7 @@ Small but lovely contributions by:
 
 # Importing the goodies
 import sys # Platforms and OSes
-import webbrowser # The internet
+import simple_webbrowser.simple_webbrowser as simple_webbrowser # internet
 from tkinter import * # Window
 from tkinter.ttk import * # Not sure
 from tkinter import simpledialog as sdg # Inputs with GUI
@@ -38,98 +38,6 @@ import json # google it lmfao
 
 # Windowing
 desktop_win = Tk()
-
-
-'''
-This project uses tecnology from a gist of mine.
-That code is licensed under a GNU GENERAL PUBLIC LICENSE v3.
-The code is here, in this file.
-
-I decided to not use it as a module and, instead, to make it built-in WriterClassic to avoid:
-- Too many Python files
-- Import errors that sometimes happen in Linux
-
-The LICENSE for simple_webbrowser is the same as WriterClassic's.
-That means, simple_webbrowser CAN'T be used in proprietary code.
-
-C'mon, be an open-source lover!
-'''
-
-# now here goes the code for simple_webbrowser.py as a class
-class simple_webbrowser:
-    @staticmethod
-    def Website(url):
-        if sys.platform == "win32":
-            webbrowser.open(url)
-            # trust me: this part is not a total waste
-        elif sys.platform == "linux" or "darwin":
-            webbrowser.open(url)
-
-    @staticmethod
-    def Google(query):
-        for i in query:
-            typed = query.replace(' ', '+')
-        webbrowser.open('https://www.google.com/search?q='+typed)
-
-    @staticmethod
-    def Bing(query):
-        for i in query:
-            typed = query.replace(' ', '+')
-        webbrowser.open('https://www.bing.com/search?q='+typed)
-
-    @staticmethod
-    def Yahoo(query):
-        for i in query:
-            typed = query.replace(' ', '+')
-        webbrowser.open("https://search.yahoo.com/search?p="+typed)
-
-    @staticmethod
-    def DuckDuckGo(query):
-        for i in query:
-            typed = query.replace(' ', '+')
-        webbrowser.open("https://duckduckgo.com/?q="+typed)
-
-    @staticmethod
-    def YouTube(query):
-        for i in query:
-            typed = query.replace(' ', '+')
-        webbrowser.open("https://www.youtube.com/results?search_query="+typed)
-
-    @staticmethod
-    def Ecosia(query):
-        for i in query:
-            typed = query.replace(' ', '%20')
-        webbrowser.open("https://www.ecosia.org/search?method=index&q="+typed)
-
-    @staticmethod
-    def StackOverflow(query):
-        for i in query:
-            typed = query.replace(' ', '+')
-        webbrowser.open("https://stackoverflow.com/search?q="+typed)
-
-    @staticmethod
-    def SoundCloud(query):
-        for i in query:
-            typed = query.replace(' ', '%20')
-        webbrowser.open("https://soundcloud.com/search?q="+typed)
-
-    @staticmethod
-    def Archive(query):
-        for i in query:
-            typed = query.replace(' ', '+')
-        webbrowser.open("https://archive.org/search?query="+typed)
-
-    @staticmethod
-    def Qwant(query):
-        for i in query:
-            typed = query.replace(' ', '+')
-        webbrowser.open("https://www.qwant.com/?q="+typed)
-
-    @staticmethod
-    def SpotifyOnline(query):
-        for i in query:
-            typed = query.replace(' ', '%20')
-        webbrowser.open("https://open.spotify.com/search/"+typed)
 
 with open('config/startup.txt', 'r', encoding='utf-8') as startupFile:
     startAppData = startupFile.read()
