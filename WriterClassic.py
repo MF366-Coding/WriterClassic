@@ -304,7 +304,8 @@ file_types = [(lang[32], '*.txt'),
               (lang[121], "*.camp"),
               (lang[122], "*.cel"),
               (lang[123], "*.celx"),
-              (lang[124], "*.cgi")
+              (lang[124], "*.cgi"),
+              ("*.*", "*.*")
               ]
 
 # opens a file
