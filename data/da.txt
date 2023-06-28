@@ -1,0 +1,130 @@
+Dinamarquês (Nota de desenvolvedor)
+WriterClassic
+Fil
+Udseende
+Plugins
+Indstillinger
+Information
+Åbn fil...
+Gem fil...
+Gem som...
+Formater fil...
+Afslut
+Vinduets dimensioner
+Temaer
+Skift skrifttyper
+Standardtemaer
+Lys tilstand
+Mørk tilstand
+Grå temaer
+Moderne temaer
+Skift størrelse
+Skift familie
+Noter
+Ur
+Fællesskabstemaer
+Om og fra
+Hjælp
+Repository
+Kreditter
+Påskeæg
+WriterClassic - afslut nu?
+Du skal genåbne Writer for at anvende ændringerne! Genstart nu?
+Tekstfil
+Konfigurationsfiler
+Cascading style sheet
+Fil med kommaseparerede værdier
+HTML-fil
+Fil med konfigurationsoplysninger
+Generisk informationsfil
+Windows-opstartsfil
+JavaScript-fil
+Python-script
+Log-fil
+XML-fil
+Readme-fil
+Statisk biblioteksfil
+Anim8or-script
+ANSI-tekstfil
+Quake 3 Engine Arena-fil
+ActionScript-fil
+ASP-konfigurationsfil
+Kildekodefil i assemblersprog
+Markdown-filer
+WriterClassic - Log ud?
+Er du sikker på, at du vil forlade Writer?
+WriterClassic - viskelæder til filer
+Er du sikker på, at du vil slette en fil?
+Vælg en breddeværdi for hovedvinduet.
+Vælg en højdeværdi for hovedvinduet.
+WriterClassic - Skift skriftstørrelse
+Vælg venligst et tal (minimum 1).
+WriterClassic - Skift familie
+Indtast navnet på en skrifttype, du har installeret på din enhed.
+Du skal genstarte for at anvende ændringerne.
+WriterClassic - Om
+Dette program er oprettet af MF366 og er drevet af Python 3.10.11.
+Skriv den SÆRLIGE kodestreng for at få påskeægget...
+Problemer med at finde påskeægget? Ingen sagde, at det ville være nemt...
+WriterClassic - Kommandomenu
+Skriv en kommando til Writer-kommandomenuen.
+Dette er ikke en WriterClassic-kommando.
+Denne fil er tom.
+WriterClassic - Søg efter opdateringer
+Du bruger en ældre version eller en ustabil version. Det anbefales dog at opgradere til den seneste stabile version. Opdater nu?
+Aktiver/deaktiver opdateringer ved opstart
+Søg efter opdateringer
+Ryd data
+WriterClassic - Ryd data?
+Er du sikker på, at du vil slette ALLE data fra WriterClassic?
+Internet
+WriterClassic - Gå til URL
+Gå til URL...
+WriterClassic - Søg med Bing
+WriterClassic - Søg med Google
+WriterClassic - Søg med DuckDuckGo
+WriterClassic - Søg med Yahoo!
+Søg med Bing
+Søg med Google
+Søg med DuckDuckGo
+Søg med Yahoo!
+Hvad vil du gerne søge efter på nettet?
+Indtast en URL, der skal åbnes i din standardwebbrowser.
+Din version af WriterClassic er opdateret.
+WriterClassic - Opdateret
+Ny fil
+Søg med Ecosia
+Søg på YouTube
+Søg på Stack Overflow
+WriterClassic - Søg med Ecosia
+WriterClassic - Søg på YouTube
+WriterClassic - Søg i Stack Overflow
+Færdig.
+JSON-filer
+Søg i SoundCloud
+WriterClassic - Søg på SoundCloud
+Hjælp til manuel konfiguration [engelsk artikel]
+Søg med Qwant
+Søg i Internet Archive
+WriterClassic - Søg med Qwant
+WriterClassic - Søg i internetarkivet
+Alienware AlienFX Theme File
+Web Form Post Data File
+AviSynth Script File
+BerryBuzz Backup File
+Boland Calibration Settings File
+Nokia Device Bookmark File
+Budget In Brief Book File
+Bitmap World File
+BSDL File
+Boundary Scan Description Language-fil
+BeanShell Script
+WCS Profilfil til model for farveudseende
+Celestia Script File
+Celestia Script
+Common Gateway Interface Script
+Søg i Spotify online
+WriterClassic - Søg i Spotify online
+Alle filer
+Brugerdefinerede plugins [BETA]
+Plugin-opsætning [engelsk artikel]

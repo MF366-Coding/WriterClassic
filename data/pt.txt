@@ -4,8 +4,8 @@ Ficheiro
 Aparência
 Plugins
 Definições
-Informações
-Abrir...
+Informação
+Abrir ficheiro...
 Guardar ficheiro...
 Guardar como...
 Formatar ficheiro...
@@ -16,9 +16,9 @@ Alterar tipos de letra
 Temas predefinidos
 Modo claro
 Modo escuro
-Modo cinzento
+Temas cinzentos
 Temas modernos
-Alterar o tamanho
+Alterar tamanho
 Alterar família
 Notas
 Relógio
@@ -27,9 +27,9 @@ Acerca de
 Ajuda
 Repositório
 Créditos
-Ovo de Páscoa
+Pequena Surpresa
 WriterClassic - Sair agora?
-É necessário reabrir o Writer para aplicar as alterações! Reiniciar agora?
+Tens de reabrir o Writer para aplicar as alterações! Reiniciar agora?
 Ficheiro de texto
 Ficheiros de configuração
 Folha de estilo em cascata
@@ -37,7 +37,7 @@ Arquivo de valores separados por vírgula
 Ficheiro HTML
 Ficheiro de informações de configuração
 Ficheiro de informações genéricas
-Ficheiro de inicialização do Windows
+Ficheiro de arranque do Windows
 Ficheiro JavaScript
 Script Python
 Ficheiro de registo
@@ -49,30 +49,30 @@ Ficheiro de texto ANSI
 Ficheiro Quake 3 Engine Arena
 Ficheiro ActionScript
 Ficheiro de configuração ASP
-Ficheiro de Código Fonte em Linguagem Assembly
+Ficheiro de código fonte em linguagem Assembly
 Ficheiros Markdown
-WriterClassic - Sair?
+WriterClassic - Terminar sessão?
 Tem certeza de que deseja sair do Writer?
 WriterClassic - Apagador de ficheiros
-Tem a certeza que quer apagar um ficheiro?
-Escolhe um valor de largura para a janela principal.
+Tem a certeza de que pretende apagar um ficheiro?
+Escolha um valor de largura para a janela principal.
 Escolha um valor de altura para a janela principal.
-WriterClassic - Alterar o tamanho da fonte
-Por favor, escolha um número (mínimo de 1).
+WriterClassic - Alterar o tamanho do tipo de letra
+Escolha um número (mínimo de 1).
 WriterClassic - Alterar família
 Introduza o nome de um tipo de letra que tenha instalado no seu dispositivo.
-É necessário reiniciar para aplicar as alterações.
+É necessário reiniciar o sistema para aplicar as alterações.
 WriterClassic - Acerca de
 Esta aplicação foi criada por MF366 e é alimentada por Python 3.10.11.
 Escreve a cadeia de código ESPECIAL para obteres o Ovo da Páscoa...
 Problemas em encontrar o Ovo da Páscoa? Ninguém disse que seria fácil...
 WriterClassic - Menu de comandos
 Digite um comando para o menu de comandos do Writer.
-Não é um comando do WriterClassic.
+Este não é um comando do WriterClassic.
 Este ficheiro está vazio.
-WriterClassic - Verificar se há atualizações
-Está a utilizar uma versão mais antiga ou uma versão instável. No entanto, é recomendável actualizar para a versão estável mais recente. Actualizar agora?
-Activar/desactivar as actualizações no arranque
+WriterClassic - Verificar se há actualizações
+Está a utilizar uma versão mais antiga ou uma versão instável. No entanto, recomenda-se a atualização para a versão estável mais recente. Atualizar agora?
+Ativar/desativar actualizações no arranque
 Verificar se há actualizações
 Limpar dados
 WriterClassic - Limpar dados?
@@ -86,11 +86,11 @@ WriterClassic - Pesquisar com o DuckDuckGo
 WriterClassic - Pesquisar com o Yahoo!
 Pesquisar com o Bing
 Pesquisar com o Google
-Pesquisar com DuckDuckGo
+Pesquisar com o DuckDuckGo
 Pesquisar com o Yahoo!
 O que gostaria de pesquisar na Web?
 Introduza um URL para abrir no seu navegador Web predefinido.
-A sua versão do WriterClassic está atualizada.
+A sua versão do WriterClassic está actualizada.
 WriterClassic - Atualizado
 Novo ficheiro
 Pesquisar com Ecosia
@@ -99,31 +99,32 @@ Pesquisar no Stack Overflow
 WriterClassic - Pesquisar com Ecosia
 WriterClassic - Pesquisar no YouTube
 WriterClassic - Pesquisar no Stack Overflow
-Feito.
+Concluído.
 Ficheiros JSON
 Pesquisar no SoundCloud
 WriterClassic - Pesquisar no SoundCloud
-Ajuda de configuração manual
-Pesquisar com Qwant
-Pesquisar no Internet Archive
-WriterClassic - Pesquisar com Qwant
+Ajuda de configuração manual [Artigo em inglês]
+Pesquisar com o Qwant
+Pesquisar no Arquivo da Internet
+WriterClassic - Pesquisar com o Qwant
 WriterClassic - Pesquisar no Arquivo da Internet
 Ficheiro do tema Alienware AlienFX
 Ficheiro de dados de publicação de formulário Web
-AviSynth Script File
-Ficheiro de cópia de segurança do BerryBuzz
+Ficheiro de Script AviSynth
+Ficheiro de Backup do BerryBuzz
 Boland Calibration Settings File
 Ficheiro de marcadores de dispositivos Nokia
 Ficheiro do livro Budget In Brief
 Bitmap World File
 Ficheiro BSDL
 Ficheiro Boundary Scan Description Language (linguagem de descrição de digitalização de limites)
-Script BeanShell
+Ficheiro BeanShell Script
 Ficheiro de perfil de modelo de aparência de cor WCS
 Ficheiro de Script Celestia
 Script Celestia
-Ficheiro Common Gateway Interface Script
-Pesquisar no Spotify Online
-WriterClassic - Pesquisar no Spotify Online
+Script de interface de gateway comum
+Pesquisar Spotify Online
+WriterClassic - Pesquisar Spotify Online
 Todos os ficheiros
-Plug-ins personalizados [BETA]
+Plugins personalizados [BETA]
+Configuração de Plugins [Artigo em Inglês]

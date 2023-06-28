@@ -5,7 +5,7 @@ Apariencia
 Plugins
 Configuración
 Información
-Abrir...
+Abrir archivo...
 Guardar archivo...
 Guardar como...
 Formatear archivo...
@@ -16,7 +16,7 @@ Cambiar fuentes
 Temas por defecto
 Modo claro
 Modo oscuro
-Modo gris
+Temas grises
 Temas modernos
 Cambiar tamaño
 Cambiar familia
@@ -25,7 +25,7 @@ Reloj
 Temas comunitarios
 Acerca de
 Ayuda
-Repo
+Repositorio
 Créditos
 Huevo de Pascua
 WriterClassic - ¿Salir ahora?
@@ -35,44 +35,44 @@ Archivos de configuración
 Hoja de estilo en cascada
 Archivo de valores separados por comas
 Archivo HTML
-Archivo de información de configuración
-Archivo de información genérica
-Archivo de inicialización de Windows
+Fichero de información de configuración
+Fichero de información genérica
+Archivo de inicio de Windows
 Archivo JavaScript
 Script Python
-Archivo Log
+Archivo de registro
 Archivo XML
 Archivo Léame
 Archivo de biblioteca estática
-Anim8or Script
+Script Anim8or
 Archivo de texto ANSI
-Archivo Quake 3 Engine Arena
+Archivo Arena de Quake 3 Engine
 Archivo ActionScript
-Archivo ASP Config
-Archivo de código fuente en lenguaje Assembly
+Archivo de configuración ASP
+Archivo de código fuente en lenguaje ensamblador
 Archivos Markdown
-WriterClassic - ¿Salir?
+WriterClassic - ¿Cerrar sesión?
 ¿Estás seguro de que quieres salir de Writer?
 WriterClassic - Borrador de Archivos
 ¿Estás seguro de que quieres borrar un archivo?
-Elija un valor de anchura para la ventana principal.
+Elige un valor de anchura para la ventana principal.
 Elija un valor de altura para la ventana principal.
 WriterClassic - Cambiar tamaño de fuente
 Elija un número (mínimo 1).
 WriterClassic - Cambiar familia
-Por favor, escriba el nombre de una fuente que tenga instalada en su dispositivo.
-Debe reiniciar para aplicar los cambios.
+Introduzca el nombre de una fuente que tenga instalada en su dispositivo.
+Es necesario reiniciar para aplicar los cambios.
 WriterClassic - Acerca de
-Esta aplicación ha sido creada por MF366 y funciona con Python 3.10.11.
-Escribe la cadena de código ESPECIAL para conseguir el Huevo de Pascua...
+Esta aplicación fue creada por MF366 y funciona con Python 3.10.11.
+Escribe la cadena de código ESPECIAL para obtener el Huevo de Pascua...
 ¿Problemas para encontrar el Huevo de Pascua? Nadie dijo que sería fácil...
 WriterClassic - Menú de comandos
-Escribe un comando para el Menú de Comandos de Writer.
-No es un comando de WriterClassic.
+Escribe un comando para el menú de comandos de Writer.
+Esto no es un comando de WriterClassic.
 Este archivo está vacío.
-WriterClassic - Buscar Actualizaciones
-Estás utilizando una versión antigua o inestable. Se recomienda actualizar a la última versión estable. ¿Actualizar ahora?
-Desactivar/activar actualizaciones al inicio
+WriterClassic - Buscar actualizaciones
+Estás utilizando una versión antigua o inestable. Sin embargo, se recomienda actualizar a la última versión estable. ¿Actualizar ahora?
+Activar/desactivar actualizaciones al inicio
 Buscar actualizaciones
 Borrar datos
 WriterClassic - ¿Borrar datos?
@@ -87,9 +87,9 @@ WriterClassic - Buscar con DuckDuckGo
 Buscar con Bing
 Buscar con Google
 Buscar con DuckDuckGo
-¡Buscar con Yahoo!
-¿Qué quieres buscar en la Web?
-Escribe una URL para abrirla en tu navegador web predeterminado.
+¡Busca con Yahoo!
+¿Qué te gustaría buscar en la Web?
+Introduce una URL para abrirla en tu navegador web predeterminado.
 Tu versión de WriterClassic está actualizada.
 WriterClassic - Actualizado
 Nuevo archivo
@@ -99,18 +99,18 @@ Buscar en Stack Overflow
 WriterClassic - Buscar con Ecosia
 WriterClassic - Buscar en YouTube
 WriterClassic - Buscar en Stack Overflow
-Hecho.
+Hecho
 Archivos JSON
-Búsqueda en SoundCloud
+Buscar en SoundCloud
 WriterClassic - Buscar en SoundCloud
-Ayuda para la configuración manual
+Ayuda para la configuración manual [Artículo en inglés]
 Buscar con Qwant
-Buscar en el Archivo de Internet
-WriterClassic - Búsqueda con Qwant
-WriterClassic - Búsqueda en el Archivo de Internet
-Archivo temático Alienware AlienFX
+Buscar en Internet Archive
+WriterClassic - Buscar con Qwant
+WriterClassic - Buscar en el Archivo de Internet
+Archivo de temas de Alienware AlienFX
 Archivo Web Form Post Data
-Archivo de script AviSynth
+Archivo de guión AviSynth
 Archivo de copia de seguridad de BerryBuzz
 Boland Calibration Settings File
 Nokia Device Bookmark File
@@ -127,3 +127,4 @@ Buscar Spotify en línea
 WriterClassic - Buscar Spotify en línea
 Todos los archivos
 Plugins personalizados [BETA]
+Configuracion de Plugins [Articulo en Español]

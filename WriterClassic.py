@@ -654,7 +654,7 @@ menu_13.add_command(label=plugins.title_7, command=lambda:
 
 menu_13.add_separator()
 
-menu_13.add_command(label="Help", command=lambda:
+menu_13.add_command(label=lang[129], command=lambda:
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/wiki/Plugin-Setup"))
 
 

@@ -1,11 +1,11 @@
 Francês (Nota de desenvolvedor)
 WriterClassic
-Dossier
+Fichier
 Apparence
 Plugins
 Paramètres
 Informations
-Ouvrir...
+Ouvrir le fichier...
 Enregistrer le fichier...
 Enregistrer sous...
 Formater le fichier...
@@ -16,7 +16,7 @@ Modifier les polices
 Thèmes par défaut
 Mode clair
 Mode sombre
-Mode gris
+Thèmes gris
 Thèmes modernes
 Modifier la taille
 Changer de famille
@@ -25,9 +25,9 @@ Horloge
 Thèmes communautaires
 A propos de
 Aide
-Repo
+Dépôt
 Crédits
-Œuf de Pâques
+Oeuf de Pâques
 WriterClassic - Quitter maintenant ?
 Vous devez rouvrir Writer pour appliquer les changements ! Redémarrer maintenant ?
 Fichier texte
@@ -35,9 +35,9 @@ Fichiers de configuration
 Feuille de style en cascade
 Fichier de valeurs séparées par des virgules
 Fichier HTML
-Fichier d'information sur l'installation
-Fichier d'information générique
-Fichier d'initialisation Windows
+Fichier d'informations de configuration
+Fichier d'informations génériques
+Fichier de démarrage Windows
 Fichier JavaScript
 Script Python
 Fichier journal
@@ -49,9 +49,9 @@ Fichier texte ANSI
 Fichier Quake 3 Engine Arena
 Fichier ActionScript
 Fichier de configuration ASP
-Fichier de code source en langage d'assemblage
+Fichier de code source en langage assembleur
 Fichiers Markdown
-WriterClassic - Quitter ?
+WriterClassic - Déconnexion ?
 Êtes-vous sûr de vouloir quitter Writer ?
 WriterClassic - Effaceur de fichiers
 Êtes-vous sûr de vouloir effacer un fichier ?
@@ -59,19 +59,19 @@ Choisissez une valeur de largeur pour la fenêtre principale.
 Choisissez une valeur de hauteur pour la fenêtre principale.
 WriterClassic - Changer la taille de la police
 Veuillez choisir un nombre (minimum de 1).
-WriterClassic - Changer la famille
-Veuillez saisir le nom d'une police que vous avez installée sur votre appareil.
+WriterClassic - Changer de famille
+Entrez le nom d'une police que vous avez installée sur votre appareil.
 Vous devez redémarrer pour appliquer les changements.
 WriterClassic - À propos
-Cette application a été réalisée par MF366 et fonctionne avec Python 3.10.11.
-Tapez la chaîne de code SPÉCIALE pour obtenir l'œuf de Pâques...
-Vous avez du mal à trouver l'œuf de Pâques ? Personne n'a dit que ce serait facile...
-WriterClassic - Menu des commandes
+Cette application a été créée par MF366 et fonctionne avec Python 3.10.11.
+Écrivez la chaîne de code SPÉCIALE pour obtenir l'œuf de Pâques...
+Des problèmes pour trouver l'œuf de Pâques ? Personne n'a dit que ce serait facile...
+WriterClassic - Menu de commande
 Tapez une commande pour le menu de commandes de Writer.
-Pas une commande WriterClassic.
+Ce n'est pas une commande WriterClassic.
 Ce fichier est vide.
 WriterClassic - Vérifier les mises à jour
-Vous utilisez soit une ancienne version, soit une version instable. Il est recommandé de mettre à jour vers la dernière version stable. Mettre à jour maintenant ?
+Vous utilisez une ancienne version ou une version instable. Cependant, il est recommandé de mettre à jour vers la dernière version stable. Mettre à jour maintenant ?
 Activer/désactiver les mises à jour au démarrage
 Vérifier les mises à jour
 Effacer les données
@@ -89,41 +89,42 @@ Recherche avec Google
 Recherche avec DuckDuckGo
 Recherche avec Yahoo !
 Que voulez-vous rechercher sur le Web ?
-Tapez une URL pour l'ouvrir dans votre navigateur web par défaut.
+Saisissez une URL à ouvrir dans votre navigateur web par défaut.
 Votre version de WriterClassic est à jour.
 WriterClassic - A jour
-Nouveau dossier
+Nouveau fichier
 Recherche avec Ecosia
-Rechercher sur YouTube
-Rechercher sur Stack Overflow
+Recherche sur YouTube
+Recherche sur Stack Overflow
 WriterClassic - Recherche avec Ecosia
-WriterClassic - Rechercher sur YouTube
-WriterClassic - Rechercher sur Stack Overflow
-Fait.
+WriterClassic - Recherche sur YouTube
+WriterClassic - Recherche sur Stack Overflow
+Terminé.
 Fichiers JSON
 Recherche sur SoundCloud
-WriterClassic - Recherche sur SoundCloud
-Aide à la configuration manuelle
-Recherche avec Qwant
-Recherche sur Internet Archive
+WriterClassic - Rechercher sur SoundCloud
+Aide à la configuration manuelle [Article en anglais]
+Rechercher avec Qwant
+Recherche dans Internet Archive
 WriterClassic - Recherche avec Qwant
-WriterClassic - Recherche sur Internet Archive
-Fichier du thème Alienware AlienFX
+WriterClassic - Recherche dans Internet Archive
+Fichier de thème Alienware AlienFX
 Fichier de données d'affichage de formulaire Web
-AviSynth Script File
-BerryBuzz Backup File
-Boland Calibration Settings File (Fichier des paramètres d'étalonnage de Boland)
+Fichier de script AviSynth
+BerryBuzz Backup File (fichier de sauvegarde)
+Boland Calibration Settings File (Fichier des paramètres d'étalonnage Boland)
 Nokia Device Bookmark File (fichier de signets pour appareils Nokia)
 Budget en bref Fichier livre
 Fichier Bitmap World
 Fichier BSDL
-Fichier BSDL (Boundary Scan Description Language)
+Fichier Boundary Scan Description Language (langage de description du balayage des frontières)
 Script BeanShell
 Fichier de profil de modèle d'apparence de couleur WCS
 Fichier Script Celestia
 Script Celestia
 Script de l'interface de la passerelle commune
-Recherche sur Spotify en ligne
-WriterClassic - Rechercher dans Spotify en ligne
+Rechercher Spotify en ligne
+WriterClassic - Rechercher Spotify en ligne
 Tous les fichiers
 Plugins personnalisés [BETA]
+Configuration des plugins [Article en anglais]

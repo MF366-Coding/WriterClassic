@@ -5,7 +5,7 @@ Utseende
 Plugins
 Inställningar
 Information
-Öppna...
+Öppna fil...
 Spara fil...
 Spara som...
 Formatera fil...
@@ -16,28 +16,28 @@ Teman
 Standardteman
 Ljust läge
 Mörkt läge
-Grått läge
+Grå teman
 Moderna teman
 Ändra storlek
 Ändra familj
 Anteckningar
 Klocka
-Teman för gemenskapen
+Gemenskapens teman
 Om
 Hjälp
-Repo
+Repository
 Krediter
 Påskägg
 WriterClassic - Avsluta nu?
 Du måste öppna Writer igen för att tillämpa ändringarna! Starta om nu?
 Textfil
-Konfigureringsfiler
-Stilmall för kaskad
+Konfigurationsfiler
+Cascaderande stilmall
 Fil med kommaseparerade värden
 HTML-fil
-Fil för installationsinformation
+Fil med konfigurationsinformation
 Generisk informationsfil
-Initialiseringsfil för Windows
+Startfil för Windows
 JavaScript-fil
 Python-skript
 Loggfil
@@ -49,11 +49,11 @@ ANSI-textfil
 Quake 3 Engine Arena-fil
 ActionScript-fil
 ASP-konfigurationsfil
-Fil med källkod för Assembly Language
+Källkodsfil i assemblerspråk
 Markdown-filer
-WriterClassic - Avsluta?
-Är du säker på att du vill avsluta Writer?
-WriterClassic - Radera fil
+WriterClassic - Logga ut?
+Är du säker på att du vill lämna Writer?
+WriterClassic - Raderare av filer
 Är du säker på att du vill radera en fil?
 Välj ett breddvärde för huvudfönstret.
 Välj ett höjdvärde för huvudfönstret.
@@ -61,18 +61,18 @@ WriterClassic - Ändra teckenstorlek
 Välj ett antal (minst 1).
 WriterClassic - Ändra familj
 Ange namnet på ett teckensnitt som du har installerat på din enhet.
-Du måste starta om för att ändringarna ska gälla.
+Du måste starta om för att tillämpa ändringarna.
 WriterClassic - Om
-Den här appen har skapats av MF366 och drivs av Python 3.10.11.
-Skriv in SPECIAL-kodsträngen för att få påskägget...
+Denna applikation skapades av MF366 och drivs av Python 3.10.11.
+Skriv SPECIAL-kodsträngen för att hitta påskägget...
 Problem med att hitta påskägget? Ingen sa att det skulle vara lätt...
 WriterClassic - Kommandomeny
 Skriv ett kommando för Writers kommandomeny.
-Inte ett WriterClassic-kommando.
+Detta är inte ett WriterClassic-kommando.
 Den här filen är tom.
 WriterClassic - Sök efter uppdateringar
-Du använder antingen en äldre version eller en instabil version. Vi rekommenderar dock att du uppdaterar till den senaste stabila versionen. Uppdatera nu?
-Stäng av/på uppdateringar vid start
+Du använder en äldre version eller en instabil version. Vi rekommenderar dock att du uppgraderar till den senaste stabila versionen. Uppdatera nu?
+Aktivera/inaktivera uppdateringar vid start
 Sök efter uppdateringar
 Rensa data
 WriterClassic - Rensa data?
@@ -89,7 +89,7 @@ Sök med Google
 Sök med DuckDuckGo
 Sök med Yahoo!
 Vad skulle du vilja söka efter på webben?
-Skriv en URL som öppnas i din standardwebbläsare.
+Ange en URL som öppnas i din standardwebbläsare.
 Din version av WriterClassic är uppdaterad.
 WriterClassic - Uppdaterad
 Ny fil
@@ -98,19 +98,19 @@ Sök på YouTube
 Sök på Stack Overflow
 WriterClassic - Sök med Ecosia
 WriterClassic - Sök på YouTube
-WriterClassic - Sök på Stack Overflow
+WriterClassic - Sök i Stack Overflow
 Klart.
 JSON-filer
-Sök på SoundCloud
-WriterClassic - Sök på SoundCloud
-Hjälp med manuell konfiguration
+Sök i SoundCloud
+WriterClassic - Sök i SoundCloud
+Hjälp för manuell konfiguration [English Article]
 Sök med Qwant
-Sök på Internet Archive
+Sök i Internetarkivet
 WriterClassic - Sök med Qwant
-WriterClassic - Sök på Internet Archive
+WriterClassic - Sök i Internet Archive
 Temafil för Alienware AlienFX
-Fil med postdata från webbformulär
-AviSynth skriptfil
+Fil med postdata för webbformulär
+Skriptfil för AviSynth
 BerryBuzz säkerhetskopieringsfil
 Fil med inställningar för Boland-kalibrering
 Nokia-enhetens bokmärkesfil
@@ -123,7 +123,8 @@ Profilfil för WCS Color Appearance Model
 Celestia skript fil
 Celestia-skript
 Skript för Common Gateway-gränssnitt
-Sök på Spotify online
+Sök Spotify online
 WriterClassic - Sök Spotify online
 Alla filer
 Anpassade plugins [BETA]
+Plugin-installation [English Article]

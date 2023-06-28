@@ -5,7 +5,7 @@ Aspetto
 Plugin
 Impostazioni
 Informazioni
-Aprire...
+Aprire il file...
 Salva file...
 Salva con nome...
 Formatta il file...
@@ -16,7 +16,7 @@ Modifica dei caratteri
 Temi predefiniti
 Modalità chiara
 Modalità scura
-Modalità grigia
+Temi grigi
 Temi moderni
 Cambia dimensione
 Cambia famiglia
@@ -25,54 +25,54 @@ Orologio
 Temi della comunità
 Informazioni su
 Aiuto
-Repo
+Repository
 Crediti
 Uovo di Pasqua
 WriterClassic - Esci ora?
-Devi riaprire Writer per applicare le modifiche! Riavviare ora?
+È necessario riaprire Writer per applicare le modifiche! Riavviare ora?
 File di testo
 File di configurazione
 Foglio di stile a cascata
-File con valori separati da virgole
+File di valori separati da virgola
 File HTML
-File di informazioni di configurazione
+File di informazioni sulla configurazione
 File di informazioni generiche
-File di inizializzazione di Windows
+File di avvio di Windows
 File JavaScript
 Script Python
-File di registro
+File di log
 File XML
 File Readme
 File di libreria statica
 Script Anim8or
 File di testo ANSI
-File dell'Arena del motore di Quake 3
+File Quake 3 Engine Arena
 File ActionScript
 File di configurazione ASP
 File di codice sorgente in linguaggio assembly
 File Markdown
-WriterClassic - Uscire?
-Siete sicuri di voler uscire da Writer?
+WriterClassic - Logout?
+Siete sicuri di voler lasciare Writer?
 WriterClassic - Cancellazione dei file
 Siete sicuri di voler cancellare un file?
 Scegliete un valore di larghezza per la finestra principale.
 Scegliete un valore di altezza per la finestra principale.
-WriterClassic - Cambia dimensione dei caratteri
+WriterClassic - Modifica della dimensione dei caratteri
 Scegliete un numero (minimo 1).
 WriterClassic - Cambia famiglia
-Digitare il nome di un carattere installato sul dispositivo.
-Per applicare le modifiche è necessario riavviare.
+Immettere il nome di un font installato sul dispositivo.
+È necessario riavviare il dispositivo per applicare le modifiche.
 WriterClassic - Informazioni
-Questa applicazione è stata realizzata da MF366 ed è alimentata da Python 3.10.11.
-Digitate la stringa di codice SPECIALE per ottenere l'uovo di Pasqua...
+Quest'applicazione è stata creata da MF366 ed è basata su Python 3.10.11.
+Scrivete la stringa di codice SPECIALE per ottenere l'uovo di Pasqua...
 Problemi a trovare l'uovo di Pasqua? Nessuno ha detto che sarebbe stato facile...
 WriterClassic - Menu dei comandi
-Digitate un comando per il menu dei comandi di Writer.
-Non è un comando di WriterClassic.
+Digitare un comando per il menu dei comandi di Writer.
+Questo non è un comando di WriterClassic.
 Questo file è vuoto.
 WriterClassic - Verifica aggiornamenti
-Si sta utilizzando una versione precedente o una versione instabile. Si consiglia di aggiornare all'ultima versione stabile. Aggiornare ora?
-Disattivare/attivare gli aggiornamenti all'avvio
+Si sta utilizzando una versione precedente o una versione instabile. Tuttavia, si consiglia di aggiornare alla versione stabile più recente. Aggiornare ora?
+Abilita/disabilita gli aggiornamenti all'avvio
 Controlla gli aggiornamenti
 Cancella i dati
 WriterClassic - Cancellare i dati?
@@ -82,14 +82,14 @@ WriterClassic - Vai all'URL
 Vai all'URL...
 WriterClassic - Ricerca con Bing
 WriterClassic - Ricerca con Google
-WriterClassic - Ricerca con DuckDuckGo
+WriterClassic - Cerca con DuckDuckGo
 WriterClassic - Ricerca con Yahoo!
 Ricerca con Bing
 Ricerca con Google
 Ricerca con DuckDuckGo
 Ricerca con Yahoo!
-Cosa volete cercare sul Web?
-Digitate un URL per aprirlo nel vostro browser web predefinito.
+Cosa vorresti cercare sul Web?
+Inserite un URL da aprire nel vostro browser web predefinito.
 La versione di WriterClassic è aggiornata.
 WriterClassic - Aggiornato
 Nuovo file
@@ -98,18 +98,18 @@ Ricerca su YouTube
 Cerca su Stack Overflow
 WriterClassic - Ricerca con Ecosia
 WriterClassic - Ricerca su YouTube
-WriterClassic - Cerca su Stack Overflow
+WriterClassic - Ricerca su Stack Overflow
 Fatto.
 File JSON
 Ricerca su SoundCloud
-WriterClassic - Cerca su SoundCloud
-Guida alla configurazione manuale
+WriterClassic - Ricerca su SoundCloud
+Guida alla configurazione manuale [Articolo in inglese]
 Ricerca con Qwant
-Ricerca su Internet Archive
+Ricerca in Internet Archive
 WriterClassic - Ricerca con Qwant
-WriterClassic - Ricerca su Internet Archive
+WriterClassic - Ricerca nell'Archivio Internet
 File del tema Alienware AlienFX
-File di dati del modulo web
+File di dati del modulo Web
 File di script AviSynth
 File di backup di BerryBuzz
 File delle impostazioni di calibrazione Boland
@@ -123,7 +123,8 @@ File del profilo del modello di aspetto del colore WCS
 File script Celestia
 Script Celestia
 Script Interfaccia gateway comune
-Cerca Spotify online
-WriterClassic - Cerca Spotify online
+Ricerca Spotify online
+WriterClassic - Ricerca Spotify online
 Tutti i file
 Plugin personalizzati [BETA]
+Impostazione dei plugin [Articolo in inglese]

@@ -5,7 +5,7 @@ Aparência
 Plug-ins
 Configurações
 Informações
-Abrir...
+Abrir arquivo...
 Salvar arquivo...
 Salvar como...
 Formatar arquivo...
@@ -16,14 +16,14 @@ Alterar fontes
 Temas padrão
 Modo claro
 Modo escuro
-Modo cinza
+Temas em cinza
 Temas modernos
 Alterar tamanho
 Alterar família
 Notas
 Relógio
 Temas da comunidade
-Sobre
+Sobre o site
 Ajuda
 Repositório
 Créditos
@@ -46,32 +46,32 @@ Arquivo Leiame
 Arquivo de biblioteca estática
 Script Anim8or
 Arquivo de texto ANSI
-Arquivo do Quake 3 Engine Arena
+Arquivo Quake 3 Engine Arena
 Arquivo ActionScript
 Arquivo de configuração ASP
 Arquivo de código-fonte da linguagem Assembly
 Arquivos Markdown
-WriterClassic - Sair?
+WriterClassic - Logout?
 Tem certeza de que deseja sair do Writer?
 WriterClassic - Apagador de arquivos
-Tem certeza de que deseja apagar um arquivo?
+Tem certeza de que deseja excluir um arquivo?
 Escolha um valor de largura para a janela principal.
 Escolha um valor de altura para a janela principal.
-WriterClassic - Alterar tamanho da fonte
+WriterClassic - Alterar o tamanho da fonte
 Escolha um número (mínimo de 1).
 WriterClassic - Alterar família
 Digite o nome de uma fonte instalada em seu dispositivo.
-Você deve reiniciar para aplicar as alterações.
+É necessário reiniciar para aplicar as alterações.
 WriterClassic - Sobre
 Este aplicativo foi criado por MF366 e é alimentado por Python 3.10.11.
-Digite a sequência de código ESPECIAL para obter o Ovo de Páscoa...
+Escreva a cadeia de código ESPECIAL para obter o Ovo de Páscoa...
 Problemas para encontrar o Ovo de Páscoa? Ninguém disse que seria fácil...
 WriterClassic - Menu de comandos
 Digite um comando para o menu de comandos do Writer.
-Não é um comando do WriterClassic.
-Este arquivo está vazio.
+Este não é um comando do WriterClassic.
+Esse arquivo está vazio.
 WriterClassic - Verificar se há atualizações
-Você está usando uma versão mais antiga ou uma versão instável. No entanto, é recomendável que você atualize para a versão estável mais recente. Atualizar agora?
+Você está usando uma versão mais antiga ou uma versão instável. No entanto, é recomendável atualizar para a versão estável mais recente. Atualizar agora?
 Ativar/desativar atualizações na inicialização
 Verificar se há atualizações
 Limpar dados
@@ -94,25 +94,25 @@ Sua versão do WriterClassic está atualizada.
 WriterClassic - Atualizada
 Novo arquivo
 Pesquisar com o Ecosia
-Pesquisar em YouTube
-Pesquisar em Stack Overflow
+Pesquisar no YouTube
+Pesquisar no Stack Overflow
 WriterClassic - Pesquisar com o Ecosia
-WriterClassic - Pesquisar em YouTube
-WriterClassic - Pesquisar em Stack Overflow
-Feito.
+WriterClassic - Pesquisar no YouTube
+WriterClassic - Pesquisar no Stack Overflow
+Concluído.
 Arquivos JSON
-Pesquisar em SoundCloud
-WriterClassic - Pesquisar em SoundCloud
-Ajuda para configuração manual
-Pesquisar com Qwant
+Pesquisar no SoundCloud
+WriterClassic - Pesquisar no SoundCloud
+Ajuda para configuração manual [Artigo em inglês]
+Pesquisar com o Qwant
 Pesquisar no Internet Archive
-WriterClassic - Pesquisar com Qwant
+WriterClassic - Pesquisar com o Qwant
 WriterClassic - Pesquisar no Internet Archive
-Arquivo de tema Alienware AlienFX
+Arquivo do tema Alienware AlienFX
 Arquivo de dados de postagem de formulário da Web
 Arquivo de script do AviSynth
 Arquivo de backup do BerryBuzz
-Boland Calibration Settings File (Arquivo de Configurações de Calibração Boland)
+Arquivo de configurações de calibração do Boland
 Arquivo de marcador de dispositivo Nokia
 Arquivo do livro Budget In Brief
 Arquivo Bitmap World
@@ -127,3 +127,4 @@ Pesquisar no Spotify Online
 WriterClassic - Pesquisar no Spotify Online
 Todos os arquivos
 Plug-ins personalizados [BETA]
+Configuração de plugins [Artigo em inglês]

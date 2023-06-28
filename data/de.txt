@@ -5,7 +5,7 @@ Erscheinungsbild
 Plugins
 Einstellungen
 Informationen
-Öffnen...
+Datei öffnen...
 Datei speichern...
 Speichern unter...
 Datei formatieren...
@@ -16,7 +16,7 @@ Schriftarten ändern
 Standardthemen
 Heller Modus
 Dunkler Modus
-Grauer Modus
+Graue Themen
 Moderne Themen
 Größe ändern
 Familie ändern
@@ -25,55 +25,55 @@ Uhr
 Community-Themen
 Über
 Hilfe
-Repo
+Repository
 Impressum
 Osterei
 WriterClassic - Beenden Sie jetzt?
 Sie müssen Writer erneut öffnen, um die Änderungen zu übernehmen! Jetzt neu starten?
-Text-Datei
-Config-Dateien
-Cascading Style Sheet
+Textdatei
+Konfigurationsdateien
+Kaskadierende Stilvorlage
 Datei mit kommagetrennten Werten
 HTML-Datei
-Setup-Informationsdatei
+Konfigurationsinformationsdatei
 Allgemeine Informationsdatei
-Windows-Initialisierungsdatei
+Windows-Startup-Datei
 JavaScript-Datei
 Python-Skript
 Log-Datei
 XML-Datei
-Readme-Datei
+Liesmich-Datei
 Statische Bibliotheksdatei
 Anim8or-Schrift
-ANSI Text Datei
+ANSI-Textdatei
 Quake 3 Engine Arena Datei
 ActionScript-Datei
 ASP-Konfigurationsdatei
-Assembler-Quellcode-Datei
+Assembler-Quellcodedatei
 Markdown-Dateien
-WriterClassic - Beenden?
-Sind Sie sicher, dass Sie Writer beenden wollen?
+WriterClassic - Abmelden?
+Sind Sie sicher, dass Sie Writer verlassen wollen?
 WriterClassic - Dateilöscher
 Sind Sie sicher, dass Sie eine Datei löschen wollen?
-Wählen Sie eine Breite für das Hauptfenster.
-Legen Sie eine Höhe für das Hauptfenster fest.
+Wählen Sie einen Breitenwert für das Hauptfenster.
+Wählen Sie einen Wert für die Höhe des Hauptfensters.
 WriterClassic - Schriftgröße ändern
 Bitte wählen Sie eine Zahl (mindestens 1).
 WriterClassic - Schriftfamilie ändern
-Bitte geben Sie den Namen einer Schriftart ein, die Sie auf Ihrem Gerät installiert haben.
-Sie müssen neu starten, um die Änderungen zu übernehmen.
+Geben Sie den Namen einer Schriftart ein, die Sie auf Ihrem Gerät installiert haben.
+Sie müssen das Gerät neu starten, um die Änderungen zu übernehmen.
 WriterClassic - Über
-Diese Anwendung wurde von MF366 erstellt und läuft mit Python 3.10.11.
-Geben Sie die SPECIAL-Codefolge ein, um das Osterei zu finden...
-Haben Sie Probleme, das Osterei zu finden? Niemand hat gesagt, dass es einfach sein würde...
+Diese Anwendung wurde von MF366 erstellt und wird von Python 3.10.11 unterstützt.
+Schreiben Sie die SPECIAL-Codezeichenfolge, um das Osterei zu erhalten...
+Probleme, das Osterei zu finden? Niemand hat gesagt, dass es einfach sein würde...
 WriterClassic - Befehlsmenü
-Geben Sie einen Befehl für das Befehlsmenü von Writer ein.
-Kein WriterClassic-Befehl.
+Geben Sie einen Befehl für das Writer-Befehlsmenü ein.
+Dies ist kein WriterClassic-Befehl.
 Diese Datei ist leer.
-WriterClassic - Auf Updates prüfen
-Sie verwenden entweder eine ältere Version oder eine instabile Version. Es wird jedoch empfohlen, dass Sie auf die neueste stabile Version aktualisieren. Jetzt aktualisieren?
-Updates beim Start ein-/ausschalten
-Auf Updates prüfen
+WriterClassic - Auf Aktualisierungen prüfen
+Sie verwenden eine ältere Version oder eine instabile Version. Es wird jedoch empfohlen, auf die neueste stabile Version zu aktualisieren. Jetzt aktualisieren?
+Aktualisierungen beim Starten aktivieren/deaktivieren
+Auf Aktualisierungen prüfen
 Daten löschen
 WriterClassic - Daten löschen?
 Sind Sie sicher, dass Sie ALLE Daten aus WriterClassic löschen möchten?
@@ -88,30 +88,30 @@ Suche mit Bing
 Suche mit Google
 Suche mit DuckDuckGo
 Suche mit Yahoo!
-Was möchten Sie im Web suchen?
-Geben Sie eine URL ein, um sie in Ihrem Standard-Webbrowser zu öffnen.
+Wonach möchten Sie im Web suchen?
+Geben Sie eine URL ein, die in Ihrem Standard-Webbrowser geöffnet werden soll.
 Ihre Version von WriterClassic ist auf dem neuesten Stand.
 WriterClassic - Auf dem neuesten Stand
 Neue Datei
 Suche mit Ecosia
-Suche auf YouTube
-Suche auf StackOverflow
+YouTube durchsuchen
+Stack Overflow durchsuchen
 WriterClassic - Suche mit Ecosia
-WriterClassic - Suche auf YouTube
-WriterClassic - Suche auf StackOverflow
+WriterClassic - YouTube durchsuchen
+WriterClassic - Stack Overflow durchsuchen
 Erledigt.
 JSON-Dateien
-Suche auf SoundCloud
-WriterClassic - Suche auf SoundCloud
-Manuelle Konfigurationshilfe
+SoundCloud durchsuchen
+WriterClassic - SoundCloud durchsuchen
+Manuelle Konfigurationshilfe [Englischer Artikel]
 Suche mit Qwant
-Suche im Internet Archive
+Das Internet-Archiv durchsuchen
 WriterClassic - Suche mit Qwant
-WriterClassic - Suche im Internet Archive
-Alienware AlienFX Theme File
+WriterClassic - Durchsuchen des Internet-Archivs
+Alienware AlienFX Theme-Datei
 Web Form Post Data File
-AviSynth Skript-Datei
-BerryBuzz Sicherungsdatei
+AviSynth Script File
+BerryBuzz Backup File
 Boland Calibration Settings File
 Nokia Device Bookmark File
 Budget In Brief Book File
@@ -127,3 +127,4 @@ Spotify online durchsuchen
 WriterClassic - Spotify online durchsuchen
 Alle Dateien
 Benutzerdefinierte Plugins [BETA]
+Plugin-Einrichtung [Englischer Artikel]

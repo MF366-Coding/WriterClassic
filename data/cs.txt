@@ -5,74 +5,74 @@ Vzhled
 Zásuvné moduly
 Nastavení
 Informace
-Otevřít...
+Otevřít soubor...
 Uložit soubor...
 Uložit jako...
 Formátovat soubor...
 Ukončit
 Rozměry okna
 Motivy
-Změna písma
+Změnit písma
 Výchozí motivy
 Světelný režim
 Tmavý režim
-Šedý režim
+Šedé motivy
 Moderní motivy
 Změna velikosti
 Změna rodiny
 Poznámky
 Hodiny
-Motivy komunity
+Komunitní témata
 O stránkách
 Nápověda
-Repo
+Úložiště
 Kredity
-Velikonoční vejce
+Velikonoční vajíčko
 WriterClassic - Ukončit nyní?
 Pro uplatnění změn musíte znovu otevřít Writer! Restartovat nyní?
 Textový soubor
 Konfigurační soubory
 Kaskádový styl
-Soubor s hodnotami oddělenými čárkou
+Soubor s hodnotami oddělenými čárkami
 Soubor HTML
-Soubor s informacemi o nastavení
+Soubor s konfiguračními informacemi
 Soubor s obecnými informacemi
-Inicializační soubor systému Windows
+Spouštěcí soubor systému Windows
 Soubor JavaScript
 Skript jazyka Python
 Soubor protokolu
 Soubor XML
 Soubor Readme
 Soubor statické knihovny
-Anim8or Script
+Anim8or skript
 Textový soubor ANSI
 Soubor Quake 3 Engine Arena
 Soubor ActionScriptu
 Konfigurační soubor ASP
-Soubor se zdrojovým kódem v assembleru
+Soubor se zdrojovým kódem v jazyce assembleru
 Soubory Markdown
-WriterClassic - Ukončit?
-Jste si jisti, že chcete ukončit Writer?
+WriterClassic - Odhlášení?
+Jste si jisti, že chcete opustit Writer?
 WriterClassic - Mazání souborů
-Jste si jisti, že chcete vymazat soubor?
+Jste si jisti, že chcete smazat soubor?
 Zvolte hodnotu šířky hlavního okna.
 Zvolte hodnotu výšky hlavního okna.
 WriterClassic - Změna velikosti písma
-Vyberte číslo (minimálně 1).
-WriterClassic - Změnit rodinu písma
+Zvolte číslo (minimálně 1).
+WriterClassic - Změnit rodinu
 Zadejte název písma, které máte v zařízení nainstalováno.
-Pro uplatnění změn je nutné restartovat počítač.
+Pro uplatnění změn je třeba restartovat počítač.
 WriterClassic - O aplikaci
 Tato aplikace byla vytvořena společností MF366 a je poháněna jazykem Python 3.10.11.
-Zadáním řetězce SPECIAL code získáte velikonoční vajíčko...
-Máte potíže s nalezením velikonočního vajíčka? Nikdo neříkal, že to bude snadné...
+Pro získání velikonočního vajíčka napište řetězec SPECIAL code...
+Máte problémy s nalezením velikonočního vajíčka? Nikdo neříkal, že to bude snadné...
 WriterClassic - Příkazové menu
 Zadejte příkaz pro příkazovou nabídku Writeru.
-Nejedná se o příkaz aplikace WriterClassic.
+Nejedná se o příkaz WriterClassic.
 Tento soubor je prázdný.
 WriterClassic - Kontrola aktualizací
-Používáte buď starší verzi, nebo nestabilní verzi. Doporučuje se však aktualizovat na nejnovější stabilní. Aktualizovat nyní?
-Vypnout/zapnout aktualizace při spuštění
+Používáte starší verzi nebo nestabilní verzi. Doporučujeme však provést aktualizaci na nejnovější stabilní verzi. Aktualizovat nyní?
+Povolit/zakázat aktualizace při spuštění
 Zkontrolovat aktualizace
 Vymazat data
 WriterClassic - Vymazat data?
@@ -95,19 +95,19 @@ WriterClassic - Aktuální
 Nový soubor
 Vyhledávání pomocí aplikace Ecosia
 Vyhledávání na YouTube
-Hledat na StackOverflow
+Hledat na Stack Overflow
 WriterClassic - Hledání pomocí Ecosia
 WriterClassic - Hledání na YouTube
-WriterClassic - Hledání na StackOverflow
+WriterClassic - Hledat na Stack Overflow
 Hotovo.
 Soubory JSON
-Vyhledávání na SoundCloud
-WriterClassic - Hledání na SoundCloud
-Nápověda k ruční konfiguraci
-Vyhledávání pomocí Qwant
-Vyhledávání v Internet Archive
+Prohledat SoundCloud
+WriterClassic - Hledání na SoundCloudu
+Nápověda k ruční konfiguraci [český článek]
+Hledání pomocí Qwant
+Vyhledávání v internetovém archivu
 WriterClassic - Hledání pomocí Qwant
-WriterClassic - Vyhledávání v Internet Archive
+WriterClassic - Vyhledávání v internetovém archivu
 Soubor s motivem Alienware AlienFX
 Datový soubor příspěvku webového formuláře
 Soubor se skriptem AviSynth
@@ -123,7 +123,8 @@ Soubor profilu modelu vzhledu barev WCS
 Soubor skriptu Celestia
 Celestia Script
 Common Gateway Interface Script
-Hledání ve službě Spotify online
-WriterClassic - Hledání na Spotify online
+Vyhledávání Spotify online
+WriterClassic - Vyhledávání Spotify online
 Všechny soubory
 Vlastní zásuvné moduly [BETA]
+Nastavení zásuvných modulů [český článek]

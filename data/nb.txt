@@ -103,12 +103,12 @@ Ferdig.
 JSON-filer
 Søk i SoundCloud
 WriterClassic - Søk i SoundCloud
-Hjelp til manuell konfigurasjon
+Hjelp til manuell konfigurasjon [engelsk artikkel]
 Søk med Qwant
 Søk i Internet Archive
 WriterClassic - Søk med Qwant
 WriterClassic - Søk i Internet Archive
-Temafil for Alienware AlienFX
+Alienware AlienFX-temafil
 Datafil for innlegg i webskjema
 AviSynth Script-fil
 BerryBuzz sikkerhetskopifil
@@ -124,6 +124,7 @@ Celestia Script-fil
 Celestia-skript
 Skript for felles gateway-grensesnitt
 Søk i Spotify på nettet
-WriterClassic - Søk i Spotify på nettet
+WriterClassic - Søk i Spotify Online
 Alle filer
 Egendefinerte plugins [BETA]
+Plugin-oppsett [engelsk artikkel]

@@ -5,7 +5,7 @@ Vzhľad
 Pluginy
 Nastavenia
 Informácie
-Otvoriť...
+Otvoriť súbor...
 Uložiť súbor...
 Uložiť ako...
 Formátovať súbor...
@@ -16,44 +16,44 @@ Zmena písma
 Predvolené motívy
 Svetelný režim
 Tmavý režim
-Sivý režim
+Šedé motívy
 Moderné motívy
 Zmena veľkosti
 Zmena rodiny
 Poznámky
 Hodiny
-Témy spoločenstva
+Komunitné témy
 O stránke
 Pomoc
-Repozitár
+Úložisko
 Kredity
 Veľkonočné vajíčko
 WriterClassic - Ukončiť teraz?
-Musíte znova otvoriť Writer, aby sa zmeny použili! Reštartovať teraz?
+Musíte znova otvoriť Writer, aby sa zmeny uplatnili! Reštartovať teraz?
 Textový súbor
 Konfiguračné súbory
-Súbor kaskádových štýlov
+Kaskádový štýl
 Súbor s hodnotami oddelenými čiarkami
 Súbor HTML
-Súbor s informáciami o nastavení
-Súbor všeobecných informácií
-Inicializačný súbor systému Windows
+Súbor s konfiguračnými informáciami
+Súbor so všeobecnými informáciami
+Spúšťací súbor systému Windows
 Súbor JavaScript
 Python skript
-Logovací súbor
+Súbor denníka
 Súbor XML
 Súbor Readme
 Statický súbor knižnice
-Skript Anim8or
+Anim8or skript
 Textový súbor ANSI
 Súbor Quake 3 Engine Arena
 Súbor ActionScript
 Konfiguračný súbor ASP
-Súbor zdrojového kódu jazyka Assembly
+Súbor so zdrojovým kódom v jazyku Assembly
 Súbory Markdown
-WriterClassic - Ukončiť?
-Ste si istí, že chcete ukončiť Writer?
-WriterClassic - Vymazávač súborov
+WriterClassic - Odhlásenie?
+Ste si istí, že chcete opustiť Writer?
+WriterClassic - Vymazanie súborov
 Ste si istí, že chcete vymazať súbor?
 Vyberte hodnotu šírky hlavného okna.
 Vyberte hodnotu výšky pre hlavné okno.
@@ -61,20 +61,20 @@ WriterClassic - Zmena veľkosti písma
 Vyberte číslo (minimálne 1).
 WriterClassic - Zmena rodiny písma
 Zadajte názov písma, ktoré máte nainštalované v zariadení.
-Na uplatnenie zmien musíte reštartovať počítač.
+Na uplatnenie zmien je potrebné reštartovať počítač.
 WriterClassic - O aplikácii
 Túto aplikáciu vytvoril MF366 a používa Python 3.10.11.
-Ak chcete získať veľkonočné vajíčko, zadajte reťazec SPECIAL code...
+Napíšte reťazec kódu SPECIAL, aby ste získali Easter Egg...
 Máte problémy s nájdením veľkonočného vajíčka? Nikto nepovedal, že to bude ľahké...
 WriterClassic - Príkazové menu
-Zadajte príkaz pre príkazovú ponuku programu Writer.
-Nie je to príkaz programu WriterClassic.
+Zadajte príkaz pre ponuku príkazov programu Writer.
+Toto nie je príkaz programu WriterClassic.
 Tento súbor je prázdny.
 WriterClassic - Kontrola aktualizácií
-Používate buď staršiu verziu, alebo nestabilnú verziu. Odporúča sa však aktualizovať na najnovšiu stabilnú. Aktualizovať teraz?
-Vypnúť/zapnúť aktualizácie pri spustení
+Používate staršiu verziu alebo nestabilnú verziu. Odporúča sa však aktualizovať na najnovšiu stabilnú verziu. Aktualizovať teraz?
+Zapnúť/vypnúť aktualizácie pri spustení
 Skontrolovať aktualizácie
-Vymažte údaje
+Vymazať údaje
 WriterClassic - Vymazať údaje?
 Ste si istí, že chcete vymazať VŠETKY údaje z WriterClassic?
 Internet
@@ -89,26 +89,26 @@ Vyhľadávanie v službe Google
 Vyhľadávanie pomocou DuckDuckGo
 Vyhľadávanie pomocou Yahoo!
 Čo by ste chceli vyhľadávať na webe?
-Zadajte adresu URL, ktorá sa otvorí v predvolenom webovom prehliadači.
+Zadajte adresu URL, ktorá sa otvorí vo vašom predvolenom webovom prehliadači.
 Vaša verzia programu WriterClassic je aktuálna.
-WriterClassic - Aktuálne
+WriterClassic - Aktuálna verzia
 Nový súbor
-Vyhľadávanie s Ecosia
-Vyhľadávanie na YouTube
+Vyhľadávanie pomocou aplikácie Ecosia
+Vyhľadávanie v službe YouTube
 Vyhľadávanie na Stack Overflow
-WriterClassic - Vyhľadávanie s Ecosia
+WriterClassic - Vyhľadávanie pomocou aplikácie Ecosia
 WriterClassic - Vyhľadávanie na YouTube
-WriterClassic - Vyhľadávanie na Stack Overflow
+WriterClassic - Hľadať na Stack Overflow
 Hotovo.
 Súbory JSON
-Vyhľadávanie na SoundCloude
-WriterClassic - Vyhľadávanie na SoundCloud
-Pomocník pre manuálnu konfiguráciu
+Vyhľadávanie na službe SoundCloud
+WriterClassic - Hľadať na SoundCloud
+Pomoc pri manuálnej konfigurácii [anglický článok]
 Vyhľadávanie pomocou Qwant
 Vyhľadávanie v internetovom archíve
 WriterClassic - Vyhľadávanie pomocou Qwant
 WriterClassic - Vyhľadávanie v internetovom archíve
-Súbor motívu Alienware AlienFX
+Súbor s motívom Alienware AlienFX
 Súbor s údajmi o príspevku webového formulára
 Súbor so skriptom AviSynth
 Záložný súbor BerryBuzz
@@ -117,13 +117,14 @@ Súbor záložiek zariadenia Nokia
 Súbor knihy Rozpočet v skratke
 Súbor bitmapového sveta
 Súbor BSDL
-Súbor s jazykom popisu hraničného skenovania
+Súbor jazyka na popis hraničného skenovania
 Skript BeanShell
 Súbor s profilom modelu farebného vzhľadu WCS
 Súbor skriptov Celestia
 Celestia Script
 Common Gateway Interface Script
-Vyhľadávanie v službe Spotify online
+Vyhľadávanie Spotify online
 WriterClassic - Vyhľadávanie Spotify online
 Všetky súbory
-Vlastné doplnky [BETA]
+Vlastné zásuvné moduly [BETA]
+Nastavenie zásuvných modulov [anglický článok]
