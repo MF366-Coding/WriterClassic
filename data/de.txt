@@ -125,3 +125,5 @@ Celestia-Skript
 Gemeinsame Gateway-Schnittstelle Skript
 Spotify online durchsuchen
 WriterClassic - Spotify online durchsuchen
+Alle Dateien
+Benutzerdefinierte Plugins [BETA]

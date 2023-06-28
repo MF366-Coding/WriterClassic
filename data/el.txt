@@ -125,3 +125,5 @@ BeanShell Script
 Κοινή διεπαφή πύλης Script
 Αναζήτηση στο Spotify Online
 WriterClassic - Αναζήτηση στο Spotify Online
+Όλα τα αρχεία
+Προσαρμοσμένα πρόσθετα [BETA]

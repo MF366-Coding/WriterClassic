@@ -125,3 +125,5 @@ Script Celestia
 Common Gateway Interface Script
 Buscar Spotify en línea
 WriterClassic - Buscar Spotify en línea
+Todos los archivos
+Plugins personalizados [BETA]

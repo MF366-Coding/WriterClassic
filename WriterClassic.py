@@ -35,6 +35,7 @@ import datetime # Really, bro?
 from tkinter.font import Font # Ouchie mama (font, daaah)
 import requests # it's a module yay!
 import json # google it lmfao
+from data import plugins
 
 # Windowing
 desktop_win = Tk()
@@ -110,6 +111,7 @@ menu_9 = Menu(menu_8)
 menu_10 = Menu(menu_bar)
 menu_11 = Menu(menu_bar)
 menu_12 = Menu(menu_bar)
+menu_13 = Menu(menu_8)
 
 def writeStartup(text):
     with open('config/startup.txt', 'w', encoding='utf-8') as startupWriteFile:
@@ -305,7 +307,7 @@ file_types = [(lang[32], '*.txt'),
               (lang[122], "*.cel"),
               (lang[123], "*.celx"),
               (lang[124], "*.cgi"),
-              ("*.*", "*.*")
+              (lang[127], "*.*")
               ]
 
 # opens a file
@@ -626,6 +628,35 @@ menu_8.add_command(label=lang[23], command=clockPlugin)
 menu_8.add_separator()
 menu_8.add_command(label=lang[10], command=lambda:
     WipeFile(desktop_win))
+menu_8.add_separator()
+
+
+menu_13.add_command(label=plugins.title_1, command=lambda:
+    plugins.plugin_1(tk_root=desktop_win, tk_text=TextWidget))
+
+menu_13.add_command(label=plugins.title_2, command=lambda:
+    plugins.plugin_2(tk_root=desktop_win, tk_text=TextWidget))
+
+menu_13.add_command(label=plugins.title_3, command=lambda:
+    plugins.plugin_3(tk_root=desktop_win, tk_text=TextWidget))
+
+menu_13.add_command(label=plugins.title_4, command=lambda:
+    plugins.plugin_4(tk_root=desktop_win, tk_text=TextWidget))
+
+menu_13.add_command(label=plugins.title_5, command=lambda:
+    plugins.plugin_5(tk_root=desktop_win, tk_text=TextWidget))
+
+menu_13.add_command(label=plugins.title_6, command=lambda:
+    plugins.plugin_6(tk_root=desktop_win, tk_text=TextWidget))
+
+menu_13.add_command(label=plugins.title_7, command=lambda:
+    plugins.plugin_7(tk_root=desktop_win, tk_text=TextWidget))
+
+menu_13.add_separator()
+
+menu_13.add_command(label="Help", command=lambda:
+    simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/wiki/Plugin-Setup"))
+
 
 menu_9.add_command(label=lang[81], command=InternetOnWriter.Website)
 menu_9.add_separator()
@@ -756,6 +787,7 @@ menu_4.add_cascade(label=lang[19], menu=menu_6)
 menu_1.add_cascade(label=lang[14], menu=menu_7)
 menu_bar.add_cascade(label=lang[4], menu=menu_8)
 menu_bar.add_cascade(label=lang[79], menu=menu_9)
+menu_8.add_cascade(label=lang[128], menu=menu_13)
 menu_bar.add_cascade(label=lang[5], menu=menu_12)
 menu_bar.add_cascade(label=lang[6], menu=menu_11)
 

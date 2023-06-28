@@ -125,3 +125,5 @@ Celestia-skript
 Skript for felles gateway-grensesnitt
 Søk i Spotify på nettet
 WriterClassic - Søk i Spotify på nettet
+Alle filer
+Egendefinerte plugins [BETA]

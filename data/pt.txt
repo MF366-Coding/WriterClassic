@@ -125,3 +125,5 @@ Script Celestia
 Ficheiro Common Gateway Interface Script
 Pesquisar no Spotify Online
 WriterClassic - Pesquisar no Spotify Online
+Todos os ficheiros
+Plug-ins personalizados [BETA]

@@ -103,7 +103,7 @@ Done.
 JSON files
 Search SoundCloud
 WriterClassic - Search SoundCloud
-Manual configuration help
+Manual configuration help [English Article]
 Search with Qwant
 Search The Internet Archive
 WriterClassic - Search with Qwant
@@ -125,3 +125,6 @@ Celestia Script
 Common Gateway Interface Script
 Search Spotify Online
 WriterClassic - Search Spotify Online
+All Files
+Custom Plugins [BETA]
+Plugin Setup [English Article]
