@@ -7,6 +7,8 @@ Writer Classic is a rather small Python project that brings to the user a whole 
 
 ## IMPORTANT ANNOUCEMENT!
 
+## The executable version of WriterClassic is gonna be discontinued.
+
 Custom Plugins do **not** work on the executable version of WriterClassic!
 
 Thanks for visiting this repository. :heart:
