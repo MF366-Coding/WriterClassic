@@ -7,7 +7,7 @@ Writer Classic is a rather small Python project that brings to the user a whole 
 
 ## IMPORTANT ANNOUCEMENT!
 
-I, MF366, FINALLY FIXED THE BUG WHERE MENUS WOULD ACT WEIRD ON WINDOWS AND MACOS BY MAKING A CONDITION THAT ONLY IF THE OS IS LINUX, THE MENUS SHOULD BE CHANGED!
+Custom Plugins do **not** work on the executable version of WriterClassic!
 
 Thanks for visiting this repository. :heart:
 
