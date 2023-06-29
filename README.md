@@ -5,13 +5,8 @@ Writer Classic's GitHub repository.
 
 Writer Classic is a rather small Python project that brings to the user a whole new text editing experience. :thinking:
 
-## IMPORTANT ANNOUCEMENT!
-
-## The executable version of WriterClassic is gonna be discontinued.
-
-Custom Plugins do **not** work on the executable version of WriterClassic!
-
-Thanks for visiting this repository. :heart:
+## Welcome...
+...and thanks for visiting this repository. :heart:
 
 I also would love if you waste some time testing Writer Classic or just exploring this GitHub repository.
 
@@ -111,8 +106,6 @@ You need:
 * [X] the `data` folder that comes with WriterClassic
 
 * [X] the `config` folder that comes with WriterClassic
-
-* [X] for the executable version, all the files and folders that come with WriterClassic
 
 ## Small information
 If you want to redistribute this software, you need its LICENSE: this is **mandatory**!

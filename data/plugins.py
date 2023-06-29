@@ -14,7 +14,7 @@ def plugin_2(tk_root, tk_text):
 title_3 = "No plugin found."
 def plugin_3(tk_root, tk_text):
     mb.showinfo("Custom Plugins [BETA]", "Plugin not found.")
-    
+
 title_4 = "No plugin found."
 def plugin_4(tk_root, tk_text):
     mb.showinfo("Custom Plugins [BETA]", "Plugin not found.")
