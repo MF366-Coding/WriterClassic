@@ -130,12 +130,16 @@ def Change_State():
     if Offline_Data == "1":
         Offline_File.write("0")
         Startup_Offline_File.write("1")
-        mb.showinfo(title=lang[1], message=lang[101])
+        waitResponse = mb.askyesno(parent=desktop_win, title=lang[30], message=lang[31])
+        if waitResponse:
+            desktop_win.destroy()
     
     elif Offline_Data == "0":
         Offline_File.write("1")
         Startup_Offline_File.write("0")
-        mb.showinfo(title=lang[1], message=lang[101])
+        waitResponse = mb.askyesno(parent=desktop_win, title=lang[30], message=lang[31])
+        if waitResponse:
+            desktop_win.destroy()
     
     Offline_File.close()
     Startup_Offline_File.close()
