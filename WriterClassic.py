@@ -23,9 +23,9 @@ Small but lovely contributions by:
     Zeca70 (Zeca70 at GitHub)
 '''
 
-with open("config/offline.txt", "r", encoding='utf-8') as Offline_File:
-    Offline_Data = Offline_File.read()
-    Offline_Data = Offline_Data[0:1]
+with open('config/startup.txt', 'r', encoding='utf-8') as startupFile:
+    startAppData = startupFile.read()
+    startApp = startAppData[0:1]
 
 # Importing the goodies
 import sys # Platforms and OSes
@@ -37,7 +37,7 @@ import tkinter.filedialog as dlg # File Dialogs were never this easy...
 import tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
 import datetime # Really, bro?
 from tkinter.font import Font # Ouchie mama (font, daaah)
-if Offline_Data == '0':
+if startApp == "1":
     import requests # it's a module yay!
 import json # google it lmfao
 from data import plugins
@@ -45,17 +45,12 @@ from data import plugins
 # Windowing
 desktop_win = Tk()
 
-with open('config/startup.txt', 'r', encoding='utf-8') as startupFile:
-    startAppData = startupFile.read()
-    startApp = startAppData[0:1]
-    #print(startApp)
-
 if sys.platform == "win32":
     desktop_win.iconbitmap("data/app_icon.ico")
 
 latest_version = None
 
-if Offline_Data == '0':
+if startApp == '1':
     response = requests.get('https://api.github.com/repos/MF366-Coding/WriterClassic/releases/latest')
     data = json.loads(response.text)
     latest_version = data['tag_name']
@@ -121,33 +116,6 @@ menu_11 = Menu(menu_bar)
 menu_12 = Menu(menu_bar)
 menu_13 = Menu(menu_8)
 
-def Change_State():
-    global Offline_File, Offline_Data
-    
-    Offline_File = open("config/offline.txt", "w", encoding='utf-8')
-    Startup_Offline_File = open("config/startup.txt", "w", encoding='utf-8')
-    
-    if Offline_Data == "1":
-        Offline_File.write("0")
-        Startup_Offline_File.write("1")
-        waitResponse = mb.askyesno(parent=desktop_win, title=lang[30], message=lang[31])
-        if waitResponse:
-            desktop_win.destroy()
-    
-    elif Offline_Data == "0":
-        Offline_File.write("1")
-        Startup_Offline_File.write("0")
-        waitResponse = mb.askyesno(parent=desktop_win, title=lang[30], message=lang[31])
-        if waitResponse:
-            desktop_win.destroy()
-    
-    Offline_File.close()
-    Startup_Offline_File.close()
-    
-    with open("config/offline.txt", "r", encoding='utf-8') as Offline_File:
-        Offline_Data = Offline_File.read()
-        Offline_Data = Offline_Data[0:1]
-
 def writeStartup(text):
     with open('config/startup.txt', 'w', encoding='utf-8') as startupWriteFile:
         startupWriteFile.write(text)
@@ -164,7 +132,7 @@ class UpdateCheck:
 
     @staticmethod
     def check():
-        if appV != latest_version and Offline_Data == '0':
+        if appV != latest_version:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             if askForUpdate:
                 simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
@@ -173,14 +141,11 @@ class UpdateCheck:
 
     @staticmethod
     def change():
-        if Offline_Data == "0":
-            if startApp == '1':
-                writeStartup('0')
-                mb.showinfo(title=lang[1], message=lang[101])
-            else:
-                writeStartup('1')
-                mb.showinfo(title=lang[1], message=lang[101])
+        if startApp == '1':
+            writeStartup('0')
+            mb.showinfo(title=lang[1], message=lang[101])
         else:
+            writeStartup('1')
             mb.showinfo(title=lang[1], message=lang[101])
 
 if startApp == '1':
@@ -645,19 +610,17 @@ menu_10.add_command(label=lang[11], command=lambda:
     sair(desktop_win))
 
 
-if Offline_Data == "0":
+if startApp == "1":
     menu_11.add_command(label=lang[75], command=UpdateCheck.check)
     menu_11.add_separator()
 menu_11.add_command(label=lang[25], command=lambda:
     aboutApp('data/about.txt', 'r'))
-if Offline_Data == "0":
-    menu_11.add_command(label=lang[26], command=APP_HELP)
-    menu_11.add_command(label=lang[27], command=repo)
-    menu_11.add_separator()
+menu_11.add_command(label=lang[26], command=APP_HELP)
+menu_11.add_command(label=lang[27], command=repo)
+menu_11.add_separator()
 menu_11.add_command(label=lang[28], command=appCredits)
-if Offline_Data == '0':
-    menu_11.add_separator()
-    menu_11.add_command(label=lang[29], command=surprise_egg)
+menu_11.add_separator()
+menu_11.add_command(label=lang[29], command=surprise_egg)
 
 menu_1.add_command(label=lang[12], command=SetWinSize)
 
@@ -696,10 +659,9 @@ menu_13.add_command(label=plugins.title_6, command=lambda:
 
 menu_13.add_command(label=plugins.title_7, command=lambda:
     plugins.plugin_7(tk_root=desktop_win, tk_text=TextWidget))
-if Offline_Data == "0":
-    menu_13.add_separator()
+menu_13.add_separator()
 
-    menu_13.add_command(label=lang[129], command=plugin_help)
+menu_13.add_command(label=lang[129], command=plugin_help)
 
 
 menu_9.add_command(label=lang[81], command=InternetOnWriter.Website)
@@ -765,10 +727,7 @@ menu_12.add_separator()
 menu_12.add_command(label=lang[76], command=lambda:
     resetWriter(desktop_win))
 menu_12.add_separator()
-menu_12.add_command(label="Offline Mode [BETA]", command=Change_State)
-if Offline_Data == "0":
-    menu_12.add_separator()
-    menu_12.add_command(label=lang[105], command=article_md)
+menu_12.add_command(label=lang[105], command=article_md)
 
 
 menu_5.add_command(label=lang[16], command=lambda:
@@ -779,6 +738,11 @@ menu_5.add_separator()
 menu_5.add_command(label=lang[18], command=lambda:
     ThemeSet('grey', 'black', 'black', 'black', 'white'))
 
+
+menu_6.add_command(label="Official WriterClassic v8.1.1+ Theme by Norb", command=lambda:
+    ThemeSet("#0055FF", "#B3BFFF", "#fcfff7", "#fcfff7", "#0055FF"))
+
+menu_6.add_separator()
 
 menu_6.add_command(label='Light Yellow', command=lambda:
     ThemeSet('light yellow', 'black', 'black', '#f5b949', 'black'))
@@ -823,6 +787,7 @@ if sys.platform == "linux":
     menu_6.configure(background=theme["menu"], foreground=theme["mfg"])
     menu_7.configure(background=theme["menu"], foreground=theme["mfg"])
     menu_12.configure(background=theme["menu"], foreground=theme["mfg"])
+    menu_13.configure(background=theme["menu"], foreground=theme["mfg"])
     menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
     menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
 
@@ -834,8 +799,7 @@ menu_4.add_cascade(label=lang[15], menu=menu_5)
 menu_4.add_cascade(label=lang[19], menu=menu_6)
 menu_1.add_cascade(label=lang[14], menu=menu_7)
 menu_bar.add_cascade(label=lang[4], menu=menu_8)
-if Offline_Data == "0":
-    menu_bar.add_cascade(label=lang[79], menu=menu_9)
+menu_bar.add_cascade(label=lang[79], menu=menu_9)
 menu_8.add_cascade(label=lang[128], menu=menu_13)
 menu_bar.add_cascade(label=lang[5], menu=menu_12)
 menu_bar.add_cascade(label=lang[6], menu=menu_11)
