@@ -30,17 +30,30 @@ with open('config/startup.txt', 'r', encoding='utf-8') as startupFile:
 # Importing the goodies
 import sys # Platforms and OSes
 import simple_webbrowser.simple_webbrowser as simple_webbrowser # internet
-from tkinter import * # Window
-from tkinter.ttk import * # Not sure
-from tkinter import simpledialog as sdg # Inputs with GUI
-import tkinter.filedialog as dlg # File Dialogs were never this easy...
-import tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
+try:
+    from tkinter import * # Window
+except ModuleNotFoundError:
+    from Tkinter import *
+    
+try:
+    from tkinter.ttk import * # Not sure
+    from tkinter import simpledialog as sdg # Inputs with GUI
+    import tkinter.filedialog as dlg # File Dialogs were never this easy...
+    import tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
+    from tkinter.font import Font # Ouchie mama (font, daaah)
+except:
+    from Tkinter.ttk import *
+    from Tkinter import simpledialog as sdg
+    import Tkinter.filedialog as dlg # File Dialogs were never this easy...
+    import Tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
+    from Tkinter.font import Font # Ouchie mama (font, daaah)
+
 import datetime # Really, bro?
-from tkinter.font import Font # Ouchie mama (font, daaah)
 if startApp == "1":
     import requests # it's a module yay!
 import json # google it lmfao
-from data import plugins
+from data import plugins as plugin
+from py_compile import compile
 
 # Windowing
 desktop_win = Tk()
@@ -513,6 +526,52 @@ def plugin_help():
 
 def article_md():
     simple_webbrowser.Website(url='https://github.com/MF366-Coding/WriterClassic/wiki/Manual-Configuration-Setup')
+
+
+class plugins:
+    title_1 = plugin.title_1
+    title_2 = plugin.title_2
+    title_3 = plugin.title_3
+    title_4 = plugin.title_4
+    title_5 = plugin.title_5
+    title_6 = plugin.title_6
+    title_7 = plugin.title_7
+    
+    @staticmethod
+    def plugin_1(tk_root, tk_text):
+        plugin.plugin_1(tk_root=tk_root, tk_text=tk_text)
+        compile("data/plugins.py")
+    
+    @staticmethod
+    def plugin_2(tk_root, tk_text):
+        plugin.plugin_2(tk_root=tk_root, tk_text=tk_text)
+        compile("data/plugins.py")
+        
+    @staticmethod
+    def plugin_3(tk_root, tk_text):
+        plugin.plugin_3(tk_root=tk_root, tk_text=tk_text)
+        compile("data/plugins.py")
+        
+    @staticmethod
+    def plugin_4(tk_root, tk_text):
+        plugin.plugin_4(tk_root=tk_root, tk_text=tk_text)
+        compile("data/plugins.py")
+    
+    @staticmethod
+    def plugin_5(tk_root, tk_text):
+        plugin.plugin_5(tk_root=tk_root, tk_text=tk_text)
+        compile("data/plugins.py")
+    
+    @staticmethod
+    def plugin_6(tk_root, tk_text):
+        plugin.plugin_6(tk_root=tk_root, tk_text=tk_text)
+        compile("data/plugins.py")
+        
+    @staticmethod
+    def plugin_7(tk_root, tk_text):
+        plugin.plugin_7(tk_root=tk_root, tk_text=tk_text)
+        compile("data/plugins.py")
+
 
 def commandPrompt():
     askNow = sdg.askstring(lang[68], lang[69])
