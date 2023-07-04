@@ -130,3 +130,4 @@ Egendefinerte plugins [BETA]
 Plugin-oppsett [engelsk artikkel]
 Sett inn automatisk signatur
 Sett inn egendefinert signatur
+Signert,

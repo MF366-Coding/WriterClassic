@@ -89,64 +89,36 @@ If you want to redistribute this software, you need its LICENSE: this is **manda
 If you found a bug, please tell me the details by creating a new Issue in this Repository.
 
 # Help :question:
-Here, you can find all sorts of help topics about Writer Classic.
+## Editing
+You can do regular file editing like **opening**, **saving** and simply typing!
 
-## Features
-### Open :open_file_folder:
-Writer Classic is a basic text editor yet very fun to use and offering a lot of features while it's development is happening at a very fast pace.  
-With Writer Classic you can open files of type (in no particular order):
-  
-* text
-* python
-* markdown
-* html
-* javascript
-* ini
-* desktop
-* xml
+To open a plain text file, go to **File** > **Open...** and pick the file you want to open.
 
-... and much more!
+To save a document, go to **File** > **Save...** and name the file. Pick its location and click Save. Boom!
 
-### Edit :memo:
-You can make changes to text files, python files, markdown files and save them, either with new name and extension or replacing existent files.
+## Sparkles and sparkles
+To change the default window size of WriterClassic, go to **Appearance** > **Window dimensions** and follow the instructions.
 
-### Looks :paintbrush:
-You can choose from several themes and change interface / window size. So taht you will always be confortable and use Writer Classic the way you want and fits your taste and feelings.
+To pick a theme, just go to **Appearance** and pick, from Default and Modern themes, the one you like the best.
 
+## Plugins
+Enjoy default plugins and custom plugins.
 
-#### Change the font (type and size)
-Now, you can change font type and size (only affects the editor - not the edited file).
+This powerful feature... I'll let you explore it by yourself...
 
-You can find this feature in the *Appearence* settings.
+## Internet
+The Internet plugin, on the tab next to Plugins...
 
-Once again, thank you for ckecking out this repository. :+1:
+Search with Google, Ecosia, Bing, Yahoo, YouTube and much more directly from your favorite text editor.
 
-### Plugins :heavy_plus_sign:
-Writer Classic author and programmer is always developing new plugins in order to make this simple editor more and more powerful and in line with the features you most use and wish. For the time being you can choose from:
+You can also go to an URL.
 
-* **Notepad** (you can take notes aside what you're writing and editing)
-* **Clock** (because it's always useful to know if it's time to start coding)
-* **File Wiper** (wipes a file you pick - does not delete it)
+## Settings and info
+Customize your language. Go ahead, pick yours!
 
-### Settings :hammer_and_wrench:
-Within settings you can choose from several languages. For now it's only available in:
+Yours isn't available? Consider creating your own custom translation or report it to Issues as an enhancement.
 
-- English
-
-- Portuguese (european and brazilian)
-
-- French
-
-- Spanish
-
-- Italian
-
-- Slovak
-
-### Information :information_source:
-Here you can find help, some about information and the links for the official repo and website.
-
-Stay up to date, don't forget to read what's going on with Writer Classic.
+You can also enjoy WriterClassic offline, by just changing one simple setting: Checking for Updates on Startup. If ON, you gotta be online. If OFF, doesn't matter where you are and mostly, if you have internet connection, because WriterClassic won't need it to launch.
 
 ### Command Menu
 You can press **Ctrl + W** (check the Shotcuts area for more info) to open this **hidden** feature.

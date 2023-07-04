@@ -130,3 +130,4 @@ Plug-ins personalizados [BETA]
 Configuração de plugins [Artigo em inglês]
 Inserir assinatura automática
 Inserir assinatura customizada
+Assinado,

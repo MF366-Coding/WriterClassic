@@ -1,7 +1,1 @@
-{
-	"color": "#000067",
-	"ct": "#ffffff",
-	"fg": "#ffffff",
-	"mfg": "#c8c6ef",
-	"menu": "black"
-}
+{"color": "black", "ct": "white", "fg": "white", "mfg": "white", "menu": "black"}

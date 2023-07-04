@@ -130,3 +130,4 @@ Plugins personalizados [BETA]
 Configuracion de Plugins [Articulo en Español]
 Insertar firma automática
 Insertar firma personalizada
+Firmado,

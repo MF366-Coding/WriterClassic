@@ -130,3 +130,4 @@ Vlastné zásuvné moduly [BETA]
 Nastavenie zásuvných modulov [anglický článok]
 Vloženie automatického podpisu
 Vložiť vlastný podpis
+Podpísané,

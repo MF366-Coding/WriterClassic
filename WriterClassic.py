@@ -29,7 +29,7 @@ with open('config/startup.txt', 'r', encoding='utf-8') as startupFile:
 
 # Importing the goodies
 import sys # Platforms and OSes
-import simple_webbrowser.simple_webbrowser as simple_webbrowser # internet
+from simple_webbrowser import simple_webbrowser
 try:
     from tkinter import * # Window
 except ModuleNotFoundError:
@@ -588,7 +588,7 @@ class SignaturePlugin:
         username = getuser()
         transformed_username = username.title()
         
-        signature = f"--\nSigned,\n{transformed_username}"
+        signature = f"--\n{lang[132]}\n{transformed_username}"
         
         TextWidget.insert(END, f"\n\n{str(signature)}")
 
@@ -856,7 +856,7 @@ if sys.platform == "win32":
     menu_6.add_command(label='[EXTRA] PowerShell Theme', command=lambda:
         ThemeSet("#012456", "#eeedf0", "#fedba9", "#eeedf0", "#012456"))
 
-if sys.platform == "win32":
+if sys.platform == "linux":
     # Themed menus in case of: Linux Python3
     menu_10.configure(background=theme["menu"], foreground=theme["mfg"])
     menu_11.configure(background=theme["menu"], foreground=theme["mfg"])

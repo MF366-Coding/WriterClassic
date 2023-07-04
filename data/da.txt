@@ -130,3 +130,4 @@ Brugerdefinerede plugins [BETA]
 Plugin-opsætning [engelsk artikel]
 Indsæt automatisk signatur
 Indsæt brugerdefineret signatur
+Underskrevet,
