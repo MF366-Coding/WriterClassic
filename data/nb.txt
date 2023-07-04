@@ -128,3 +128,5 @@ WriterClassic - Søk i Spotify Online
 Alle filer
 Egendefinerte plugins [BETA]
 Plugin-oppsett [engelsk artikkel]
+Sett inn automatisk signatur
+Sett inn egendefinert signatur

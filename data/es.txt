@@ -128,3 +128,5 @@ WriterClassic - Buscar Spotify en línea
 Todos los archivos
 Plugins personalizados [BETA]
 Configuracion de Plugins [Articulo en Español]
+Insertar firma automática
+Insertar firma personalizada

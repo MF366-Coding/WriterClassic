@@ -27,7 +27,7 @@ Acerca de
 Ajuda
 Repositório
 Créditos
-Pequena Surpresa
+Ovo de Páscoa
 WriterClassic - Sair agora?
 Tens de reabrir o Writer para aplicar as alterações! Reiniciar agora?
 Ficheiro de texto
@@ -61,7 +61,7 @@ WriterClassic - Alterar o tamanho do tipo de letra
 Escolha um número (mínimo de 1).
 WriterClassic - Alterar família
 Introduza o nome de um tipo de letra que tenha instalado no seu dispositivo.
-É necessário reiniciar o sistema para aplicar as alterações.
+É necessário reiniciar para aplicar as alterações.
 WriterClassic - Acerca de
 Esta aplicação foi criada por MF366 e é alimentada por Python 3.10.11.
 Escreve a cadeia de código ESPECIAL para obteres o Ovo da Páscoa...
@@ -128,3 +128,5 @@ WriterClassic - Pesquisar Spotify Online
 Todos os ficheiros
 Plugins personalizados [BETA]
 Configuração de Plugins [Artigo em Inglês]
+Inserir assinatura automática
+Inserir assinatura personalizada

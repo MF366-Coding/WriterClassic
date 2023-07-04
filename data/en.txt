@@ -128,3 +128,5 @@ WriterClassic - Search Spotify Online
 All Files
 Custom Plugins [BETA]
 Plugin Setup [English Article]
+Insert Auto Signature
+Insert Custom Signature

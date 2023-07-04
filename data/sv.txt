@@ -128,3 +128,5 @@ WriterClassic - Sök Spotify online
 Alla filer
 Anpassade plugins [BETA]
 Plugin-installation [English Article]
+Infoga automatisk signatur
+Infoga anpassad signatur

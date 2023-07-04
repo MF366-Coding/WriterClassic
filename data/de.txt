@@ -128,3 +128,5 @@ WriterClassic - Spotify online durchsuchen
 Alle Dateien
 Benutzerdefinierte Plugins [BETA]
 Plugin-Einrichtung [Englischer Artikel]
+Automatische Signatur einfügen
+Benutzerdefinierte Unterschrift einfügen

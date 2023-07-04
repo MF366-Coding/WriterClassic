@@ -1,7 +1,7 @@
 # Writer Classic
 Writer Classic's GitHub repository.
 
-![WriterClassic's New Logo, from v7.0.1](/data/logo.png?raw=true "WriterClassic Logo")
+![WriterClassic's New Logo, by Norb](/data/logo.png?raw=true "WriterClassic Logo")
 
 Writer Classic is a rather small Python project that brings to the user a whole new text editing experience. :thinking:
 
@@ -41,25 +41,11 @@ For Windows do:
 
 This app only runs os Python 3!
 
-##### Additional Setup: Start Menu Shortcut (Windows)
-**NOTE:** *this doesn't reffer to the "Pin in Start Menu", however feel free to use that one if you prefer.*
-
-To make a Start Menu shortcut, you must follow the following steps:
-
-1. Open two windows of **File Explorer**.
-2. In one of them, go to the location `%AppData%\Microsoft\Windows\Start Menu`. 
-3. In the other File Explorer window, go to the folder where you extracted WriterClassic's zipped folder.
-4. Now, place the windows side-by-side (not necessary but makes the process a bit easier).
-5. Finally, and most important of all, **while holding `Ctrl` and `Shift` at the same time**, grab the `WriterClassic.py` file and throw it into the `StartMenu` folder.
-6. You should probably rename the file to "`WriterClassic`" for easier acess, that is, without the file extension (because it's a shortcut - the extension is hidden in Windows by default and is not `*.exe`).
-7. You can, afterwards, make shortcuts in Desktop, Pin in Start Menu, Taskbar, as you wish...
-
 ## Unstable Releases
 Maybe you are a developer who wants acess to the latest update to Writer...
 
 ### 1. Clone the repo
-Open the Terminal and use:
-```git clone https://github.com/MF366-Coding/WriterClassic.git</```
+Open the Terminal and clone the repository.
 
 However, that will only work if you have Git installed on your device...
 
@@ -93,6 +79,8 @@ You need:
 * [X] the `data` folder that comes with WriterClassic
 
 * [X] the `config` folder that comes with WriterClassic
+
+* [X] the `simple_webbrowser` folder that comes with WriterClassic
 
 ## Small information
 If you want to redistribute this software, you need its LICENSE: this is **mandatory**!

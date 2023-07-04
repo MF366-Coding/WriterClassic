@@ -54,6 +54,7 @@ if startApp == "1":
 import json # google it lmfao
 from data import plugins as plugin
 from py_compile import compile
+from getpass import getuser
 
 # Windowing
 desktop_win = Tk()
@@ -573,6 +574,24 @@ class plugins:
         compile("data/plugins.py")
 
 
+class SignaturePlugin:
+    @staticmethod
+    def custom():
+        with open("data/signature.txt", "r", encoding="utf-8") as SIGNATURE_FILE:
+            signature = SIGNATURE_FILE.read()
+            SIGNATURE_FILE.close()
+        
+        TextWidget.insert(END, f"\n\n{str(signature)}")
+        
+    @staticmethod
+    def auto():
+        username = getuser()
+        transformed_username = username.title()
+        
+        signature = f"--\nSigned,\n{transformed_username}"
+        
+        TextWidget.insert(END, f"\n\n{str(signature)}")
+
 def commandPrompt():
     askNow = sdg.askstring(lang[68], lang[69])
 
@@ -692,6 +711,9 @@ menu_7.add_command(label=lang[21], command=lambda:
 
 menu_8.add_command(label=lang[22], command=new_window)
 menu_8.add_command(label=lang[23], command=clockPlugin)
+menu_8.add_separator()
+menu_8.add_command(label=lang[131], command=SignaturePlugin.custom)
+menu_8.add_command(label=lang[130], command=SignaturePlugin.auto)
 menu_8.add_separator()
 menu_8.add_command(label=lang[10], command=lambda:
     WipeFile(desktop_win))
@@ -834,7 +856,7 @@ if sys.platform == "win32":
     menu_6.add_command(label='[EXTRA] PowerShell Theme', command=lambda:
         ThemeSet("#012456", "#eeedf0", "#fedba9", "#eeedf0", "#012456"))
 
-if sys.platform == "linux":
+if sys.platform == "win32":
     # Themed menus in case of: Linux Python3
     menu_10.configure(background=theme["menu"], foreground=theme["mfg"])
     menu_11.configure(background=theme["menu"], foreground=theme["mfg"])
