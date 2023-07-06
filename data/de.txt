@@ -131,3 +131,33 @@ Plugin-Einrichtung [Englischer Artikel]
 Automatische Signatur einfügen
 Benutzerdefinierte Unterschrift einfügen
 Unterschrieben,
+Operation nicht erlaubt.
+Der Vorgang war nicht erfolgreich.
+Das Internet ist nicht verfügbar, eingeschränkt oder die Verbindung wurde unterbrochen.
+Es konnte nicht nach Updates gesucht werden.
+Tipps & Tricks für WriterClassic [BETA]
+Suchen mit Brave Search
+WriterClassic - Suche mit Brave Search
+Sie können jede einfache Textdatei öffnen, indem Sie die Dateierweiterung *.* auswählen.
+Sie können die von MF366 erstellten Themen und Plugins auf GitHub herunterladen.
+Vergessen Sie nicht, Ihre Signatur anzupassen ;)
+Easter Eggs sind schwer zu finden, aber vielleicht sollten Sie einige einfachere Wörter ausprobieren.
+Möglicherweise haben Sie eine ungültige oder unzulässige Schriftgröße gewählt.
+WriterClassic wird in Segoe UI, 14 für Sie ausgeführt und ändert die Einstellungen.
+Sie können sie später wieder ändern.
+WriterClassic - Betriebsfehler
+WriterClassic - Fehler bei der Internetverbindung
+WriterClassic - Schriftart-Fehler
+WriterClassic - Theme-Fehler
+Es gibt mindestens einen unzulässigen Themenwert.
+WriterClassic wird mit einem anderen als dem von Ihnen eingestellten Thema ausgeführt.
+Themes von offizieller Quelle beziehen
+Plugins von offizieller Quelle beziehen
+WriterClassic - Python-Modul-Fehler
+Fehlendes Python-Modul.
+Möchten Sie es mit pip installieren?
+Sie müssen WriterClassic neu starten.
+WriterClassic kann unter diesen Bedingungen nicht ausgeführt werden.
+Beenden.
+WriterClassic - Plugin-Fehler
+Die Plugin-Datei ist beschädigt oder existiert nicht.

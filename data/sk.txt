@@ -131,3 +131,33 @@ Nastavenie zásuvných modulov [anglický článok]
 Vloženie automatického podpisu
 Vložiť vlastný podpis
 Podpísané,
+Operácia nie je povolená.
+Operácia nebola úspešná.
+Internet nie je k dispozícii, je obmedzený alebo sa pripojenie časovo prerušilo.
+Nepodarilo sa skontrolovať aktualizácie.
+Tipy a triky pre WriterClassic [BETA]
+Vyhľadávanie pomocou funkcie Brave Search
+WriterClassic - Vyhľadávanie pomocou Brave Search
+Výberom prípony súboru *.* môžete otvoriť akýkoľvek obyčajný textový súbor.
+Témy a doplnky vytvorené MF366 si môžete stiahnuť na GitHub.
+Nezabudnite si prispôsobiť svoj podpis ;)
+Veľkonočné vajíčka sa hľadajú ťažko, ale možno by ste mali skúsiť nejaké jednoduchšie slová.
+Možno ste vybrali nulovú alebo nezákonnú veľkosť písma.
+WriterClassic sa spustí v používateľskom rozhraní Segoe, 14 za vás a zmení nastavenia.
+Budete ich môcť zmeniť neskôr.
+WriterClassic - Chyba operácie
+WriterClassic - Chyba internetového pripojenia
+WriterClassic - Chyba písma
+WriterClassic - Chyba témy
+Existuje aspoň jedna nezákonná hodnota témy.
+WriterClassic sa spustí s inou témou, ako ste nastavili.
+Získajte témy z oficiálneho zdroja
+Získajte zásuvné moduly z oficiálneho zdroja
+WriterClassic - Chyba modulu Python
+Chýba modul Python.
+Chcete ho nainštalovať pomocou pip?
+Musíte reštartovať WriterClassic.
+WriterClassic sa za týchto podmienok nedá spustiť.
+Ukončenie.
+WriterClassic - Chyba zásuvného modulu
+Súbor zásuvného modulu je poškodený alebo neexistuje.

@@ -131,3 +131,33 @@ Impostazione dei plugin [Articolo in inglese]
 Inserisci firma automatica
 Inserisci firma personalizzata
 Firmato,
+Operazione non consentita.
+L'operazione non è riuscita.
+Internet non è disponibile, è limitato o la connessione è scaduta.
+Impossibile controllare gli aggiornamenti.
+Suggerimenti e trucchi per WriterClassic [BETA]
+Ricerca con Brave Search
+WriterClassic - Ricerca con Brave Search
+È possibile aprire qualsiasi file di testo semplice selezionando l'estensione *.*.
+È possibile scaricare temi e plugin realizzati da MF366 su GitHub.
+Non dimenticare di personalizzare la tua firma ;)
+Gli Easter Eggs sono difficili da trovare, ma forse dovresti provare con parole più semplici.
+È possibile che sia stata selezionata una dimensione di carattere nulla o illegale.
+WriterClassic verrà eseguito in Segoe UI, 14 per voi e cambierà le impostazioni.
+Sarete in grado di modificarle in seguito.
+WriterClassic - Errore di funzionamento
+WriterClassic - Errore di connessione a Internet
+WriterClassic - Errore di carattere
+WriterClassic - Errore di tema
+È presente almeno un valore di tema illegale.
+WriterClassic verrà eseguito con un tema diverso da quello impostato.
+Ottenere i temi dalla fonte ufficiale
+Ottenere i plugin dalla fonte ufficiale
+WriterClassic - Errore del modulo Python
+Modulo Python mancante.
+Si desidera installarlo con pip?
+È necessario riavviare WriterClassic.
+WriterClassic non può essere eseguito in queste condizioni.
+Abbandono.
+WriterClassic - Errore del plugin
+Il file del plugin è danneggiato o non esiste.

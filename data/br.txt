@@ -131,3 +131,33 @@ Configuração de plugins [Artigo em inglês]
 Inserir assinatura automática
 Inserir assinatura customizada
 Assinado,
+Operação não autorizada.
+A operação não foi bem-sucedida.
+A Internet não está disponível, é restrita ou o tempo de conexão foi esgotado.
+Não foi possível verificar se há atualizações.
+Dicas e truques para o WriterClassic [BETA]
+Pesquisar com o Brave Search
+WriterClassic - Pesquisar com o Brave Search
+Você pode abrir qualquer arquivo de texto simples selecionando a extensão de arquivo *.*.
+Você pode baixar temas e suplementos criados por MF366 no GitHub.
+Não se esqueça de customizar sua assinatura ;)
+Easter Eggs são difíceis de achar, mas tente usar algumas palavras bem simples.
+Você deve ter selecionado um tamanho de fonte inválido ou incorreto.
+O WriterClassic será executado no Segoe UI, 14 para você e alterará as configurações.
+Você poderá alterá-las mais tarde.
+WriterClassic - Erro de operação
+WriterClassic - Erro de conexão com a Internet
+WriterClassic - Erro de fonte
+WriterClassic - Erro de tema
+Há pelo menos um valor de tema ilegal.
+O WriterClassic será executado com um tema diferente daquele que você definiu.
+Obter temas da fonte oficial
+Obter plug-ins da fonte oficial
+WriterClassic - Erro de módulo Python
+Módulo Python faltando.
+Deseja instalá-lo com o comando pip?
+Você precisa reiniciar o WriterClassic.
+O WriterClassic não pode ser iniciado nessas condições.
+Encerrando.
+WriterClassic - Erro de suplemento
+O arquivo de suplementos está corrompido ou não existe.

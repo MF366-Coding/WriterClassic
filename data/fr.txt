@@ -131,3 +131,33 @@ Configuration des plugins [Article en anglais]
 Insérer une signature automatique
 Insérer une signature personnalisée
 Signé,
+Opération non autorisée.
+L'opération n'a pas abouti.
+Internet n'est pas disponible, restreint ou la connexion a expiré.
+Impossible de vérifier les mises à jour.
+Trucs et astuces pour WriterClassic [BETA]
+Recherche avec Brave Search
+WriterClassic - Recherche avec Brave Search
+Vous pouvez ouvrir n'importe quel fichier texte en sélectionnant l'extension *.*.
+Vous pouvez télécharger les thèmes et les plugins créés par MF366 sur GitHub.
+N'oubliez pas de personnaliser votre signature ;)
+Les Easter Eggs sont difficiles à trouver mais peut-être devriez-vous essayer des mots plus simples.
+Vous avez peut-être sélectionné une taille de police nulle ou illégale.
+WriterClassic s'exécutera dans Segoe UI, 14 pour vous et changera les paramètres.
+Vous pourrez les modifier plus tard.
+WriterClassic - Erreur de fonctionnement
+WriterClassic - Erreur de connexion Internet
+WriterClassic - Erreur de police
+WriterClassic - Erreur de thème
+Il y a au moins une valeur de thème illégale.
+WriterClassic fonctionnera avec un thème différent de celui que vous avez défini.
+Obtenir des thèmes à partir de la source officielle
+Obtenir des plugins à partir de la source officielle
+WriterClassic - Erreur de module Python
+Module Python manquant.
+Souhaitez-vous l'installer avec pip?
+Vous devez redémarrer WriterClassic.
+WriterClassic ne peut pas fonctionner dans ces conditions.
+Quitter.
+WriterClassic - Erreur de plugin
+Le fichier du plugin est endommagé ou n'existe pas.

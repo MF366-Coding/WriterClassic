@@ -131,3 +131,33 @@ Plugin Setup [English Article]
 Insert Auto Signature
 Insert Custom Signature
 Signed,
+Operation not allowed.
+The operation didn't succed.
+Internet not available, restricted or the connection has timed out.
+Couldn't check for updates.
+Tips & Tricks for WriterClassic [BETA]
+Search with Brave Search
+WriterClassic - Search with Brave Search
+You can open any plain text file by selecting the *.* file extension.
+You can download themes and plugins made by MF366 on GitHub.
+Don't forget to customize your signature ;)
+Easter Eggs are hard to find but maybe you should try some simpler words.
+You may have selected a null or illegal font size.
+WriterClassic will run in Segoe UI, 14 for you and will change the settings.
+You'll be able to change them later.
+WriterClassic - Operation Error
+WriterClassic - Internet Connection Error
+WriterClassic - Font Error
+WriterClassic - Theme Error
+There is at least one illegal theme value.
+WriterClassic will run with a different theme than the one you set.
+Get themes from official source
+Get plugins from official source
+WriterClassic - Python Module Error
+Missing Python module.
+Do you wish to install it with pip?
+You need to restart WriterClassic.
+WriterClassic can't run under this conditions.
+Quitting.
+WriterClassic - Plugin Error
+Plugin file is damaged or doesn't exist.

@@ -131,3 +131,33 @@ Plugin-oppsett [engelsk artikkel]
 Sett inn automatisk signatur
 Sett inn egendefinert signatur
 Signert,
+Operasjon ikke tillatt.
+Operasjonen ble ikke utført.
+Internett er ikke tilgjengelig, begrenset eller tilkoblingen er tidsavbrutt.
+Kunne ikke se etter oppdateringer.
+Tips og triks for WriterClassic [BETA]
+Søk med Brave Search
+WriterClassic - Søk med Brave Search
+Du kan åpne en hvilken som helst ren tekstfil ved å velge filtypen *.*.
+Du kan laste ned temaer og plugins laget av MF366 på GitHub.
+Ikke glem å tilpasse signaturen din ;)
+Påskeegg er vanskelige å finne, men kanskje du bør prøve noen enklere ord.
+Du kan ha valgt en null eller ulovlig skriftstørrelse.
+WriterClassic kjører i Segoe UI, 14 for deg og endrer innstillingene.
+Du kan endre dem senere.
+WriterClassic - Operasjonsfeil
+WriterClassic - Feil i Internett-tilkoblingen
+WriterClassic - Skrifttypefeil
+WriterClassic - Temafeil
+Det er minst én ulovlig temaværdi.
+WriterClassic kjører med et annet tema enn det du har angitt.
+Hent temaer fra offisiell kilde
+Hent plugins fra offisiell kilde
+WriterClassic - Feil i Python-modul
+Python-modul mangler.
+Ønsker du å installere den med pip?
+Du må starte WriterClassic på nytt.
+WriterClassic kan ikke kjøre under disse forholdene.
+Avslutter.
+WriterClassic - Plugin-feil
+Plugin-filen er skadet eller finnes ikke.

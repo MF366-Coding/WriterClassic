@@ -131,3 +131,17 @@ Configuração de Plugins [Artigo em Inglês]
 Inserir assinatura automática
 Inserir assinatura personalizada
 Assinado,
+Operação não permitida.
+A operação não foi bem sucedida.
+Internet não disponível ou restrita.
+Não foi possível verificar se existem atualizações.
+Dicas e truques para o WriterClassic [BETA]
+Pesquisar com o Brave Search
+WriterClassic - Pesquisar com o Brave Search
+Pode abrir qualquer ficheiro de texto simples seleccionando a extensão de ficheiro *.*.
+Podes descarregar temas e plugins criados por MF366 no GitHub.
+Não te esqueças de personalizar a tua assinatura ;)
+Os Easter Eggs são difíceis de encontrar, mas talvez devesses tentar algumas palavras mais simples.
+Esta família de fontes não existe ou seleccionou um tamanho de fonte nulo.
+O WriterClassic irá correr no Segoe UI, 14 para o utilizador e irá alterar as definições.
+Poderá alterá-las mais tarde.

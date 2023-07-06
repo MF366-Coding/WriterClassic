@@ -23,38 +23,109 @@ Small but lovely contributions by:
     Zeca70 (Zeca70 at GitHub)
 '''
 
+UNIX_OSES = [
+            "darwin",
+            "linux",
+            "linux2"
+        ]
+
+NOT_ALLOWED = [
+    "",
+    " ",
+    "  ",
+    "\n",
+    "   ",
+    "    ",
+    "     "
+]
+
 with open('config/startup.txt', 'r', encoding='utf-8') as startupFile:
     startAppData = startupFile.read()
     startApp = startAppData[0:1]
 
 # Importing the goodies
 import sys # Platforms and OSes
-from simple_webbrowser import simple_webbrowser
+import random
+import os
+import datetime # Really, bro?
+import json # google it lmfao
+from py_compile import compile
+from getpass import getuser
+
 try:
     from tkinter import * # Window
 except ModuleNotFoundError:
     from Tkinter import *
-    
+
 try:
     from tkinter.ttk import * # Not sure
     from tkinter import simpledialog as sdg # Inputs with GUI
     import tkinter.filedialog as dlg # File Dialogs were never this easy...
     import tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
     from tkinter.font import Font # Ouchie mama (font, daaah)
-except:
+except ModuleNotFoundError:
     from Tkinter.ttk import *
     from Tkinter import simpledialog as sdg
     import Tkinter.filedialog as dlg # File Dialogs were never this easy...
     import Tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
     from Tkinter.font import Font # Ouchie mama (font, daaah)
 
-import datetime # Really, bro?
+with open('config/lang.txt', 'r', encoding="utf-8") as configLangFile:
+    setLang = configLangFile.read()
+
+with open('data/'+str(setLang[0:2])+'.txt', 'r', encoding='utf-8') as usedLangFile:
+    usedLang = usedLangFile.read()
+    lang = usedLang.split('\n')
+    #print(dd)
+
+try:
+    from simple_webbrowser import simple_webbrowser
+except (ModuleNotFoundError, ImportError):
+    mb.showerror(lang[155], lang[156])
+    module_pip = mb.askyesno(lang[155], lang[157])
+    if module_pip:
+        if sys.platform == "win32":
+            os.system("python -m pip install simple_webbrowser")
+            mb.showinfo(lang[155], lang[158])
+            quit()
+        elif sys.platform in UNIX_OSES:
+            os.system("pip install simple_webbrowser")
+            mb.showinfo(lang[155], lang[158])
+            quit()
+        else:
+            mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
+            quit()
+    elif module_pip == False:
+        mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
+        quit()
+    
 if startApp == "1":
-    import requests # it's a module yay!
-import json # google it lmfao
-from data import plugins as plugin
-from py_compile import compile
-from getpass import getuser
+    try:
+        import requests # it's a module yay!
+    except (ModuleNotFoundError, ImportError):
+        mb.showerror(lang[155], lang[156])
+        module_pip = mb.askyesno(lang[155], lang[157])
+        if module_pip:
+            if sys.platform == "win32":
+                os.system("python -m pip install requests")
+                mb.showinfo(lang[155], lang[158])
+                quit()
+            elif sys.platform in UNIX_OSES:
+                os.system("pip install requests")
+                mb.showinfo(lang[155], lang[158])
+                quit()
+            else:
+                mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
+                quit()
+        elif module_pip == False:
+            mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
+            quit()
+
+try:
+    from data import plugins as plugin
+except (ModuleNotFoundError, ImportError):
+    mb.showerror(lang[161], f"{lang[162]}\n{lang[160]}")
+    quit()
 
 # Windowing
 desktop_win = Tk()
@@ -64,20 +135,18 @@ if sys.platform == "win32":
 
 latest_version = None
 
+IGNORE_CHECKING = False
+
 if startApp == '1':
-    response = requests.get('https://api.github.com/repos/MF366-Coding/WriterClassic/releases/latest')
-    data = json.loads(response.text)
-    latest_version = data['tag_name']
+    try:
+        response = requests.get('https://api.github.com/repos/MF366-Coding/WriterClassic/releases/latest', timeout=3.5)
+        data = json.loads(response.text)
+        latest_version = data['tag_name']
+    except (requests.exceptions.ConnectTimeout, requests.exceptions.ConnectionError, TimeoutError, requests.exceptions.ReadTimeout):
+        mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
+        IGNORE_CHECKING = True
 
 # Config files
-with open('config/lang.txt', 'r', encoding="utf-8") as configLangFile:
-    setLang = configLangFile.read()
-
-with open('data/'+str(setLang[0:2])+'.txt', 'r', encoding='utf-8') as usedLangFile:
-    usedLang = usedLangFile.read()
-    lang = usedLang.split('\n')
-    #print(dd)
-
 with open('data/version.txt', 'r', encoding='utf-8') as versionFile:
     appVGet = versionFile.read()
     appV = appVGet[0:6]
@@ -88,11 +157,21 @@ with open('config/theme.json', 'rt', encoding='utf-8') as textColor:
 
 with open('config/font.json', 'rt', encoding='utf-8') as fontFile:
     font_use = json.load(fontFile)
+    fontFile.close()
 
 # Windowing... again
 desktop_win.title(lang[1])
-
-FontSet = Font(family=font_use["font-type"], size=font_use["font-size"])
+try:
+    FontSet = Font(family=font_use["font-type"], size=font_use["font-size"])
+except TclError:
+    mb.showerror(lang[149], f"{lang[144]}\n{lang[145]}\n{lang[146]}")
+    FontSet = Font(family="Segoe UI", size=14)
+    with open('config/font.json', 'w', encoding='utf-8') as fixed_fontFile:
+        new_font = {
+            "font-type":"Segoe UI",
+            "font-size":14
+        }
+        json.dump(new_font, fixed_fontFile)
 
 TextWidget = Text(desktop_win, font=FontSet)
 
@@ -103,7 +182,12 @@ GeomValues = geomValue.split('x')
 
 desktop_win.geometry(geomValue)
 
-TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"])
+try:
+    TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"])
+except TclError:
+    mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
+    TextWidget.configure(bg="black", fg="white", width=GeomValues[0], height=GeomValues[1], insertbackground="white")
+
 TextWidget.pack()
 
 # Closing the configs
@@ -113,8 +197,13 @@ configLangFile.close()
 # Defining the menu bar
 menu_bar = Menu(desktop_win)
 
-if sys.platform == "linux":
-    menu_bar.configure(background=theme["menu"], foreground=theme["mfg"])
+try:
+    if sys.platform == "linux":
+        menu_bar.configure(background=theme["menu"], foreground=theme["mfg"])
+except TclError:
+    if sys.platform == "linux":
+        mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
+        menu_bar.configure(background="white", foreground="black")
 
 menu_1 = Menu(menu_bar)
 menu_2 = Menu(menu_1)
@@ -139,19 +228,23 @@ def writeStartup(text):
 class UpdateCheck:
     @staticmethod
     def check_other():
-        if appV != latest_version:
+        if appV != latest_version and IGNORE_CHECKING == False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             if askForUpdate:
                 simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
+        elif IGNORE_CHECKING == True:
+            pass
 
     @staticmethod
     def check():
-        if appV != latest_version:
+        if appV != latest_version and IGNORE_CHECKING == False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             if askForUpdate:
                 simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
-        else:
+        elif appV == latest_version and IGNORE_CHECKING == False:
             mb.showinfo(title=lang[93], message=lang[92])
+        else:
+            mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
 
     @staticmethod
     def change():
@@ -168,13 +261,19 @@ if startApp == '1':
 # Windowing... one more time...
 def SetWinSize():
     widthSet = sdg.askinteger(lang[1], lang[57])
-    heightSet = sdg.askinteger(lang[1], lang[58])
-    TextWidget.configure(width=widthSet, height=heightSet)
-    desktop_win.geometry(str(widthSet)+'x'+str(heightSet))
-    with open('config/geom.txt', 'w', encoding='utf-8') as geomdata:
-        geomdata.write('')
-        geomdata.write(str(widthSet)+'x'+str(heightSet))
-    geomdata.close()
+    if widthSet in NOT_ALLOWED:
+        mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
+    elif widthSet not in NOT_ALLOWED:
+        heightSet = sdg.askinteger(lang[1], lang[58])
+        if heightSet in NOT_ALLOWED:
+            mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
+        elif heightSet not in NOT_ALLOWED:
+            TextWidget.configure(width=widthSet, height=heightSet)
+            desktop_win.geometry(str(widthSet)+'x'+str(heightSet))
+            with open('config/geom.txt', 'w', encoding='utf-8') as geomdata:
+                geomdata.write('')
+                geomdata.write(str(widthSet)+'x'+str(heightSet))
+            geomdata.close()
 
 # Theme Picker
 def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fifth):
@@ -259,26 +358,32 @@ def fontEdit(winType):
 
     if winType == 1:
         fontSize = sdg.askinteger(lang[59], lang[60], minvalue=1)
-        with open('config/font.json', 'wt', encoding='utf-8') as fontFileUse:
-            font_use["font-size"] = fontSize
-            new_object = {
-                "font-type":font_use["font-type"],
-                "font-size":fontSize
-            }
-            json.dump(new_object, fontFileUse)
-            fontFileUse.close()
-            mb.showinfo(lang[1], lang[63])
+        if fontSize in NOT_ALLOWED:
+            mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
+        elif fontSize not in NOT_ALLOWED:
+            with open('config/font.json', 'wt', encoding='utf-8') as fontFileUse:
+                font_use["font-size"] = fontSize
+                new_object = {
+                    "font-type":font_use["font-type"],
+                    "font-size":fontSize
+                }
+                json.dump(new_object, fontFileUse)
+                fontFileUse.close()
+                mb.showinfo(lang[1], lang[63])
     else:
         fontType = sdg.askstring(lang[61], lang[62])
-        with open('config/font.json', 'wt', encoding='utf-8') as fontFileUse:
-            font_use["font-type"] = fontType
-            new_object = {
-                "font-type":fontType,
-                "font-size":font_use["font-size"]
-            }
-            json.dump(new_object, fontFileUse)
-            fontFileUse.close()
-            mb.showinfo(lang[1], lang[63])
+        if fontType in NOT_ALLOWED:
+            mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
+        elif fontType not in NOT_ALLOWED:
+            with open('config/font.json', 'wt', encoding='utf-8') as fontFileUse:
+                font_use["font-type"] = fontType
+                new_object = {
+                    "font-type":fontType,
+                    "font-size":font_use["font-size"]
+                }
+                json.dump(new_object, fontFileUse)
+                fontFileUse.close()
+                mb.showinfo(lang[1], lang[63])
 
 
 # clears the screen
@@ -397,7 +502,7 @@ def WipeFile(root_win):
         file_input.close()
 
 # Non-raged quit
-def sair(root_win):
+def QUIT_WRITER(root_win):
     confirm = mb.askyesno(title=lang[53], message=lang[54])
     if confirm:
         root_win.destroy()
@@ -414,7 +519,10 @@ def surprise_egg():
         simple_webbrowser.Website('https://www.youtube.com/watch?v=W6FG7yVUaKQ')
 
     elif askNow == 'Scan':
-        mb.showerror("Your PC has virus!", "Press Alt+F4 to remove all viruses!!!\nDo it!!!")
+        mb.showwarning("Your PC has virus!", "Press Alt+F4 to remove all viruses!!!\nDo it!!!")
+
+    elif askNow == "":
+        pass
 
     else:
         mb.showerror(lang[29], lang[67])
@@ -430,12 +538,22 @@ def aboutApp(thing2, thing3):
     mb.showinfo(title=lang[64], message=about_data)
     about_d.close()
 
+def Tips_Tricks():
+    picked_text = random.choice((
+        lang[140],
+        lang[141],
+        lang[142],
+        lang[143]
+    ))
+
+    mb.showinfo(lang[1], picked_text)
+
 def resetWriter(rootWin):
     askSOS = mb.askyesno(lang[77], lang[78])
     if askSOS:
         with open('config/font.json', 'wt', encoding='utf-8') as fontFileNew:
             new_values = {
-                "font-type":"Segoe UI",
+                "font-type":"Noto Sans",
                 "font-size":13
             }
             json.dump(new_values, fontFileNew)
@@ -450,6 +568,9 @@ def resetWriter(rootWin):
             geomdata.write('')
             geomdata.write('700x500')
             geomdata.close()
+
+        with open("data/signature.txt", "w", encoding='utf-8') as sigFILE:
+            sigFILE.write("--\nBest regards,\nThis is a customizable signature in a file named signature.txt in data folder...")
 
 class InternetOnWriter:
     @staticmethod
@@ -522,6 +643,12 @@ class InternetOnWriter:
             if askForTyping != '':
                 simple_webbrowser.SpotifyOnline(askForTyping)
 
+        elif engine == 'brave':
+            # stands for Brave Search
+            askForTyping = sdg.askstring(lang[139], lang[90])
+            if askForTyping != '':
+                simple_webbrowser.Brave(askForTyping)
+
 def plugin_help():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/wiki/Plugin-Setup")
 
@@ -537,37 +664,37 @@ class plugins:
     title_5 = plugin.title_5
     title_6 = plugin.title_6
     title_7 = plugin.title_7
-    
+
     @staticmethod
     def plugin_1(tk_root, tk_text):
         plugin.plugin_1(tk_root=tk_root, tk_text=tk_text)
         compile("data/plugins.py")
-    
+
     @staticmethod
     def plugin_2(tk_root, tk_text):
         plugin.plugin_2(tk_root=tk_root, tk_text=tk_text)
         compile("data/plugins.py")
-        
+
     @staticmethod
     def plugin_3(tk_root, tk_text):
         plugin.plugin_3(tk_root=tk_root, tk_text=tk_text)
         compile("data/plugins.py")
-        
+
     @staticmethod
     def plugin_4(tk_root, tk_text):
         plugin.plugin_4(tk_root=tk_root, tk_text=tk_text)
         compile("data/plugins.py")
-    
+
     @staticmethod
     def plugin_5(tk_root, tk_text):
         plugin.plugin_5(tk_root=tk_root, tk_text=tk_text)
         compile("data/plugins.py")
-    
+
     @staticmethod
     def plugin_6(tk_root, tk_text):
         plugin.plugin_6(tk_root=tk_root, tk_text=tk_text)
         compile("data/plugins.py")
-        
+
     @staticmethod
     def plugin_7(tk_root, tk_text):
         plugin.plugin_7(tk_root=tk_root, tk_text=tk_text)
@@ -580,16 +707,16 @@ class SignaturePlugin:
         with open("data/signature.txt", "r", encoding="utf-8") as SIGNATURE_FILE:
             signature = SIGNATURE_FILE.read()
             SIGNATURE_FILE.close()
-        
+
         TextWidget.insert(END, f"\n\n{str(signature)}")
-        
+
     @staticmethod
     def auto():
         username = getuser()
         transformed_username = username.title()
-        
+
         signature = f"--\n{lang[132]}\n{transformed_username}"
-        
+
         TextWidget.insert(END, f"\n\n{str(signature)}")
 
 def commandPrompt():
@@ -614,7 +741,7 @@ def commandPrompt():
         appCredits()
 
     elif askNow == 'exit' or askNow == 'quit':
-        sair(desktop_win)
+        QUIT_WRITER(desktop_win)
 
     elif askNow == 'clear':
         WipeFile(desktop_win)
@@ -642,6 +769,9 @@ def commandPrompt():
 
     elif askNow == 'win size':
         SetWinSize()
+
+    elif askNow == '':
+        pass
 
     else:
         mb.showerror(lang[68], lang[70])
@@ -685,7 +815,7 @@ menu_10.add_command(label = lang[8], command=lambda:
     SaveFile(desktop_win))
 menu_10.add_separator()
 menu_10.add_command(label=lang[11], command=lambda:
-    sair(desktop_win))
+    QUIT_WRITER(desktop_win))
 
 
 if startApp == "1":
@@ -697,6 +827,8 @@ menu_11.add_command(label=lang[26], command=APP_HELP)
 menu_11.add_command(label=lang[27], command=repo)
 menu_11.add_separator()
 menu_11.add_command(label=lang[28], command=appCredits)
+menu_11.add_separator()
+menu_11.add_command(label=lang[137], command=Tips_Tricks)
 menu_11.add_separator()
 menu_11.add_command(label=lang[29], command=surprise_egg)
 
@@ -743,36 +875,40 @@ menu_13.add_command(label=plugins.title_7, command=lambda:
 menu_13.add_separator()
 
 menu_13.add_command(label=lang[129], command=plugin_help)
+menu_13.add_separator()
+menu_13.add_command(label=lang[154], command=lambda:
+    simple_webbrowser.Website(url="https://github.com/MF366-Coding/WriterClassic-OfficialPlugins"))
 
 
 menu_9.add_command(label=lang[81], command=InternetOnWriter.Website)
 menu_9.add_separator()
 menu_9.add_command(label=lang[87], command=lambda:
-                InternetOnWriter.Search('google'))
+    InternetOnWriter.Search('google'))
 menu_9.add_command(label=lang[86], command=lambda:
-                InternetOnWriter.Search('bing'))
+    InternetOnWriter.Search('bing'))
 menu_9.add_command(label=lang[89], command=lambda:
-                InternetOnWriter.Search('ysearch'))
+    InternetOnWriter.Search('ysearch'))
 menu_9.add_command(label=lang[88], command=lambda:
-                InternetOnWriter.Search('ddgo'))
+    InternetOnWriter.Search('ddgo'))
+menu_9.add_command(label=lang[138], command=lambda:
+    InternetOnWriter.Search("brave"))
 menu_9.add_command(label=lang[95], command=lambda:
-                InternetOnWriter.Search("ecosia"))
+    InternetOnWriter.Search("ecosia"))
 menu_9.add_command(label=lang[106], command=lambda:
-                InternetOnWriter.Search("qwant"))
+    InternetOnWriter.Search("qwant"))
 menu_9.add_separator()
 menu_9.add_command(label=lang[97], command=lambda:
-                InternetOnWriter.Search("stack"))
+    InternetOnWriter.Search("stack"))
 menu_9.add_separator()
 menu_9.add_command(label=lang[96], command=lambda:
-                InternetOnWriter.Search("yt"))
+    InternetOnWriter.Search("yt"))
 menu_9.add_command(label=lang[103], command=lambda:
-                InternetOnWriter.Search("soundcloud"))
+    InternetOnWriter.Search("soundcloud"))
 menu_9.add_command(label=lang[125], command=lambda:
-                InternetOnWriter.Search("spotify"))
+    InternetOnWriter.Search("spotify"))
 menu_9.add_separator()
 menu_9.add_command(label=lang[107], command=lambda:
-                InternetOnWriter.Search("archive"))
-
+    InternetOnWriter.Search("archive"))
 
 menu_12.add_command(label="Čeština (Čechie)", command=lambda:
     LanguageSet("cs", desktop_win))
@@ -856,21 +992,39 @@ if sys.platform == "win32":
     menu_6.add_command(label='[EXTRA] PowerShell Theme', command=lambda:
         ThemeSet("#012456", "#eeedf0", "#fedba9", "#eeedf0", "#012456"))
 
-if sys.platform == "linux":
-    # Themed menus in case of: Linux Python3
-    menu_10.configure(background=theme["menu"], foreground=theme["mfg"])
-    menu_11.configure(background=theme["menu"], foreground=theme["mfg"])
-    menu_1.configure(background=theme["menu"], foreground=theme["mfg"])
-    menu_2.configure(background=theme["menu"], foreground=theme["mfg"])
-    menu_3.configure(background=theme["menu"], foreground=theme["mfg"])
-    menu_5.configure(background=theme["menu"], foreground=theme["mfg"])
-    menu_4.configure(background=theme["menu"], foreground=theme["mfg"])
-    menu_6.configure(background=theme["menu"], foreground=theme["mfg"])
-    menu_7.configure(background=theme["menu"], foreground=theme["mfg"])
-    menu_12.configure(background=theme["menu"], foreground=theme["mfg"])
-    menu_13.configure(background=theme["menu"], foreground=theme["mfg"])
-    menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
-    menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
+try:
+    if sys.platform == "linux":
+        # Themed menus in case of: Linux Python3
+        menu_10.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_11.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_1.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_2.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_3.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_5.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_4.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_6.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_7.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_12.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_13.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
+except TclError:
+    if sys.platform == "linux":
+        # Themed menus in case of: Linux Python3
+        mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
+        menu_10.configure(background="white", foreground="black")
+        menu_11.configure(background="white", foreground="black")
+        menu_1.configure(background="white", foreground="black")
+        menu_2.configure(background="white", foreground="black")
+        menu_3.configure(background="white", foreground="black")
+        menu_5.configure(background="white", foreground="black")
+        menu_4.configure(background="white", foreground="black")
+        menu_6.configure(background="white", foreground="black")
+        menu_7.configure(background="white", foreground="black")
+        menu_12.configure(background="white", foreground="black")
+        menu_13.configure(background="white", foreground="black")
+        menu_8.configure(background="white", foreground="black")
+        menu_9.configure(background="white", foreground="black")
 
 # dropdowns/cascades
 menu_bar.add_cascade(label=lang[2],menu=menu_10)
@@ -878,6 +1032,9 @@ menu_bar.add_cascade(label=lang[3],menu=menu_1)
 menu_1.add_cascade(label=lang[13], menu=menu_4)
 menu_4.add_cascade(label=lang[15], menu=menu_5)
 menu_4.add_cascade(label=lang[19], menu=menu_6)
+menu_4.add_separator()
+menu_4.add_command(label=lang[153], command=lambda:
+    simple_webbrowser.Website(url="https://github.com/MF366-Coding/WriterClassic-ExtraThemes"))
 menu_1.add_cascade(label=lang[14], menu=menu_7)
 menu_bar.add_cascade(label=lang[4], menu=menu_8)
 menu_bar.add_cascade(label=lang[79], menu=menu_9)
