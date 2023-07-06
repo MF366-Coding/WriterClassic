@@ -133,8 +133,8 @@ Inserir assinatura personalizada
 Assinado,
 Operação não permitida.
 A operação não foi bem sucedida.
-Internet não disponível ou restrita.
-Não foi possível verificar se existem atualizações.
+Internet não disponível, restrita ou a ligação expirou.
+Não foi possível verificar se existem actualizações.
 Dicas e truques para o WriterClassic [BETA]
 Pesquisar com o Brave Search
 WriterClassic - Pesquisar com o Brave Search
@@ -142,6 +142,22 @@ Pode abrir qualquer ficheiro de texto simples seleccionando a extensão de fiche
 Podes descarregar temas e plugins criados por MF366 no GitHub.
 Não te esqueças de personalizar a tua assinatura ;)
 Os Easter Eggs são difíceis de encontrar, mas talvez devesses tentar algumas palavras mais simples.
-Esta família de fontes não existe ou seleccionou um tamanho de fonte nulo.
-O WriterClassic irá correr no Segoe UI, 14 para o utilizador e irá alterar as definições.
+Podes ter selecionado um tamanho de letra nulo ou ilegal.
+O WriterClassic irá correr no Segoe UI, 14 para ti e irá alterar as definições.
 Poderá alterá-las mais tarde.
+WriterClassic - Erro de operação
+WriterClassic - Erro de Ligação à Internet
+WriterClassic - Erro de fonte
+WriterClassic - Erro de tema
+Há pelo menos um valor de tema ilegal.
+O WriterClassic será executado com um tema diferente daquele que foi definido.
+Obter temas da fonte oficial
+Obter plugins da fonte oficial
+WriterClassic - Erro de módulo Python
+Módulo Python em falta.
+Deseja instalá-lo com o pip?
+É necessário reiniciar o WriterClassic.
+O WriterClassic não pode ser executado nestas condições.
+Desistindo.
+WriterClassic - Erro de Plugin
+O ficheiro do plugin está danificado ou não existe.
