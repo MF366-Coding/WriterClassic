@@ -23,6 +23,22 @@ Small but lovely contributions by:
     Zeca70 (Zeca70 at GitHub)
 '''
 
+NOW_FILE = False
+
+print(NOW_FILE)
+
+import sys # Platforms and OSes
+import random
+import os
+import datetime # Really, bro?
+import json # google it lmfao
+
+now = datetime.datetime.now()
+
+_LOG = open("log.txt", mode="a", encoding="utf-8")
+
+_LOG.write("\n")
+
 UNIX_OSES = [
             "darwin",
             "linux",
@@ -42,96 +58,153 @@ NOT_ALLOWED = [
 with open('config/startup.txt', 'r', encoding='utf-8') as startupFile:
     startAppData = startupFile.read()
     startApp = startAppData[0:1]
+    if startApp == "0":
+        startApp = "0"
+        _LOG.write(f"{str(now)} - Check for updates on startup: DISABLED\n")
+        
+    elif startApp == "1":
+        startApp = "1"
+        _LOG.write(f"{str(now)} - Check for updates on startup: ENABLED\n")
+        
+    else:
+        startApp = "1"
+        _LOG.write(f"{str(now)} - Check for updates on startup: ENABLED\n")
+        
 
 # Importing the goodies
-import sys # Platforms and OSes
-import random
-import os
-import datetime # Really, bro?
-import json # google it lmfao
-from py_compile import compile
+from py_compile import compile as _compile
+_LOG.write(f"{str(now)} - Imported compile from py_compile: OK\n")
+
 from getpass import getuser
+_LOG.write(f"{str(now)} - Imported getuser from getpass: OK\n")
 
 try:
     from tkinter import * # Window
+    _LOG.write(f"{str(now)} - Imported tkinter: OK\n")
 except ModuleNotFoundError:
+    _LOG.write(f"{str(now)} - Imported tkinter: ERROR\n")
     from Tkinter import *
+    _LOG.write(f"{str(now)} - Attempted to import Tkinter from Python 2: OK\n")
 
 try:
     from tkinter.ttk import * # Not sure
+    _LOG.write(f"{str(now)} - Imported tkinter.ttk: OK\n")
     from tkinter import simpledialog as sdg # Inputs with GUI
+    _LOG.write(f"{str(now)} - Imported simpledialog from tkinter: OK\n")
     import tkinter.filedialog as dlg # File Dialogs were never this easy...
+    _LOG.write(f"{str(now)} - Imported filedialog from tkinter: OK\n")
     import tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
+    _LOG.write(f"{str(now)} - Imported messagebox from tkinter: OK\n")
     from tkinter.font import Font # Ouchie mama (font, daaah)
+    _LOG.write(f"{str(now)} - Imported Font from tkinter.font: OK\n")
 except ModuleNotFoundError:
+    _LOG.write(f"{str(now)} - Imported tkinter.ttk: ERROR\n")
     from Tkinter.ttk import *
+    _LOG.write(f"{str(now)} - Attempted to import Tkinter.ttk: OK\n")
+    
+    _LOG.write(f"{str(now)} - Imported simpledialog from tkinter: ERROR\n")
     from Tkinter import simpledialog as sdg
+    _LOG.write(f"{str(now)} - Attempted to import simpledialog from Tkinter: OK\n")
+    
+    _LOG.write(f"{str(now)} - Imported filedialog from tkinter: ERROR\n")
     import Tkinter.filedialog as dlg # File Dialogs were never this easy...
+    _LOG.write(f"{str(now)} - Attempted to import filedialog from Tkinter: OK\n")
+    
+    _LOG.write(f"{str(now)} - Imported messagebox from tkinter: ERROR\n")
     import Tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
+    _LOG.write(f"{str(now)} - Attempted to import filedialog from Tkinter: OK\n")
+    
+    _LOG.write(f"{str(now)} - Imported Font from tkinter.font: ERROR\n")
     from Tkinter.font import Font # Ouchie mama (font, daaah)
+    _LOG.write(f"{str(now)} - Attempted to import Font from Tkinter.font: OK\n")
 
 with open('config/lang.txt', 'r', encoding="utf-8") as configLangFile:
     setLang = configLangFile.read()
+    _LOG.write(f"{str(now)} - Language ({str(setLang[0:2])}): ENABLED\n")
 
 with open('data/'+str(setLang[0:2])+'.txt', 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
     lang = usedLang.split('\n')
-    #print(dd)
+    _LOG.write(f"{str(now)} - Language has been configured correctly: OK\n")
 
 try:
     from simple_webbrowser import simple_webbrowser
+    _LOG.write(f"{str(now)} - simple_webbrowser by MF366 has been imported: OK\n")
 except (ModuleNotFoundError, ImportError):
+    _LOG.write(f"{str(now)} - simple_webbrowser by MF366 has been imported: ERROR\n")
     mb.showerror(lang[155], lang[156])
     module_pip = mb.askyesno(lang[155], lang[157])
     if module_pip:
         if sys.platform == "win32":
             os.system("python -m pip install simple_webbrowser")
             mb.showinfo(lang[155], lang[158])
+            _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: OK\n")
+            _LOG.write(f"{str(now)} - End of session\n")
             quit()
         elif sys.platform in UNIX_OSES:
             os.system("pip install simple_webbrowser")
             mb.showinfo(lang[155], lang[158])
+            _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: OK\n")
+            _LOG.write(f"{str(now)} - End of session\n")
             quit()
         else:
             mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
+            _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: NO (OS ERROR)\n")
+            _LOG.write(f"{str(now)} - End of session\n")
             quit()
     elif module_pip == False:
         mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
+        _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: NO (USER DECISION)\n")
+        _LOG.write(f"{str(now)} - End of session\n")
         quit()
     
 if startApp == "1":
     try:
         import requests # it's a module yay!
+        _LOG.write(f"{str(now)} - requests has been imported: OK\n")
     except (ModuleNotFoundError, ImportError):
+        _LOG.write(f"{str(now)} - requests has been imported: ERROR\n")
         mb.showerror(lang[155], lang[156])
         module_pip = mb.askyesno(lang[155], lang[157])
         if module_pip:
             if sys.platform == "win32":
                 os.system("python -m pip install requests")
                 mb.showinfo(lang[155], lang[158])
+                _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: OK\n")
+                _LOG.write(f"{str(now)} - End of session\n")
                 quit()
             elif sys.platform in UNIX_OSES:
                 os.system("pip install requests")
                 mb.showinfo(lang[155], lang[158])
+                _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: OK\n")
+                _LOG.write(f"{str(now)} - End of session\n")
                 quit()
             else:
                 mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
+                _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: NO (OS ERROR)\n")
+                _LOG.write(f"{str(now)} - End of session\n")
                 quit()
         elif module_pip == False:
             mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
+            _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: NO (USER DECISION)\n")
+            _LOG.write(f"{str(now)} - End of session\n")
             quit()
 
 try:
     from data import plugins as plugin
+    _LOG.write(f"{str(now)} - WriterClassic's plugins have been imported: OK\n")
 except (ModuleNotFoundError, ImportError):
+    _LOG.write(f"{str(now)} - [WARNING!] WriterClassic's plugins have been imported: ERROR (FILE DAMAGED OR FILE DOES NOT EXIST)\n")
     mb.showerror(lang[161], f"{lang[162]}\n{lang[160]}")
     quit()
 
 # Windowing
 desktop_win = Tk()
+_LOG.write(f"{str(now)} - WriterClassic launched: OK\n")
 
 if sys.platform == "win32":
     desktop_win.iconbitmap("data/app_icon.ico")
+    _LOG.write(f"{str(now)} - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK\n")
 
 latest_version = None
 
@@ -140,11 +213,17 @@ IGNORE_CHECKING = False
 if startApp == '1':
     try:
         response = requests.get('https://api.github.com/repos/MF366-Coding/WriterClassic/releases/latest', timeout=3.5)
+        _LOG.write(f"{str(now)} - Connected to GitHub: OK\n")
         data = json.loads(response.text)
+        _LOG.write(f"{str(now)} - Got WriterClassic Releases data: OK\n")
         latest_version = data['tag_name']
+        _LOG.write(f"{str(now)} - Got the latest release's tag: OK\n")
     except (requests.exceptions.ConnectTimeout, requests.exceptions.ConnectionError, TimeoutError, requests.exceptions.ReadTimeout):
         mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
+        _LOG.write(f"{str(now)} - Connected to GitHub: ERROR\n")
+        _LOG.write(f"{str(now)} - Connection has timed out, is restricted or is simply unavailable: INFO\n")
         IGNORE_CHECKING = True
+        _LOG.write(f"{str(now)} - WriterClassic is launching without checking for updates: OK\n")
 
 # Config files
 with open('data/version.txt', 'r', encoding='utf-8') as versionFile:
@@ -388,8 +467,13 @@ def fontEdit(winType):
 
 # clears the screen
 def newFile():
+    global NOW_FILE
+    
     desktop_win.title(lang[1])
     TextWidget.delete(index1=0.0, index2=END)
+    NOW_FILE = False
+    
+    print(NOW_FILE)
 
 
 file_types = [(lang[32], '*.txt'),
@@ -434,6 +518,8 @@ file_types = [(lang[32], '*.txt'),
 
 # opens a file
 def OpenFile(root_win):
+    global NOW_FILE
+    
     file_path = dlg.asksaveasfilename(parent=root_win, filetypes=file_types, defaultextension="*.*", initialfile="Open a File", confirmoverwrite=False, title=lang[7])
 
     # Get the selected file extension
@@ -453,13 +539,17 @@ def OpenFile(root_win):
     root_win.title(f"{lang[1]} - {file_path}")
     TextWidget.delete(index1=0.0, index2=END)
     TextWidget.insert(chars=file_data, index=0.0)
+    NOW_FILE = str(file_path)
     file_input.close()
+    print(NOW_FILE)
 
 
 # Saving as
 def SaveFile(root_win):
+    global NOW_FILE
+    
     dados = TextWidget.get(0.0, END)
-    file_path = dlg.asksaveasfilename(parent=root_win, title=lang[8], confirmoverwrite=True, filetypes=file_types, defaultextension="*.*", initialfile="New File To Save")
+    file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=file_types, defaultextension="*.*", initialfile="New File To Save")
 
     # Get the selected file extension
     selected_extension = None
@@ -472,11 +562,31 @@ def SaveFile(root_win):
     if selected_extension and not file_path.lower().endswith(selected_extension):
         file_path += selected_extension
 
-    file = open(file_path, "wt")
+    file = open(file_path, "wt", encoding='utf-8')
     file.write(str(dados))
     file.close()
     mb.showinfo(lang[1], lang[101])
     root_win.title(f"{lang[1]} - {file_path}")
+    NOW_FILE = str(file_path)
+    print(NOW_FILE)
+
+def Save(root_win):
+    global NOW_FILE
+    
+    if NOW_FILE == False:
+        SaveFile(root_win=root_win)
+    
+    elif NOW_FILE != False:
+        data = TextWidget.get(0.0, END)
+        
+        file_path = NOW_FILE
+        file = open(file_path, "wt", encoding='utf-8')
+        file.write(str(data))
+        file.close()
+        mb.showinfo(lang[1], lang[101])
+        root_win.title(f"{lang[1]} - {file_path}")
+        NOW_FILE = str(file_path)
+        print(NOW_FILE)
 
 # Whatever... (File Eraser)
 def WipeFile(root_win):
@@ -668,37 +778,37 @@ class plugins:
     @staticmethod
     def plugin_1(tk_root, tk_text):
         plugin.plugin_1(tk_root=tk_root, tk_text=tk_text)
-        compile("data/plugins.py")
+        _compile("data/plugins.py")
 
     @staticmethod
     def plugin_2(tk_root, tk_text):
         plugin.plugin_2(tk_root=tk_root, tk_text=tk_text)
-        compile("data/plugins.py")
+        _compile("data/plugins.py")
 
     @staticmethod
     def plugin_3(tk_root, tk_text):
         plugin.plugin_3(tk_root=tk_root, tk_text=tk_text)
-        compile("data/plugins.py")
+        _compile("data/plugins.py")
 
     @staticmethod
     def plugin_4(tk_root, tk_text):
         plugin.plugin_4(tk_root=tk_root, tk_text=tk_text)
-        compile("data/plugins.py")
+        _compile("data/plugins.py")
 
     @staticmethod
     def plugin_5(tk_root, tk_text):
         plugin.plugin_5(tk_root=tk_root, tk_text=tk_text)
-        compile("data/plugins.py")
+        _compile("data/plugins.py")
 
     @staticmethod
     def plugin_6(tk_root, tk_text):
         plugin.plugin_6(tk_root=tk_root, tk_text=tk_text)
-        compile("data/plugins.py")
+        _compile("data/plugins.py")
 
     @staticmethod
     def plugin_7(tk_root, tk_text):
         plugin.plugin_7(tk_root=tk_root, tk_text=tk_text)
-        compile("data/plugins.py")
+        _compile("data/plugins.py")
 
 
 class SignaturePlugin:
@@ -746,8 +856,11 @@ def commandPrompt():
     elif askNow == 'clear':
         WipeFile(desktop_win)
 
-    elif askNow == 'save':
+    elif askNow == 'save as':
         SaveFile(desktop_win)
+    
+    elif askNow == 'save':
+        Save(desktop_win)
 
     elif askNow == 'clock open':
         clockPlugin()
@@ -782,6 +895,9 @@ desktop_win.bind('<Control-o>', lambda b:
     OpenFile(desktop_win))
 
 desktop_win.bind('<Control-s>', lambda c:
+    Save(desktop_win))
+
+desktop_win.bind('<Control-z>', lambda c:
     SaveFile(desktop_win))
 
 desktop_win.bind('<Control-a>', lambda e:
@@ -812,6 +928,8 @@ menu_10.add_command(label=lang[7], command=lambda:
     OpenFile(desktop_win))
 menu_10.add_separator()
 menu_10.add_command(label = lang[8], command=lambda:
+    Save(desktop_win))
+menu_10.add_command(label = lang[9], command=lambda:
     SaveFile(desktop_win))
 menu_10.add_separator()
 menu_10.add_command(label=lang[11], command=lambda:

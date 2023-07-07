@@ -1,7 +1,7 @@
 # Writer Classic
 Writer Classic's GitHub repository.
 
-![WriterClassic's New Logo, by Norb](/data/logo.png?raw=true "WriterClassic Logo")
+![WriterClassic's New Logo, by Norb](/data/logo.png?raw=true "WriterClassic's Logo")
 
 Writer Classic is a rather small Python project that brings to the user a whole new text editing experience. :thinking:
 
@@ -17,49 +17,51 @@ I also would love if you waste some time testing Writer Classic or just explorin
 # Installing Writer Classic
 To install Writer, you can choose between 2 ways of installing.
 
-## Stable Releases
-Choose this instalation method for a non-crashing environment.
-
-### 1. Downloading
+## 1. Downloading
 Go to https://github.com/MF366-Coding/WriterClassic/releases/latest to get the latest release and download the <code>*.zip</code> file.
 
-### 2. Extraction
+## 2. Extraction
 With the file on your computer, extract it to a folder you have or to the same location of the zipped file.
 
 All files and folders inside the zipped one **must** be on the same location!
 
-### 3. Running the program
+## 3. Running the program
 Go to the right folder.
 
-For MacOS or Windows use:
+### For Linux and MacOS
+Use:
+
 ```python3 WriterClassic.py```
 
 ...and you can now use Writer Classic.
 
-For Windows do:
-```python WriterClassic.py```
+This app only runs os Python 3, so using the command `python WriterClassic.py` won't work (in Unix based OSes, <code>python</code> is Python 2).
 
-This app only runs os Python 3!
+### For Windows
+For Windows, the setup might be a bit more complicated.
 
-## Unstable Releases
-Maybe you are a developer who wants acess to the latest update to Writer...
+The Python app has been converted into an executable for easier acess.
 
-### 1. Clone the repo
-Open the Terminal and clone the repository.
+Download the zipped folder in Releases (only v4.2.1+ have the Windows converted executable).
 
-However, that will only work if you have Git installed on your device...
+The zipped folder should contain several folders and *.py files.
 
-### 2. Running the program
-Go to the folder where the repo was cloned.
+Extract **EVERYTHING** to a different folder.
 
-#### For Linux and MacOS
-Use the following command on your commandline:
-```python3 WriterClassic.py```
+Then run the executable named `WriterClassic.exe`.
 
-This app only runs os Python 3, so using the command <code>python WriterClassic.py</code> won't work (in Unix based OSes, <code>python</code> is Python 2).
+Note running the file does **NOT** install any shortcuts or dependencies. You mustn't remove anything from the now extracted folder!
 
-#### For Windows
-Follow the steps in [here](https://github.com/MF366-Coding/WriterClassic#additional-setup-start-menu-shortcut) after cloning the repo and getting everything set.
+#### Additional Setup: Start Menu Shortcut
+**NOTE:** *this doesn't reffer to the "Pin in Start Menu", however feel free to use that one if you prefer.*
+To make a Start Menu shortcut, you must follow the following steps:
+1. Open two windows of **File Explorer**.
+2. In one of them, go to the location `%AppData%\Microsoft\Windows\Start Menu`. 
+3. In the other File Explorer window, go to the folder where you extracted WriterClassic's Windows-only zipped folder.
+4. Now, place the windows side-by-side (not necessary but makes the process a bit easier).
+5. Finally, and most important of all, **while holding `Ctrl` and `Shift` at the same time**, grab the `WriterClassic.exe` file and throw it into the `StartMenu` folder.
+6. You should probably rename the file to "`WriterClassic`" for easier acess, that is, without the file extension (because it's a shortcut - the extension is hidden in Windows by default and is not `*.exe`).
+7. You can, afterwards, make shortcuts in Desktop, Pin in Start Menu, Taskbar, as you wish...
 
 # What do I need to be able to be able to use Writer Classic? :heavy_check_mark:
 You need:
@@ -135,7 +137,8 @@ Available commands:
 - **exit** or **quit** - Shows the 'Confirm exit' dialog
 - **clear** - Opens the 'Pick a file to erase' dialog
 - **newfile** - Creates a new file
-- **save** - Shows the 'Save as' dialog
+- **save** - Saves the document
+- **save as** - Saves the document as/at...
 - **clock open** - Opens the Clock Plugin
 - **font family** - Shows the 'Pick a font family' dialog
 - **font size** - Shows the 'Pick a font size' dialog
@@ -147,15 +150,16 @@ Available commands:
 In case you don't pick any of these, you'll just get an error.
 
 ## Shortcuts :keyboard:
-### Useful shortcuts
+### Useful shortcuts (v8.3.0+)
 You can use some useful shortcuts instead of menu itens to use Writer Classic faster.
 All of those make use of control key plus another key so that you have to press both at once. **Ctrl** stands for control key. Here are some of the most useful shortcuts available:  
 
-* __Ctrl + S__ - Save the file/save as :floppy_disk:
+* __Ctrl + S__ - Save the file :floppy_disk:
+* __Ctrl + Z__ - Save as... :floppy_disk:
 * __Ctrl + O__ - Open file :open_file_folder:
 * __Ctrl + W__ - Opens the Command Menu 💻️
 * __Ctrl + L__ - Changes to light mode :sunny:
-* __CTRL + D__ - Changes to dark mode :crescent_moon:
+* __Ctrl + D__ - Changes to dark mode :crescent_moon:
 * __Ctrl + G__ - Chooses default window size (600x400 px) :desktop_computer:
 * __Ctrl + H__ - Leads you to help :question:
 * __Ctrl + A__ - Opens about dialog :information_source:
@@ -170,6 +174,9 @@ Don't have a web browser open? Need to search something? Search directly from Wr
 - DuckDuckGo
 - Yahoo! 
 - StackOverflow
+- Qwant (v7.0.2+)
+- The Internet Archive (v7.0.2+)
+- Brave Search (v8.2.0+)
 
 ### Wanna listen to some tunes?
 Maybe you just want to relax while listening to music... 
@@ -177,14 +184,6 @@ Maybe you just want to relax while listening to music...
 You can do that using... 
 - YouTube
 - SoundCloud (v7.0.1+) 
-
-### A fresh look (v7.0.1+)
-The menu bug has been fixed. They look **way** better now! 
-
-New logo for WriterClassic, truly amazing! 
-
-An exclusive color theme just for Windows, with the official colors from the Windows 10 PowerShell. 
-
-Light and Dark themes have been fixed, they look better now. 
+- Spotify Online (v7.0.4+)
 
 > ## Thanks for using WriterClassic! :heart:
