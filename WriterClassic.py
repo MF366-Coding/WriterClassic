@@ -38,6 +38,7 @@ now = datetime.datetime.now()
 _LOG = open("log.txt", mode="a", encoding="utf-8")
 
 _LOG.write("\n")
+_LOG.write(f"{str(now)} - WriterClassic was executed: OK\n")
 
 UNIX_OSES = [
             "darwin",
@@ -229,33 +230,47 @@ if startApp == '1':
 with open('data/version.txt', 'r', encoding='utf-8') as versionFile:
     appVGet = versionFile.read()
     appV = appVGet[0:6]
+    _LOG.write(f"{str(now)} - Got the current version: OK\n")
     #print(appV)
 
 with open('config/theme.json', 'rt', encoding='utf-8') as textColor:
     theme = json.load(textColor)
+    _LOG.write(f"{str(now)} - Got the current theme: OK\n")
 
 with open('config/font.json', 'rt', encoding='utf-8') as fontFile:
     font_use = json.load(fontFile)
+    _LOG.write(f"{str(now)} - Got the current font family/type: OK\n")
+    _LOG.write(f"{str(now)} - Got the current font size: OK\n")
     fontFile.close()
 
 # Windowing... again
 desktop_win.title(lang[1])
+_LOG.write(f"{str(now)} - Window's title was set to WriterClassic: OK\n")
 try:
     FontSet = Font(family=font_use["font-type"], size=font_use["font-size"])
+    __font_type = font_use["font-type"]
+    __font_size = font_use["font-size"]
+    _LOG.write(f"{str(now)} - Font size is {str(__font_size)}: OK\n")
+    _LOG.write(f"{str(now)} - Font family/type is {str(__font_type)}: OK\n")
 except TclError:
     mb.showerror(lang[149], f"{lang[144]}\n{lang[145]}\n{lang[146]}")
+    _LOG.write(f"{str(now)} - Font size is set to 14 because of a font error: OK\n")
     FontSet = Font(family="Segoe UI", size=14)
+    _LOG.write(f"{str(now)} - Font type is set to Segoe UI because of a font error: OK\n")
     with open('config/font.json', 'w', encoding='utf-8') as fixed_fontFile:
         new_font = {
             "font-type":"Segoe UI",
             "font-size":14
         }
         json.dump(new_font, fixed_fontFile)
+        _LOG.write(f"{str(now)} - The themes were reconfigured because of a font error: OK\n")
 
 TextWidget = Text(desktop_win, font=FontSet)
+_LOG.write(f"{str(now)} - The editing interface has been created: OK\n")
 
 with open('config/geom.txt', 'r', encoding='utf-8') as geom_bg:
     geomValue = geom_bg.read()
+    _LOG.write(f"{str(now)} - Got the window's dimensions settings: OK\n")
 
 GeomValues = geomValue.split('x')
 
@@ -776,38 +791,38 @@ class plugins:
     title_7 = plugin.title_7
 
     @staticmethod
-    def plugin_1(tk_root, tk_text):
-        plugin.plugin_1(tk_root=tk_root, tk_text=tk_text)
+    def plugin_1(tk_root, tk_text, _file):
+        plugin.plugin_1(tk_root=tk_root, tk_text=tk_text, _file=_file)
         _compile("data/plugins.py")
 
     @staticmethod
-    def plugin_2(tk_root, tk_text):
-        plugin.plugin_2(tk_root=tk_root, tk_text=tk_text)
+    def plugin_2(tk_root, tk_text, _file):
+        plugin.plugin_2(tk_root=tk_root, tk_text=tk_text, _file=_file)
         _compile("data/plugins.py")
 
     @staticmethod
-    def plugin_3(tk_root, tk_text):
-        plugin.plugin_3(tk_root=tk_root, tk_text=tk_text)
+    def plugin_3(tk_root, tk_text, _file):
+        plugin.plugin_3(tk_root=tk_root, tk_text=tk_text, _file=_file)
         _compile("data/plugins.py")
 
     @staticmethod
-    def plugin_4(tk_root, tk_text):
-        plugin.plugin_4(tk_root=tk_root, tk_text=tk_text)
+    def plugin_4(tk_root, tk_text, _file):
+        plugin.plugin_4(tk_root=tk_root, tk_text=tk_text, _file=_file)
         _compile("data/plugins.py")
 
     @staticmethod
-    def plugin_5(tk_root, tk_text):
-        plugin.plugin_5(tk_root=tk_root, tk_text=tk_text)
+    def plugin_5(tk_root, tk_text, _file):
+        plugin.plugin_5(tk_root=tk_root, tk_text=tk_text, _file=_file)
         _compile("data/plugins.py")
 
     @staticmethod
-    def plugin_6(tk_root, tk_text):
-        plugin.plugin_6(tk_root=tk_root, tk_text=tk_text)
+    def plugin_6(tk_root, tk_text, _file):
+        plugin.plugin_6(tk_root=tk_root, tk_text=tk_text, _file=_file)
         _compile("data/plugins.py")
 
     @staticmethod
-    def plugin_7(tk_root, tk_text):
-        plugin.plugin_7(tk_root=tk_root, tk_text=tk_text)
+    def plugin_7(tk_root, tk_text, _file):
+        plugin.plugin_7(tk_root=tk_root, tk_text=tk_text, _file=_file)
         _compile("data/plugins.py")
 
 
@@ -971,25 +986,25 @@ menu_8.add_separator()
 
 
 menu_13.add_command(label=plugins.title_1, command=lambda:
-    plugins.plugin_1(tk_root=desktop_win, tk_text=TextWidget))
+    plugins.plugin_1(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
 
 menu_13.add_command(label=plugins.title_2, command=lambda:
-    plugins.plugin_2(tk_root=desktop_win, tk_text=TextWidget))
+    plugins.plugin_2(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
 
 menu_13.add_command(label=plugins.title_3, command=lambda:
-    plugins.plugin_3(tk_root=desktop_win, tk_text=TextWidget))
+    plugins.plugin_3(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
 
 menu_13.add_command(label=plugins.title_4, command=lambda:
-    plugins.plugin_4(tk_root=desktop_win, tk_text=TextWidget))
+    plugins.plugin_4(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
 
 menu_13.add_command(label=plugins.title_5, command=lambda:
-    plugins.plugin_5(tk_root=desktop_win, tk_text=TextWidget))
+    plugins.plugin_5(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
 
 menu_13.add_command(label=plugins.title_6, command=lambda:
-    plugins.plugin_6(tk_root=desktop_win, tk_text=TextWidget))
+    plugins.plugin_6(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
 
 menu_13.add_command(label=plugins.title_7, command=lambda:
-    plugins.plugin_7(tk_root=desktop_win, tk_text=TextWidget))
+    plugins.plugin_7(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
 menu_13.add_separator()
 
 menu_13.add_command(label=lang[129], command=plugin_help)
