@@ -25,6 +25,8 @@ Small but lovely contributions by:
 
 NOW_FILE = False
 
+lines = 0
+
 print(NOW_FILE)
 
 import sys # Platforms and OSes
@@ -35,7 +37,7 @@ import json # google it lmfao
 
 now = datetime.datetime.now()
 
-_LOG = open("log.txt", mode="a", encoding="utf-8")
+_LOG = open("user_data/log.txt", mode="a", encoding="utf-8")
 
 _LOG.write("\n")
 _LOG.write(f"{str(now)} - WriterClassic was executed: OK\n")
@@ -192,7 +194,7 @@ if startApp == "1":
             quit()
 
 try:
-    from data import plugins as plugin
+    import plugins as plugin
     _LOG.write(f"{str(now)} - WriterClassic's plugins have been imported: OK\n")
 except (ModuleNotFoundError, ImportError):
     _LOG.write(f"{str(now)} - [WARNING!] WriterClassic's plugins have been imported: ERROR (FILE DAMAGED OR FILE DOES NOT EXIST)\n")
@@ -274,15 +276,27 @@ with open('config/geom.txt', 'r', encoding='utf-8') as geom_bg:
 
 GeomValues = geomValue.split('x')
 
-desktop_win.geometry(geomValue)
+try:
+    desktop_win.geometry(geomValue)
+    _LOG.write(f"{str(now)} - Applied the window's dimensions: OK\n")
+except TclError:
+    desktop_win.geometry("700x500")
+    GeomValues = [700, 500]
+    _LOG.write(f"{str(now)} - Applied the window's dimensions: ERROR\n")
+    _LOG.write(f"{str(now)} - Reverted to 700x500: OK\n")
+    mb.showerror(lang[166], f"{lang[167]}\n{lang[168]}")
 
 try:
     TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"])
+    _LOG.write(f"{str(now)} - Applied configurations to the editing interface: OK\n")
 except TclError:
+    _LOG.write(f"{str(now)} - Applied configurations to the editing interface: ERROR\n")
     mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
     TextWidget.configure(bg="black", fg="white", width=GeomValues[0], height=GeomValues[1], insertbackground="white")
+    _LOG.write(f"{str(now)} - Reconfigured the editing interface: OK\n")
 
 TextWidget.pack()
+_LOG.write(f"{str(now)} - 'Packed' the editing interface: OK\n")
 
 # Closing the configs
 geom_bg.close()
@@ -290,14 +304,18 @@ configLangFile.close()
 
 # Defining the menu bar
 menu_bar = Menu(desktop_win)
+_LOG.write(f"{str(now)} - Created the menu bar: OK\n")
 
 try:
     if sys.platform == "linux":
         menu_bar.configure(background=theme["menu"], foreground=theme["mfg"])
+        _LOG.write(f"{str(now)} - Applied the theme to the menu bar: OK\n")
 except TclError:
     if sys.platform == "linux":
+        _LOG.write(f"{str(now)} - Applied the theme to the menu bar: ERROR\n")
         mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
         menu_bar.configure(background="white", foreground="black")
+        _LOG.write(f"{str(now)} - Applied the light theme to the menu bar as last resource: OK\n")
 
 menu_1 = Menu(menu_bar)
 menu_2 = Menu(menu_1)
@@ -312,10 +330,12 @@ menu_10 = Menu(menu_bar)
 menu_11 = Menu(menu_bar)
 menu_12 = Menu(menu_bar)
 menu_13 = Menu(menu_8)
+_LOG.write(f"{str(now)} - Created all the menus: OK\n")
 
 def writeStartup(text):
     with open('config/startup.txt', 'w', encoding='utf-8') as startupWriteFile:
         startupWriteFile.write(text)
+        _LOG.write(f"{str(now)} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
         startupWriteFile.close()
 
 # Check for Updates
@@ -324,9 +344,12 @@ class UpdateCheck:
     def check_other():
         if appV != latest_version and IGNORE_CHECKING == False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
+            _LOG.write(f"{str(now)} - Versions don't match: WARNING\n")
             if askForUpdate:
                 simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
+                _LOG.write(f"{str(now)} - Went to the latest release at GitHub: OK\n")
         elif IGNORE_CHECKING == True:
+            _LOG.write(f"{str(now)} - Couldn't check for updates on startup: WARNING\n")
             pass
 
     @staticmethod
@@ -334,38 +357,53 @@ class UpdateCheck:
         if appV != latest_version and IGNORE_CHECKING == False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             if askForUpdate:
+                _LOG.write(f"{str(now)} - Went to the latest release at GitHub: OK\n")
                 simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
         elif appV == latest_version and IGNORE_CHECKING == False:
             mb.showinfo(title=lang[93], message=lang[92])
+            _LOG.write(f"{str(now)} - Versions match | WriterClassic is up to date: OK\n")
         else:
             mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
+            _LOG.write(f"{str(now)} - Couldn't check for updates (Bad Internet, Connection Timeout, Restricted Internet): WARNING\n")
 
     @staticmethod
     def change():
         if startApp == '1':
             writeStartup('0')
             mb.showinfo(title=lang[1], message=lang[101])
+            _LOG.write(f"{str(now)} - Check for updates on startup has been disabled: OK\n")
         else:
             writeStartup('1')
             mb.showinfo(title=lang[1], message=lang[101])
+            _LOG.write(f"{str(now)} - Check for updates on startup has been enabled: OK\n")
 
 if startApp == '1':
     UpdateCheck.check_other()
+    _LOG.write(f"{str(now)} - Checked for updates on startup: AWAITING REPLY\n")
 
 # Windowing... one more time...
 def SetWinSize():
     widthSet = sdg.askinteger(lang[1], lang[57])
+    _LOG.write(f"{str(now)} - Got a width value: AWAITING FOR ANTI-BUG CHECK\n")
     if widthSet in NOT_ALLOWED:
         mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
+        _LOG.write(f"{str(now)} - Got a width value: ERROR (ILLEGAL VALUE)\n")
     elif widthSet not in NOT_ALLOWED:
+        _LOG.write(f"{str(now)} - Got a width value: OK\n")
         heightSet = sdg.askinteger(lang[1], lang[58])
+        _LOG.write(f"{str(now)} - Got a height value: AWAITING FOR ANTI-BUG CHECK\n")
         if heightSet in NOT_ALLOWED:
             mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
+            _LOG.write(f"{str(now)} - Got a width value: ERROR (ILLEGAL VALUE)\n")
         elif heightSet not in NOT_ALLOWED:
+            _LOG.write(f"{str(now)} - Got a width value: OK\n")
             TextWidget.configure(width=widthSet, height=heightSet)
+            _LOG.write(f"{str(now)} - Editing interface has been reconfigured: OK\n")
             desktop_win.geometry(str(widthSet)+'x'+str(heightSet))
+            _LOG.write(f"{str(now)} - Window's dimensions were set: OK\n")
             with open('config/geom.txt', 'w', encoding='utf-8') as geomdata:
                 geomdata.write('')
+                _LOG.write(f"{str(now)} - Configured default window's dimensions: OK\n")
                 geomdata.write(str(widthSet)+'x'+str(heightSet))
             geomdata.close()
 
@@ -380,16 +418,26 @@ def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fi
             "menu":str(colour_fourth)
         }
         json.dump(new_obj, fileColored)
+        _LOG.write(f"{str(now)} - Set a new theme: OK\n")
 
     TextWidget.configure(bg=colour_first, fg=colour_second, insertbackground=colour_third)
+    _LOG.write(f"{str(now)} - Editing interface has been reconfigured: OK\n")
+    
     TextWidget.pack()
 
     waitResponse = mb.askyesno(parent=desktop_win, title=lang[30], message=lang[31])
+    _LOG.write(f"{str(now)} - Asked for app restart: AWAITING RESPONSE\n")
+    
     if waitResponse:
         desktop_win.destroy()
+        _LOG.write(f"{str(now)} - End of session: QUIT\n")
+        
+    else:
+        _LOG.write(f"{str(now)} - Cancel/No as response: OK\n")
 
 # ragequit
 def quickway():
+    _LOG.write(f"{str(now)} - Editing interface has been reconfigured: OK\n")
     desktop_win.destroy()
 
 # Setup (Lang files)
@@ -421,6 +469,22 @@ def new_window():
 
     newWindow.mainloop()
 
+def DOC_STATS():
+    global lines
+    
+    _data = TextWidget.get(0.0, END)
+    
+    if _data in NOT_ALLOWED:
+        lines = 0
+    
+    else:
+        _lines = _data.split("\n")
+        y_lines = list(filter(("").__ne__, _lines))
+        x_lines = int(len(y_lines))
+        lines = x_lines
+    
+    mb.showinfo(lang[164], f"{lang[165]}: {str(lines)}")
+    
 # Repo
 def repo():
     ourRepo = "https://github.com/MF366-Coding/WriterClassic/"
@@ -793,37 +857,37 @@ class plugins:
     @staticmethod
     def plugin_1(tk_root, tk_text, _file):
         plugin.plugin_1(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("data/plugins.py")
+        _compile("plugins.py")
 
     @staticmethod
     def plugin_2(tk_root, tk_text, _file):
         plugin.plugin_2(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("data/plugins.py")
+        _compile("plugins.py")
 
     @staticmethod
     def plugin_3(tk_root, tk_text, _file):
         plugin.plugin_3(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("data/plugins.py")
+        _compile("plugins.py")
 
     @staticmethod
     def plugin_4(tk_root, tk_text, _file):
         plugin.plugin_4(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("data/plugins.py")
+        _compile("plugins.py")
 
     @staticmethod
     def plugin_5(tk_root, tk_text, _file):
         plugin.plugin_5(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("data/plugins.py")
+        _compile("plugins.py")
 
     @staticmethod
     def plugin_6(tk_root, tk_text, _file):
         plugin.plugin_6(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("data/plugins.py")
+        _compile("plugins.py")
 
     @staticmethod
     def plugin_7(tk_root, tk_text, _file):
         plugin.plugin_7(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("data/plugins.py")
+        _compile("plugins.py")
 
 
 class SignaturePlugin:
@@ -946,6 +1010,8 @@ menu_10.add_command(label = lang[8], command=lambda:
     Save(desktop_win))
 menu_10.add_command(label = lang[9], command=lambda:
     SaveFile(desktop_win))
+menu_10.add_separator()
+menu_10.add_command(label=lang[163], command=DOC_STATS)
 menu_10.add_separator()
 menu_10.add_command(label=lang[11], command=lambda:
     QUIT_WRITER(desktop_win))
