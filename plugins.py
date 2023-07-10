@@ -1,11 +1,32 @@
+import os
+import sys
 import tkinter as tk
 from tkinter import messagebox as mb
 
 # Plugins for WriterClassic
 
-title_1 = "No plugin found."
+END = tk.END
+
+if sys.platform == "linux" or sys.platform == "darwin":
+    title_1 = "Run with Python 3"
+else:
+    title_1 = "Run with PATH Python"
+
 def plugin_1(tk_root, tk_text, _file):
-    mb.showinfo("Custom Plugins [BETA]", "Plugin not found.")
+    if _file == False:
+        mb.showinfo("PythonerClassic", "The file must be saved.")
+    elif _file != False and _file.endswith(".py"):
+        with open(_file, "r", encoding="utf-8") as filech:
+            filez = filech.read()
+        if filez == "":
+            mb.showinfo("PythonerClassic", "The file musn't be empty.")
+        elif filez != "":
+            if sys.platform == "win32":
+                os.system(f"python {_file}")
+            elif sys.platform == "linux" or sys.platform == "darwin":
+                os.system(f"python3 {_file}")
+    else:
+        mb.showinfo("PythonerClassic", "The file must be a non-compiled regular Python file.")
     
 title_2 = "No plugin found."
 def plugin_2(tk_root, tk_text, _file):

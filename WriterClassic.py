@@ -437,7 +437,7 @@ def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fi
 
 # ragequit
 def quickway():
-    _LOG.write(f"{str(now)} - Editing interface has been reconfigured: OK\n")
+    _LOG.write(f"{str(now)} - End of session: QUIT\n")
     desktop_win.destroy()
 
 # Setup (Lang files)
@@ -445,23 +445,30 @@ def LanguageSet(language_set, root_win):
     with open('config/lang.txt', 'w', encoding='utf-8') as deleteThat:
         deleteThat.write('')
         deleteThat.write(language_set)
+        _LOG.write(f"{str(now)} - A new language has been set ({str(language_set)}): OK\n")
     popup_define = mb.askyesno(parent=root_win, title=lang[30], message=lang[31])
+    _LOG.write(f"{str(now)} - Asked for app restart: AWAITING RESPONSE\n")
     if popup_define:
         root_win.destroy()
+        _LOG.write(f"{str(now)} - End of session: QUIT\n")
+    else:
+        _LOG.write(f"{str(now)} - Cancel/No as response: OK\n")
 
 # Notepad
 def new_window():
     newWindow = Toplevel(desktop_win)
+    _LOG.write(f"{str(now)} - A new window has been called: AWAITING CONFIGURATION\n")
 
     # Windowing... yet once more LMAO...
     newWindow.title(lang[22])
     newWindow.geometry("600x400")
 
-
     TextWidget = Text(newWindow)
 
     TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"], font=FontSet)
     TextWidget.pack()
+    
+    _LOG.write(f"{str(now)} - Notes Plugin's window has been fully configured: OK\n")
 
     # Closing what I no longer need
     geom_bg.close()
@@ -473,15 +480,18 @@ def DOC_STATS():
     global lines
     
     _data = TextWidget.get(0.0, END)
+    _LOG.write(f"{str(now)} - Extracted text from the editing interface: OK\n")
     
     if _data in NOT_ALLOWED:
         lines = 0
+        _LOG.write(f"{str(now)} - There were {str(lines)} lines: INFO (EMPTY FILE)\n")
     
     else:
         _lines = _data.split("\n")
         y_lines = list(filter(("").__ne__, _lines))
         x_lines = int(len(y_lines))
         lines = x_lines
+        _LOG.write(f"{str(now)} - There were {str(lines)} lines: OK\n")
     
     mb.showinfo(lang[164], f"{lang[165]}: {str(lines)}")
     
@@ -490,10 +500,12 @@ def repo():
     ourRepo = "https://github.com/MF366-Coding/WriterClassic/"
 
     simple_webbrowser.Website(ourRepo)
+    _LOG.write(f"{str(now)} - Opened the repository: AWAITING FOR FUNCTION OR ERROR\n")
 
 # Clock
 def clockPlugin():
     clockWindow = Toplevel(desktop_win)
+    _LOG.write(f"{str(now)} - A new window has been called: AWAITING CONFIGURATION\n")
 
     #Windowing
     clockWindow.title(lang[23])
@@ -506,6 +518,8 @@ def clockPlugin():
         )
 
     clockWindow.geometry('275x65')
+
+    _LOG.write(f"{str(now)} - Clock Plugin's window has been configured: OK\n")
 
     TextWidget.pack()
     clockWindow.mainloop()
@@ -837,6 +851,16 @@ class InternetOnWriter:
             askForTyping = sdg.askstring(lang[139], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Brave(askForTyping)
+                
+        elif engine == "github":
+            askForTyping = sdg.askstring(lang[170], lang[90])
+            if askForTyping != '':
+                simple_webbrowser.GitHub(askForTyping)
+                
+        elif engine == "gitlab":
+            askForTyping = sdg.askstring(lang[172], lang[90])
+            if askForTyping != '':
+                simple_webbrowser.GitLab(askForTyping)
 
 def plugin_help():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/wiki/Plugin-Setup")
@@ -1108,6 +1132,11 @@ menu_9.add_command(label=lang[125], command=lambda:
 menu_9.add_separator()
 menu_9.add_command(label=lang[107], command=lambda:
     InternetOnWriter.Search("archive"))
+menu_9.add_separator()
+menu_9.add_command(label=lang[169], command=lambda:
+    InternetOnWriter.Search("github"))
+menu_9.add_command(label=lang[171], command=lambda:
+    InternetOnWriter.Search("gitlab"))
 
 menu_12.add_command(label="Čeština (Čechie)", command=lambda:
     LanguageSet("cs", desktop_win))
