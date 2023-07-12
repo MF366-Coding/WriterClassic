@@ -623,7 +623,7 @@ def OpenFile(root_win):
     if selected_extension and not file_path.lower().endswith(selected_extension):
         file_path += selected_extension
 
-    file_input = open(file_path, "rt")
+    file_input = open(file_path, "rt", encoding="utf-8")
     file_data = file_input.read()
 
     root_win.title(f"{lang[1]} - {file_path}")
@@ -704,7 +704,7 @@ def WipeFile(root_win):
         if selected_extension and not file_path.lower().endswith(selected_extension):
             file_path += selected_extension
 
-        file_input = open(file_path, "wt")
+        file_input = open(file_path, "wt", encoding="utf-8")
         file_input.write('')
         mb.showinfo(title=lang[1], message=lang[101])
         
