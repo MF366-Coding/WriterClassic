@@ -161,3 +161,19 @@ WriterClassic sa za týchto podmienok nedá spustiť.
 Ukončenie.
 WriterClassic - Chyba zásuvného modulu
 Súbor zásuvného modulu je poškodený alebo neexistuje.
+Počet riadkov
+WriterClassic - Počet riadkov
+Riadky
+WriterClassic - Chyba okna
+Zlé rozmery okna.
+WriterClassic pre tento prípad použije 700x500.
+Vyhľadávanie na GitHub (vyžaduje si účet)
+WriterClassic - Hľadať na GitHub
+Search GitLab (vyžaduje konto)
+WriterClassic - Hľadať na GitLab
+Plugin Central
+WriterClassic - Plugin Central
+Plugin 1
+Plugin 2
+Plugin 3
+Spustiť

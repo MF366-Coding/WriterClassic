@@ -161,3 +161,18 @@ WriterClassic kan ikke køre under disse forhold.
 Afslutning.
 WriterClassic - Plugin-fejl
 Plugin-filen er beskadiget eller findes ikke.
+Antal linjer
+WriterClassic - Antal linjer
+Linjer
+WriterClassic - Fejl i vindue
+Dårlige vinduesdimensioner.
+WriterClassic vil bruge 700x500 i dette tilfælde.
+Søg på GitHub (kræver en konto)
+WriterClassic - Søg på GitHub
+Søg i GitLab (kræver en konto)
+WriterClassic - Søg på GitLab
+Plugin Central
+WriterClassic - Plugin Central
+Plugin 1
+Plugin 2
+Plugin 3

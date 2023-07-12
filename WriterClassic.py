@@ -193,14 +193,6 @@ if startApp == "1":
             _LOG.write(f"{str(now)} - End of session\n")
             quit()
 
-try:
-    import plugins as plugin
-    _LOG.write(f"{str(now)} - WriterClassic's plugins have been imported: OK\n")
-except (ModuleNotFoundError, ImportError):
-    _LOG.write(f"{str(now)} - [WARNING!] WriterClassic's plugins have been imported: ERROR (FILE DAMAGED OR FILE DOES NOT EXIST)\n")
-    mb.showerror(lang[161], f"{lang[162]}\n{lang[160]}")
-    quit()
-
 # Windowing
 desktop_win = Tk()
 _LOG.write(f"{str(now)} - WriterClassic launched: OK\n")
@@ -329,7 +321,6 @@ menu_9 = Menu(menu_8)
 menu_10 = Menu(menu_bar)
 menu_11 = Menu(menu_bar)
 menu_12 = Menu(menu_bar)
-menu_13 = Menu(menu_8)
 _LOG.write(f"{str(now)} - Created all the menus: OK\n")
 
 def writeStartup(text):
@@ -541,6 +532,7 @@ def fontEdit(winType):
                 }
                 json.dump(new_object, fontFileUse)
                 fontFileUse.close()
+                _LOG.write(f"{str(now)} - Font size has been changed to {str(fontSize)}: OK\n")
                 mb.showinfo(lang[1], lang[63])
     else:
         fontType = sdg.askstring(lang[61], lang[62])
@@ -555,6 +547,7 @@ def fontEdit(winType):
                 }
                 json.dump(new_object, fontFileUse)
                 fontFileUse.close()
+                _LOG.write(f"{str(now)} - Font type has been changed to {str(fontType)}: OK\n")
                 mb.showinfo(lang[1], lang[63])
 
 
@@ -565,6 +558,8 @@ def newFile():
     desktop_win.title(lang[1])
     TextWidget.delete(index1=0.0, index2=END)
     NOW_FILE = False
+    
+    _LOG.write(f"{str(now)} - A new file has been created: OK\n")
     
     print(NOW_FILE)
 
@@ -609,6 +604,8 @@ file_types = [(lang[32], '*.txt'),
               (lang[127], "*.*")
               ]
 
+_LOG.write(f"{str(now)} - Filetypes have been configured correctly: OK\n")
+
 # opens a file
 def OpenFile(root_win):
     global NOW_FILE
@@ -632,6 +629,9 @@ def OpenFile(root_win):
     root_win.title(f"{lang[1]} - {file_path}")
     TextWidget.delete(index1=0.0, index2=END)
     TextWidget.insert(chars=file_data, index=0.0)
+    
+    _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
+    
     NOW_FILE = str(file_path)
     file_input.close()
     print(NOW_FILE)
@@ -660,6 +660,9 @@ def SaveFile(root_win):
     file.close()
     mb.showinfo(lang[1], lang[101])
     root_win.title(f"{lang[1]} - {file_path}")
+    
+    _LOG.write(f"{str(now)} - A file has been saved as {str(file_path)}: OK\n")
+    
     NOW_FILE = str(file_path)
     print(NOW_FILE)
 
@@ -678,6 +681,9 @@ def Save(root_win):
         file.close()
         mb.showinfo(lang[1], lang[101])
         root_win.title(f"{lang[1]} - {file_path}")
+        
+        _LOG.write(f"{str(now)} - An existing file has been saved over ({str(file_path)}): OK\n")
+        
         NOW_FILE = str(file_path)
         print(NOW_FILE)
 
@@ -701,6 +707,9 @@ def WipeFile(root_win):
         file_input = open(file_path, "wt")
         file_input.write('')
         mb.showinfo(title=lang[1], message=lang[101])
+        
+        _LOG.write(f"{str(now)} - A file has been wiped at {str(file_path)}: OK\n")
+        
         root_win.title(lang[1])
         file_input.close()
 
@@ -709,10 +718,12 @@ def QUIT_WRITER(root_win):
     confirm = mb.askyesno(title=lang[53], message=lang[54])
     if confirm:
         root_win.destroy()
+        _LOG.write(f"{str(now)} - End of session: QUIT\n")
 
 # credits
 def appCredits():
     mb.showinfo(title=lang[28], message=lang[65])
+    _LOG.write(f"{str(now)} - The Credits have been shown: OK\n")
 
 # easter egg super secret!
 def surprise_egg():
@@ -733,12 +744,14 @@ def surprise_egg():
 # help me pls!!!
 def APP_HELP():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic#help")
+    _LOG.write(f"{str(now)} - Requested online help: AWAITING FOR CONNECTION\n")
 
 # infoooooo
 def aboutApp(thing2, thing3):
     with open(thing2, thing3, encoding='utf-8') as about_d:
         about_data = about_d.read()
     mb.showinfo(title=lang[64], message=about_data)
+    _LOG.write(f"{str(now)} - The About dialogue has been shown\n")
     about_d.close()
 
 def Tips_Tricks():
@@ -750,6 +763,7 @@ def Tips_Tricks():
     ))
 
     mb.showinfo(lang[1], picked_text)
+    _LOG.write(f"{str(now)} - Requested Tips & Tricks: OK\n")
 
 def resetWriter(rootWin):
     askSOS = mb.askyesno(lang[77], lang[78])
@@ -772,7 +786,7 @@ def resetWriter(rootWin):
             geomdata.write('700x500')
             geomdata.close()
 
-        with open("data/signature.txt", "w", encoding='utf-8') as sigFILE:
+        with open("config/signature.txt", "w", encoding='utf-8') as sigFILE:
             sigFILE.write("--\nBest regards,\nThis is a customizable signature in a file named signature.txt in data folder...")
 
 class InternetOnWriter:
@@ -869,55 +883,76 @@ def article_md():
     simple_webbrowser.Website(url='https://github.com/MF366-Coding/WriterClassic/wiki/Manual-Configuration-Setup')
 
 
-class plugins:
-    title_1 = plugin.title_1
-    title_2 = plugin.title_2
-    title_3 = plugin.title_3
-    title_4 = plugin.title_4
-    title_5 = plugin.title_5
-    title_6 = plugin.title_6
-    title_7 = plugin.title_7
-
+class PluginCentral:
+    _WIN = None
+    
     @staticmethod
-    def plugin_1(tk_root, tk_text, _file):
-        plugin.plugin_1(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("plugins.py")
-
+    def _open_plugin(module):
+        if module == 1:
+            try:
+                from plugins import _1
+                
+                _confirm = mb.askyesno(lang[174], f"{lang[178]} ({_1.title})?")
+                
+                if _confirm:
+                    _1.plugin(desktop_win, TextWidget, NOW_FILE)
+                
+            except:
+                mb.showerror(lang[161], lang[162])
+        
+        elif module == 2:
+            try:
+                from plugins import _2
+                
+                _confirm = mb.askyesno(lang[174], f"{lang[178]} ({_2.title})?")
+                
+                if _confirm:
+                    _2.plugin(desktop_win, TextWidget, NOW_FILE)
+                
+            except:
+                mb.showerror(lang[161], lang[162])
+                
+        elif module == 3:
+            try:
+                from plugins import _3
+                
+                _confirm = mb.askyesno(lang[174], f"{lang[178]} ({_3.title})?")
+                
+                if _confirm:
+                    _3.plugin(desktop_win, TextWidget, NOW_FILE)
+                
+            except:
+                mb.showerror(lang[161], lang[162])
+    
     @staticmethod
-    def plugin_2(tk_root, tk_text, _file):
-        plugin.plugin_2(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("plugins.py")
+    def SETUP():
+        PluginCentral._WIN = Toplevel(desktop_win)
 
-    @staticmethod
-    def plugin_3(tk_root, tk_text, _file):
-        plugin.plugin_3(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("plugins.py")
+        PluginCentral._WIN.title(lang[174])
+        PluginCentral._WIN.geometry("300x300")
+        
+        if sys.platform == "win32":
+            PluginCentral._WIN.iconbitmap("data/app_icon.ico")
+        
+        butt_1 = Button(PluginCentral._WIN, text=lang[175], command=lambda:
+            PluginCentral._open_plugin(1))
+        butt_1.pack()
+        
+        butt_2 = Button(PluginCentral._WIN, text=lang[176], command=lambda:
+            PluginCentral._open_plugin(2))
+        butt_2.pack()
 
-    @staticmethod
-    def plugin_4(tk_root, tk_text, _file):
-        plugin.plugin_4(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("plugins.py")
+        butt_3 = Button(PluginCentral._WIN, text=lang[177], command=lambda:
+            PluginCentral._open_plugin(3))
+        butt_3.pack()
 
-    @staticmethod
-    def plugin_5(tk_root, tk_text, _file):
-        plugin.plugin_5(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("plugins.py")
-
-    @staticmethod
-    def plugin_6(tk_root, tk_text, _file):
-        plugin.plugin_6(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("plugins.py")
-
-    @staticmethod
-    def plugin_7(tk_root, tk_text, _file):
-        plugin.plugin_7(tk_root=tk_root, tk_text=tk_text, _file=_file)
-        _compile("plugins.py")
+        PluginCentral._WIN.mainloop()
 
 
 class SignaturePlugin:
     @staticmethod
     def custom():
-        with open("data/signature.txt", "r", encoding="utf-8") as SIGNATURE_FILE:
+        with open("config/signature.txt", "r", encoding="utf-8") as SIGNATURE_FILE:
             signature = SIGNATURE_FILE.read()
             SIGNATURE_FILE.close()
 
@@ -1073,34 +1108,7 @@ menu_8.add_separator()
 menu_8.add_command(label=lang[10], command=lambda:
     WipeFile(desktop_win))
 menu_8.add_separator()
-
-
-menu_13.add_command(label=plugins.title_1, command=lambda:
-    plugins.plugin_1(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
-
-menu_13.add_command(label=plugins.title_2, command=lambda:
-    plugins.plugin_2(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
-
-menu_13.add_command(label=plugins.title_3, command=lambda:
-    plugins.plugin_3(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
-
-menu_13.add_command(label=plugins.title_4, command=lambda:
-    plugins.plugin_4(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
-
-menu_13.add_command(label=plugins.title_5, command=lambda:
-    plugins.plugin_5(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
-
-menu_13.add_command(label=plugins.title_6, command=lambda:
-    plugins.plugin_6(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
-
-menu_13.add_command(label=plugins.title_7, command=lambda:
-    plugins.plugin_7(tk_root=desktop_win, tk_text=TextWidget, _file=NOW_FILE))
-menu_13.add_separator()
-
-menu_13.add_command(label=lang[129], command=plugin_help)
-menu_13.add_separator()
-menu_13.add_command(label=lang[154], command=lambda:
-    simple_webbrowser.Website(url="https://github.com/MF366-Coding/WriterClassic-OfficialPlugins"))
+menu_8.add_command(label=lang[173], command=PluginCentral.SETUP)
 
 
 menu_9.add_command(label=lang[81], command=InternetOnWriter.Website)
@@ -1233,7 +1241,6 @@ try:
         menu_6.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_7.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_12.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_13.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
 except TclError:
@@ -1250,7 +1257,6 @@ except TclError:
         menu_6.configure(background="white", foreground="black")
         menu_7.configure(background="white", foreground="black")
         menu_12.configure(background="white", foreground="black")
-        menu_13.configure(background="white", foreground="black")
         menu_8.configure(background="white", foreground="black")
         menu_9.configure(background="white", foreground="black")
 
@@ -1266,7 +1272,6 @@ menu_4.add_command(label=lang[153], command=lambda:
 menu_1.add_cascade(label=lang[14], menu=menu_7)
 menu_bar.add_cascade(label=lang[4], menu=menu_8)
 menu_bar.add_cascade(label=lang[79], menu=menu_9)
-menu_8.add_cascade(label=lang[128], menu=menu_13)
 menu_bar.add_cascade(label=lang[5], menu=menu_12)
 menu_bar.add_cascade(label=lang[6], menu=menu_11)
 

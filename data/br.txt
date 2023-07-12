@@ -161,3 +161,18 @@ O WriterClassic não pode ser iniciado nessas condições.
 Encerrando.
 WriterClassic - Erro de suplemento
 O arquivo de suplementos está corrompido ou não existe.
+Contagem de linhas
+WriterClassic - Contagem de linhas
+Linhas
+WriterClassic - Erro de janela
+Dimensões ruins da janela.
+O WriterClassic usará 700x500 para essa instância.
+Pesquisar no GitHub (requer uma conta)
+WriterClassic - Pesquisar no GitHub
+Pesquisar no GitLab (requer uma conta)
+WriterClassic - Pesquisar no GitLab
+Central de plug-ins
+WriterClassic - Central de Plugins
+Plugin 1
+Plugin 2
+Plugin 3

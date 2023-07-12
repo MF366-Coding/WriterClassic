@@ -161,3 +161,18 @@ WriterClassic non può essere eseguito in queste condizioni.
 Abbandono.
 WriterClassic - Errore del plugin
 Il file del plugin è danneggiato o non esiste.
+Conteggio delle righe
+WriterClassic - Conteggio delle righe
+Linee
+WriterClassic - Errore finestra
+Dimensioni della finestra errate.
+WriterClassic userà 700x500 per questa istanza.
+Ricerca su GitHub (richiede un account)
+WriterClassic - Ricerca su GitHub
+Ricerca in GitLab (richiede un account)
+WriterClassic - Ricerca su GitLab
+Plugin centrali
+WriterClassic - Centrale dei plugin
+Plugin 1
+Plugin 2
+Plugin 3

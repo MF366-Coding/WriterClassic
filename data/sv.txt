@@ -161,3 +161,19 @@ WriterClassic kan inte köras under dessa förhållanden.
 Avslutar.
 WriterClassic - Plugin-fel
 Plugin-filen är skadad eller existerar inte.
+Antal linjer
+WriterClassic - Antal rader
+Rader
+WriterClassic - Fel på fönster
+Dåliga fönsterdimensioner.
+WriterClassic kommer att använda 700x500 för denna instans.
+Sök i GitHub (kräver ett konto)
+WriterClassic - Sök på GitHub
+Sök i GitLab (kräver ett konto)
+WriterClassic - Sök på GitLab
+Central för plugins
+WriterClassic - Plugin Central
+Plugin 1
+Plugin 2
+Plugin 3
+Kör

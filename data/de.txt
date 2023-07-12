@@ -161,3 +161,18 @@ WriterClassic kann unter diesen Bedingungen nicht ausgeführt werden.
 Beenden.
 WriterClassic - Plugin-Fehler
 Die Plugin-Datei ist beschädigt oder existiert nicht.
+Zeilenzählung
+WriterClassic - Zeilenzahl
+Zeilen
+WriterClassic - Fensterfehler
+Falsche Fensterabmessungen.
+WriterClassic verwendet 700x500 für diese Instanz.
+GitHub durchsuchen (erfordert ein Konto)
+WriterClassic - GitHub durchsuchen
+GitLab durchsuchen (erfordert ein Konto)
+WriterClassic - GitLab durchsuchen
+Plugin-Zentrale
+WriterClassic - Plugin-Zentrale
+Plugin 1
+Plugin 2
+Plugin 3

@@ -161,3 +161,19 @@ WriterClassic can't run under this conditions.
 Quitting.
 WriterClassic - Plugin Error
 Plugin file is damaged or doesn't exist.
+Line count
+WriterClassic - Line count
+Lines
+WriterClassic - Window Error
+Bad window dimensions.
+WriterClassic will use 700x500 for this instance.
+Search GitHub (requires an account)
+WriterClassic - Search GitHub
+Search GitLab (requires an account)
+WriterClassic - Search GitLab
+Plugin Central
+WriterClassic - Plugin Central
+Plugin 1
+Plugin 2
+Plugin 3
+Run

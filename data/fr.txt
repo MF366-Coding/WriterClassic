@@ -161,3 +161,18 @@ WriterClassic ne peut pas fonctionner dans ces conditions.
 Quitter.
 WriterClassic - Erreur de plugin
 Le fichier du plugin est endommagé ou n'existe pas.
+Nombre de lignes
+WriterClassic - Nombre de lignes
+Lignes
+WriterClassic - Erreur de fenêtre
+Mauvaises dimensions de la fenêtre.
+WriterClassic utilisera 700x500 pour cette instance.
+Recherche sur GitHub (nécessite un compte)
+WriterClassic - Rechercher sur GitHub
+Recherche sur GitLab (nécessite un compte)
+WriterClassic - Rechercher sur GitLab
+Plugin Central
+WriterClassic - Plugin Central
+Plugin 1
+Plugin 2
+Plugin 3

@@ -161,3 +161,18 @@ WriterClassic no puede ejecutarse en estas condiciones.
 Salir.
 WriterClassic - Error de Plugin
 El archivo del plugin está dañado o no existe.
+Recuento de líneas
+WriterClassic - Recuento de líneas
+Líneas
+WriterClassic - Error de ventana
+Dimensiones de ventana incorrectas.
+WriterClassic utilizará 700x500 para esta instancia.
+Buscar en GitHub (requiere una cuenta)
+WriterClassic - Buscar en GitHub
+Buscar en GitLab (requiere una cuenta)
+WriterClassic - Buscar en GitLab
+Plugin Central
+WriterClassic - Central de plugins
+Plugin 1
+Plugin 2
+Plugin 3
