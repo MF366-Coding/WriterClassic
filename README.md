@@ -1,20 +1,13 @@
 # Writer Classic
-Writer Classic's GitHub repository.
-
 ![WriterClassic's New Logo, by Norb](/data/logo.png?raw=true "WriterClassic's Logo")
 
-Writer Classic is a rather small Python project that brings to the user a whole new text editing experience. :thinking:
-
-## Welcome...
-...and thanks for visiting this repository. :heart:
-
-I also would love if you waste some time testing Writer Classic or just exploring this GitHub repository.
+Writer Classic is a rather small Python project that brings to the user a whole new text editing experience. 🤔👍
 
 ## Important info
 **VERY IMPORTANT!**
 - LICENSE -> https://github.com/MF366-Coding/WriterClassic/blob/main/LICENSE
 
-# Installing Writer Classic
+# Installing Writer Classic (for people exploring the repository) 
 To install Writer, you can choose between 2 ways of installing.
 
 ## 1. Downloading
@@ -38,59 +31,32 @@ Use:
 This app only runs os Python 3, so using the command `python WriterClassic.py` won't work (in Unix based OSes, <code>python</code> is Python 2).
 
 ### For Windows
-For Windows, the setup might be a bit more complicated.
+For Windows, just run the Setup Wizard and you are good to go! 
 
-The Python app has been converted into an executable for easier acess.
-
-Download the zipped folder in Releases (only v4.2.1+ have the Windows converted executable).
-
-The zipped folder should contain several folders and *.py files.
-
-Extract **EVERYTHING** to a different folder.
-
-Then run the executable named `WriterClassic.exe`.
-
-Note running the file does **NOT** install any shortcuts or dependencies. You mustn't remove anything from the now extracted folder!
-
-#### Additional Setup: Start Menu Shortcut
-**NOTE:** *this doesn't reffer to the "Pin in Start Menu", however feel free to use that one if you prefer.*
-To make a Start Menu shortcut, you must follow the following steps:
-1. Open two windows of **File Explorer**.
-2. In one of them, go to the location `%AppData%\Microsoft\Windows\Start Menu`. 
-3. In the other File Explorer window, go to the folder where you extracted WriterClassic's Windows-only zipped folder.
-4. Now, place the windows side-by-side (not necessary but makes the process a bit easier).
-5. Finally, and most important of all, **while holding `Ctrl` and `Shift` at the same time**, grab the `WriterClassic.exe` file and throw it into the `StartMenu` folder.
-6. You should probably rename the file to "`WriterClassic`" for easier acess, that is, without the file extension (because it's a shortcut - the extension is hidden in Windows by default and is not `*.exe`).
-7. You can, afterwards, make shortcuts in Desktop, Pin in Start Menu, Taskbar, as you wish...
-
-# What do I need to be able to be able to use Writer Classic? :heavy_check_mark:
+# What do I need to be able to be able to use Writer Classic?
 You need:
 
 * [X] Python 3 (Comes with MacOS and Linux, usually | Requires installation on Windows, unless you use the executable version of WriterClassic)
 
-* [X] tkinter (Python3 Module)
-
-* [X] datetime (Python3 Module - Standard, usually)
-
-* [X] sys (Python3 Module, Standard, usually)
-
 * [X] requests (Python3 Module)
 
-* [X] json (Python3 Module - Standard, usually)
+* [X] simple_webbrowser (Python3 Module made by me) 
 
 * [X] the `data` folder that comes with WriterClassic
 
 * [X] the `config` folder that comes with WriterClassic
 
-* [X] the `simple_webbrowser` folder that comes with WriterClassic
+* [X] the `user_data` folder that comes with WriterClassic
+
+The `plugins` folder is totally optional. 
 
 ## Small information
 If you want to redistribute this software, you need its LICENSE: this is **mandatory**!
 
-# Let me know of any bug you find :desktop_computer:
+# Let me know of any bug you find
 If you found a bug, please tell me the details by creating a new Issue in this Repository.
 
-# Help :question:
+# Help 
 ## Editing
 You can do regular file editing like **opening**, **saving** and simply typing!
 
@@ -149,21 +115,20 @@ Available commands:
 
 In case you don't pick any of these, you'll just get an error.
 
-## Shortcuts :keyboard:
-### Useful shortcuts (v8.3.0+)
+## Shortcuts (v8.3.0+)
 You can use some useful shortcuts instead of menu itens to use Writer Classic faster.
 All of those make use of control key plus another key so that you have to press both at once. **Ctrl** stands for control key. Here are some of the most useful shortcuts available:  
 
-* __Ctrl + S__ - Save the file :floppy_disk:
-* __Ctrl + Z__ - Save as... :floppy_disk:
-* __Ctrl + O__ - Open file :open_file_folder:
-* __Ctrl + W__ - Opens the Command Menu 💻️
-* __Ctrl + L__ - Changes to light mode :sunny:
-* __Ctrl + D__ - Changes to dark mode :crescent_moon:
-* __Ctrl + G__ - Chooses default window size (600x400 px) :desktop_computer:
-* __Ctrl + H__ - Leads you to help :question:
-* __Ctrl + A__ - Opens about dialog :information_source:
-* __Ctrl + R__ - Opens the clock plugin :clock2:
+* __Ctrl + S__ - Save the file 
+* __Ctrl + Z__ - Save as... 
+* __Ctrl + O__ - Open file 
+* __Ctrl + W__ - Opens the Command Menu
+* __Ctrl + L__ - Changes to light mode
+* __Ctrl + D__ - Changes to dark mode 
+* __Ctrl + G__ - Chooses default window size (600x400 px)
+* __Ctrl + H__ - Leads you to help
+* __Ctrl + A__ - Opens about dialog
+* __Ctrl + R__ - Opens the clock plugin 
 
 ## New stuff
 ### Need some help?
@@ -186,4 +151,4 @@ You can do that using...
 - SoundCloud (v7.0.1+) 
 - Spotify Online (v7.0.4+)
 
-> ## Thanks for using WriterClassic! :heart:
+> ## Thanks for using WriterClassic! ❤️
