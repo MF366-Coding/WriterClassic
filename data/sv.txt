@@ -177,3 +177,6 @@ Plugin 1
 Plugin 2
 Plugin 3
 Kör
+Visa loggfil
+WriterClassic - loggfil
+Uppdatera logg

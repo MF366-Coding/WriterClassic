@@ -177,3 +177,6 @@ Plugin 1
 Plugin 2
 Plugin 3
 Spustiť
+Zobrazenie súboru protokolu
+WriterClassic - Súbor denníka
+Obnoviť protokol

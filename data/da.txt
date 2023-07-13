@@ -176,3 +176,7 @@ WriterClassic - Plugin Central
 Plugin 1
 Plugin 2
 Plugin 3
+Kør
+Vis logfil
+WriterClassic - Logfil
+Opdater log

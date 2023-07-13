@@ -176,3 +176,7 @@ WriterClassic - Central de Plugins
 Plugin 1
 Plugin 2
 Plugin 3
+Executar
+Exibir arquivo de registro
+WriterClassic - Arquivo de registro
+Atualização do registro

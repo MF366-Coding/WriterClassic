@@ -177,3 +177,6 @@ Plugin 1
 Plugin 2
 Plugin 3
 Run
+View Log File
+WriterClassic - Log File
+Refresh Log

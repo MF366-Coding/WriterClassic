@@ -176,3 +176,7 @@ WriterClassic - Central de Plugins
 Plugin 1
 Plugin 2
 Plugin 3
+Executar
+Ver ficheiro de registo
+WriterClassic - Ficheiro de registo
+Atualizar o registo

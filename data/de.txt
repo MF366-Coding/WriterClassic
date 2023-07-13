@@ -176,3 +176,7 @@ WriterClassic - Plugin-Zentrale
 Plugin 1
 Plugin 2
 Plugin 3
+Ausführen
+Logdatei anzeigen
+WriterClassic - Protokolldatei
+Log aktualisieren

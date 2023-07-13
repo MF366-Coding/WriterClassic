@@ -949,6 +949,30 @@ class PluginCentral:
         PluginCentral._WIN.mainloop()
 
 
+def clear_log_screen(text_interface):
+    text_interface.delete(0.0, END)
+    
+    with open("user_data/log.txt", "r", encoding="utf-8") as _TEMP_LOG:
+        temp_log = _TEMP_LOG.read()
+        text_interface.insert(0.0, str(temp_log))
+        _TEMP_LOG.close()
+
+
+def show_log():
+    _new_window = Toplevel(desktop_win)
+    _new_editor = Text(_new_window, bg=theme["color"], fg=theme["fg"], insertbackground=theme["ct"], font=("Calibri", 14))
+    _new_window.title(lang[180])
+    _new_editor.pack()
+    _new_button = Button(_new_window, text=lang[181], command=lambda:
+        clear_log_screen(_new_editor))
+    _new_button.pack()
+    
+    with open("user_data/log.txt", "r", encoding="utf-8") as _TEMP_LOG:
+        temp_log = _TEMP_LOG.read()
+        _new_editor.insert(0.0, str(temp_log))
+        _TEMP_LOG.close()
+
+
 class SignaturePlugin:
     @staticmethod
     def custom():
@@ -1083,6 +1107,7 @@ menu_11.add_command(label=lang[25], command=lambda:
     aboutApp('data/about.txt', 'r'))
 menu_11.add_command(label=lang[26], command=APP_HELP)
 menu_11.add_command(label=lang[27], command=repo)
+menu_11.add_command(label=lang[179], command=show_log)
 menu_11.add_separator()
 menu_11.add_command(label=lang[28], command=appCredits)
 menu_11.add_separator()

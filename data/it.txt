@@ -176,3 +176,7 @@ WriterClassic - Centrale dei plugin
 Plugin 1
 Plugin 2
 Plugin 3
+Eseguire
+Visualizza il file di registro
+WriterClassic - File di registro
+Aggiorna il registro
