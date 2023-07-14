@@ -142,6 +142,8 @@ Don't have a web browser open? Need to search something? Search directly from Wr
 - Qwant (v7.0.2+)
 - The Internet Archive (v7.0.2+)
 - Brave Search (v8.2.0+)
+- GitHub (v8.3.0+)
+- GitLab (v8.3.0+)
 
 ### Wanna listen to some tunes?
 Maybe you just want to relax while listening to music... 
