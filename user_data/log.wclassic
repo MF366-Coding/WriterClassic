@@ -1,0 +1,59 @@
+--
+Log File [Pre-release]
+This file and its system are still in development. [v8.3.0]
+--
+
+2023-07-14 18:22:47.957477 - WriterClassic was executed: OK
+2023-07-14 18:22:47.957477 - Check for updates on startup: ENABLED
+2023-07-14 18:22:47.957477 - Imported compile from py_compile: OK
+2023-07-14 18:22:47.957477 - Imported getuser from getpass: OK
+2023-07-14 18:22:47.957477 - Imported tkinter: OK
+2023-07-14 18:22:47.957477 - Imported tkinter.ttk: OK
+2023-07-14 18:22:47.957477 - Imported simpledialog from tkinter: OK
+2023-07-14 18:22:47.957477 - Imported filedialog from tkinter: OK
+2023-07-14 18:22:47.957477 - Imported messagebox from tkinter: OK
+2023-07-14 18:22:47.957477 - Imported Font from tkinter.font: OK
+2023-07-14 18:22:47.957477 - Language (en): ENABLED
+2023-07-14 18:22:47.957477 - Language has been configured correctly: OK
+2023-07-14 18:22:47.957477 - simple_webbrowser by MF366 has been imported: OK
+2023-07-14 18:22:47.957477 - requests has been imported: OK
+2023-07-14 18:22:47.957477 - WriterClassic launched: OK
+
+2023-07-14 18:24:03.001078 - WriterClassic was executed: OK
+2023-07-14 18:24:03.001078 - Check for updates on startup: ENABLED
+2023-07-14 18:24:03.001078 - Imported compile from py_compile: OK
+2023-07-14 18:24:03.001078 - Imported getuser from getpass: OK
+2023-07-14 18:24:03.001078 - Imported tkinter: OK
+2023-07-14 18:24:03.001078 - Imported tkinter.ttk: OK
+2023-07-14 18:24:03.001078 - Imported simpledialog from tkinter: OK
+2023-07-14 18:24:03.001078 - Imported filedialog from tkinter: OK
+2023-07-14 18:24:03.001078 - Imported messagebox from tkinter: OK
+2023-07-14 18:24:03.001078 - Imported Font from tkinter.font: OK
+2023-07-14 18:24:03.001078 - Language (en): ENABLED
+2023-07-14 18:24:03.001078 - Language has been configured correctly: OK
+2023-07-14 18:24:03.001078 - simple_webbrowser by MF366 has been imported: OK
+2023-07-14 18:24:03.001078 - requests has been imported: OK
+2023-07-14 18:24:03.001078 - WriterClassic launched: OK
+2023-07-14 18:24:03.001078 - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK
+2023-07-14 18:24:03.001078 - Connected to GitHub: OK
+2023-07-14 18:24:03.001078 - Got WriterClassic Releases data: OK
+2023-07-14 18:24:03.001078 - Got the latest release's tag: OK
+2023-07-14 18:24:03.001078 - Got the current version: OK
+2023-07-14 18:24:03.001078 - Got the current theme: OK
+2023-07-14 18:24:03.001078 - Got the current font family/type: OK
+2023-07-14 18:24:03.001078 - Got the current font size: OK
+2023-07-14 18:24:03.001078 - Window's title was set to WriterClassic: OK
+2023-07-14 18:24:03.001078 - Font size is 13: OK
+2023-07-14 18:24:03.001078 - Font family/type is Arial: OK
+2023-07-14 18:24:03.001078 - The editing interface has been created: OK
+2023-07-14 18:24:03.001078 - Got the window's dimensions settings: OK
+2023-07-14 18:24:03.001078 - Applied the window's dimensions: OK
+2023-07-14 18:24:03.001078 - Applied configurations to the editing interface: OK
+2023-07-14 18:24:03.001078 - 'Packed' the editing interface: OK
+2023-07-14 18:24:03.001078 - Created the menu bar: OK
+2023-07-14 18:24:03.001078 - Created all the menus: OK
+2023-07-14 18:24:03.001078 - Versions don't match: WARNING
+2023-07-14 18:24:03.001078 - Checked for updates on startup: AWAITING REPLY
+2023-07-14 18:24:03.001078 - Filetypes have been configured correctly: OK
+2023-07-14 18:24:03.001078 - Requested online help: AWAITING FOR CONNECTION
+2023-07-14 18:24:03.001078 - The About dialogue has been shown

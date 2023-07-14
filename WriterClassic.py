@@ -37,7 +37,7 @@ import json # google it lmfao
 
 now = datetime.datetime.now()
 
-_LOG = open("user_data/log.txt", mode="a", encoding="utf-8")
+_LOG = open("user_data/log.wclassic", mode="a", encoding="utf-8")
 
 _LOG.write("\n")
 _LOG.write(f"{str(now)} - WriterClassic was executed: OK\n")
@@ -58,7 +58,7 @@ NOT_ALLOWED = [
     "     "
 ]
 
-with open('config/startup.txt', 'r', encoding='utf-8') as startupFile:
+with open('config/startup.wclassic', 'r', encoding='utf-8') as startupFile:
     startAppData = startupFile.read()
     startApp = startAppData[0:1]
     if startApp == "0":
@@ -121,11 +121,11 @@ except ModuleNotFoundError:
     from Tkinter.font import Font # Ouchie mama (font, daaah)
     _LOG.write(f"{str(now)} - Attempted to import Font from Tkinter.font: OK\n")
 
-with open('config/lang.txt', 'r', encoding="utf-8") as configLangFile:
+with open('config/lang.wclassic', 'r', encoding="utf-8") as configLangFile:
     setLang = configLangFile.read()
     _LOG.write(f"{str(now)} - Language ({str(setLang[0:2])}): ENABLED\n")
 
-with open('data/'+str(setLang[0:2])+'.txt', 'r', encoding='utf-8') as usedLangFile:
+with open('data/'+str(setLang[0:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
     lang = usedLang.split('\n')
     _LOG.write(f"{str(now)} - Language has been configured correctly: OK\n")
@@ -221,7 +221,7 @@ if startApp == '1':
         _LOG.write(f"{str(now)} - WriterClassic is launching without checking for updates: OK\n")
 
 # Config files
-with open('data/version.txt', 'r', encoding='utf-8') as versionFile:
+with open('data/version.wclassic', 'r', encoding='utf-8') as versionFile:
     appVGet = versionFile.read()
     appV = appVGet[0:6]
     _LOG.write(f"{str(now)} - Got the current version: OK\n")
@@ -262,7 +262,7 @@ except TclError:
 TextWidget = Text(desktop_win, font=FontSet)
 _LOG.write(f"{str(now)} - The editing interface has been created: OK\n")
 
-with open('config/geom.txt', 'r', encoding='utf-8') as geom_bg:
+with open('config/geom.wclassic', 'r', encoding='utf-8') as geom_bg:
     geomValue = geom_bg.read()
     _LOG.write(f"{str(now)} - Got the window's dimensions settings: OK\n")
 
@@ -324,7 +324,7 @@ menu_12 = Menu(menu_bar)
 _LOG.write(f"{str(now)} - Created all the menus: OK\n")
 
 def writeStartup(text):
-    with open('config/startup.txt', 'w', encoding='utf-8') as startupWriteFile:
+    with open('config/startup.wclassic', 'w', encoding='utf-8') as startupWriteFile:
         startupWriteFile.write(text)
         _LOG.write(f"{str(now)} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
         startupWriteFile.close()
@@ -392,7 +392,7 @@ def SetWinSize():
             _LOG.write(f"{str(now)} - Editing interface has been reconfigured: OK\n")
             desktop_win.geometry(str(widthSet)+'x'+str(heightSet))
             _LOG.write(f"{str(now)} - Window's dimensions were set: OK\n")
-            with open('config/geom.txt', 'w', encoding='utf-8') as geomdata:
+            with open('config/geom.wclassic', 'w', encoding='utf-8') as geomdata:
                 geomdata.write('')
                 _LOG.write(f"{str(now)} - Configured default window's dimensions: OK\n")
                 geomdata.write(str(widthSet)+'x'+str(heightSet))
@@ -433,7 +433,7 @@ def quickway():
 
 # Setup (Lang files)
 def LanguageSet(language_set, root_win):
-    with open('config/lang.txt', 'w', encoding='utf-8') as deleteThat:
+    with open('config/lang.wclassic', 'w', encoding='utf-8') as deleteThat:
         deleteThat.write('')
         deleteThat.write(language_set)
         _LOG.write(f"{str(now)} - A new language has been set ({str(language_set)}): OK\n")
@@ -781,13 +781,13 @@ def resetWriter(rootWin):
         ThemeSet('black', 'white', 'white', 'black', 'white')
 
         desktop_win.geometry('700x500')
-        with open('config/geom.txt', 'w', encoding='utf-8') as geomdata:
+        with open('config/geom.wclassic', 'w', encoding='utf-8') as geomdata:
             geomdata.write('')
             geomdata.write('700x500')
             geomdata.close()
 
-        with open("config/signature.txt", "w", encoding='utf-8') as sigFILE:
-            sigFILE.write("--\nBest regards,\nThis is a customizable signature in a file named signature.txt in data folder...")
+        with open("config/signature.wclassic", "w", encoding='utf-8') as sigFILE:
+            sigFILE.write("--\nBest regards,\nThis is a customizable signature in a file named signature.wclassic in data folder...")
 
 class InternetOnWriter:
     @staticmethod
@@ -952,7 +952,7 @@ class PluginCentral:
 def clear_log_screen(text_interface):
     text_interface.delete(0.0, END)
     
-    with open("user_data/log.txt", "r", encoding="utf-8") as _TEMP_LOG:
+    with open("user_data/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
         temp_log = _TEMP_LOG.read()
         text_interface.insert(0.0, str(temp_log))
         _TEMP_LOG.close()
@@ -967,7 +967,7 @@ def show_log():
         clear_log_screen(_new_editor))
     _new_button.pack()
     
-    with open("user_data/log.txt", "r", encoding="utf-8") as _TEMP_LOG:
+    with open("user_data/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
         temp_log = _TEMP_LOG.read()
         _new_editor.insert(0.0, str(temp_log))
         _TEMP_LOG.close()
@@ -976,7 +976,7 @@ def show_log():
 class SignaturePlugin:
     @staticmethod
     def custom():
-        with open("config/signature.txt", "r", encoding="utf-8") as SIGNATURE_FILE:
+        with open("config/signature.wclassic", "r", encoding="utf-8") as SIGNATURE_FILE:
             signature = SIGNATURE_FILE.read()
             SIGNATURE_FILE.close()
 
@@ -998,7 +998,7 @@ def commandPrompt():
         OpenFile(desktop_win)
 
     elif askNow == 'about':
-        aboutApp('data/about.txt', 'r')
+        aboutApp('data/about.wclassic', 'r')
 
     elif askNow == "newfile":
         newFile()
@@ -1063,7 +1063,7 @@ desktop_win.bind('<Control-z>', lambda c:
     SaveFile(desktop_win))
 
 desktop_win.bind('<Control-a>', lambda e:
-    aboutApp('data/about.txt', 'r'))
+    aboutApp('data/about.wclassic', 'r'))
 
 desktop_win.bind('<Control-h>', lambda f:
     APP_HELP())
@@ -1104,7 +1104,7 @@ if startApp == "1":
     menu_11.add_command(label=lang[75], command=UpdateCheck.check)
     menu_11.add_separator()
 menu_11.add_command(label=lang[25], command=lambda:
-    aboutApp('data/about.txt', 'r'))
+    aboutApp('data/about.wclassic', 'r'))
 menu_11.add_command(label=lang[26], command=APP_HELP)
 menu_11.add_command(label=lang[27], command=repo)
 menu_11.add_command(label=lang[179], command=show_log)

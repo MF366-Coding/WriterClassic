@@ -1,4 +1,0 @@
---
-Log File [Pre-release]
-This file and its system are still in development. [v8.3.0]
---
