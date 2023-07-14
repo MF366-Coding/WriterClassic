@@ -750,7 +750,54 @@ def APP_HELP():
 def aboutApp(thing2, thing3):
     with open(thing2, thing3, encoding='utf-8') as about_d:
         about_data = about_d.read()
-    mb.showinfo(title=lang[64], message=about_data)
+    
+    about_dialogue = Toplevel(desktop_win)
+    about_dialogue.title(lang[64])
+    label_1 = Label(about_dialogue, text=str(about_data), font=("Calibri", 13))
+    
+    from PIL import Image, ImageTk
+    
+    # Load the PNG image using PIL
+    image = Image.open("data/logo.png")
+    
+    # Get the dimensions of the image
+    image_width, image_height = image.size
+
+    # Define the maximum width and height for the resized image
+    max_width = 400
+    max_height = 400
+
+    # Calculate the desired dimensions while maintaining the aspect ratio
+    if image_width > image_height:
+        # Calculate the desired width based on the maximum width
+        desired_width = min(image_width, max_width)
+        # Calculate the corresponding height
+        desired_height = int(desired_width * image_height / image_width)
+    else:
+        # Calculate the desired height based on the maximum height
+        desired_height = min(image_height, max_height)
+        # Calculate the corresponding width
+        desired_width = int(desired_height * image_width / image_height)
+
+    # Resize the image
+    resized_image = image.resize((desired_width, desired_height), Image.LANCZOS)
+
+    # Create a PhotoImage object from the resized image
+    photo = ImageTk.PhotoImage(resized_image)
+    
+    button_1 = Button(about_dialogue, text="Ok", command=about_dialogue.destroy)
+    
+    # Create a Label widget to display the image
+    image_label = Label(about_dialogue, image=photo)
+    
+    image_label.pack(side=LEFT)
+    label_1.pack(side=RIGHT)
+    button_1.pack(side=BOTTOM)
+    
+    about_dialogue.geometry("875x450")
+    
+    about_dialogue.mainloop()
+    
     _LOG.write(f"{str(now)} - The About dialogue has been shown\n")
     about_d.close()
 
@@ -777,17 +824,54 @@ def resetWriter(rootWin):
 
         fontFileNew.close()
 
+        _LOG.write(f"{str(now)} - Fonts have been reset: OK\n")
+
         LanguageSet('en', rootWin)
         ThemeSet('black', 'white', 'white', 'black', 'white')
+        
+        _LOG.write(f"{str(now)} - Language and theme have both been reset: OK\n")
 
         desktop_win.geometry('700x500')
         with open('config/geom.wclassic', 'w', encoding='utf-8') as geomdata:
             geomdata.write('')
             geomdata.write('700x500')
             geomdata.close()
+            
+        _LOG.write(f"{str(now)} - Window's dimensions have been reset: OK\n")
 
         with open("config/signature.wclassic", "w", encoding='utf-8') as sigFILE:
             sigFILE.write("--\nBest regards,\nThis is a customizable signature in a file named signature.wclassic in data folder...")
+            _LOG.write(f"{str(now)} - The Custom Signature has been reset: OK\n")
+
+
+def _terminal_get(entry_selection):
+    _data = entry_selection.get()
+    
+    os.system(_data)
+    
+
+def _trick_terminal(func, window):
+    window.destroy()
+    
+    func()
+
+def Terminal():
+    terminal = Toplevel(desktop_win)
+    
+    terminal.title(lang[183])
+    
+    entry_1 = Entry(terminal, font=("Calibri", 13))
+    butt_1 = Button(terminal, text=lang[178], command=lambda:
+        _terminal_get(entry_1))
+    butt_2 = Button(terminal, text=lang[184], command=lambda:
+        _trick_terminal(Terminal, terminal))
+    
+    entry_1.pack()
+    butt_1.pack()
+    butt_2.pack()
+    
+    terminal.mainloop()
+    
 
 class InternetOnWriter:
     @staticmethod
@@ -1126,6 +1210,7 @@ menu_7.add_command(label=lang[21], command=lambda:
 
 menu_8.add_command(label=lang[22], command=new_window)
 menu_8.add_command(label=lang[23], command=clockPlugin)
+menu_8.add_command(label=lang[182], command=Terminal)
 menu_8.add_separator()
 menu_8.add_command(label=lang[131], command=SignaturePlugin.custom)
 menu_8.add_command(label=lang[130], command=SignaturePlugin.auto)
