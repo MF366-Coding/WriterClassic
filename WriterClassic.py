@@ -27,20 +27,55 @@ NOW_FILE = False
 
 lines = 0
 
-print(NOW_FILE)
-
-import sys # Platforms and OSes
-import random
-import os
 import datetime # Really, bro?
-import json # google it lmfao
-
 now = datetime.datetime.now()
+
+print(NOW_FILE)
 
 _LOG = open("user_data/log.wclassic", mode="a", encoding="utf-8")
 
 _LOG.write("\n")
 _LOG.write(f"{str(now)} - WriterClassic was executed: OK\n")
+
+
+try:
+    from tkinter import * # Window
+    _LOG.write(f"{str(now)} - Imported tkinter: OK\n")
+except ModuleNotFoundError:
+    _LOG.write(f"{str(now)} - Imported tkinter: ERROR\n")
+    from Tkinter import *
+    _LOG.write(f"{str(now)} - Attempted to import Tkinter from Python 2: OK\n")
+
+
+import sys # Platforms and OSes
+import json # google it lmfao
+
+desktop_win = Tk()
+TextWidget = Text(desktop_win, font=("Calibri", 13))
+TextWidget.pack()
+
+# Your existing code for the text editor
+
+if len(sys.argv) > 1:
+    # The first command-line argument is the file path
+    file_path = sys.argv[1]
+    
+    file_input = open(file_path, "rt", encoding="utf-8")
+    file_data = file_input.read()
+
+    desktop_win.title(f"WriterClassic - {file_path}")
+    TextWidget.delete(index1=0.0, index2=END)
+    TextWidget.insert(chars=file_data, index=0.0)
+    
+    _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
+    
+    NOW_FILE = str(file_path)
+    file_input.close()
+    print(NOW_FILE)
+
+
+import random
+import os
 
 UNIX_OSES = [
             "darwin",
@@ -80,14 +115,6 @@ _LOG.write(f"{str(now)} - Imported compile from py_compile: OK\n")
 
 from getpass import getuser
 _LOG.write(f"{str(now)} - Imported getuser from getpass: OK\n")
-
-try:
-    from tkinter import * # Window
-    _LOG.write(f"{str(now)} - Imported tkinter: OK\n")
-except ModuleNotFoundError:
-    _LOG.write(f"{str(now)} - Imported tkinter: ERROR\n")
-    from Tkinter import *
-    _LOG.write(f"{str(now)} - Attempted to import Tkinter from Python 2: OK\n")
 
 try:
     from tkinter.ttk import * # Not sure
@@ -194,7 +221,6 @@ if startApp == "1":
             quit()
 
 # Windowing
-desktop_win = Tk()
 _LOG.write(f"{str(now)} - WriterClassic launched: OK\n")
 
 if sys.platform == "win32":
@@ -238,7 +264,9 @@ with open('config/font.json', 'rt', encoding='utf-8') as fontFile:
     fontFile.close()
 
 # Windowing... again
-desktop_win.title(lang[1])
+if NOW_FILE == False:
+    desktop_win.title(lang[1])
+    
 _LOG.write(f"{str(now)} - Window's title was set to WriterClassic: OK\n")
 try:
     FontSet = Font(family=font_use["font-type"], size=font_use["font-size"])
@@ -259,7 +287,7 @@ except TclError:
         json.dump(new_font, fixed_fontFile)
         _LOG.write(f"{str(now)} - The themes were reconfigured because of a font error: OK\n")
 
-TextWidget = Text(desktop_win, font=FontSet)
+
 _LOG.write(f"{str(now)} - The editing interface has been created: OK\n")
 
 with open('config/geom.wclassic', 'r', encoding='utf-8') as geom_bg:
@@ -279,15 +307,14 @@ except TclError:
     mb.showerror(lang[166], f"{lang[167]}\n{lang[168]}")
 
 try:
-    TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"])
+    TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"], font=FontSet)
     _LOG.write(f"{str(now)} - Applied configurations to the editing interface: OK\n")
 except TclError:
     _LOG.write(f"{str(now)} - Applied configurations to the editing interface: ERROR\n")
     mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
-    TextWidget.configure(bg="black", fg="white", width=GeomValues[0], height=GeomValues[1], insertbackground="white")
+    TextWidget.configure(bg="black", fg="white", width=GeomValues[0], height=GeomValues[1], insertbackground="white", font=FontSet)
     _LOG.write(f"{str(now)} - Reconfigured the editing interface: OK\n")
 
-TextWidget.pack()
 _LOG.write(f"{str(now)} - 'Packed' the editing interface: OK\n")
 
 # Closing the configs
@@ -586,6 +613,7 @@ file_types = [(lang[32], '*.txt'),
               (lang[51], '*.asm'),
               (lang[52], '*.md'),
               (lang[102], '*.json'),
+              (lang[185], '*.wclassic'),
               (lang[110], '*.ath'),
               (lang[111], "*.att"),
               (lang[112], "*.avs"),
@@ -849,16 +877,22 @@ def _terminal_get(entry_selection):
     
     os.system(_data)
     
+    _LOG.write(f"{str(now)} - Used the following command on the Terminal - {str(_data)}: OK\n")
+    
 
 def _trick_terminal(func, window):
     window.destroy()
     
     func()
+    
+    _LOG.write(f"{str(now)} - Refreshed the Terminal Inputs: OK\n")
 
 def Terminal():
     terminal = Toplevel(desktop_win)
     
     terminal.title(lang[183])
+    
+    _LOG.write(f"{str(now)} - Opened the Terminal Inputs: OK\n")
     
     entry_1 = Entry(terminal, font=("Calibri", 13))
     butt_1 = Button(terminal, text=lang[178], command=lambda:
@@ -879,6 +913,7 @@ class InternetOnWriter:
         askForLink = sdg.askstring(lang[80], lang[91])
         if askForLink != ' ' or askForLink != '':
             simple_webbrowser.Website(askForLink)
+            _LOG.write(f"{str(now)} - Went to {str(askForLink)} via WriterClassic: OK\n")
 
     @staticmethod
     def Search(engine):
@@ -886,86 +921,102 @@ class InternetOnWriter:
             askForTyping = sdg.askstring(lang[83], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Google(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Google: OK\n")
 
         elif engine == 'bing':
             askForTyping = sdg.askstring(lang[82], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Bing(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Bing: OK\n")
 
         elif engine == 'ysearch':
             # stands for Yahoo!
             askForTyping = sdg.askstring(lang[85], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Yahoo(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Yahoo!: OK\n")
 
         elif engine == 'ddgo':
             # stands for DuckDuckGo
             askForTyping = sdg.askstring(lang[84], lang[90])
             if askForTyping != '':
                 simple_webbrowser.DuckDuckGo(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on DuckDuckGo: OK\n")
 
         elif engine == "yt":
             # stands for YouTube
             askForTyping = sdg.askstring(lang[99], lang[90])
             if askForTyping != '':
                 simple_webbrowser.YouTube(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on YouTube: OK\n")
 
         elif engine == "ecosia":
             askForTyping = sdg.askstring(lang[98], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Ecosia(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Ecosia: OK\n")
 
         elif engine == "stack":
             # stands for Stack Overflow
             askForTyping = sdg.askstring(lang[100], lang[90])
             if askForTyping != '':
                 simple_webbrowser.StackOverflow(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on StackOverflow: OK\n")
 
         elif engine == "soundcloud":
             askForTyping = sdg.askstring(lang[104], lang[90])
             if askForTyping != '':
                 simple_webbrowser.SoundCloud(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on SoundCloud: OK\n")
 
         elif engine == "archive":
             # stands for The Internet Archive
             askForTyping = sdg.askstring(lang[109], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Archive(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on The Internet Archive: OK\n")
 
         elif engine == "qwant":
             # stands for Qwant.com
             askForTyping = sdg.askstring(lang[108], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Qwant(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Qwant: OK\n")
 
         elif engine == "spotify":
             # stands for Spotify Online
             askForTyping = sdg.askstring(lang[126], lang[90])
             if askForTyping != '':
                 simple_webbrowser.SpotifyOnline(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Spotify Online: OK\n")
 
         elif engine == 'brave':
             # stands for Brave Search
             askForTyping = sdg.askstring(lang[139], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Brave(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Brave Search: OK\n")
                 
         elif engine == "github":
             askForTyping = sdg.askstring(lang[170], lang[90])
             if askForTyping != '':
                 simple_webbrowser.GitHub(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on GitHub: OK\n")
                 
         elif engine == "gitlab":
             askForTyping = sdg.askstring(lang[172], lang[90])
             if askForTyping != '':
                 simple_webbrowser.GitLab(askForTyping)
+                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on GitLab: OK\n")
 
 def plugin_help():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/wiki/Plugin-Setup")
+    _LOG.write(f"{str(now)} - Requested help with the Plugin Central: OK\n")
 
 def article_md():
     simple_webbrowser.Website(url='https://github.com/MF366-Coding/WriterClassic/wiki/Manual-Configuration-Setup')
-
+    _LOG.write(f"{str(now)} - Requested help with the Manual Configuration: OK\n")
+    
 
 class PluginCentral:
     _WIN = None
@@ -980,6 +1031,7 @@ class PluginCentral:
                 
                 if _confirm:
                     _1.plugin(desktop_win, TextWidget, NOW_FILE)
+                    _LOG.write(f"{str(now)} - Plugin 1 was executed: OK\n")
                 
             except:
                 mb.showerror(lang[161], lang[162])
@@ -992,6 +1044,7 @@ class PluginCentral:
                 
                 if _confirm:
                     _2.plugin(desktop_win, TextWidget, NOW_FILE)
+                    _LOG.write(f"{str(now)} - Plugin 2 was executed: OK\n")
                 
             except:
                 mb.showerror(lang[161], lang[162])
@@ -1004,6 +1057,7 @@ class PluginCentral:
                 
                 if _confirm:
                     _3.plugin(desktop_win, TextWidget, NOW_FILE)
+                    _LOG.write(f"{str(now)} - Plugin 3 was executed: OK\n")
                 
             except:
                 mb.showerror(lang[161], lang[162])
@@ -1030,6 +1084,8 @@ class PluginCentral:
             PluginCentral._open_plugin(3))
         butt_3.pack()
 
+        _LOG.write(f"{str(now)} - The Plugin Central has been created: OK\n")
+
         PluginCentral._WIN.mainloop()
 
 
@@ -1040,6 +1096,8 @@ def clear_log_screen(text_interface):
         temp_log = _TEMP_LOG.read()
         text_interface.insert(0.0, str(temp_log))
         _TEMP_LOG.close()
+    
+    _LOG.write(f"{str(now)} - Log File has been refreshed: OK\n")
 
 
 def show_log():
@@ -1055,6 +1113,8 @@ def show_log():
         temp_log = _TEMP_LOG.read()
         _new_editor.insert(0.0, str(temp_log))
         _TEMP_LOG.close()
+        
+    _LOG.write(f"{str(now)} - The Log File has been shown: OK\n")
 
 
 class SignaturePlugin:
@@ -1065,6 +1125,8 @@ class SignaturePlugin:
             SIGNATURE_FILE.close()
 
         TextWidget.insert(END, f"\n\n{str(signature)}")
+        
+        _LOG.write(f"{str(now)} - The Custom signature has been inserted: OK\n")
 
     @staticmethod
     def auto():
@@ -1074,6 +1136,8 @@ class SignaturePlugin:
         signature = f"--\n{lang[132]}\n{transformed_username}"
 
         TextWidget.insert(END, f"\n\n{str(signature)}")
+        
+        _LOG.write(f"{str(now)} - The Auto signature has been inserted: OK\n")
 
 def commandPrompt():
     askNow = sdg.askstring(lang[68], lang[69])
@@ -1353,6 +1417,7 @@ try:
         menu_12.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
+        _LOG.write(f"{str(now)} - The Menus have been themed [LINUX ONLY]: OK\n")
 except TclError:
     if sys.platform == "linux":
         # Themed menus in case of: Linux Python3
@@ -1369,6 +1434,7 @@ except TclError:
         menu_12.configure(background="white", foreground="black")
         menu_8.configure(background="white", foreground="black")
         menu_9.configure(background="white", foreground="black")
+        _LOG.write(f"{str(now)} - The Menus have been themed [LINUX ONLY]: OK\n")
 
 # dropdowns/cascades
 menu_bar.add_cascade(label=lang[2],menu=menu_10)
@@ -1387,6 +1453,7 @@ menu_bar.add_cascade(label=lang[6], menu=menu_11)
 
 # Yes, menu_bar is desktop_win's menu bar lmfao
 desktop_win.configure(menu=menu_bar)
+_LOG.write(f"{str(now)} - The Menu bar has been configured correctly: OK\n")
 
 # And done! Now, it will continuously mainlooping! Enjoy!
 desktop_win.mainloop()
