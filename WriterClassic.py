@@ -93,9 +93,6 @@ _LOG.write(f"{str(now)} - Imported compile from py_compile: OK\n")
 from getpass import getuser
 _LOG.write(f"{str(now)} - Imported getuser from getpass: OK\n")
 
-from tkinter.ttk import * # Not sure
-_LOG.write(f"{str(now)} - Imported tkinter.ttk: OK\n")
-
 from tkinter import simpledialog as sdg # Inputs with GUI
 _LOG.write(f"{str(now)} - Imported simpledialog from tkinter: OK\n")
 
