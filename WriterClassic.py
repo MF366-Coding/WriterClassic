@@ -39,6 +39,7 @@ print(NOW_FILE)
 
 from tkinter import Tk, Toplevel, TclError, Label, Button, Text, Entry, END
 from tkinter import RIGHT, BOTTOM, TOP, LEFT, Menu, Canvas, Frame
+from tkinter.ttk import *
 import sys # Platforms and OSes
 import json # google it lmfao
 
