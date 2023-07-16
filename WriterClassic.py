@@ -5,6 +5,10 @@ WriterClassic
 
 Powered by: Python 3.10.11 (in my Windows computer)
 
+Optimized version: only has what it needs, mate!
+
+Python 2 is no longer supported by WriterClassic!
+
 The colored menu seems to only work on Linux.
 But the app works on Windows and Mac, without the colored menu thought.
 
@@ -14,6 +18,7 @@ Official Repo:
 Find me in this spots:
     https://github.com/MF366-Coding
     https://www.youtube.com/@mf_366
+    https://www.buymeacoffee.com/mf366 (Support me please!)
 
 Original idea by: MF366
 Fully developed by: MF366
@@ -32,21 +37,8 @@ now = datetime.datetime.now()
 
 print(NOW_FILE)
 
-_LOG = open("user_data/log.wclassic", mode="a", encoding="utf-8")
-
-_LOG.write("\n")
-_LOG.write(f"{str(now)} - WriterClassic was executed: OK\n")
-
-
-try:
-    from tkinter import * # Window
-    _LOG.write(f"{str(now)} - Imported tkinter: OK\n")
-except ModuleNotFoundError:
-    _LOG.write(f"{str(now)} - Imported tkinter: ERROR\n")
-    from Tkinter import *
-    _LOG.write(f"{str(now)} - Attempted to import Tkinter from Python 2: OK\n")
-
-
+from tkinter import Tk, Toplevel, TclError, Label, Button, Text, Entry, END
+from tkinter import RIGHT, BOTTOM, TOP, LEFT, Menu, Canvas, Frame
 import sys # Platforms and OSes
 import json # google it lmfao
 
@@ -54,26 +46,11 @@ desktop_win = Tk()
 TextWidget = Text(desktop_win, font=("Calibri", 13))
 TextWidget.pack()
 
-# Your existing code for the text editor
+_LOG = open("user_data/log.wclassic", mode="a", encoding="utf-8")
 
-if len(sys.argv) > 1:
-    # The first command-line argument is the file path
-    file_path = sys.argv[1]
+_LOG.write("\n")
+_LOG.write(f"{str(now)} - WriterClassic was executed: OK\n")
     
-    file_input = open(file_path, "rt", encoding="utf-8")
-    file_data = file_input.read()
-
-    desktop_win.title(f"WriterClassic - {file_path}")
-    TextWidget.delete(index1=0.0, index2=END)
-    TextWidget.insert(chars=file_data, index=0.0)
-    
-    _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
-    
-    NOW_FILE = str(file_path)
-    file_input.close()
-    print(NOW_FILE)
-
-
 import random
 import os
 
@@ -116,72 +93,63 @@ _LOG.write(f"{str(now)} - Imported compile from py_compile: OK\n")
 from getpass import getuser
 _LOG.write(f"{str(now)} - Imported getuser from getpass: OK\n")
 
-try:
-    from tkinter.ttk import * # Not sure
-    _LOG.write(f"{str(now)} - Imported tkinter.ttk: OK\n")
-    from tkinter import simpledialog as sdg # Inputs with GUI
-    _LOG.write(f"{str(now)} - Imported simpledialog from tkinter: OK\n")
-    import tkinter.filedialog as dlg # File Dialogs were never this easy...
-    _LOG.write(f"{str(now)} - Imported filedialog from tkinter: OK\n")
-    import tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
-    _LOG.write(f"{str(now)} - Imported messagebox from tkinter: OK\n")
-    from tkinter.font import Font # Ouchie mama (font, daaah)
-    _LOG.write(f"{str(now)} - Imported Font from tkinter.font: OK\n")
-except ModuleNotFoundError:
-    _LOG.write(f"{str(now)} - Imported tkinter.ttk: ERROR\n")
-    from Tkinter.ttk import *
-    _LOG.write(f"{str(now)} - Attempted to import Tkinter.ttk: OK\n")
-    
-    _LOG.write(f"{str(now)} - Imported simpledialog from tkinter: ERROR\n")
-    from Tkinter import simpledialog as sdg
-    _LOG.write(f"{str(now)} - Attempted to import simpledialog from Tkinter: OK\n")
-    
-    _LOG.write(f"{str(now)} - Imported filedialog from tkinter: ERROR\n")
-    import Tkinter.filedialog as dlg # File Dialogs were never this easy...
-    _LOG.write(f"{str(now)} - Attempted to import filedialog from Tkinter: OK\n")
-    
-    _LOG.write(f"{str(now)} - Imported messagebox from tkinter: ERROR\n")
-    import Tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
-    _LOG.write(f"{str(now)} - Attempted to import filedialog from Tkinter: OK\n")
-    
-    _LOG.write(f"{str(now)} - Imported Font from tkinter.font: ERROR\n")
-    from Tkinter.font import Font # Ouchie mama (font, daaah)
-    _LOG.write(f"{str(now)} - Attempted to import Font from Tkinter.font: OK\n")
+from tkinter.ttk import * # Not sure
+_LOG.write(f"{str(now)} - Imported tkinter.ttk: OK\n")
+
+from tkinter import simpledialog as sdg # Inputs with GUI
+_LOG.write(f"{str(now)} - Imported simpledialog from tkinter: OK\n")
+
+import tkinter.filedialog as dlg # File Dialogs were never this easy...
+_LOG.write(f"{str(now)} - Imported filedialog from tkinter: OK\n")
+
+import tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
+_LOG.write(f"{str(now)} - Imported messagebox from tkinter: OK\n")
+
+from tkinter.font import Font # Ouchie mama (font, daaah)
+_LOG.write(f"{str(now)} - Imported Font from tkinter.font: OK\n")
+
 
 with open('config/lang.wclassic', 'r', encoding="utf-8") as configLangFile:
     setLang = configLangFile.read()
     _LOG.write(f"{str(now)} - Language ({str(setLang[0:2])}): ENABLED\n")
+
 
 with open('data/'+str(setLang[0:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
     lang = usedLang.split('\n')
     _LOG.write(f"{str(now)} - Language has been configured correctly: OK\n")
 
+
 try:
     from simple_webbrowser import simple_webbrowser
     _LOG.write(f"{str(now)} - simple_webbrowser by MF366 has been imported: OK\n")
+    
 except (ModuleNotFoundError, ImportError):
     _LOG.write(f"{str(now)} - simple_webbrowser by MF366 has been imported: ERROR\n")
     mb.showerror(lang[155], lang[156])
     module_pip = mb.askyesno(lang[155], lang[157])
     if module_pip:
+        
         if sys.platform == "win32":
             os.system("python -m pip install simple_webbrowser")
             mb.showinfo(lang[155], lang[158])
             _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: OK\n")
             _LOG.write(f"{str(now)} - End of session\n")
             quit()
+            
         elif sys.platform in UNIX_OSES:
             os.system("pip install simple_webbrowser")
             mb.showinfo(lang[155], lang[158])
             _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: OK\n")
             _LOG.write(f"{str(now)} - End of session\n")
             quit()
+            
         else:
             mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
             _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: NO (OS ERROR)\n")
             _LOG.write(f"{str(now)} - End of session\n")
             quit()
+            
     elif module_pip == False:
         mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
         _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: NO (USER DECISION)\n")
@@ -239,6 +207,7 @@ if startApp == '1':
         _LOG.write(f"{str(now)} - Got WriterClassic Releases data: OK\n")
         latest_version = data['tag_name']
         _LOG.write(f"{str(now)} - Got the latest release's tag: OK\n")
+        
     except (requests.exceptions.ConnectTimeout, requests.exceptions.ConnectionError, TimeoutError, requests.exceptions.ReadTimeout):
         mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
         _LOG.write(f"{str(now)} - Connected to GitHub: ERROR\n")
@@ -1454,6 +1423,22 @@ menu_bar.add_cascade(label=lang[6], menu=menu_11)
 # Yes, menu_bar is desktop_win's menu bar lmfao
 desktop_win.configure(menu=menu_bar)
 _LOG.write(f"{str(now)} - The Menu bar has been configured correctly: OK\n")
+
+if len(sys.argv) > 1:
+    # The first command-line argument is the file path
+    file_path = sys.argv[1]
+    
+    file_input = open(file_path, "rt", encoding="utf-8")
+    file_data = file_input.read()
+
+    desktop_win.title(f"WriterClassic - {file_path}")
+    TextWidget.delete(index1=0.0, index2=END)
+    TextWidget.insert(chars=file_data, index=0.0)
+    
+    NOW_FILE = str(file_path)
+    file_input.close()
+    print(NOW_FILE)
+    _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
 
 # And done! Now, it will continuously mainlooping! Enjoy!
 desktop_win.mainloop()
