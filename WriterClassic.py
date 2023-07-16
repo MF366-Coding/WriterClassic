@@ -158,7 +158,7 @@ except (ModuleNotFoundError, ImportError):
     
 if startApp == "1":
     try:
-        import requests # it's a module yay!
+        from requests import get, exceptions # it's a module yay!
         _LOG.write(f"{str(now)} - requests has been imported: OK\n")
     except (ModuleNotFoundError, ImportError):
         _LOG.write(f"{str(now)} - requests has been imported: ERROR\n")
@@ -201,14 +201,14 @@ IGNORE_CHECKING = False
 
 if startApp == '1':
     try:
-        response = requests.get('https://api.github.com/repos/MF366-Coding/WriterClassic/releases/latest', timeout=3.5)
+        response = get('https://api.github.com/repos/MF366-Coding/WriterClassic/releases/latest', timeout=3.5)
         _LOG.write(f"{str(now)} - Connected to GitHub: OK\n")
         data = json.loads(response.text)
         _LOG.write(f"{str(now)} - Got WriterClassic Releases data: OK\n")
         latest_version = data['tag_name']
         _LOG.write(f"{str(now)} - Got the latest release's tag: OK\n")
         
-    except (requests.exceptions.ConnectTimeout, requests.exceptions.ConnectionError, TimeoutError, requests.exceptions.ReadTimeout):
+    except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout):
         mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
         _LOG.write(f"{str(now)} - Connected to GitHub: ERROR\n")
         _LOG.write(f"{str(now)} - Connection has timed out, is restricted or is simply unavailable: INFO\n")
