@@ -32,6 +32,16 @@ NOW_FILE = False
 
 lines = 0
 
+from os import path as _PATH
+
+script_location = _PATH.dirname(_PATH.abspath(__file__))
+
+config = _PATH.join(script_location, 'config')
+user_data = _PATH.join(script_location, 'user_data')
+exe_assets = _PATH.join(script_location, 'exe_assets')
+plugin_dir = _PATH.join(script_location, 'plugins')
+data_dir = _PATH.join(script_location, 'data')
+
 import datetime # Really, bro?
 now = datetime.datetime.now()
 
@@ -47,7 +57,7 @@ desktop_win = Tk()
 TextWidget = Text(desktop_win, font=("Calibri", 13))
 TextWidget.pack()
 
-_LOG = open("user_data/log.wclassic", mode="a", encoding="utf-8")
+_LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
 
 _LOG.write("\n")
 _LOG.write(f"{str(now)} - WriterClassic was executed: OK\n")
@@ -71,7 +81,7 @@ NOT_ALLOWED = [
     "     "
 ]
 
-with open('config/startup.wclassic', 'r', encoding='utf-8') as startupFile:
+with open(f'{config}/startup.wclassic', 'r', encoding='utf-8') as startupFile:
     startAppData = startupFile.read()
     startApp = startAppData[0:1]
     if startApp == "0":
@@ -107,12 +117,12 @@ from tkinter.font import Font # Ouchie mama (font, daaah)
 _LOG.write(f"{str(now)} - Imported Font from tkinter.font: OK\n")
 
 
-with open('config/lang.wclassic', 'r', encoding="utf-8") as configLangFile:
+with open(f'{config}/lang.wclassic', 'r', encoding="utf-8") as configLangFile:
     setLang = configLangFile.read()
     _LOG.write(f"{str(now)} - Language ({str(setLang[0:2])}): ENABLED\n")
 
 
-with open('data/'+str(setLang[0:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
+with open(f'{data_dir}/'+str(setLang[0:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
     lang = usedLang.split('\n')
     _LOG.write(f"{str(now)} - Language has been configured correctly: OK\n")
@@ -190,7 +200,7 @@ if startApp == "1":
 _LOG.write(f"{str(now)} - WriterClassic launched: OK\n")
 
 if sys.platform == "win32":
-    desktop_win.iconbitmap("data/app_icon.ico")
+    desktop_win.iconbitmap(f"{data_dir}/app_icon.ico")
     _LOG.write(f"{str(now)} - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK\n")
 
 latest_version = None
@@ -214,17 +224,17 @@ if startApp == '1':
         _LOG.write(f"{str(now)} - WriterClassic is launching without checking for updates: OK\n")
 
 # Config files
-with open('data/version.wclassic', 'r', encoding='utf-8') as versionFile:
+with open(f'{data_dir}/version.wclassic', 'r', encoding='utf-8') as versionFile:
     appVGet = versionFile.read()
     appV = appVGet[0:6]
     _LOG.write(f"{str(now)} - Got the current version: OK\n")
     #print(appV)
 
-with open('config/theme.json', 'rt', encoding='utf-8') as textColor:
+with open(f'{config}/theme.json', 'rt', encoding='utf-8') as textColor:
     theme = json.load(textColor)
     _LOG.write(f"{str(now)} - Got the current theme: OK\n")
 
-with open('config/font.json', 'rt', encoding='utf-8') as fontFile:
+with open(f'{config}/font.json', 'rt', encoding='utf-8') as fontFile:
     font_use = json.load(fontFile)
     _LOG.write(f"{str(now)} - Got the current font family/type: OK\n")
     _LOG.write(f"{str(now)} - Got the current font size: OK\n")
@@ -246,7 +256,7 @@ except TclError:
     _LOG.write(f"{str(now)} - Font size is set to 14 because of a font error: OK\n")
     FontSet = Font(family="Segoe UI", size=14)
     _LOG.write(f"{str(now)} - Font type is set to Segoe UI because of a font error: OK\n")
-    with open('config/font.json', 'w', encoding='utf-8') as fixed_fontFile:
+    with open(f'{config}/font.json', 'w', encoding='utf-8') as fixed_fontFile:
         new_font = {
             "font-type":"Segoe UI",
             "font-size":14
@@ -257,7 +267,7 @@ except TclError:
 
 _LOG.write(f"{str(now)} - The editing interface has been created: OK\n")
 
-with open('config/geom.wclassic', 'r', encoding='utf-8') as geom_bg:
+with open(f'{config}/geom.wclassic', 'r', encoding='utf-8') as geom_bg:
     geomValue = geom_bg.read()
     _LOG.write(f"{str(now)} - Got the window's dimensions settings: OK\n")
 
@@ -318,7 +328,7 @@ menu_12 = Menu(menu_bar)
 _LOG.write(f"{str(now)} - Created all the menus: OK\n")
 
 def writeStartup(text):
-    with open('config/startup.wclassic', 'w', encoding='utf-8') as startupWriteFile:
+    with open(f'{config}/startup.wclassic', 'w', encoding='utf-8') as startupWriteFile:
         startupWriteFile.write(text)
         _LOG.write(f"{str(now)} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
         startupWriteFile.close()
@@ -386,7 +396,7 @@ def SetWinSize():
             _LOG.write(f"{str(now)} - Editing interface has been reconfigured: OK\n")
             desktop_win.geometry(str(widthSet)+'x'+str(heightSet))
             _LOG.write(f"{str(now)} - Window's dimensions were set: OK\n")
-            with open('config/geom.wclassic', 'w', encoding='utf-8') as geomdata:
+            with open(f'{config}/geom.wclassic', 'w', encoding='utf-8') as geomdata:
                 geomdata.write('')
                 _LOG.write(f"{str(now)} - Configured default window's dimensions: OK\n")
                 geomdata.write(str(widthSet)+'x'+str(heightSet))
@@ -394,7 +404,7 @@ def SetWinSize():
 
 # Theme Picker
 def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fifth):
-    with open('config/theme.json', 'wt') as fileColored:
+    with open(f'{config}/theme.json', 'wt') as fileColored:
         new_obj = {
             "color":str(colour_first),
             "ct":str(colour_third),
@@ -427,7 +437,7 @@ def quickway():
 
 # Setup (Lang files)
 def LanguageSet(language_set, root_win):
-    with open('config/lang.wclassic', 'w', encoding='utf-8') as deleteThat:
+    with open(f'{config}/lang.wclassic', 'w', encoding='utf-8') as deleteThat:
         deleteThat.write('')
         deleteThat.write(language_set)
         _LOG.write(f"{str(now)} - A new language has been set ({str(language_set)}): OK\n")
@@ -518,7 +528,7 @@ def fontEdit(winType):
         if fontSize in NOT_ALLOWED:
             mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
         elif fontSize not in NOT_ALLOWED:
-            with open('config/font.json', 'wt', encoding='utf-8') as fontFileUse:
+            with open(f'{config}/font.json', 'wt', encoding='utf-8') as fontFileUse:
                 font_use["font-size"] = fontSize
                 new_object = {
                     "font-type":font_use["font-type"],
@@ -533,7 +543,7 @@ def fontEdit(winType):
         if fontType in NOT_ALLOWED:
             mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
         elif fontType not in NOT_ALLOWED:
-            with open('config/font.json', 'wt', encoding='utf-8') as fontFileUse:
+            with open(f'{config}/font.json', 'wt', encoding='utf-8') as fontFileUse:
                 font_use["font-type"] = fontType
                 new_object = {
                     "font-type":fontType,
@@ -753,7 +763,7 @@ def aboutApp(thing2, thing3):
     from PIL import Image, ImageTk
     
     # Load the PNG image using PIL
-    image = Image.open("data/logo.png")
+    image = Image.open(f"{data_dir}/logo.png")
     
     # Get the dimensions of the image
     image_width, image_height = image.size
@@ -810,7 +820,7 @@ def Tips_Tricks():
 def resetWriter(rootWin):
     askSOS = mb.askyesno(lang[77], lang[78])
     if askSOS:
-        with open('config/font.json', 'wt', encoding='utf-8') as fontFileNew:
+        with open(f'{config}/font.json', 'wt', encoding='utf-8') as fontFileNew:
             new_values = {
                 "font-type":"Noto Sans",
                 "font-size":13
@@ -827,14 +837,14 @@ def resetWriter(rootWin):
         _LOG.write(f"{str(now)} - Language and theme have both been reset: OK\n")
 
         desktop_win.geometry('700x500')
-        with open('config/geom.wclassic', 'w', encoding='utf-8') as geomdata:
+        with open(f'{config}/geom.wclassic', 'w', encoding='utf-8') as geomdata:
             geomdata.write('')
             geomdata.write('700x500')
             geomdata.close()
             
         _LOG.write(f"{str(now)} - Window's dimensions have been reset: OK\n")
 
-        with open("config/signature.wclassic", "w", encoding='utf-8') as sigFILE:
+        with open(f"{config}/signature.wclassic", "w", encoding='utf-8') as sigFILE:
             sigFILE.write("--\nBest regards,\nThis is a customizable signature in a file named signature.wclassic in data folder...")
             _LOG.write(f"{str(now)} - The Custom Signature has been reset: OK\n")
 
@@ -1037,7 +1047,7 @@ class PluginCentral:
         PluginCentral._WIN.geometry("300x300")
         
         if sys.platform == "win32":
-            PluginCentral._WIN.iconbitmap("data/app_icon.ico")
+            PluginCentral._WIN.iconbitmap(f"{data_dir}/app_icon.ico")
         
         butt_1 = Button(PluginCentral._WIN, text=lang[175], command=lambda:
             PluginCentral._open_plugin(1))
@@ -1059,7 +1069,7 @@ class PluginCentral:
 def clear_log_screen(text_interface):
     text_interface.delete(0.0, END)
     
-    with open("user_data/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
+    with open(f"{user_data}/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
         temp_log = _TEMP_LOG.read()
         text_interface.insert(0.0, str(temp_log))
         _TEMP_LOG.close()
@@ -1076,7 +1086,7 @@ def show_log():
         clear_log_screen(_new_editor))
     _new_button.pack()
     
-    with open("user_data/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
+    with open(f"{user_data}/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
         temp_log = _TEMP_LOG.read()
         _new_editor.insert(0.0, str(temp_log))
         _TEMP_LOG.close()
@@ -1087,7 +1097,7 @@ def show_log():
 class SignaturePlugin:
     @staticmethod
     def custom():
-        with open("config/signature.wclassic", "r", encoding="utf-8") as SIGNATURE_FILE:
+        with open(f"{config}/signature.wclassic", "r", encoding="utf-8") as SIGNATURE_FILE:
             signature = SIGNATURE_FILE.read()
             SIGNATURE_FILE.close()
 
@@ -1113,7 +1123,7 @@ def commandPrompt():
         OpenFile(desktop_win)
 
     elif askNow == 'about':
-        aboutApp('data/about.wclassic', 'r')
+        aboutApp(f'{data_dir}/about.wclassic', 'r')
 
     elif askNow == "newfile":
         newFile()
@@ -1220,6 +1230,8 @@ if startApp == "1":
     menu_11.add_separator()
 menu_11.add_command(label=lang[25], command=lambda:
     aboutApp('data/about.wclassic', 'r'))
+menu_11.add_command(label=lang[186], command=lambda:
+    simple_webbrowser.Website("https://www.buymeacoffee.com/mf366"))
 menu_11.add_command(label=lang[26], command=APP_HELP)
 menu_11.add_command(label=lang[27], command=repo)
 menu_11.add_command(label=lang[179], command=show_log)
