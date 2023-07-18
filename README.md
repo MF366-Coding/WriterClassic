@@ -136,6 +136,11 @@ All of those make use of control key plus another key so that you have to press 
 * __Ctrl + R__ - Opens the clock plugin 
 
 ## New stuff
+### Open With... WriterClassic
+You can make **WriterClassic.exe** as default for certain plain text files. 
+
+Or you can just Open With WriterClassic. 
+
 ### Need some help?
 Don't have a web browser open? Need to search something? Search directly from WriterClassic using one of the available Search Engines:
 - Google
