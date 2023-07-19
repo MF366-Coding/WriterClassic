@@ -175,7 +175,7 @@ Plugin Central
 WriterClassic - Plugin Central
 Plugin 1
 Plugin 2
-Plugin 3
+Plugin
 Kør
 Vis logfil
 WriterClassic - Logfil
@@ -185,3 +185,8 @@ WriterClassic - Terminalindgang
 Slet indtastning
 WriterClassic-konfigurationsfil
 Støtte | Donere
+WriterClassic - Kodningsfejl
+Der blev fundet en Unicode-fejl under forsøget på at åbne
+Ønsker du at åbne den med din standardteksteditor?
+Lås vinduet
+Lås vinduet op

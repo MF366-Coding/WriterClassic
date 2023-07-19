@@ -175,7 +175,7 @@ Plugin-Zentrale
 WriterClassic - Plugin-Zentrale
 Plugin 1
 Plugin 2
-Plugin 3
+Plugin
 Ausführen
 Logdatei anzeigen
 WriterClassic - Protokolldatei
@@ -185,3 +185,8 @@ WriterClassic - Terminal-Eingaben
 Eingang löschen
 WriterClassic-Konfigurationsdatei
 Unterstützen | Spenden
+WriterClassic - Kodierungsfehler
+Beim Öffnen wurde ein Unicode-Fehler festgestellt
+Möchten Sie die Datei mit Ihrem Standard-Texteditor öffnen?
+Sperren Sie das Fenster
+Entsperren Sie das Fenster

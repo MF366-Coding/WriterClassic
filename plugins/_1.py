@@ -1,4 +1,6 @@
-def plugin(window, text, _file):
-    print("1 is Connected.")
+from tkinter import messagebox as mb
 
-title = "1 connect"
+def plugin(window, text, _file):
+    mb.showinfo(title="Example I", message="this is a plugin you can customize ig")
+
+title = "Example I"

@@ -175,7 +175,7 @@ Central för plugins
 WriterClassic - Plugin Central
 Plugin 1
 Plugin 2
-Plugin 3
+Plugin
 Kör
 Visa loggfil
 WriterClassic - loggfil
@@ -185,3 +185,8 @@ WriterClassic - Terminalinmatning
 Radera post
 FörfattareClassic Konfigurationsfil
 Donera
+WriterClassic - Kodningsfel
+Ett Unicode-fel hittades när du försökte öppna
+Vill du öppna den med din standardtextredigerare?
+Lås fönstret
+Lås upp fönstret

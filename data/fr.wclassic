@@ -175,7 +175,7 @@ Plugin Central
 WriterClassic - Plugin Central
 Plugin 1
 Plugin 2
-Plugin 3
+Plugin
 Exécuter
 Voir le fichier journal
 WriterClassic - Fichier journal
@@ -185,3 +185,8 @@ WriterClassic - Saisie de terminal
 Supprimer une entrée
 Fichier de configuration de WriterClassic
 Donner
+WriterClassic - Erreur d'encodage
+Une erreur d'encodage a été trouvée en essayant d'ouvrir
+Souhaitez-vous l'ouvrir avec votre éditeur de texte par défaut ?
+Verrouiller la fenêtre
+Déverrouiller la fenêtre

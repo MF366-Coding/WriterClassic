@@ -175,7 +175,7 @@ Plugin Central
 WriterClassic - Plugin Central
 Plugin 1
 Plugin 2
-Plugin 3
+Plugin
 Run
 View Log File
 WriterClassic - Log File
@@ -185,3 +185,8 @@ WriterClassic - Terminal Inputs
 Clear Input
 WriterClassic Configuration File
 Support | Donate
+WriterClassic - Encoding Error
+A Unicode Error was found while trying to open
+Do you wish to open it with your default text editor?
+Lock the window
+Unlock the window

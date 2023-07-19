@@ -175,7 +175,7 @@ Plugin Central
 WriterClassic - Central de plugins
 Plugin 1
 Plugin 2
-Plugin 3
+Plugin
 Ejecutar
 Ver archivo de registro
 WriterClassic - Archivo de registro
@@ -185,3 +185,8 @@ WriterClassic - Input Terminal
 Borrar entrada
 Archivo de configuración de WriterClassic
 Apoyo | Donaciones
+WriterClassic - Error de codificación
+Se ha encontrado un error Unicode al intentar abrir
+¿Desea abrirlo con su editor de texto predeterminado?
+Bloquear la ventana
+Desbloquear la ventana

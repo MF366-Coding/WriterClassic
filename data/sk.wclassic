@@ -175,7 +175,7 @@ Plugin Central
 WriterClassic - Plugin Central
 Plugin 1
 Plugin 2
-Plugin 3
+Plugin
 Spustiť
 Zobrazenie súboru protokolu
 WriterClassic - Súbor denníka
@@ -185,3 +185,8 @@ WriterClassic - Terminálový vstup
 Odstrániť položku
 Konfiguračný súbor WriterClassic
 Darujte
+WriterClassic - Chyba kódovania
+Pri pokuse o otvorenie bola nájdená chyba Unicode
+Chcete ho otvoriť pomocou predvoleného textového editora?
+Uzamknite okno
+Odomknúť okno

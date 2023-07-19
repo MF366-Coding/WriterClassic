@@ -500,6 +500,8 @@ def repo():
 # Clock
 def clockPlugin():
     clockWindow = Toplevel(desktop_win)
+    clockWindow.geometry('275x65')
+    clockWindow.resizable(False, False)
     _LOG.write(f"{str(now)} - A new window has been called: AWAITING CONFIGURATION\n")
 
     #Windowing
@@ -511,8 +513,6 @@ def clockPlugin():
     TextWidget.configure(
         font=(100)
         )
-
-    clockWindow.geometry('275x65')
 
     _LOG.write(f"{str(now)} - Clock Plugin's window has been configured: OK\n")
 
@@ -628,18 +628,27 @@ def OpenFile(root_win):
     if selected_extension and not file_path.lower().endswith(selected_extension):
         file_path += selected_extension
 
-    file_input = open(file_path, "rt", encoding="utf-8")
-    file_data = file_input.read()
+    try:
+        file_input = open(file_path, "rt", encoding="utf-8")
+        file_data = file_input.read()
 
-    root_win.title(f"{lang[1]} - {file_path}")
-    TextWidget.delete(index1=0.0, index2=END)
-    TextWidget.insert(chars=file_data, index=0.0)
+        root_win.title(f"{lang[1]} - {file_path}")
+        TextWidget.delete(index1=0.0, index2=END)
+        TextWidget.insert(chars=file_data, index=0.0)
+        
+        _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
+        
+        NOW_FILE = str(file_path)
+        file_input.close()
+        
+    except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
+        mb.showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
+        run_default = mb.askyesno(title=lang[187], message=lang[189])
+        if run_default:
+            os.system(str(file_path))
     
-    _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
-    
-    NOW_FILE = str(file_path)
-    file_input.close()
-    print(NOW_FILE)
+    finally:
+        print(NOW_FILE)
 
 
 # Saving as
@@ -752,11 +761,15 @@ def APP_HELP():
     _LOG.write(f"{str(now)} - Requested online help: AWAITING FOR CONNECTION\n")
 
 # infoooooo
-def aboutApp(thing2, thing3):
-    with open(thing2, thing3, encoding='utf-8') as about_d:
+def aboutApp():
+    with open(f"{data_dir}/about.wclassic", mode="r", encoding='utf-8') as about_d:
         about_data = about_d.read()
     
     about_dialogue = Toplevel(desktop_win)
+    about_dialogue.geometry("600x250")
+    
+    about_dialogue.resizable(False, False)
+    
     about_dialogue.title(lang[64])
     label_1 = Label(about_dialogue, text=str(about_data), font=("Calibri", 13))
     
@@ -769,8 +782,8 @@ def aboutApp(thing2, thing3):
     image_width, image_height = image.size
 
     # Define the maximum width and height for the resized image
-    max_width = 400
-    max_height = 400
+    max_width = 200
+    max_height = 200
 
     # Calculate the desired dimensions while maintaining the aspect ratio
     if image_width > image_height:
@@ -795,11 +808,11 @@ def aboutApp(thing2, thing3):
     # Create a Label widget to display the image
     image_label = Label(about_dialogue, image=photo)
     
-    image_label.pack(side=LEFT)
-    label_1.pack(side=RIGHT)
-    button_1.pack(side=BOTTOM)
+    image_label.grid(column=1, row=1)
+    label_1.grid(column=2, row=1)
+    button_1.grid(column=1, row=2)
     
-    about_dialogue.geometry("875x450")
+    
     
     about_dialogue.mainloop()
     
@@ -845,7 +858,7 @@ def resetWriter(rootWin):
         _LOG.write(f"{str(now)} - Window's dimensions have been reset: OK\n")
 
         with open(f"{config}/signature.wclassic", "w", encoding='utf-8') as sigFILE:
-            sigFILE.write("--\nBest regards,\nThis is a customizable signature in a file named signature.wclassic in data folder...")
+            sigFILE.write("--\nBest regards,\nThis is a customizable signature in a file named signature.wclassic in the data folder...")
             _LOG.write(f"{str(now)} - The Custom Signature has been reset: OK\n")
 
 
@@ -986,6 +999,12 @@ class InternetOnWriter:
                 simple_webbrowser.GitLab(askForTyping)
                 _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on GitLab: OK\n")
 
+def lock_a_win(window, _type: bool):
+    if _type:
+        window.resizable(False, False)
+    elif _type == False:
+        window.resizable(True, True)
+
 def plugin_help():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/wiki/Plugin-Setup")
     _LOG.write(f"{str(now)} - Requested help with the Plugin Central: OK\n")
@@ -996,10 +1015,12 @@ def article_md():
     
 
 class PluginCentral:
-    _WIN = None
-    
-    @staticmethod
-    def _open_plugin(module):
+    def __init__(self, window):
+        self.window = window
+        self.add_atributes()
+        self.window.mainloop()
+        
+    def _open_plugin(self, module):
         if module == 1:
             try:
                 from plugins import _1
@@ -1038,32 +1059,81 @@ class PluginCentral:
                 
             except:
                 mb.showerror(lang[161], lang[162])
-    
-    @staticmethod
-    def SETUP():
-        PluginCentral._WIN = Toplevel(desktop_win)
+                
+        elif module == 4:
+            try:
+                from plugins import _4
+                
+                _confirm = mb.askyesno(lang[174], f"{lang[178]} ({_4.title})?")
+                
+                if _confirm:
+                    _4.plugin(desktop_win, TextWidget, NOW_FILE)
+                    _LOG.write(f"{str(now)} - Plugin 4 was executed: OK\n")
+                
+            except:
+                mb.showerror(lang[161], lang[162])
 
-        PluginCentral._WIN.title(lang[174])
-        PluginCentral._WIN.geometry("300x300")
+    def add_atributes(self):
+        self.window.title(lang[174])
+        self.window.geometry("300x85")
+        self.window.resizable(False, False)
         
         if sys.platform == "win32":
-            PluginCentral._WIN.iconbitmap(f"{data_dir}/app_icon.ico")
+            self.window.iconbitmap(f"{data_dir}/app_icon.ico")
         
-        butt_1 = Button(PluginCentral._WIN, text=lang[175], command=lambda:
-            PluginCentral._open_plugin(1))
-        butt_1.pack()
+        try:
+            from plugins import _1
+            
+            butt_1 = Button(self.window, text=f"{lang[175]} | {_1.title}", command=lambda:
+                self._open_plugin(1))
+            butt_1.grid(column=1, row=1)
+            
+        except:
+            butt_1 = Button(self.window, text=f"{lang[175]} | Title not found", command=lambda:
+                self._open_plugin(1))
+            butt_1.grid(column=1, row=1)
         
-        butt_2 = Button(PluginCentral._WIN, text=lang[176], command=lambda:
-            PluginCentral._open_plugin(2))
-        butt_2.pack()
+        
+        try:
+            from plugins import _2
+            
+            butt_2 = Button(self.window, text=f"{lang[176]} | {_2.title}", command=lambda:
+                self._open_plugin(2))
+            butt_2.grid(column=2, row=1)
+            
+        except:
+            butt_2 = Button(self.window, text=f"{lang[176]} | Title not found", command=lambda:
+                self._open_plugin(2))
+            butt_2.grid(column=2, row=1)
 
-        butt_3 = Button(PluginCentral._WIN, text=lang[177], command=lambda:
-            PluginCentral._open_plugin(3))
-        butt_3.pack()
+
+        try:
+            from plugins import _3
+            
+            butt_3 = Button(self.window, text=f"{lang[177]} 3 | {_3.title}", command=lambda:
+                self._open_plugin(3))
+            butt_3.grid(column=1, row=2)
+        
+        except:
+            butt_3 = Button(self.window, text=f"{lang[177]} 3 | Title not found", command=lambda:
+                self._open_plugin(3))
+            butt_3.grid(column=1, row=2)
+        
+        
+        try:
+            from plugins import _4
+            
+            butt_4 = Button(self.window, text=f"{lang[177]} 4 | {_4.title}", command=lambda:
+                self._open_plugin(4))
+            butt_4.grid(column=2, row=2)
+        
+        except:
+            butt_4 = Button(self.window, text=f"{lang[177]} 4 | Title not found", command=lambda:
+                self._open_plugin(4))
+            butt_4.grid(column=2, row=2)
+                
 
         _LOG.write(f"{str(now)} - The Plugin Central has been created: OK\n")
-
-        PluginCentral._WIN.mainloop()
 
 
 def clear_log_screen(text_interface):
@@ -1079,6 +1149,7 @@ def clear_log_screen(text_interface):
 
 def show_log():
     _new_window = Toplevel(desktop_win)
+    _new_window.resizable(False, False)
     _new_editor = Text(_new_window, bg=theme["color"], fg=theme["fg"], insertbackground=theme["ct"], font=("Calibri", 14))
     _new_window.title(lang[180])
     _new_editor.pack()
@@ -1123,7 +1194,7 @@ def commandPrompt():
         OpenFile(desktop_win)
 
     elif askNow == 'about':
-        aboutApp(f'{data_dir}/about.wclassic', 'r')
+        aboutApp()
 
     elif askNow == "newfile":
         newFile()
@@ -1188,7 +1259,7 @@ desktop_win.bind('<Control-z>', lambda c:
     SaveFile(desktop_win))
 
 desktop_win.bind('<Control-a>', lambda e:
-    aboutApp('data/about.wclassic', 'r'))
+    aboutApp())
 
 desktop_win.bind('<Control-h>', lambda f:
     APP_HELP())
@@ -1228,8 +1299,7 @@ menu_10.add_command(label=lang[11], command=lambda:
 if startApp == "1":
     menu_11.add_command(label=lang[75], command=UpdateCheck.check)
     menu_11.add_separator()
-menu_11.add_command(label=lang[25], command=lambda:
-    aboutApp('data/about.wclassic', 'r'))
+menu_11.add_command(label=lang[25], command=aboutApp)
 menu_11.add_command(label=lang[186], command=lambda:
     simple_webbrowser.Website("https://www.buymeacoffee.com/mf366"))
 menu_11.add_command(label=lang[26], command=APP_HELP)
@@ -1261,7 +1331,8 @@ menu_8.add_separator()
 menu_8.add_command(label=lang[10], command=lambda:
     WipeFile(desktop_win))
 menu_8.add_separator()
-menu_8.add_command(label=lang[173], command=PluginCentral.SETUP)
+menu_8.add_command(label=lang[173], command=lambda:
+    PluginCentral(window=Toplevel(desktop_win)))
 
 
 menu_9.add_command(label=lang[81], command=InternetOnWriter.Website)
@@ -1329,6 +1400,11 @@ menu_12.add_command(label="Українська (Україна)", command=lambd
     LanguageSet("uk", desktop_win))
 menu_12.add_separator()
 menu_12.add_command(label=lang[74], command=UpdateCheck.change)
+menu_12.add_separator()
+menu_12.add_command(label=lang[190], command=lambda:
+    lock_a_win(desktop_win, True))
+menu_12.add_command(label=lang[191], command=lambda:
+    lock_a_win(desktop_win, False))
 menu_12.add_separator()
 menu_12.add_command(label=lang[76], command=lambda:
     resetWriter(desktop_win))
@@ -1438,17 +1514,26 @@ if len(sys.argv) > 1:
     # The first command-line argument is the file path
     file_path = sys.argv[1]
     
-    file_input = open(file_path, "rt", encoding="utf-8")
-    file_data = file_input.read()
+    try:
+        file_input = open(file_path, "rt", encoding="utf-8")
+        file_data = file_input.read()
 
-    desktop_win.title(f"WriterClassic - {file_path}")
-    TextWidget.delete(index1=0.0, index2=END)
-    TextWidget.insert(chars=file_data, index=0.0)
+        desktop_win.title(f"WriterClassic - {file_path}")
+        TextWidget.delete(index1=0.0, index2=END)
+        TextWidget.insert(chars=file_data, index=0.0)
+        
+        NOW_FILE = str(file_path)
+        file_input.close()
+        _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
+
+    except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
+        mb.showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
+        run_default = mb.askyesno(title=lang[187], message=lang[189])
+        if run_default:
+            os.system(str(file_path))
     
-    NOW_FILE = str(file_path)
-    file_input.close()
-    print(NOW_FILE)
-    _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
+    finally:
+        print(NOW_FILE)
 
 # And done! Now, it will continuously mainlooping! Enjoy!
 desktop_win.mainloop()
