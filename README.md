@@ -4,6 +4,8 @@
 Writer Classic is a rather small Python project that brings to the user a whole new text editing experience. 🤔👍
 
 ## Important info
+**For Linux Users:** check this Issue -> https://github.com/MF366-Coding/WriterClassic/issues/18
+
 **VERY IMPORTANT!**
 - LICENSE -> https://github.com/MF366-Coding/WriterClassic/blob/main/LICENSE
 
