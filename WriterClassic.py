@@ -5,10 +5,6 @@ WriterClassic
 
 Powered by: Python 3.10.11 (in my Windows computer)
 
-Optimized version: only has what it needs, mate!
-
-Python 2 is no longer supported by WriterClassic!
-
 The colored menu seems to only work on Linux.
 But the app works on Windows and Mac, without the colored menu thought.
 
@@ -47,11 +43,21 @@ now = datetime.datetime.now()
 
 print(NOW_FILE)
 
-from tkinter import Tk, Toplevel, TclError, Label, Button, Text, Entry, END
-from tkinter import RIGHT, BOTTOM, TOP, LEFT, Menu, Canvas, Frame
-from tkinter.ttk import *
+import json
+
+try:
+    interface_config = open(f"{config}/interface.wclassic", 'r')
+    interface_cfg = interface_config.read()
+    _interface = interface_cfg[0:3]
+    if _interface != "ttk" and _interface != "_tk":
+        raise ValueError("Wrong Interface")
+except (FileNotFoundError, ValueError):
+    _interface = "ttk"
+
+from tkinter import Tk, Toplevel, TclError, Label, Button, Text, Entry, END, Menu
+if _interface == "ttk":
+    from tkinter.ttk import *
 import sys # Platforms and OSes
-import json # google it lmfao
 
 desktop_win = Tk()
 TextWidget = Text(desktop_win, font=("Calibri", 13))
@@ -163,7 +169,7 @@ except (ModuleNotFoundError, ImportError):
         _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: NO (USER DECISION)\n")
         _LOG.write(f"{str(now)} - End of session\n")
         quit()
-    
+
 if startApp == "1":
     try:
         from requests import get, exceptions # it's a module yay!
@@ -176,23 +182,23 @@ if startApp == "1":
             if sys.platform == "win32":
                 os.system("python -m pip install requests")
                 mb.showinfo(lang[155], lang[158])
-                _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: OK\n")
+                _LOG.write(f"{str(now)} - Command 'pip install requests' has been executed: OK\n")
                 _LOG.write(f"{str(now)} - End of session\n")
                 quit()
             elif sys.platform in UNIX_OSES:
                 os.system("pip install requests")
                 mb.showinfo(lang[155], lang[158])
-                _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: OK\n")
+                _LOG.write(f"{str(now)} - Command 'pip install requests' has been executed: OK\n")
                 _LOG.write(f"{str(now)} - End of session\n")
                 quit()
             else:
                 mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
-                _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: NO (OS ERROR)\n")
+                _LOG.write(f"{str(now)} - Command 'pip install requests' has been executed: NO (OS ERROR)\n")
                 _LOG.write(f"{str(now)} - End of session\n")
                 quit()
         elif module_pip == False:
             mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
-            _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: NO (USER DECISION)\n")
+            _LOG.write(f"{str(now)} - Command 'pip install requests' has been executed: NO (USER DECISION)\n")
             _LOG.write(f"{str(now)} - End of session\n")
             quit()
 
@@ -337,6 +343,10 @@ def writeStartup(text):
 class UpdateCheck:
     @staticmethod
     def check_other():
+        """
+        check_other checks for updates on startup only
+        """
+        
         if appV != latest_version and IGNORE_CHECKING == False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             _LOG.write(f"{str(now)} - Versions don't match: WARNING\n")
@@ -349,6 +359,10 @@ class UpdateCheck:
 
     @staticmethod
     def check():
+        """
+        check checks for updates whenever the user clicks Check for Updates
+        """
+        
         if appV != latest_version and IGNORE_CHECKING == False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             if askForUpdate:
@@ -613,6 +627,12 @@ _LOG.write(f"{str(now)} - Filetypes have been configured correctly: OK\n")
 
 # opens a file
 def OpenFile(root_win):
+    """
+    OpenFile opens a file selected from the following interface
+
+    Args:
+        root_win (Tk): WriterClassic's main window
+    """
     global NOW_FILE
     
     file_path = dlg.asksaveasfilename(parent=root_win, filetypes=file_types, defaultextension="*.*", initialfile="Open a File", confirmoverwrite=False, title=lang[7])
@@ -649,7 +669,6 @@ def OpenFile(root_win):
     
     finally:
         print(NOW_FILE)
-
 
 # Saving as
 def SaveFile(root_win):

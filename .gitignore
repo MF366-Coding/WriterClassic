@@ -1,3 +1,4 @@
 backup
-theme backup.json
+create-build.py
 __pycache__
+.vscode
