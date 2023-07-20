@@ -60,7 +60,7 @@ if _interface == "ttk":
 import sys # Platforms and OSes
 
 desktop_win = Tk()
-TextWidget = Text(desktop_win, font=("Calibri", 13))
+TextWidget = Text(desktop_win, font=("Calibri", 13), borderwidth=5)
 TextWidget.pack()
 
 _LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
