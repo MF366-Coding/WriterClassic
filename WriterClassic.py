@@ -45,18 +45,8 @@ print(NOW_FILE)
 
 import json
 
-try:
-    interface_config = open(f"{config}/interface.wclassic", 'r')
-    interface_cfg = interface_config.read()
-    _interface = interface_cfg[0:3]
-    if _interface != "ttk" and _interface != "_tk":
-        raise ValueError("Wrong Interface")
-except (FileNotFoundError, ValueError):
-    _interface = "ttk"
-
 from tkinter import Tk, Toplevel, TclError, Label, Button, Text, Entry, END, Menu
-if _interface == "ttk":
-    from tkinter.ttk import *
+from tkinter.ttk import *
 import sys # Platforms and OSes
 
 desktop_win = Tk()
