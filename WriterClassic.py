@@ -28,15 +28,23 @@ NOW_FILE = False
 
 lines = 0
 
-from os import path as _PATH
+import os
+_PATH = os.path
 
-script_location = _PATH.dirname(_PATH.abspath(__file__))
+# Get the absolute path of the script
+script_path = _PATH.abspath(__file__)
+print(script_path)
 
-config = _PATH.join(script_location, 'config')
-user_data = _PATH.join(script_location, 'user_data')
-exe_assets = _PATH.join(script_location, 'exe_assets')
-plugin_dir = _PATH.join(script_location, 'plugins')
-data_dir = _PATH.join(script_location, 'data')
+# Get the directory containing the script
+script_dir = _PATH.dirname(script_path)
+print(script_dir)
+
+config = _PATH.join(script_dir, 'config')
+user_data = _PATH.join(script_dir, 'user_data')
+nix_assets = _PATH.join(script_dir, 'nix_assets')
+plugin_dir = _PATH.join(script_dir, 'plugins')
+data_dir = _PATH.join(script_dir, 'data')
+locale = _PATH.join(script_dir, 'locale')
 
 import datetime # Really, bro?
 now = datetime.datetime.now()
@@ -59,7 +67,6 @@ _LOG.write("\n")
 _LOG.write(f"{str(now)} - WriterClassic was executed: OK\n")
     
 import random
-import os
 
 UNIX_OSES = [
             "darwin",
@@ -118,7 +125,7 @@ with open(f'{config}/lang.wclassic', 'r', encoding="utf-8") as configLangFile:
     _LOG.write(f"{str(now)} - Language ({str(setLang[0:2])}): ENABLED\n")
 
 
-with open(f'{data_dir}/'+str(setLang[0:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
+with open(f'{locale}/'+str(setLang[0:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
     lang = usedLang.split('\n')
     _LOG.write(f"{str(now)} - Language has been configured correctly: OK\n")
