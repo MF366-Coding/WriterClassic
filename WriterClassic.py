@@ -328,6 +328,7 @@ menu_9 = Menu(menu_8)
 menu_10 = Menu(menu_bar)
 menu_11 = Menu(menu_bar)
 menu_12 = Menu(menu_bar)
+menu_13 = Menu(menu_12)
 _LOG.write(f"{str(now)} - Created all the menus: OK\n")
 
 def writeStartup(text):
@@ -742,6 +743,77 @@ def WipeFile(root_win):
         
         root_win.title(lang[1])
         file_input.close()
+
+desktop_entry = None
+
+def desktop_create(pycommand: str):
+    """
+    desktop_create creates a Desktop File for Linux
+    
+    Args:
+        pycommand (string): The command/alias for Python (example: pycommand='python3')
+    """
+    
+    global desktop_entry
+    
+    desktop_entry = f"""#!/usr/bin/env xdg-open
+[Desktop Entry]
+Categories=Utility;TextEditor;
+Comment[pt_PT]=Editor de Texto Writer Classic
+Comment=Editor de Texto
+Exec={pycommand} {script_path}
+GenericName[pt_PT]=Editor de Texto
+GenericName=Editor de Texto
+Icon=writerclassic
+InitialPreference=8
+Keywords[pt_PT]=texto;txt;editor;nota;bloco de notas;
+Keywords=text;txt;editor;note;notepad;
+MimeType=text/plain;
+Name[pt_PT]=WriterClassic
+Name=WriterClassic
+Path=
+StartupNotify=true
+StartupWMClass=WriterClassic
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=Multi
+X-DocPath=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+"""
+    with open(f"{script_dir}/WriterClassic.desktop", mode="w", encoding='utf-8') as desktop_file:
+        desktop_file.write(desktop_entry)
+        mb.showinfo(lang[1], lang[101])
+        desktop_file.close()
+
+
+def desktop_create_win():
+    """
+    desktop_create_win creates the window that later on calls desktop_create
+    
+    No args needed or wanted.
+    """
+    desktop_created_win = Toplevel(desktop_win)
+    desktop_created_win.title(lang[197])
+    if sys.platform == "win32":
+        desktop_created_win.iconbitmap(f"{data_dir}/app_icon.ico")
+    desktop_created_win.geometry("600x150")
+    desktop_created_win.resizable(False, False)
+    
+    LabA = Label(desktop_created_win, text=lang[193], font=("Segoe UI", 15))
+    LabB = Label(desktop_created_win, text=lang[194], font=("Segoe UI", 12))
+    ButtA = Button(desktop_created_win, text=lang[196], command=lambda:
+        desktop_create(pycommand='python3'))
+    ButtB = Button(desktop_created_win, text=lang[195], command=lambda:
+        desktop_create(pycommand='python'))
+    
+    LabA.pack()
+    LabB.pack()
+    ButtA.pack()
+    ButtB.pack()
+    
 
 # Non-raged quit
 def QUIT_WRITER(root_win):
@@ -1350,7 +1422,6 @@ menu_8.add_separator()
 menu_8.add_command(label=lang[173], command=lambda:
     PluginCentral(window=Toplevel(desktop_win)))
 
-
 menu_9.add_command(label=lang[81], command=InternetOnWriter.Website)
 menu_9.add_separator()
 menu_9.add_command(label=lang[87], command=lambda:
@@ -1386,37 +1457,44 @@ menu_9.add_command(label=lang[169], command=lambda:
 menu_9.add_command(label=lang[171], command=lambda:
     InternetOnWriter.Search("gitlab"))
 
-menu_12.add_command(label="Čeština (Čechie)", command=lambda:
+menu_13.add_command(label="Čeština (Čechie)", command=lambda:
     LanguageSet("cs", desktop_win))
-menu_12.add_command(label="Dansk (Danmark)", command=lambda:
+menu_13.add_command(label="Dansk (Danmark)", command=lambda:
     LanguageSet("da", desktop_win))
-menu_12.add_command(label="Deutsch (Deutschland)", command=lambda:
+menu_13.add_command(label="Deutsch (Deutschland)", command=lambda:
     LanguageSet("de", desktop_win))
-menu_12.add_command(label='English (America)', command=lambda:
+menu_13.add_command(label='English (America)', command=lambda:
     LanguageSet('en', desktop_win))
-menu_12.add_command(label='Español (España)', command=lambda:
+menu_13.add_command(label='Español (España)', command=lambda:
     LanguageSet('es', desktop_win))
-menu_12.add_command(label='Français (France)', command=lambda:
+menu_13.add_command(label='Français (France)', command=lambda:
     LanguageSet('fr', desktop_win))
-menu_12.add_command(label='Italiano (Italia)', command=lambda:
+menu_13.add_command(label='Italiano (Italia)', command=lambda:
     LanguageSet('it', desktop_win))
-menu_12.add_command(label='Ελληνικά (Ελλάδα)', command=lambda:
+menu_13.add_command(label='Ελληνικά (Ελλάδα)', command=lambda:
     LanguageSet("el", desktop_win))
-menu_12.add_command(label="Norsk (Norge)", command=lambda:
+menu_13.add_command(label="Norsk (Norge)", command=lambda:
     LanguageSet("nb", desktop_win))
-menu_12.add_command(label='Português (Brasil)', command=lambda:
+menu_13.add_command(label='Português (Brasil)', command=lambda:
     LanguageSet('br', desktop_win))
-menu_12.add_command(label='Português (Portugal)', command=lambda:
+menu_13.add_command(label='Português (Portugal)', command=lambda:
     LanguageSet('pt', desktop_win))
-menu_12.add_command(label='Slovenčina (Slovensko)', command=lambda:
+menu_13.add_command(label='Slovenčina (Slovensko)', command=lambda:
     LanguageSet('sk', desktop_win))
-menu_12.add_command(label="Svenska (Sverige)", command=lambda:
+menu_13.add_command(label="Svenska (Sverige)", command=lambda:
     LanguageSet("sv", desktop_win))
-menu_12.add_command(label="Українська (Україна)", command=lambda:
+menu_13.add_command(label="Українська (Україна)", command=lambda:
     LanguageSet("uk", desktop_win))
+
+menu_12.add_cascade(label=lang[198], menu=menu_13)
 menu_12.add_separator()
 menu_12.add_command(label=lang[74], command=UpdateCheck.change)
 menu_12.add_separator()
+
+if sys.platform == "win32":
+    menu_12.add_command(label=lang[192], command=desktop_create_win)
+    menu_12.add_separator()
+    
 menu_12.add_command(label=lang[190], command=lambda:
     lock_a_win(desktop_win, True))
 menu_12.add_command(label=lang[191], command=lambda:

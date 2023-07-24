@@ -190,3 +190,10 @@ Se ha encontrado un error Unicode al intentar abrir
 ¿Desea abrirlo con su editor de texto predeterminado?
 Bloquear la ventana
 Desbloquear la ventana
+Generar un archivo *.desktop
+Este archivo *.desktop se cargará en la carpeta principal de WriterClassic.
+Gracias a Zeca70 por su ayuda con el archivo *.desktop.
+Usar python como comando Python
+Usar python3 como comando Python
+WriterClassic - Generar un archivo *.desktop
+Idioma

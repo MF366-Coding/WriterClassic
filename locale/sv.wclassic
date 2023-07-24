@@ -190,3 +190,10 @@ Ett Unicode-fel hittades när du försökte öppna
 Vill du öppna den med din standardtextredigerare?
 Lås fönstret
 Lås upp fönstret
+Generera en *.desktop-fil
+Denna *.desktop-fil kommer att laddas upp till huvudmappen WriterClassic.
+Tack till Zeca70 för hjälpen med *.desktop-filen.
+Använd python som Python-kommando
+Använd python3 som Python-kommando
+WriterClassic - Skapa en *.desktop-fil
+Språk

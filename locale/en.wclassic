@@ -190,3 +190,10 @@ A Unicode Error was found while trying to open
 Do you wish to open it with your default text editor?
 Lock the window
 Unlock the window
+Generate a desktop entry
+This Desktop Entry will be sent to the main folder of WriterClassic.
+Thanks to Zeca70 for helping out with the Desktop Entry.
+Use python as Python command
+Use python3 as Python command
+WriterClassic - Generate a desktop entry
+Language

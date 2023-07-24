@@ -190,3 +190,10 @@ Une erreur d'encodage a été trouvée en essayant d'ouvrir
 Souhaitez-vous l'ouvrir avec votre éditeur de texte par défaut ?
 Verrouiller la fenêtre
 Déverrouiller la fenêtre
+Générer un fichier *.desktop
+Ce fichier *.desktop sera téléchargé dans le dossier principal de WriterClassic.
+Merci à Zeca70 pour son aide avec le fichier *.desktop.
+Utiliser python comme commande Python
+Utiliser python3 comme commande Python
+WriterClassic - Générer un fichier *.desktop
+Langue

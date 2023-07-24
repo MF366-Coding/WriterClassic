@@ -190,3 +190,10 @@ WriterClassic - Errore di codifica
 Volete aprirlo con il vostro editor di testo predefinito?
 Bloccare la finestra
 Sblocca la finestra
+Generare un file *.desktop
+Questo file *.desktop verrà caricato nella cartella principale di WriterClassic.
+Si ringrazia Zeca70 per l'aiuto fornito con il file *.desktop.
+Utilizzare python come comando Python
+Utilizzare python3 come comando Python
+WriterClassic - Generare un file *.desktop
+Lingua
