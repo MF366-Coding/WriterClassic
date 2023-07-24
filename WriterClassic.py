@@ -1491,7 +1491,7 @@ menu_12.add_separator()
 menu_12.add_command(label=lang[74], command=UpdateCheck.change)
 menu_12.add_separator()
 
-if sys.platform == "win32":
+if sys.platform == "linux":
     menu_12.add_command(label=lang[192], command=desktop_create_win)
     menu_12.add_separator()
     
