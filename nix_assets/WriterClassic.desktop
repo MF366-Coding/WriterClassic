@@ -1,18 +1,17 @@
 #!/usr/bin/env xdg-open
 [Desktop Entry]
-Categories=Utility;TextEditor;
-Comment[pt_PT]=Editor de Texto Writer Classic
-Comment=Editor de Texto
-Exec=python3 [absolute_path]
-GenericName[pt_PT]=Editor de Texto
-GenericName=Editor de Texto
-Icon=writerclassic
-InitialPreference=8
-Keywords[pt_PT]=texto;txt;editor;nota;bloco de notas;
-Keywords=text;txt;editor;note;notepad;
-MimeType=text/plain;
-Name[pt_PT]=WriterClassic
 Name=WriterClassic
+Categories=Utility;Office;
+Comment[pt_PT]=Editor de ficheiros de texto plano
+Comment=Plain text editor
+Exec={pycommand} {script_path}
+GenericName[pt_PT]=Editor de Texto
+GenericName=Text Editor
+Icon={data_dir}/logo.png
+InitialPreference=8
+Keywords[pt_PT]=texto;txt;editor;nota;bloco de notas;wclassic;
+Keywords=text;txt;editor;note;notepad;wclassic;
+MimeType=text/plain;
 Path=
 StartupNotify=true
 StartupWMClass=WriterClassic

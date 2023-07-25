@@ -44,6 +44,7 @@ user_data = _PATH.join(script_dir, 'user_data')
 nix_assets = _PATH.join(script_dir, 'nix_assets')
 plugin_dir = _PATH.join(script_dir, 'plugins')
 data_dir = _PATH.join(script_dir, 'data')
+print(f"{data_dir}/logo.png")
 locale = _PATH.join(script_dir, 'locale')
 
 import datetime # Really, bro?
@@ -758,19 +759,18 @@ def desktop_create(pycommand: str):
     
     desktop_entry = f"""#!/usr/bin/env xdg-open
 [Desktop Entry]
-Categories=Utility;TextEditor;
-Comment[pt_PT]=Editor de Texto Writer Classic
-Comment=Editor de Texto
+Name=WriterClassic
+Categories=Utility;Office;
+Comment[pt_PT]=Editor de ficheiros de texto plano
+Comment=Plain text editor
 Exec={pycommand} {script_path}
 GenericName[pt_PT]=Editor de Texto
-GenericName=Editor de Texto
-Icon=writerclassic
+GenericName=Text Editor
+Icon={data_dir}/logo.png
 InitialPreference=8
-Keywords[pt_PT]=texto;txt;editor;nota;bloco de notas;
-Keywords=text;txt;editor;note;notepad;
+Keywords[pt_PT]=texto;txt;editor;nota;bloco de notas;wclassic;
+Keywords=text;txt;editor;note;notepad;wclassic;
 MimeType=text/plain;
-Name[pt_PT]=WriterClassic
-Name=WriterClassic
 Path=
 StartupNotify=true
 StartupWMClass=WriterClassic
@@ -1566,6 +1566,7 @@ try:
         menu_12.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_13.configure(background=theme["menu"], foreground=theme["mfg"])
         _LOG.write(f"{str(now)} - The Menus have been themed [LINUX ONLY]: OK\n")
 except TclError:
     if sys.platform == "linux":
@@ -1583,6 +1584,7 @@ except TclError:
         menu_12.configure(background="white", foreground="black")
         menu_8.configure(background="white", foreground="black")
         menu_9.configure(background="white", foreground="black")
+        menu_13.configure(background="white", foreground="black")
         _LOG.write(f"{str(now)} - The Menus have been themed [LINUX ONLY]: OK\n")
 
 # dropdowns/cascades
