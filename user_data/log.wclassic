@@ -77,3 +77,295 @@ Log File [Pre-release]
 2023-07-27 19:13:20.717606 - A file at the path C:/Users/mateu/Coding/Executables/4_test.txt has been opened: OK
 2023-07-27 19:13:20.717606 - A file at the path C:/Users/mateu/Coding/Executables/2_test.txt has been opened: OK
 2023-07-27 19:13:20.717606 - An existing file has been saved over (C:/Users/mateu/Coding/Executables/2_test.txt): OK
+
+2023-07-27 19:21:02.090142 - WriterClassic was executed: OK
+2023-07-27 19:21:02.090142 - Check for updates on startup: ENABLED
+2023-07-27 19:21:02.090142 - Imported compile from py_compile: OK
+2023-07-27 19:21:02.090142 - Imported getuser from getpass: OK
+2023-07-27 19:21:02.090142 - Imported simpledialog from tkinter: OK
+2023-07-27 19:21:02.090142 - Imported filedialog from tkinter: OK
+2023-07-27 19:21:02.090142 - Imported messagebox from tkinter: OK
+2023-07-27 19:21:02.090142 - Imported Font from tkinter.font: OK
+2023-07-27 19:21:02.090142 - Language (en): ENABLED
+2023-07-27 19:21:02.090142 - Language has been configured correctly: OK
+2023-07-27 19:21:02.090142 - simple_webbrowser by MF366 has been imported: OK
+2023-07-27 19:21:02.090142 - requests has been imported: OK
+2023-07-27 19:21:02.090142 - WriterClassic launched: OK
+2023-07-27 19:21:02.090142 - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK
+2023-07-27 19:21:02.090142 - Connected to GitHub: OK
+2023-07-27 19:21:02.090142 - Got WriterClassic Releases data: OK
+2023-07-27 19:21:02.090142 - Got the latest release's tag: OK
+2023-07-27 19:21:02.090142 - Got the current version: OK
+2023-07-27 19:21:02.090142 - Got the current theme: OK
+2023-07-27 19:21:02.090142 - Got the current font family/type: OK
+2023-07-27 19:21:02.090142 - Got the current font size: OK
+2023-07-27 19:21:02.090142 - Window's title was set to WriterClassic: OK
+2023-07-27 19:21:02.090142 - Font size is 13: OK
+2023-07-27 19:21:02.090142 - Font family/type is Noto Sans: OK
+2023-07-27 19:21:02.090142 - The editing interface has been created: OK
+2023-07-27 19:21:02.090142 - Got the window's dimensions settings: OK
+2023-07-27 19:21:02.090142 - Applied the window's dimensions: OK
+2023-07-27 19:21:02.090142 - Applied configurations to the editing interface: OK
+2023-07-27 19:21:02.090142 - 'Packed' the editing interface: OK
+2023-07-27 19:21:02.090142 - Created the menu bar: OK
+2023-07-27 19:21:02.090142 - Created all the menus: OK
+2023-07-27 19:21:02.090142 - Versions don't match: WARNING
+2023-07-27 19:21:02.090142 - Checked for updates on startup: AWAITING REPLY
+2023-07-27 19:21:02.090142 - Filetypes have been configured correctly: OK
+2023-07-27 19:21:02.090142 - The Menu bar has been configured correctly: OK
+
+2023-07-27 19:21:21.841145 - WriterClassic was executed: OK
+2023-07-27 19:21:21.841145 - Check for updates on startup: ENABLED
+2023-07-27 19:21:21.841145 - Imported compile from py_compile: OK
+2023-07-27 19:21:21.841145 - Imported getuser from getpass: OK
+2023-07-27 19:21:21.841145 - Imported simpledialog from tkinter: OK
+2023-07-27 19:21:21.841145 - Imported filedialog from tkinter: OK
+2023-07-27 19:21:21.841145 - Imported messagebox from tkinter: OK
+2023-07-27 19:21:21.841145 - Imported Font from tkinter.font: OK
+2023-07-27 19:21:21.841145 - Language (en): ENABLED
+2023-07-27 19:21:21.841145 - Language has been configured correctly: OK
+2023-07-27 19:21:21.841145 - simple_webbrowser by MF366 has been imported: OK
+2023-07-27 19:21:21.841145 - requests has been imported: OK
+2023-07-27 19:21:21.841145 - WriterClassic launched: OK
+2023-07-27 19:21:21.841145 - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK
+2023-07-27 19:21:21.841145 - Connected to GitHub: OK
+2023-07-27 19:21:21.841145 - Got WriterClassic Releases data: OK
+2023-07-27 19:21:21.841145 - Got the latest release's tag: OK
+2023-07-27 19:21:21.841145 - Got the current version: OK
+2023-07-27 19:21:21.841145 - Got the current theme: OK
+2023-07-27 19:21:21.841145 - Got the current font family/type: OK
+2023-07-27 19:21:21.841145 - Got the current font size: OK
+2023-07-27 19:21:21.841145 - Window's title was set to WriterClassic: OK
+2023-07-27 19:21:21.841145 - Font size is 13: OK
+2023-07-27 19:21:21.841145 - Font family/type is Noto Sans: OK
+2023-07-27 19:21:21.841145 - The editing interface has been created: OK
+2023-07-27 19:21:21.841145 - Got the window's dimensions settings: OK
+2023-07-27 19:21:21.841145 - Applied the window's dimensions: OK
+2023-07-27 19:21:21.841145 - Applied configurations to the editing interface: OK
+2023-07-27 19:21:21.841145 - 'Packed' the editing interface: OK
+2023-07-27 19:21:21.841145 - Created the menu bar: OK
+2023-07-27 19:21:21.841145 - Created all the menus: OK
+2023-07-27 19:21:21.841145 - Versions don't match: WARNING
+2023-07-27 19:21:21.841145 - Checked for updates on startup: AWAITING REPLY
+2023-07-27 19:21:21.841145 - Filetypes have been configured correctly: OK
+2023-07-27 19:21:21.841145 - The Menu bar has been configured correctly: OK
+2023-07-27 19:21:21.841145 - Set a new theme: OK
+2023-07-27 19:21:21.841145 - Editing interface has been reconfigured: OK
+2023-07-27 19:21:21.841145 - Asked for app restart: AWAITING RESPONSE
+2023-07-27 19:21:21.841145 - Cancel/No as response: OK
+
+2023-07-27 19:24:05.161945 - WriterClassic was executed: OK
+2023-07-27 19:24:05.161945 - Check for updates on startup: ENABLED
+2023-07-27 19:24:05.161945 - Imported compile from py_compile: OK
+2023-07-27 19:24:05.161945 - Imported getuser from getpass: OK
+2023-07-27 19:24:05.161945 - Imported simpledialog from tkinter: OK
+2023-07-27 19:24:05.161945 - Imported filedialog from tkinter: OK
+2023-07-27 19:24:05.161945 - Imported messagebox from tkinter: OK
+2023-07-27 19:24:05.161945 - Imported Font from tkinter.font: OK
+2023-07-27 19:24:05.161945 - Language (en): ENABLED
+2023-07-27 19:24:05.161945 - Language has been configured correctly: OK
+2023-07-27 19:24:05.161945 - simple_webbrowser by MF366 has been imported: OK
+2023-07-27 19:24:05.161945 - requests has been imported: OK
+2023-07-27 19:24:05.161945 - WriterClassic launched: OK
+2023-07-27 19:24:05.161945 - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK
+2023-07-27 19:24:05.161945 - Connected to GitHub: OK
+2023-07-27 19:24:05.161945 - Got WriterClassic Releases data: OK
+2023-07-27 19:24:05.161945 - Got the latest release's tag: OK
+2023-07-27 19:24:05.161945 - Got the current version: OK
+2023-07-27 19:24:05.161945 - Got the current theme: OK
+2023-07-27 19:24:05.161945 - Got the current font family/type: OK
+2023-07-27 19:24:05.161945 - Got the current font size: OK
+2023-07-27 19:24:05.161945 - Window's title was set to WriterClassic: OK
+2023-07-27 19:24:05.161945 - Font size is 13: OK
+2023-07-27 19:24:05.161945 - Font family/type is Noto Sans: OK
+2023-07-27 19:24:05.161945 - The editing interface has been created: OK
+2023-07-27 19:24:05.161945 - Got the window's dimensions settings: OK
+2023-07-27 19:24:05.161945 - Applied the window's dimensions: OK
+2023-07-27 19:24:05.161945 - Applied configurations to the editing interface: OK
+2023-07-27 19:24:05.161945 - 'Packed' the editing interface: OK
+2023-07-27 19:24:05.161945 - Created the menu bar: OK
+2023-07-27 19:24:05.161945 - Created all the menus: OK
+2023-07-27 19:24:05.161945 - Versions don't match: WARNING
+2023-07-27 19:24:05.161945 - Checked for updates on startup: AWAITING REPLY
+2023-07-27 19:24:05.161945 - Filetypes have been configured correctly: OK
+2023-07-27 19:24:05.161945 - The Menu bar has been configured correctly: OK
+
+2023-07-27 19:24:32.297160 - WriterClassic was executed: OK
+2023-07-27 19:24:32.297160 - Check for updates on startup: ENABLED
+2023-07-27 19:24:32.297160 - Imported compile from py_compile: OK
+2023-07-27 19:24:32.297160 - Imported getuser from getpass: OK
+2023-07-27 19:24:32.297160 - Imported simpledialog from tkinter: OK
+2023-07-27 19:24:32.297160 - Imported filedialog from tkinter: OK
+2023-07-27 19:24:32.297160 - Imported messagebox from tkinter: OK
+2023-07-27 19:24:32.297160 - Imported Font from tkinter.font: OK
+2023-07-27 19:24:32.297160 - Language (en): ENABLED
+2023-07-27 19:24:32.297160 - Language has been configured correctly: OK
+2023-07-27 19:24:32.297160 - simple_webbrowser by MF366 has been imported: OK
+2023-07-27 19:24:32.297160 - requests has been imported: OK
+2023-07-27 19:24:32.297160 - WriterClassic launched: OK
+2023-07-27 19:24:32.297160 - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK
+2023-07-27 19:24:32.297160 - Connected to GitHub: OK
+2023-07-27 19:24:32.297160 - Got WriterClassic Releases data: OK
+2023-07-27 19:24:32.297160 - Got the latest release's tag: OK
+2023-07-27 19:24:32.297160 - Got the current version: OK
+2023-07-27 19:24:32.297160 - Got the current theme: OK
+2023-07-27 19:24:32.297160 - Got the current font family/type: OK
+2023-07-27 19:24:32.297160 - Got the current font size: OK
+2023-07-27 19:24:32.297160 - Window's title was set to WriterClassic: OK
+2023-07-27 19:24:32.297160 - Font size is 13: OK
+2023-07-27 19:24:32.297160 - Font family/type is Noto Sans: OK
+2023-07-27 19:24:32.297160 - The editing interface has been created: OK
+2023-07-27 19:24:32.297160 - Got the window's dimensions settings: OK
+2023-07-27 19:24:32.297160 - Applied the window's dimensions: OK
+2023-07-27 19:24:32.297160 - Applied configurations to the editing interface: OK
+2023-07-27 19:24:32.297160 - 'Packed' the editing interface: OK
+2023-07-27 19:24:32.297160 - Created the menu bar: OK
+2023-07-27 19:24:32.297160 - Created all the menus: OK
+2023-07-27 19:24:32.297160 - Versions don't match: WARNING
+2023-07-27 19:24:32.297160 - Checked for updates on startup: AWAITING REPLY
+2023-07-27 19:24:32.297160 - Filetypes have been configured correctly: OK
+2023-07-27 19:24:32.297160 - The Menu bar has been configured correctly: OK
+
+2023-07-27 19:24:37.659680 - WriterClassic was executed: OK
+2023-07-27 19:24:37.659680 - Check for updates on startup: ENABLED
+2023-07-27 19:24:37.659680 - Imported compile from py_compile: OK
+2023-07-27 19:24:37.659680 - Imported getuser from getpass: OK
+2023-07-27 19:24:37.659680 - Imported simpledialog from tkinter: OK
+2023-07-27 19:24:37.659680 - Imported filedialog from tkinter: OK
+2023-07-27 19:24:37.659680 - Imported messagebox from tkinter: OK
+2023-07-27 19:24:37.659680 - Imported Font from tkinter.font: OK
+2023-07-27 19:24:37.659680 - Language (en): ENABLED
+2023-07-27 19:24:37.659680 - Language has been configured correctly: OK
+2023-07-27 19:24:37.659680 - simple_webbrowser by MF366 has been imported: OK
+2023-07-27 19:24:37.659680 - requests has been imported: OK
+2023-07-27 19:24:37.659680 - WriterClassic launched: OK
+2023-07-27 19:24:37.659680 - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK
+2023-07-27 19:24:37.659680 - Connected to GitHub: OK
+2023-07-27 19:24:37.659680 - Got WriterClassic Releases data: OK
+2023-07-27 19:24:37.659680 - Got the latest release's tag: OK
+2023-07-27 19:24:37.659680 - Got the current version: OK
+2023-07-27 19:24:37.659680 - Got the current theme: OK
+2023-07-27 19:24:37.659680 - Got the current font family/type: OK
+2023-07-27 19:24:37.659680 - Got the current font size: OK
+2023-07-27 19:24:37.659680 - Window's title was set to WriterClassic: OK
+2023-07-27 19:24:37.659680 - Font size is 13: OK
+2023-07-27 19:24:37.659680 - Font family/type is Noto Sans: OK
+2023-07-27 19:24:37.659680 - The editing interface has been created: OK
+2023-07-27 19:24:37.659680 - Got the window's dimensions settings: OK
+2023-07-27 19:24:37.659680 - Applied the window's dimensions: OK
+2023-07-27 19:24:37.659680 - Applied configurations to the editing interface: OK
+2023-07-27 19:24:37.659680 - 'Packed' the editing interface: OK
+2023-07-27 19:24:37.659680 - Created the menu bar: OK
+2023-07-27 19:24:37.659680 - Created all the menus: OK
+2023-07-27 19:24:37.659680 - Versions don't match: WARNING
+2023-07-27 19:24:37.659680 - Checked for updates on startup: AWAITING REPLY
+2023-07-27 19:24:37.659680 - Filetypes have been configured correctly: OK
+2023-07-27 19:24:37.659680 - The Menu bar has been configured correctly: OK
+
+2023-07-27 19:24:50.571447 - WriterClassic was executed: OK
+2023-07-27 19:24:50.571447 - Check for updates on startup: ENABLED
+2023-07-27 19:24:50.571447 - Imported compile from py_compile: OK
+2023-07-27 19:24:50.571447 - Imported getuser from getpass: OK
+2023-07-27 19:24:50.571447 - Imported simpledialog from tkinter: OK
+2023-07-27 19:24:50.571447 - Imported filedialog from tkinter: OK
+2023-07-27 19:24:50.571447 - Imported messagebox from tkinter: OK
+2023-07-27 19:24:50.571447 - Imported Font from tkinter.font: OK
+2023-07-27 19:24:50.571447 - Language (en): ENABLED
+2023-07-27 19:24:50.571447 - Language has been configured correctly: OK
+2023-07-27 19:24:50.571447 - simple_webbrowser by MF366 has been imported: OK
+2023-07-27 19:24:50.571447 - requests has been imported: OK
+2023-07-27 19:24:50.571447 - WriterClassic launched: OK
+2023-07-27 19:24:50.571447 - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK
+2023-07-27 19:24:50.571447 - Connected to GitHub: OK
+2023-07-27 19:24:50.571447 - Got WriterClassic Releases data: OK
+2023-07-27 19:24:50.571447 - Got the latest release's tag: OK
+2023-07-27 19:24:50.571447 - Got the current version: OK
+2023-07-27 19:24:50.571447 - Got the current theme: OK
+2023-07-27 19:24:50.571447 - Got the current font family/type: OK
+2023-07-27 19:24:50.571447 - Got the current font size: OK
+2023-07-27 19:24:50.571447 - Window's title was set to WriterClassic: OK
+2023-07-27 19:24:50.571447 - Font size is 13: OK
+2023-07-27 19:24:50.571447 - Font family/type is Noto Sans: OK
+2023-07-27 19:24:50.571447 - The editing interface has been created: OK
+2023-07-27 19:24:50.571447 - Got the window's dimensions settings: OK
+2023-07-27 19:24:50.571447 - Applied the window's dimensions: OK
+2023-07-27 19:24:50.571447 - Applied configurations to the editing interface: OK
+2023-07-27 19:24:50.571447 - 'Packed' the editing interface: OK
+2023-07-27 19:24:50.571447 - Created the menu bar: OK
+2023-07-27 19:24:50.571447 - Created all the menus: OK
+2023-07-27 19:24:50.571447 - Versions don't match: WARNING
+2023-07-27 19:24:50.571447 - Checked for updates on startup: AWAITING REPLY
+2023-07-27 19:24:50.571447 - Filetypes have been configured correctly: OK
+2023-07-27 19:24:50.571447 - The Menu bar has been configured correctly: OK
+
+2023-07-27 19:24:55.155525 - WriterClassic was executed: OK
+2023-07-27 19:24:55.155525 - Check for updates on startup: ENABLED
+2023-07-27 19:24:55.155525 - Imported compile from py_compile: OK
+2023-07-27 19:24:55.155525 - Imported getuser from getpass: OK
+2023-07-27 19:24:55.155525 - Imported simpledialog from tkinter: OK
+2023-07-27 19:24:55.155525 - Imported filedialog from tkinter: OK
+2023-07-27 19:24:55.155525 - Imported messagebox from tkinter: OK
+2023-07-27 19:24:55.155525 - Imported Font from tkinter.font: OK
+2023-07-27 19:24:55.155525 - Language (en): ENABLED
+2023-07-27 19:24:55.155525 - Language has been configured correctly: OK
+2023-07-27 19:24:55.155525 - simple_webbrowser by MF366 has been imported: OK
+2023-07-27 19:24:55.155525 - requests has been imported: OK
+2023-07-27 19:24:55.155525 - WriterClassic launched: OK
+2023-07-27 19:24:55.155525 - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK
+2023-07-27 19:24:55.155525 - Connected to GitHub: OK
+2023-07-27 19:24:55.155525 - Got WriterClassic Releases data: OK
+2023-07-27 19:24:55.155525 - Got the latest release's tag: OK
+2023-07-27 19:24:55.155525 - Got the current version: OK
+2023-07-27 19:24:55.155525 - Got the current theme: OK
+2023-07-27 19:24:55.155525 - Got the current font family/type: OK
+2023-07-27 19:24:55.155525 - Got the current font size: OK
+2023-07-27 19:24:55.155525 - Window's title was set to WriterClassic: OK
+2023-07-27 19:24:55.155525 - Font size is 13: OK
+2023-07-27 19:24:55.155525 - Font family/type is Noto Sans: OK
+2023-07-27 19:24:55.155525 - The editing interface has been created: OK
+2023-07-27 19:24:55.155525 - Got the window's dimensions settings: OK
+2023-07-27 19:24:55.155525 - Applied the window's dimensions: OK
+2023-07-27 19:24:55.155525 - Applied configurations to the editing interface: OK
+2023-07-27 19:24:55.155525 - 'Packed' the editing interface: OK
+2023-07-27 19:24:55.155525 - Created the menu bar: OK
+2023-07-27 19:24:55.155525 - Created all the menus: OK
+2023-07-27 19:24:55.155525 - Versions don't match: WARNING
+2023-07-27 19:24:55.155525 - Checked for updates on startup: AWAITING REPLY
+2023-07-27 19:24:55.155525 - Filetypes have been configured correctly: OK
+2023-07-27 19:24:55.155525 - The Menu bar has been configured correctly: OK
+
+2023-07-27 19:25:56.545892 - WriterClassic was executed: OK
+2023-07-27 19:25:56.545892 - Check for updates on startup: ENABLED
+2023-07-27 19:25:56.545892 - Imported compile from py_compile: OK
+2023-07-27 19:25:56.545892 - Imported getuser from getpass: OK
+2023-07-27 19:25:56.545892 - Imported simpledialog from tkinter: OK
+2023-07-27 19:25:56.545892 - Imported filedialog from tkinter: OK
+2023-07-27 19:25:56.545892 - Imported messagebox from tkinter: OK
+2023-07-27 19:25:56.545892 - Imported Font from tkinter.font: OK
+2023-07-27 19:25:56.545892 - Language (en): ENABLED
+2023-07-27 19:25:56.545892 - Language has been configured correctly: OK
+2023-07-27 19:25:56.545892 - simple_webbrowser by MF366 has been imported: OK
+2023-07-27 19:25:56.545892 - requests has been imported: OK
+2023-07-27 19:25:56.545892 - WriterClassic launched: OK
+2023-07-27 19:25:56.545892 - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK
+2023-07-27 19:25:56.545892 - Connected to GitHub: OK
+2023-07-27 19:25:56.545892 - Got WriterClassic Releases data: OK
+2023-07-27 19:25:56.545892 - Got the latest release's tag: OK
+2023-07-27 19:25:56.545892 - Got the current version: OK
+2023-07-27 19:25:56.545892 - Got the current theme: OK
+2023-07-27 19:25:56.545892 - Got the current font family/type: OK
+2023-07-27 19:25:56.545892 - Got the current font size: OK
+2023-07-27 19:25:56.545892 - Window's title was set to WriterClassic: OK
+2023-07-27 19:25:56.545892 - Font size is 13: OK
+2023-07-27 19:25:56.545892 - Font family/type is Noto Sans: OK
+2023-07-27 19:25:56.545892 - The editing interface has been created: OK
+2023-07-27 19:25:56.545892 - Got the window's dimensions settings: OK
+2023-07-27 19:25:56.545892 - Applied the window's dimensions: OK
+2023-07-27 19:25:56.545892 - Applied configurations to the editing interface: OK
+2023-07-27 19:25:56.545892 - 'Packed' the editing interface: OK
+2023-07-27 19:25:56.545892 - Created the menu bar: OK
+2023-07-27 19:25:56.545892 - Created all the menus: OK
+2023-07-27 19:25:56.545892 - Versions don't match: WARNING
+2023-07-27 19:25:56.545892 - Checked for updates on startup: AWAITING REPLY
+2023-07-27 19:25:56.545892 - Filetypes have been configured correctly: OK
+2023-07-27 19:25:56.545892 - The Menu bar has been configured correctly: OK

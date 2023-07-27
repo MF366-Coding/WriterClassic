@@ -25,7 +25,6 @@ Small but lovely contributions by:
 '''
 
 NOW_FILE = False
-file_saved = True
 
 lines = 0
 
@@ -572,13 +571,11 @@ def fontEdit(winType):
 
 # clears the screen
 def newFile():
-    global NOW_FILE, file_saved
+    global NOW_FILE
     
     desktop_win.title(lang[1])
     TextWidget.delete(index1=0.0, index2=END)
     NOW_FILE = False
-    file_saved = True
-    print(file_saved)
     
     _LOG.write(f"{str(now)} - A new file has been created: OK\n")
     
@@ -636,7 +633,7 @@ def OpenFile(root_win):
     Args:
         root_win (Tk): WriterClassic's main window
     """
-    global NOW_FILE, file_saved
+    global NOW_FILE
     
     file_path = dlg.asksaveasfilename(parent=root_win, filetypes=file_types, defaultextension="*.*", initialfile="Open a File", confirmoverwrite=False, title=lang[7])
 
@@ -662,8 +659,6 @@ def OpenFile(root_win):
         _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
         
         NOW_FILE = str(file_path)
-        file_saved = True
-        print(file_saved)
         file_input.close()
         
     except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
@@ -677,7 +672,7 @@ def OpenFile(root_win):
 
 # Saving as
 def SaveFile(root_win):
-    global NOW_FILE, file_saved
+    global NOW_FILE
     
     dados = TextWidget.get(0.0, END)
     file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=file_types, defaultextension="*.*", initialfile="New File To Save")
@@ -702,12 +697,10 @@ def SaveFile(root_win):
     _LOG.write(f"{str(now)} - A file has been saved as {str(file_path)}: OK\n")
     
     NOW_FILE = str(file_path)
-    file_saved = True
-    print(file_saved)
     print("...")
 
 def Save(root_win):
-    global NOW_FILE, file_saved
+    global NOW_FILE
     
     if NOW_FILE == False:
         SaveFile(root_win=root_win)
@@ -725,8 +718,6 @@ def Save(root_win):
         _LOG.write(f"{str(now)} - An existing file has been saved over ({str(file_path)}): OK\n")
         
         NOW_FILE = str(file_path)
-        file_saved = True
-        print(file_saved)
         print("...")
 
 # Whatever... (File Eraser)
@@ -1338,7 +1329,6 @@ def commandPrompt():
         mb.showerror(lang[68], lang[70])
 
 # Key bindings
-
 desktop_win.bind('<Control-o>', lambda b:
     OpenFile(desktop_win))
 
@@ -1368,28 +1358,13 @@ desktop_win.bind('<Control-r>', lambda l:
 
 desktop_win.bind('<Control-w>', lambda m:
     commandPrompt())
-
-def handle_key(event):
-    global file_saved
-    
-    if event.char and event.char in string.printable:
-        # Printable keys (including backspace and delete), handle key press
-        file_saved = False
-        
-    elif event.keysym in {"BackSpace", "Delete"}:
-        # Backspace and Delete keys, handle key press
-        file_saved = False
-    
-    print(file_saved)
     
 
 def on_closing():
-    if file_saved == False:
-        result = mb.askyesnocancel(lang[1], f"{lang[199]}\n{lang[200]}")
-        if result == None:
-            return
-        elif result:
-            Save(desktop_win)
+    result = mb.askyesno(lang[53], lang[54])
+    
+    if result == False:
+        return
     
     desktop_win.destroy()
 
@@ -1651,8 +1626,6 @@ if len(sys.argv) > 1:
         TextWidget.insert(chars=file_data, index=0.0)
         
         NOW_FILE = str(file_path)
-        file_saved = True
-        print(file_saved)
         file_input.close()
         _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
 
@@ -1666,8 +1639,6 @@ if len(sys.argv) > 1:
         print("...")
 
 desktop_win.protocol("WM_DELETE_WINDOW", on_closing)
-
-TextWidget.bind("<Key>", handle_key)
 
 # And done! Now, it will continuously mainlooping! Enjoy!
 desktop_win.mainloop()
