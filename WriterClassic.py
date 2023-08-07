@@ -28,8 +28,19 @@ NOW_FILE = False
 
 lines = 0
 
+UNLOCKED = False
+
+if UNLOCKED:
+    import argparse
+    
 import os
 _PATH = os.path
+
+if UNLOCKED:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--old-ui", "--ui", "-o", action='store_true', help="If specified, the old interface will be used.")
+
+    _args = parser.parse_args()
 
 # Get the absolute path of the script
 script_path = _PATH.abspath(__file__)
@@ -52,11 +63,18 @@ now = datetime.datetime.now()
 
 print("...")
 
+if not UNLOCKED:
+    class _args:
+        old_ui = False
+
 import json
 import string
 
 from tkinter import Tk, Toplevel, TclError, Label, Button, Text, Entry, END, Menu
-from tkinter.ttk import *
+
+if not _args.old_ui:
+    from tkinter.ttk import *
+    
 import sys # Platforms and OSes
 
 desktop_win = Tk()
@@ -885,6 +903,8 @@ def aboutApp():
     photo = ImageTk.PhotoImage(resized_image)
     
     button_1 = Button(about_dialogue, text="Ok", command=about_dialogue.destroy)
+    button_2 = Button(about_dialogue, text="WriterClassic Website", command=lambda:
+        simple_webbrowser.webbrowser.open("https://mf366-coding.github.io/writerclassic.html", new=2))
     
     # Create a Label widget to display the image
     image_label = Label(about_dialogue, image=photo)
@@ -892,8 +912,7 @@ def aboutApp():
     image_label.grid(column=1, row=1)
     label_1.grid(column=2, row=1)
     button_1.grid(column=1, row=2)
-    
-    
+    button_2.grid(column=2, row=2)    
     
     about_dialogue.mainloop()
     
@@ -1613,30 +1632,36 @@ menu_bar.add_cascade(label=lang[6], menu=menu_11)
 desktop_win.configure(menu=menu_bar)
 _LOG.write(f"{str(now)} - The Menu bar has been configured correctly: OK\n")
 
-if len(sys.argv) > 1:
-    # The first command-line argument is the file path
-    file_path = sys.argv[1]
-    
-    try:
-        file_input = open(file_path, "rt", encoding="utf-8")
-        file_data = file_input.read()
-
-        desktop_win.title(f"WriterClassic - {file_path}")
-        TextWidget.delete(index1=0.0, index2=END)
-        TextWidget.insert(chars=file_data, index=0.0)
+if not UNLOCKED:
+    if len(sys.argv) > 1:
+        # The first command-line argument is the file path
+        file_path = sys.argv[1]
         
-        NOW_FILE = str(file_path)
-        file_input.close()
-        _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
+        try:
+            file_input = open(file_path, "rt", encoding="utf-8")
+            file_data = file_input.read()
 
-    except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
-        mb.showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
-        run_default = mb.askyesno(title=lang[187], message=lang[189])
-        if run_default:
-            os.system(str(file_path))
-    
-    finally:
-        print("...")
+            desktop_win.title(f"WriterClassic - {file_path}")
+            TextWidget.delete(index1=0.0, index2=END)
+            TextWidget.insert(chars=file_data, index=0.0)
+            
+            NOW_FILE = str(file_path)
+            file_input.close()
+            _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
+
+        except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
+            mb.showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
+            run_default = mb.askyesno(title=lang[187], message=lang[189])
+            if run_default:
+                os.system(str(file_path))
+        
+        except FileNotFoundError as e:
+            desktop_win.destroy()
+            print(e)
+            quit()
+        
+        finally:
+            print("...")
 
 desktop_win.protocol("WM_DELETE_WINDOW", on_closing)
 
