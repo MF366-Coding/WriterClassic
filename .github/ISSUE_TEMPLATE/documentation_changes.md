@@ -1,11 +1,11 @@
 --- 
- name: Documentation Changes
- about: Create a report to help me improve WriterClassic 
- title: 'Documentation Change: [TITLE]' 
- labels: documentation
- assignees: MF366-Coding 
+name: Documentation Changes
+about: Create a report to help me improve WriterClassic 
+title: 'Documentation Change: [TITLE]' 
+labels: documentation
+assignees: MF366-Coding 
   
- --- 
+--- 
   
  **Description** 
  Please explain your changes clearly and why do you think they should be made. Note that the docs are in the official website. Also note that changes to the website and not to the docs will be refused and tagged "won't fix". 
