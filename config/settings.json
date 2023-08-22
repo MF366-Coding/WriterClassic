@@ -1,0 +1,24 @@
+{
+	"font": {
+		"type": "Noto Sans",
+		"size": 13
+	}, 
+
+	"theme": {
+		"color": "black",
+		"ct": "white",
+		"fg": "white",
+		"mfg": "black",
+		"menu": "dark grey"
+	},
+
+	"advanced-mode": false, 
+
+	"startup": true, 
+
+	"geometry": "700x500", 
+
+	"language": "en", 
+
+	"big-font": false
+}

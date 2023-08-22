@@ -28,52 +28,37 @@ NOW_FILE = False
 
 lines = 0
 
-UNLOCKED = False
+from icecream import ic
+from setting_loader import get_settings, dump_settings
 
-if UNLOCKED:
-    import argparse
-    
+ic.configureOutput(prefix="ic debug statement | -> ")
+
 import os
 _PATH = os.path
 
-if UNLOCKED:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--old-ui", "--ui", "-o", action='store_true', help="If specified, the old interface will be used.")
-
-    _args = parser.parse_args()
-
 # Get the absolute path of the script
 script_path = _PATH.abspath(__file__)
-print(script_path)
+ic(script_path)
 
 # Get the directory containing the script
 script_dir = _PATH.dirname(script_path)
-print(script_dir)
+ic(script_dir)
 
 config = _PATH.join(script_dir, 'config')
 user_data = _PATH.join(script_dir, 'user_data')
 nix_assets = _PATH.join(script_dir, 'nix_assets')
 plugin_dir = _PATH.join(script_dir, 'plugins')
 data_dir = _PATH.join(script_dir, 'data')
-print(f"{data_dir}/logo.png")
+ic(f"{data_dir}/logo.png")
 locale = _PATH.join(script_dir, 'locale')
 
 import datetime # Really, bro?
 now = datetime.datetime.now()
 
-print("...")
-
-if not UNLOCKED:
-    class _args:
-        old_ui = False
-
 import json
-import string
 
 from tkinter import Tk, Toplevel, TclError, Label, Button, Text, Entry, END, Menu
-
-if not _args.old_ui:
-    from tkinter.ttk import *
+from tkinter.ttk import *
     
 import sys # Platforms and OSes
 
@@ -85,7 +70,7 @@ _LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
 
 _LOG.write("\n")
 _LOG.write(f"{str(now)} - WriterClassic was executed: OK\n")
-    
+
 import random
 
 UNIX_OSES = [
@@ -104,20 +89,20 @@ NOT_ALLOWED = [
     "     "
 ]
 
-with open(f'{config}/startup.wclassic', 'r', encoding='utf-8') as startupFile:
-    startAppData = startupFile.read()
-    startApp = startAppData[0:1]
-    if startApp == "0":
-        startApp = "0"
-        _LOG.write(f"{str(now)} - Check for updates on startup: DISABLED\n")
-        
-    elif startApp == "1":
-        startApp = "1"
-        _LOG.write(f"{str(now)} - Check for updates on startup: ENABLED\n")
-        
-    else:
-        startApp = "1"
-        _LOG.write(f"{str(now)} - Check for updates on startup: ENABLED\n")
+settings = get_settings(f"{config}/settings.json")
+
+startApp = settings["startup"]
+if not startApp:
+    startApp = "0"
+    _LOG.write(f"{str(now)} - Check for updates on startup: DISABLED\n")
+    
+elif startApp:
+    startApp = "1"
+    _LOG.write(f"{str(now)} - Check for updates on startup: ENABLED\n")
+    
+else:
+    startApp = "1"
+    _LOG.write(f"{str(now)} - Check for updates on startup: ENABLED\n")
         
 
 # Importing the goodies
@@ -139,17 +124,14 @@ _LOG.write(f"{str(now)} - Imported messagebox from tkinter: OK\n")
 from tkinter.font import Font # Ouchie mama (font, daaah)
 _LOG.write(f"{str(now)} - Imported Font from tkinter.font: OK\n")
 
+ic(now)
 
-with open(f'{config}/lang.wclassic', 'r', encoding="utf-8") as configLangFile:
-    setLang = configLangFile.read()
-    _LOG.write(f"{str(now)} - Language ({str(setLang[0:2])}): ENABLED\n")
-
+setLang = settings["language"]
 
 with open(f'{locale}/'+str(setLang[0:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
     lang = usedLang.split('\n')
     _LOG.write(f"{str(now)} - Language has been configured correctly: OK\n")
-
 
 try:
     from simple_webbrowser import simple_webbrowser
@@ -247,53 +229,49 @@ if startApp == '1':
         _LOG.write(f"{str(now)} - WriterClassic is launching without checking for updates: OK\n")
 
 # Config files
-with open(f'{data_dir}/version.wclassic', 'r', encoding='utf-8') as versionFile:
-    appVGet = versionFile.read()
-    appV = appVGet[0:6]
-    _LOG.write(f"{str(now)} - Got the current version: OK\n")
-    #print(appV)
+appV = "v8.6.0"
+advV ="v8.6.0.189"
 
-with open(f'{config}/theme.json', 'rt', encoding='utf-8') as textColor:
-    theme = json.load(textColor)
-    _LOG.write(f"{str(now)} - Got the current theme: OK\n")
+theme = settings["theme"]
+_LOG.write(f"{str(now)} - Got the current theme: OK\n")
 
-with open(f'{config}/font.json', 'rt', encoding='utf-8') as fontFile:
-    font_use = json.load(fontFile)
-    _LOG.write(f"{str(now)} - Got the current font family/type: OK\n")
-    _LOG.write(f"{str(now)} - Got the current font size: OK\n")
-    fontFile.close()
+font_use = settings["font"]
+_LOG.write(f"{str(now)} - Got the current font family/type: OK\n")
+_LOG.write(f"{str(now)} - Got the current font size: OK\n")
+
+def fast_dump():
+    dump_settings(f"{config}/settings.json", settings)
 
 # Windowing... again
 if NOW_FILE == False:
     desktop_win.title(lang[1])
     
 _LOG.write(f"{str(now)} - Window's title was set to WriterClassic: OK\n")
+
 try:
-    FontSet = Font(family=font_use["font-type"], size=font_use["font-size"])
-    __font_type = font_use["font-type"]
-    __font_size = font_use["font-size"]
+    FontSet = Font(family=font_use["type"], size=font_use["size"])
+    __font_type = font_use["fotype"]
+    __font_size = font_use["size"]
     _LOG.write(f"{str(now)} - Font size is {str(__font_size)}: OK\n")
     _LOG.write(f"{str(now)} - Font family/type is {str(__font_type)}: OK\n")
+    
 except TclError:
     mb.showerror(lang[149], f"{lang[144]}\n{lang[145]}\n{lang[146]}")
     _LOG.write(f"{str(now)} - Font size is set to 14 because of a font error: OK\n")
     FontSet = Font(family="Segoe UI", size=14)
     _LOG.write(f"{str(now)} - Font type is set to Segoe UI because of a font error: OK\n")
-    with open(f'{config}/font.json', 'w', encoding='utf-8') as fixed_fontFile:
-        new_font = {
-            "font-type":"Segoe UI",
-            "font-size":14
-        }
-        json.dump(new_font, fixed_fontFile)
-        _LOG.write(f"{str(now)} - The themes were reconfigured because of a font error: OK\n")
+    settings["font"] = {
+        "type": "Segoe UI",
+        "size": 14
+    }
+    
+    fast_dump()
 
 
 _LOG.write(f"{str(now)} - The editing interface has been created: OK\n")
 
-with open(f'{config}/geom.wclassic', 'r', encoding='utf-8') as geom_bg:
-    geomValue = geom_bg.read()
-    _LOG.write(f"{str(now)} - Got the window's dimensions settings: OK\n")
-
+geomValue = settings["geometry"]
+_LOG.write(f"{str(now)} - Got the window's dimensions settings: OK\n")
 GeomValues = geomValue.split('x')
 
 try:
@@ -307,19 +285,16 @@ except TclError:
     mb.showerror(lang[166], f"{lang[167]}\n{lang[168]}")
 
 try:
-    TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"], font=FontSet)
+    TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=int(GeomValues[0]), height=int(GeomValues[1]), insertbackground=theme["ct"], font=FontSet)
     _LOG.write(f"{str(now)} - Applied configurations to the editing interface: OK\n")
+
 except TclError:
     _LOG.write(f"{str(now)} - Applied configurations to the editing interface: ERROR\n")
     mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
-    TextWidget.configure(bg="black", fg="white", width=GeomValues[0], height=GeomValues[1], insertbackground="white", font=FontSet)
+    TextWidget.configure(bg="black", fg="white", width=int(GeomValues[0]), height=int(GeomValues[1]), insertbackground="white", font=FontSet)
     _LOG.write(f"{str(now)} - Reconfigured the editing interface: OK\n")
 
 _LOG.write(f"{str(now)} - 'Packed' the editing interface: OK\n")
-
-# Closing the configs
-geom_bg.close()
-configLangFile.close()
 
 # Defining the menu bar
 menu_bar = Menu(desktop_win)
@@ -351,11 +326,10 @@ menu_12 = Menu(menu_bar)
 menu_13 = Menu(menu_12)
 _LOG.write(f"{str(now)} - Created all the menus: OK\n")
 
-def writeStartup(text):
-    with open(f'{config}/startup.wclassic', 'w', encoding='utf-8') as startupWriteFile:
-        startupWriteFile.write(text)
-        _LOG.write(f"{str(now)} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
-        startupWriteFile.close()
+def writeStartup(text: bool):
+    settings["startup"] = text
+    fast_dump()
+    _LOG.write(f"{str(now)} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
 
 # Check for Updates
 class UpdateCheck:
@@ -371,6 +345,7 @@ class UpdateCheck:
             if askForUpdate:
                 simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
                 _LOG.write(f"{str(now)} - Went to the latest release at GitHub: OK\n")
+        
         elif IGNORE_CHECKING == True:
             _LOG.write(f"{str(now)} - Couldn't check for updates on startup: WARNING\n")
             pass
@@ -386,9 +361,11 @@ class UpdateCheck:
             if askForUpdate:
                 _LOG.write(f"{str(now)} - Went to the latest release at GitHub: OK\n")
                 simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
+        
         elif appV == latest_version and IGNORE_CHECKING == False:
             mb.showinfo(title=lang[93], message=lang[92])
             _LOG.write(f"{str(now)} - Versions match | WriterClassic is up to date: OK\n")
+        
         else:
             mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
             _LOG.write(f"{str(now)} - Couldn't check for updates (Bad Internet, Connection Timeout, Restricted Internet): WARNING\n")
@@ -396,11 +373,11 @@ class UpdateCheck:
     @staticmethod
     def change():
         if startApp == '1':
-            writeStartup('0')
+            writeStartup(False)
             mb.showinfo(title=lang[1], message=lang[101])
             _LOG.write(f"{str(now)} - Check for updates on startup has been disabled: OK\n")
         else:
-            writeStartup('1')
+            writeStartup(True)
             mb.showinfo(title=lang[1], message=lang[101])
             _LOG.write(f"{str(now)} - Check for updates on startup has been enabled: OK\n")
 
@@ -415,37 +392,38 @@ def SetWinSize():
     if widthSet in NOT_ALLOWED:
         mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
         _LOG.write(f"{str(now)} - Got a width value: ERROR (ILLEGAL VALUE)\n")
+    
     elif widthSet not in NOT_ALLOWED:
         _LOG.write(f"{str(now)} - Got a width value: OK\n")
         heightSet = sdg.askinteger(lang[1], lang[58])
         _LOG.write(f"{str(now)} - Got a height value: AWAITING FOR ANTI-BUG CHECK\n")
+        
         if heightSet in NOT_ALLOWED:
             mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
             _LOG.write(f"{str(now)} - Got a width value: ERROR (ILLEGAL VALUE)\n")
+        
         elif heightSet not in NOT_ALLOWED:
             _LOG.write(f"{str(now)} - Got a width value: OK\n")
             TextWidget.configure(width=widthSet, height=heightSet)
             _LOG.write(f"{str(now)} - Editing interface has been reconfigured: OK\n")
             desktop_win.geometry(str(widthSet)+'x'+str(heightSet))
             _LOG.write(f"{str(now)} - Window's dimensions were set: OK\n")
-            with open(f'{config}/geom.wclassic', 'w', encoding='utf-8') as geomdata:
-                geomdata.write('')
-                _LOG.write(f"{str(now)} - Configured default window's dimensions: OK\n")
-                geomdata.write(str(widthSet)+'x'+str(heightSet))
-            geomdata.close()
+            
+            _LOG.write(f"{str(now)} - Configured default window's dimensions: OK\n")
+            settings["geometry"] = str(widthSet)+'x'+str(heightSet)
+            fast_dump()
 
 # Theme Picker
 def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fifth):
-    with open(f'{config}/theme.json', 'wt') as fileColored:
-        new_obj = {
-            "color":str(colour_first),
-            "ct":str(colour_third),
-            "fg":str(colour_second),
-            "mfg":str(colour_fifth),
-            "menu":str(colour_fourth)
-        }
-        json.dump(new_obj, fileColored)
-        _LOG.write(f"{str(now)} - Set a new theme: OK\n")
+    settings["theme"] = {
+        "color":str(colour_first),
+        "ct":str(colour_third),
+        "fg":str(colour_second),
+        "mfg":str(colour_fifth),
+        "menu":str(colour_fourth)
+    }
+    
+    fast_dump()
 
     TextWidget.configure(bg=colour_first, fg=colour_second, insertbackground=colour_third)
     _LOG.write(f"{str(now)} - Editing interface has been reconfigured: OK\n")
@@ -469,10 +447,10 @@ def quickway():
 
 # Setup (Lang files)
 def LanguageSet(language_set, root_win):
-    with open(f'{config}/lang.wclassic', 'w', encoding='utf-8') as deleteThat:
-        deleteThat.write('')
-        deleteThat.write(language_set)
-        _LOG.write(f"{str(now)} - A new language has been set ({str(language_set)}): OK\n")
+    settings["language"] = language_set
+    _LOG.write(f"{str(now)} - A new language has been set ({str(language_set)}): OK\n")
+    fast_dump()
+    
     popup_define = mb.askyesno(parent=root_win, title=lang[30], message=lang[31])
     _LOG.write(f"{str(now)} - Asked for app restart: AWAITING RESPONSE\n")
     if popup_define:
