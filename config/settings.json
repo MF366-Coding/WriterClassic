@@ -20,5 +20,7 @@
 
 	"language": "en", 
 
-	"big-font": false
+	"debugging": false,
+
+	"dencrypt": ""
 }
