@@ -47,8 +47,18 @@ user_data = _PATH.join(script_dir, 'user_data')
 nix_assets = _PATH.join(script_dir, 'nix_assets')
 plugin_dir = _PATH.join(script_dir, 'plugins')
 data_dir = _PATH.join(script_dir, 'data')
-
 locale = _PATH.join(script_dir, 'locale')
+
+debug_a = []
+debug_a.append(config)
+debug_a.append(user_data)
+debug_a.append(nix_assets)
+debug_a.append(plugin_dir)
+debug_a.append(data_dir)
+debug_a.append(locale)
+
+for debug_b in debug_a:
+    ic(debug_a)
 
 import datetime # Really, bro?
 now = datetime.datetime.now()
@@ -243,7 +253,7 @@ ic(latest_version)
 
 # Config files
 appV = "v8.6.0"
-advV ="v8.6.0.190"
+advV ="v8.6.0.191"
 
 ic(appV)
 ic(advV)
@@ -560,8 +570,6 @@ def clockPlugin():
 
 # Text font
 def fontEdit(winType):
-    global font_use
-
     if winType == 1:
         fontSize = sdg.askinteger(lang[59], lang[60], minvalue=1)
         if fontSize in NOT_ALLOWED:
@@ -798,10 +806,13 @@ X-DocPath=
 X-KDE-SubstituteUID=false
 X-KDE-Username=
 """
+
     with open(f"{script_dir}/WriterClassic.desktop", mode="w", encoding='utf-8') as desktop_file:
         desktop_file.write(desktop_entry)
         mb.showinfo(lang[1], lang[101])
         desktop_file.close()
+        
+    ic(desktop_entry)
 
 
 def desktop_create_win():
@@ -840,20 +851,25 @@ def surprise_egg():
 
     if askNow == 'Nice stuff!!':
         simple_webbrowser.Website('https://www.youtube.com/watch?v=W6FG7yVUaKQ')
+        ic()
 
     elif askNow == 'Scan':
         mb.showwarning("Your PC has virus!", "Press Alt+F4 to remove all viruses!!!\nDo it!!!")
+        ic()
 
     elif askNow == "":
-        pass
+        ic()
+        return None
 
     else:
         mb.showerror(lang[29], lang[67])
+        ic()
 
 # help me pls!!!
 def APP_HELP():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic#help")
     _LOG.write(f"{str(now)} - Requested online help: AWAITING FOR CONNECTION\n")
+    ic()
 
 # infoooooo
 def aboutApp():
@@ -914,6 +930,8 @@ def aboutApp():
 
     _LOG.write(f"{str(now)} - The About dialogue has been shown\n")
     about_d.close()
+    
+    ic()
 
 def Tips_Tricks():
     picked_text = random.choice((
@@ -925,6 +943,8 @@ def Tips_Tricks():
 
     mb.showinfo(lang[1], picked_text)
     _LOG.write(f"{str(now)} - Requested Tips & Tricks: OK\n")
+
+    ic()
 
 def resetWriter(*args):
     global settings
@@ -972,6 +992,7 @@ def resetWriter(*args):
             sigFILE.write("--\nBest regards,\nThis is a customizable signature in a file named signature.wclassic in the data folder...")
             _LOG.write(f"{str(now)} - The Custom Signature has been reset: OK\n")
 
+    ic(settings)
 
 def _terminal_get(entry_selection):
     _data = entry_selection.get()
@@ -980,6 +1001,7 @@ def _terminal_get(entry_selection):
 
     _LOG.write(f"{str(now)} - Used the following command on the Terminal - {str(_data)}: OK\n")
 
+    ic(_data)
 
 def _trick_terminal(func, window):
     window.destroy()
@@ -1015,6 +1037,7 @@ class InternetOnWriter:
         if askForLink != ' ' or askForLink != '':
             simple_webbrowser.Website(askForLink)
             _LOG.write(f"{str(now)} - Went to {str(askForLink)} via WriterClassic: OK\n")
+        ic()
 
     @staticmethod
     def Search(engine):
@@ -1398,7 +1421,7 @@ def on_closing():
 
     desktop_win.destroy()
 
-def QUIT_WRITER(*args, **stuff):
+def QUIT_WRITER(*args, **kargs):
     """
     QUIT_WRITER quits the software using on_closing
     """
@@ -1622,17 +1645,15 @@ def dencrypt():
         
         if not NOW_FILE:
             mb.showinfo(lang[1], "The file must be saved.")
-            pass
         
         else:
-            os.system(f'{pathx} "{NOW_FILE}" {parameters}')
+            os.system(f'"{pathx}" "{NOW_FILE}" {parameters}')
             mb.showinfo(lang[1], "You need to reopen the file to see the changes unless you used the '-o' flag.")
     
     new = Toplevel(desktop_win)
     if sys.platform == "win32":
         new.iconbitmap(f"{data_dir}/app_icon.ico")
     new.title("WriterClassic - Use d3NCRYP7")
-    new.geometry("700x120")
     new.resizable(False, False)
     
     label_1 = Label(new, text="d3NCRYP7 Path: ", font=("Segoe UI", 13))
@@ -1656,10 +1677,139 @@ def dencrypt():
     butt_2.grid(column=2, row=3)
     
     new.mainloop()
+
+def readme_gen(*entries):
+    _title = entries[0]
+    _describe = entries[1]
+    _author_email = entries[2]
+    _author_website = entries[3]
+    _project_website = entries[4]
+    _sponsor_site = entries[5]
+
+    TextWidget.delete(0.0, END) 
+
+    if _title in NOT_ALLOWED:
+        _title = 'Insert title here'
+        
+    if _describe in NOT_ALLOWED:
+        _describe = f"Please describe {_title}"
+
+    readme_generated = f'''# {_title}
+**{_describe}**
+
+'''
+
+    if _author_email not in NOT_ALLOWED:
+        readme_generated += f"""[Contact Me]({_author_email})\n"""
+        
+    if _author_website not in NOT_ALLOWED:
+        readme_generated += f"""[I'm online at: {_author_website}]({_author_website})\n"""
+        
+    if _project_website not in NOT_ALLOWED:
+        readme_generated += f"""[Find this project at: {_project_website}]({_project_website})\n"""
     
+    if _sponsor_site not in NOT_ALLOWED:
+        readme_generated += f"""[Liked it? Sponsor it!]({_sponsor_site})\n"""
+
+    TextWidget.insert(chars=readme_generated, index=0.0)
+
+def readme_gen_win():
+    # Window Creation
+    window = Toplevel(desktop_win) 
+    window.title("README.md Generator") 
+    window.resizable(False, False) 
+    if sys.platform == 'win32':
+        window.iconbitmap(f'{data_dir}/app_icon.ico')
+    
+    label_1 = Label(window, text='Title:', font=('Calibri', 13)) 
+    label_2 = Label(window, text='Short Description:', font=('Calibri', 13))
+    label_3 = Label(window, text='Author Email:', font=('Calibri', 13))
+    label_4 = Label(window, text='Author Website:', font=('Calibri', 13)) 
+    label_5 = Label(window, text='Project Website:', font=('Calibri', 13)) 
+    label_6 = Label(window, text='Sponsor/Donation Website:', font=('Calibri', 13))
+    label_7 = Label(window, text="NOTE:", font=("Calibri", 13))
+    label_8 = Label(window, text="This action will erase the current text in the editor.", font=("Calibri", 13))
+
+    _title = Entry(window, font=('Calibri', 12))
+    _describe = Entry(window, font=('Calibri', 12))
+    _author_email = Entry(window, font=('Calibri', 12))
+    _author_website = Entry(window, font=('Calibri', 12))
+    _project_website = Entry(window, font=('Calibri', 12))
+    _sponsor_site = Entry(window, font=('Calibri', 12)) 
+
+    butt_1 = Button(window, text="Generate", command=lambda:
+        readme_gen(_title.get(), _describe.get(), _author_email.get(), _author_website.get(), _project_website.get(), _sponsor_site.get())) 
+
+    butt_2 = Button(window, text="Cancel", command=window.destroy)
+
+    label_1.grid(column=1, row=2)
+    label_2.grid(column=1, row=3)
+    label_3.grid(column=1, row=4)
+    label_4.grid(column=1, row=5)
+    label_5.grid(column=1, row=6)
+    label_6.grid(column=1, row=7)
+    label_7.grid(column=1, row=1)
+    label_8.grid(column=2, row=1)
+
+    _title.grid(column=2, row=2)
+    _describe.grid(column=2, row=3)
+    _author_email.grid(column=2, row=4)
+    _author_website.grid(column=2, row=5)
+    _project_website.grid(column=2, row=6)
+    _sponsor_site.grid(column=2, row=7)
+
+    butt_1.grid(column=1, row=8)
+    butt_2.grid(column=2, row=8)
+
+    window.mainloop()
+
+def open_with_adv():
+    window = Toplevel(desktop_win) 
+    window.title("Open With...") 
+    window.resizable(False, False) 
+    if sys.platform == 'win32':
+        window.iconbitmap(f'{data_dir}/app_icon.ico')
+    
+    def action_1():
+        if not NOW_FILE:
+            mb.showinfo(lang[1], "The file must be saved.")
+        else:
+            os.system(f'"{str(NOW_FILE)}"')
+            
+        window.destroy()
+    
+    def action_2(requested_entry):
+        if not NOW_FILE:
+            mb.showinfo(lang[1], "The file must be saved.")
+        else:
+            if " " in requested_entry:
+                os.system(f'"{requested_entry}" "{str(NOW_FILE)}"')
+            else:
+                os.system(f'{requested_entry} "{str(NOW_FILE)}"')
+                
+        window.destroy()
+    
+    butt_1 = Button(window, text="Use the default app", command=action_1)
+    label_1 = Label(window, text="...or...".upper(), font=("Arial", 15))
+    label_2 = Label(window, text="Custom Path:", font=("Calibri", 13))
+    entry_1 = Entry(window, font=("Calibri", 13))
+    butt_2 = Button(window, text="Open with the app at...", command=lambda:
+        action_2(entry_1.get()))
+    
+    butt_1.grid(column=1, row=1)
+    label_1.grid(column=1, row=2)
+    label_2.grid(column=1, row=3)
+    entry_1.grid(column=2, row=3)
+    butt_2.grid(column=1, row=4)
+    
+    window.mainloop()
+
 if ADVANCED:
     menu_14.add_command(label="Show/hide debugging sentences (Not recommended)", command=show_debug)
-    menu_14.add_command(label="Encrypt/decrypt current file with d3NCRYP7", command=dencrypt)
+    if sys.platform == "win32":
+        menu_14.add_command(label="Encrypt/decrypt current file with d3NCRYP7", command=dencrypt)
+    menu_14.add_command(label="README.md Generator", command=readme_gen_win)
+    menu_14.add_command(label="Open with...", command=open_with_adv)
 
 try:
     if sys.platform == "linux":
