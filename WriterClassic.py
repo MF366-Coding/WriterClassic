@@ -57,16 +57,19 @@ debug_a.append(plugin_dir)
 debug_a.append(data_dir)
 debug_a.append(locale)
 
-for debug_b in debug_a:
-    ic(debug_a)
-
 import datetime # Really, bro?
 now = datetime.datetime.now()
 
 import json
 
-from tkinter import Tk, Toplevel, TclError, Label, Button, Text, Entry, END, Menu
+from tkinter import Tk, Toplevel, TclError, Label, Button, Text, StringVar, IntVar, Entry, END, Menu, Checkbutton
 from tkinter.ttk import *
+
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email import encoders
 
 import sys # Platforms and OSes
 
@@ -103,6 +106,8 @@ if not settings["debugging"]:
     ic.disable()
 
 ic(settings)
+for debug_b in debug_a:
+    ic(debug_a)
 
 startApp = settings["startup"]
 if not startApp:
@@ -253,7 +258,7 @@ ic(latest_version)
 
 # Config files
 appV = "v8.6.0"
-advV ="v8.6.0.191"
+advV ="v8.6.0.192"
 
 ic(appV)
 ic(advV)
@@ -811,7 +816,7 @@ X-KDE-Username=
         desktop_file.write(desktop_entry)
         mb.showinfo(lang[1], lang[101])
         desktop_file.close()
-        
+
     ic(desktop_entry)
 
 
@@ -930,7 +935,7 @@ def aboutApp():
 
     _LOG.write(f"{str(now)} - The About dialogue has been shown\n")
     about_d.close()
-    
+
     ic()
 
 def Tips_Tricks():
@@ -975,7 +980,9 @@ def resetWriter(*args):
 
             "dencrypt": "",
 
-            "debugging": False
+            "debugging": False,
+            
+            "email": ""
         }
 
         fast_dump()
@@ -1622,60 +1629,60 @@ def adv_change():
     fast_dump()
 
     mb.showinfo(message=lang[63], title=lang[1])
-    
+
 menu_12.add_separator()
 menu_12.add_command(label="Enable/disable Advanced Mode [English]", command=adv_change)
 
 def show_debug():
     if settings["debugging"]:
         settings["debugging"] = False
-        
+
     else:
         settings["debugging"] = True
-        
+
     ic(settings["debugging"])
     fast_dump()
-    
+
     mb.showinfo(message=lang[63], title=lang[1])
 
 def dencrypt():
     def runx(pathx: str, parameters: str):
         settings["dencrypt"] = pathx
         fast_dump()
-        
+
         if not NOW_FILE:
             mb.showinfo(lang[1], "The file must be saved.")
-        
+
         else:
             os.system(f'"{pathx}" "{NOW_FILE}" {parameters}')
             mb.showinfo(lang[1], "You need to reopen the file to see the changes unless you used the '-o' flag.")
-    
+
     new = Toplevel(desktop_win)
     if sys.platform == "win32":
         new.iconbitmap(f"{data_dir}/app_icon.ico")
     new.title("WriterClassic - Use d3NCRYP7")
     new.resizable(False, False)
-    
+
     label_1 = Label(new, text="d3NCRYP7 Path: ", font=("Segoe UI", 13))
     entry_1 = Entry(new, font=('Segoe UI', 13), width=58)
     label_2 = Label(new, text="Extra Flags: ", font=("Segoe UI", 13))
     entry_2 = Entry(new, font=('Segoe UI', 13), width=58)
-    
+
     entry_1.insert(0, settings["dencrypt"])
     entry_2.insert(0, "-e")
-    
+
     butt_1 = Button(new, text="Run!", command=lambda:
         runx(entry_1.get(), entry_2.get()))
     butt_2 = Button(new, text="What's d3NCRYP7 by MF366?", command=lambda:
         simple_webbrowser.Website("https://github.com/MF366-Coding/d3NCRYP7#d3ncryp7---simple-encryption-and-decryption-system"))
-    
+
     label_1.grid(column=1, row=1)
     entry_1.grid(column=2, row=1)
     label_2.grid(column=1, row=2)
     entry_2.grid(column=2, row=2)
     butt_1.grid(column=1, row=3)
     butt_2.grid(column=2, row=3)
-    
+
     new.mainloop()
 
 def readme_gen(*entries):
@@ -1686,11 +1693,11 @@ def readme_gen(*entries):
     _project_website = entries[4]
     _sponsor_site = entries[5]
 
-    TextWidget.delete(0.0, END) 
+    TextWidget.delete(0.0, END)
 
     if _title in NOT_ALLOWED:
         _title = 'Insert title here'
-        
+
     if _describe in NOT_ALLOWED:
         _describe = f"Please describe {_title}"
 
@@ -1701,13 +1708,13 @@ def readme_gen(*entries):
 
     if _author_email not in NOT_ALLOWED:
         readme_generated += f"""[Contact Me]({_author_email})\n"""
-        
+
     if _author_website not in NOT_ALLOWED:
         readme_generated += f"""[I'm online at: {_author_website}]({_author_website})\n"""
-        
+
     if _project_website not in NOT_ALLOWED:
         readme_generated += f"""[Find this project at: {_project_website}]({_project_website})\n"""
-    
+
     if _sponsor_site not in NOT_ALLOWED:
         readme_generated += f"""[Liked it? Sponsor it!]({_sponsor_site})\n"""
 
@@ -1715,17 +1722,17 @@ def readme_gen(*entries):
 
 def readme_gen_win():
     # Window Creation
-    window = Toplevel(desktop_win) 
-    window.title("README.md Generator") 
-    window.resizable(False, False) 
+    window = Toplevel(desktop_win)
+    window.title("README.md Generator")
+    window.resizable(False, False)
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
-    
-    label_1 = Label(window, text='Title:', font=('Calibri', 13)) 
+
+    label_1 = Label(window, text='Title:', font=('Calibri', 13))
     label_2 = Label(window, text='Short Description:', font=('Calibri', 13))
     label_3 = Label(window, text='Author Email:', font=('Calibri', 13))
-    label_4 = Label(window, text='Author Website:', font=('Calibri', 13)) 
-    label_5 = Label(window, text='Project Website:', font=('Calibri', 13)) 
+    label_4 = Label(window, text='Author Website:', font=('Calibri', 13))
+    label_5 = Label(window, text='Project Website:', font=('Calibri', 13))
     label_6 = Label(window, text='Sponsor/Donation Website:', font=('Calibri', 13))
     label_7 = Label(window, text="NOTE:", font=("Calibri", 13))
     label_8 = Label(window, text="This action will erase the current text in the editor.", font=("Calibri", 13))
@@ -1735,10 +1742,10 @@ def readme_gen_win():
     _author_email = Entry(window, font=('Calibri', 12))
     _author_website = Entry(window, font=('Calibri', 12))
     _project_website = Entry(window, font=('Calibri', 12))
-    _sponsor_site = Entry(window, font=('Calibri', 12)) 
+    _sponsor_site = Entry(window, font=('Calibri', 12))
 
     butt_1 = Button(window, text="Generate", command=lambda:
-        readme_gen(_title.get(), _describe.get(), _author_email.get(), _author_website.get(), _project_website.get(), _sponsor_site.get())) 
+        readme_gen(_title.get(), _describe.get(), _author_email.get(), _author_website.get(), _project_website.get(), _sponsor_site.get()))
 
     butt_2 = Button(window, text="Cancel", command=window.destroy)
 
@@ -1764,20 +1771,20 @@ def readme_gen_win():
     window.mainloop()
 
 def open_with_adv():
-    window = Toplevel(desktop_win) 
-    window.title("Open With...") 
-    window.resizable(False, False) 
+    window = Toplevel(desktop_win)
+    window.title("Open With...")
+    window.resizable(False, False)
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
-    
+
     def action_1():
         if not NOW_FILE:
             mb.showinfo(lang[1], "The file must be saved.")
         else:
             os.system(f'"{str(NOW_FILE)}"')
-            
+
         window.destroy()
-    
+
     def action_2(requested_entry):
         if not NOW_FILE:
             mb.showinfo(lang[1], "The file must be saved.")
@@ -1786,30 +1793,147 @@ def open_with_adv():
                 os.system(f'"{requested_entry}" "{str(NOW_FILE)}"')
             else:
                 os.system(f'{requested_entry} "{str(NOW_FILE)}"')
-                
+
         window.destroy()
-    
+
     butt_1 = Button(window, text="Use the default app", command=action_1)
     label_1 = Label(window, text="...or...".upper(), font=("Arial", 15))
     label_2 = Label(window, text="Custom Path:", font=("Calibri", 13))
     entry_1 = Entry(window, font=("Calibri", 13))
     butt_2 = Button(window, text="Open with the app at...", command=lambda:
         action_2(entry_1.get()))
-    
+
     butt_1.grid(column=1, row=1)
     label_1.grid(column=1, row=2)
     label_2.grid(column=1, row=3)
     entry_1.grid(column=2, row=3)
     butt_2.grid(column=1, row=4)
-    
+
     window.mainloop()
 
+def send_email_with_attachment(win, sender_email: str, sender_password: str, recipient_email: str, subject: str, body: str):
+    win.destroy()
+    
+    if not NOW_FILE:
+        mb.showerror(lang[1], "The file must be saved.")
+        return
+
+    # Certain parts of this function belongs to:
+    # https://medium.com/@hannanmentor/20-python-scripts-with-code-to-automate-your-work-68662a8dcbc1
+    server = smtplib.SMTP('smtp.office365.com', 587)
+    server.starttls()
+    server.login(sender_email, sender_password)
+
+    try:
+        message = MIMEMultipart()
+        message['From'] = sender_email
+        message['To'] = recipient_email
+        message['Subject'] = subject
+        message.attach(MIMEText(body, 'plain'))
+        with open(NOW_FILE, "r", encoding="utf-8") as attachment:
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload(attachment.read())
+            encoders.encode_base64(part)
+            part.add_header('Content-Disposition', f"attachment; filename= {os.path.basename(NOW_FILE)}")
+            message.attach(part)
+        server.sendmail(sender_email, recipient_email, message.as_string())
+    
+    except Exception:
+        mb.showerror(lang[1], "A fatal error ocurred.\nThe already cached emails will probably be sent but the rest won't.")
+
+    server.quit()
+
+def message_write(mail: str, pwd: str, _variable, win):
+    win.destroy()
+    
+    if _variable == '1':
+        try:
+            settings["email"] = str(mail)
+            fast_dump()
+        except Exception:
+            pass
+    
+    # Window Creation
+    window = Toplevel(desktop_win)
+    window.title("WriterClassic - Write the email")
+    
+    window.resizable(False, False)
+    if sys.platform == 'win32':
+        window.iconbitmap(f'{data_dir}/app_icon.ico')
+        
+    label_1 = Label(window, text="Send to: ", font=("Noto Sans", 13))
+    label_2 = Label(window, text="Only one email allowed.", font=("Noto Sans", 11))
+    label_3 = Label(window, text="Subject: ", font=("Noto Sans", 13))
+    label_4 = Label(window, text="Message: ", font=("Noto Sans", 13))
+    
+    entry_1 = Entry(window, font=("Noto Sans", 13))
+    entry_2 = Entry(window, font=("Noto Sans", 13))
+    
+    text_1 = Text(window, borderwidth=5, font=(font_use["type"], font_use["size"]), insertbackground=theme["ct"], fg=theme["fg"], bg=theme["color"], height=10)
+    
+    butt_1 = Button(window, text="Send", command=lambda:
+        send_email_with_attachment(window, mail, pwd, entry_2.get(), entry_1.get(), text_1.get(0.0, END)))
+    
+    label_1.pack()
+    label_2.pack()
+    entry_2.pack()
+    
+    label_3.pack()
+    entry_1.pack()
+    
+    label_4.pack()
+    text_1.pack()
+    
+    butt_1.pack()
+    
+    window.mainloop()
+    
+
+def adv_login():
+    # Window Creation
+    window = Toplevel(desktop_win)
+    window.title("WriterClassic - Login with your Personal Outlook account")
+    
+    window.resizable(False, False)
+    if sys.platform == 'win32':
+        window.iconbitmap(f'{data_dir}/app_icon.ico')
+        
+    label_1 = Label(window, text="Login with your Personal Outlook account", font=("Noto Sans", 14))
+    label_2 = Label(window, text="WriterClassic has no affiliation with Microsoft in any way. Please note that!", font=("Noto Sans", 11))
+    label_3 = Label(window, text="We will NEVER save your password. We respect your security and privacy.", font=("Noto Sans", 12))
+    label_4 = Label(window, text="Email: ", font=("Noto Sans", 13))
+    label_5 = Label(window, text="Password: ", font=("Noto Sans", 13))
+    
+    entry_1 = Entry(window, font=("Noto Sans", 12))
+    entry_2 = Entry(window, font=("Noto Sans", 10))
+    
+    entry_1.insert(0, settings["email"])
+    
+    a = StringVar(window)
+    
+    butt_1 = Checkbutton(window, text="Save my email for future use", variable=a)
+    butt_2 = Button(window, text="Login", command=lambda:
+        message_write(entry_1.get(), entry_2.get(), a.get(), window))
+    
+    label_1.pack()
+    label_2.pack()
+    label_3.pack()
+    label_4.pack()
+    entry_1.pack()
+    label_5.pack()
+    entry_2.pack()
+    butt_1.pack()
+    butt_2.pack()
+    
+    window.mainloop()
+    
 if ADVANCED:
     menu_14.add_command(label="Show/hide debugging sentences (Not recommended)", command=show_debug)
     if sys.platform == "win32":
         menu_14.add_command(label="Encrypt/decrypt current file with d3NCRYP7", command=dencrypt)
     menu_14.add_command(label="README.md Generator", command=readme_gen_win)
     menu_14.add_command(label="Open with...", command=open_with_adv)
+    menu_14.add_command(label="Send file via email", command=adv_login)
 
 try:
     if sys.platform == "linux":
