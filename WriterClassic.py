@@ -258,7 +258,7 @@ ic(latest_version)
 
 # Config files
 appV = "v8.6.0"
-advV ="v8.6.0.192"
+advV ="v8.6.0.193"
 
 ic(appV)
 ic(advV)
@@ -1318,6 +1318,14 @@ class SignaturePlugin:
         _LOG.write(f"{str(now)} - The Custom signature has been inserted: OK\n")
 
     @staticmethod
+    def getx() -> str:
+        with open(f"{config}/signature.wclassic", "r", encoding="utf-8") as SIGNATURE_FILE:
+            signature = SIGNATURE_FILE.read()
+            SIGNATURE_FILE.close()
+            
+        return signature
+
+    @staticmethod
     def auto():
         username = getuser()
         transformed_username = username.title()
@@ -1811,12 +1819,14 @@ def open_with_adv():
 
     window.mainloop()
 
-def send_email_with_attachment(win, sender_email: str, sender_password: str, recipient_email: str, subject: str, body: str):
+def send_email_with_attachment(win, signa: bool, sender_email: str, sender_password: str, recipient_email: str, subject: str, body: str):
     win.destroy()
     
-    if not NOW_FILE:
-        mb.showerror(lang[1], "The file must be saved.")
-        return
+    if not signa:
+        body += "\n\nSent with WriterClassic (https://mf366-coding.github.io/writerclassic.html)"
+    
+    elif signa:
+        body += f"\n\n{SignaturePlugin.getx()}"
 
     # Certain parts of this function belongs to:
     # https://medium.com/@hannanmentor/20-python-scripts-with-code-to-automate-your-work-68662a8dcbc1
@@ -1872,7 +1882,10 @@ def message_write(mail: str, pwd: str, _variable, win):
     text_1 = Text(window, borderwidth=5, font=(font_use["type"], font_use["size"]), insertbackground=theme["ct"], fg=theme["fg"], bg=theme["color"], height=10)
     
     butt_1 = Button(window, text="Send", command=lambda:
-        send_email_with_attachment(window, mail, pwd, entry_2.get(), entry_1.get(), text_1.get(0.0, END)))
+        send_email_with_attachment(window, False, mail, pwd, entry_2.get(), entry_1.get(), text_1.get(0.0, END)))
+    
+    butt_2 = Button(window, text="Send using your Custom Signature", command=lambda:
+        send_email_with_attachment(window, True, mail, pwd, entry_2.get(), entry_1.get(), text_1.get(0.0, END)))
     
     label_1.pack()
     label_2.pack()
@@ -1885,12 +1898,17 @@ def message_write(mail: str, pwd: str, _variable, win):
     text_1.pack()
     
     butt_1.pack()
+    butt_2.pack()
     
     window.mainloop()
     
 
 def adv_login():
     # Window Creation
+    if not NOW_FILE:
+        mb.showerror(lang[1], "The file must be saved.")
+        return
+    
     window = Toplevel(desktop_win)
     window.title("WriterClassic - Login with your Personal Outlook account")
     
