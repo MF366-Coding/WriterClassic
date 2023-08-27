@@ -258,7 +258,7 @@ ic(latest_version)
 
 # Config files
 appV = "v8.6.0"
-advV ="v8.6.0.193"
+advV ="v8.6.0.194"
 
 ic(appV)
 ic(advV)
@@ -1944,7 +1944,10 @@ def adv_login():
     butt_2.pack()
     
     window.mainloop()
-    
+
+def show_advV():
+    mb.showinfo(lang[1], f"You are running WriterClassic {advV}.")
+
 if ADVANCED:
     menu_14.add_command(label="Show/hide debugging sentences (Not recommended)", command=show_debug)
     if sys.platform == "win32":
@@ -1952,6 +1955,7 @@ if ADVANCED:
     menu_14.add_command(label="README.md Generator", command=readme_gen_win)
     menu_14.add_command(label="Open with...", command=open_with_adv)
     menu_14.add_command(label="Send file via email", command=adv_login)
+    menu_14.add_command(label="Advanced Versioning", command=show_advV)
 
 try:
     if sys.platform == "linux":
