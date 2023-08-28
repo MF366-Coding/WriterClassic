@@ -257,8 +257,8 @@ ic(IGNORE_CHECKING)
 ic(latest_version)
 
 # Config files
-appV = "v8.6.0"
-advV ="v8.6.0.194"
+appV = "v8.7.0"
+advV ="v8.7.0.195-r"
 
 ic(appV)
 ic(advV)
@@ -516,7 +516,7 @@ def new_window():
     newWindow.title(lang[22])
     newWindow.geometry("600x400")
 
-    TextWidget2 = Text(newWindow)
+    TextWidget2 = Text(newWindow, borderwidth=5)
 
     TextWidget2.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"], font=FontSet)
     TextWidget2.pack()
@@ -1291,7 +1291,7 @@ def clear_log_screen(text_interface):
 def show_log():
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
-    _new_editor = Text(_new_window, bg=theme["color"], fg=theme["fg"], insertbackground=theme["ct"], font=("Calibri", 14))
+    _new_editor = Text(_new_window, bg=theme["color"], fg=theme["fg"], insertbackground=theme["ct"], font=("Calibri", 14), borderwidth=5)
     _new_window.title(lang[180])
     _new_editor.pack()
     _new_button = Button(_new_window, text=lang[181], command=lambda:
