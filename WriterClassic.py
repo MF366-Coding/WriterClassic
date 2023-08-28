@@ -29,7 +29,7 @@ NOW_FILE = False
 lines = 0
 
 from icecream import ic
-from logging_data import _LOG, now
+
 from setting_loader import get_settings, dump_settings
 
 ic.configureOutput(prefix="ic debug statement | -> ")
@@ -59,6 +59,11 @@ debug_a.append(data_dir)
 debug_a.append(locale)
 
 import json
+
+import datetime # Really, bro?
+now = datetime.datetime.now()
+
+_LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
 
 from tkinter import Tk, Toplevel, TclError, Label, Button, Text, StringVar, IntVar, Entry, END, Menu, Checkbutton
 from tkinter.ttk import *
