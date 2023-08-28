@@ -4,3 +4,4 @@ __pycache__
 .vscode
 WriterClassic_SETUP_FILE.iss
 WriterClassic_configs.json
+.idea
