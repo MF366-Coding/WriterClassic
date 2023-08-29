@@ -20,7 +20,7 @@ def ParsePluginData(pluginpath: str):
             "Desc": Data.readline().strip()
         }
 
-class Script:
+class _Script:
     # The base script class.
     _GLOBALS = {}  # What ever variables the script can legally modify
     _BYTECODE = None
@@ -63,16 +63,11 @@ class Script:
         self._SUCCESS = True
         self._LOGGER.write(f"{str(now)} - Lock and loaded plugin {self._NAME}!\n")
 
-    def SyncGlobalVars(self):
-        """
-        Updated the program variables that were affected by the plugin.
-        This is why the _globals param exists in the constructor
-        """
-        for global_var in self._GLOBALS:
-            exec(f"global {global_var}\n{global_var} = {self._GLOBALS[global_var]}", globals())
-
     def GetName(self):
         return self._NAME
+
+    def GetGlobals(self):
+        return self._GLOBALS
 
     def RunScript(self):
         """
@@ -89,7 +84,7 @@ class Script:
         # now obviously one should run verified plugins only, unless you potentially want your pc
         # to spontaneously combust.
 
-class ScriptManager:
+class _ScriptManager:
     # It manages scripts!
     _SCRIPTS: list[Script] = None
 
