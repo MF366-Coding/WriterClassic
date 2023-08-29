@@ -29,6 +29,7 @@ NOW_FILE = False
 lines = 0
 
 from icecream import ic
+
 from setting_loader import get_settings, dump_settings
 
 ic.configureOutput(prefix="ic debug statement | -> ")
@@ -57,10 +58,12 @@ debug_a.append(plugin_dir)
 debug_a.append(data_dir)
 debug_a.append(locale)
 
+import json
+
 import datetime # Really, bro?
 now = datetime.datetime.now()
 
-import json
+_LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
 
 from tkinter import Tk, Toplevel, TclError, Label, Button, Text, StringVar, IntVar, Entry, END, Menu, Checkbutton
 from tkinter.ttk import *
@@ -76,8 +79,6 @@ import sys # Platforms and OSes
 desktop_win = Tk()
 TextWidget = Text(desktop_win, font=("Calibri", 13), borderwidth=5)
 TextWidget.pack()
-
-_LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
 
 _LOG.write("\n")
 _LOG.write(f"{str(now)} - WriterClassic was executed: OK\n")
