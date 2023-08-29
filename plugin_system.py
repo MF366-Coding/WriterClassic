@@ -110,7 +110,8 @@ class ScriptManager:
                 user_data       = _globals['user_data'],
                 nix_assets      = _globals['nix_assets'],
                 plugin_dir      = _globals['plugin_dir'],
-                locale          = _globals['locale']
+                locale          = _globals['locale'],
+                NOW_FILE        = _globals['NOW_FILE']
             )
             self._SCRIPTS[scr.GetName()] = scr
 
