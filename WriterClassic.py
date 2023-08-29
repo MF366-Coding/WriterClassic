@@ -236,6 +236,16 @@ from plugin_system import _Script, _ScriptManager
 ScriptManager = _ScriptManager()
 ScriptManager.LoadPlugins(globals())
 
+def SyncSettings(plugin_name: str):
+    """
+    Call this function after calling .RunScript()
+    to sync the variables
+    """
+
+    global ScriptManager, NOW_FILE
+    # I assume only NOW_FILE is changeable by plugins
+    NOW_FILE = ScriptManager.GetPlugin(plugin_name).GetGlobals()['NOW_FILE']
+
 if sys.platform == "win32":
     desktop_win.iconbitmap(f"{data_dir}/app_icon.ico")
     _LOG.write(f"{str(now)} - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK\n")

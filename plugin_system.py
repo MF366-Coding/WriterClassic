@@ -114,3 +114,6 @@ class _ScriptManager:
 
     def RunPlugin(self, name):
         self._SCRIPTS[name].RunScript()
+
+    def GetPlugin(self, name):
+        return self._SCRIPTS[name]
