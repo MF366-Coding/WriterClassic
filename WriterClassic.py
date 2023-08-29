@@ -265,7 +265,7 @@ ic(latest_version)
 
 # Config files
 appV = "v8.7.0"
-advV ="v8.7.0.195-r"
+advV ="v8.7.0.210-r"
 
 ic(appV)
 ic(advV)
@@ -1162,127 +1162,82 @@ def article_md():
     _LOG.write(f"{str(now)} - Requested help with the Manual Configuration: OK\n")
 
 
-class PluginCentral:
-    def __init__(self, window):
-        self.window = window
-        self.add_atributes()
-        self.window.mainloop()
+class _Plugin:
+    def __init__(self, folder_name: str) -> None:
+        """
+        __init__ intializes the class _Plugin
 
-    def _open_plugin(self, module):
-        if module == 1:
-            try:
-                from plugins import _1
-
-                _confirm = mb.askyesno(lang[174], f"{lang[178]} ({_1.title})?")
-
-                if _confirm:
-                    _1.plugin(desktop_win, TextWidget, NOW_FILE)
-                    _LOG.write(f"{str(now)} - Plugin 1 was executed: OK\n")
-
-            except Exception:
-                mb.showerror(lang[161], lang[162])
-
-        elif module == 2:
-            try:
-                from plugins import _2
-
-                _confirm = mb.askyesno(lang[174], f"{lang[178]} ({_2.title})?")
-
-                if _confirm:
-                    _2.plugin(desktop_win, TextWidget, NOW_FILE)
-                    _LOG.write(f"{str(now)} - Plugin 2 was executed: OK\n")
-
-            except Exception:
-                mb.showerror(lang[161], lang[162])
-
-        elif module == 3:
-            try:
-                from plugins import _3
-
-                _confirm = mb.askyesno(lang[174], f"{lang[178]} ({_3.title})?")
-
-                if _confirm:
-                    _3.plugin(desktop_win, TextWidget, NOW_FILE)
-                    _LOG.write(f"{str(now)} - Plugin 3 was executed: OK\n")
-
-            except Exception:
-                mb.showerror(lang[161], lang[162])
-
-        elif module == 4:
-            try:
-                from plugins import _4
-
-                _confirm = mb.askyesno(lang[174], f"{lang[178]} ({_4.title})?")
-
-                if _confirm:
-                    _4.plugin(desktop_win, TextWidget, NOW_FILE)
-                    _LOG.write(f"{str(now)} - Plugin 4 was executed: OK\n")
-
-            except Exception:
-                mb.showerror(lang[161], lang[162])
-
-    def add_atributes(self):
-        self.window.title(lang[174])
-        self.window.geometry("500x85")
-        self.window.resizable(False, False)
-
-        if sys.platform == "win32":
-            self.window.iconbitmap(f"{data_dir}/app_icon.ico")
-
+        Args:
+            folder_name (str): the name of the folder, to be honest
+        """
+        self.FOLDER_URL = folder_name
+        # --
+        self.DETAILS_FILE = None
+        self.DETAILS_CONTENT = None
+        self.MAIN_CONTENT = None
+        self.MAIN_FILE = None
+        self.ICON_FILE = None
+        self.ICON = None
+    
+    def _get_files(self) -> None:
         try:
-            from plugins import _1
+            self.DETAILS_FILE = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Details.txt", timeout=3.5)
+            _LOG.write(f"{str(now)} - Connected to GitHub: OK\n")
+            self.DETAILS_CONTENT = self.DETAILS_FILE.text
+            # --
+            QUICK_DETAILS = self.DETAILS_CONTENT.split("\n")
+            # --
+            self.MAIN_FILE = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/{QUICK_DETAILS[0].replace(' ', '_')}.py", timeout=3.5)
+            _LOG.write(f"{str(now)} - Connected to GitHub: OK\n")
+            self.MAIN_CONTENT = self.MAIN_FILE.text
+            # --
+            self.ICON_FILE = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Details.txt", timeout=3.5)
+            _LOG.write(f"{str(now)} - Connected to GitHub: OK\n")
+            self.ICON = self.ICON_FILE.text
 
-            butt_1 = Button(self.window, text=f"{lang[175]} | {_1.title}", command=lambda:
-                self._open_plugin(1))
-            butt_1.grid(column=1, row=1)
+        except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout):
+            mb.showerror(lang[148], {lang[135]})
+        
+        else:
+            parent_directory = plugin_dir
+            new_folder_base_name = 'plugin'
+            counter = 1
 
-        except Exception:
-            butt_1 = Button(self.window, text=f"{lang[175]} | Title not found", command=lambda:
-                self._open_plugin(1))
-            butt_1.grid(column=1, row=1)
+            while True:
+                new_folder_name = f'{new_folder_base_name}_{counter}'
+                new_folder_path = os.path.join(parent_directory, new_folder_name)
 
+                if not os.path.exists(new_folder_path):
+                    os.makedirs(new_folder_path)
+                    break
+                
+                counter += 1
+            
+            DETAIL = QUICK_DETAILS[0].replace(" ", "_")
+            
+            with open(f"{new_folder_path}/{DETAIL}.py", "w", encoding="utf-8") as open_plugin_file:
+                open_plugin_file.write(self.MAIN_CONTENT)
+                
+            with open(f"{new_folder_path}/Details.txt", "w", encoding="utf-8") as open_details_file:
+                open_details_file.write(self.DETAILS_CONTENT)
+                
+            with open(f"{new_folder_path}/icon.png", "w", encoding="utf-8") as open_icon_file:
+                open_icon_file.write(self.ICON)
+                
+            with open(f"{new_folder_path}/__init__.py", "w", encoding="utf-8") as open_init_file:
+                open_init_file.write("") 
 
-        try:
-            from plugins import _2
+''' Test area if u need Norb
+test2 = _Plugin("test2")
+test2._get_files()
 
-            butt_2 = Button(self.window, text=f"{lang[176]} | {_2.title}", command=lambda:
-                self._open_plugin(2))
-            butt_2.grid(column=2, row=1)
-
-        except Exception:
-            butt_2 = Button(self.window, text=f"{lang[176]} | Title not found", command=lambda:
-                self._open_plugin(2))
-            butt_2.grid(column=2, row=1)
-
-
-        try:
-            from plugins import _3
-
-            butt_3 = Button(self.window, text=f"{lang[177]} 3 | {_3.title}", command=lambda:
-                self._open_plugin(3))
-            butt_3.grid(column=1, row=2)
-
-        except Exception:
-            butt_3 = Button(self.window, text=f"{lang[177]} 3 | Title not found", command=lambda:
-                self._open_plugin(3))
-            butt_3.grid(column=1, row=2)
-
-
-        try:
-            from plugins import _4
-
-            butt_4 = Button(self.window, text=f"{lang[177]} 4 | {_4.title}", command=lambda:
-                self._open_plugin(4))
-            butt_4.grid(column=2, row=2)
-
-        except Exception:
-            butt_4 = Button(self.window, text=f"{lang[177]} 4 | Title not found", command=lambda:
-                self._open_plugin(4))
-            butt_4.grid(column=2, row=2)
-
-
-        _LOG.write(f"{str(now)} - The Plugin Central has been created: OK\n")
-
+def run_a_plugin(plugin_name: str):
+    ScriptManager.LoadPlugins(globals())
+    ScriptManager.RunPlugin(name=plugin_name)
+    
+run_a_plugin("Kill_Window")
+'''
+    
 
 def clear_log_screen(text_interface):
     text_interface.delete(0.0, END)
@@ -1501,8 +1456,9 @@ menu_8.add_separator()
 menu_8.add_command(label=lang[10], command=lambda:
     WipeFile(desktop_win))
 menu_8.add_separator()
-menu_8.add_command(label=lang[173], command=lambda:
-    PluginCentral(window=Toplevel(desktop_win)))
+
+#menu_8.add_command(label=lang[173], command=lambda:
+    #PluginCentral(window=Toplevel(desktop_win)))
 
 menu_9.add_command(label=lang[81], command=InternetOnWriter.Website)
 menu_9.add_separator()

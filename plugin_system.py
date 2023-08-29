@@ -13,7 +13,7 @@ def ParsePluginData(pluginpath: str):
     Plugin path is assumed to be the folder where the .py is
     We load the Details.txt file and read it
     """
-    with open(pluginpath + _PLUGIN_DATA_FILE, "rt") as Data:
+    with open(pluginpath + _PLUGIN_DATA_FILE, "rt", encoding="utf-8") as Data:
         return {
             "Name": Data.readline().strip(),
             "Author": Data.readline().strip(),
@@ -41,14 +41,14 @@ class _Script:
         # path is the folder with the .py
         PluginData = ParsePluginData(path)
 
-        self._NAME = PluginData["Name"]
+        self._NAME = PluginData["Name"].replace(" ", "_")
         self._PATH = path
         self._GLOBALS = _globals
         self._LOGGER = logger  # is this necessary? yeah, gotta log everything right? ;)
 
         try:
             self._BYTECODE = compile(
-                open( glob(f"{self._PATH}{PluginData['Name']}.py")[0], "rt" ).read(),
+                open( glob(f"{self._PATH}{PluginData['Name']}.py")[0], "rt", encoding="utf-8" ).read(),
                 f"{self._PATH}{self._NAME}.py",
                 'exec'
             )
@@ -74,8 +74,10 @@ class _Script:
         Run the actual thingy.
         """
         self._LOGGER.write(f"{str(now)} - Running script {self._NAME}!\n")
+        
         try:
             exec(self._BYTECODE, self._GLOBALS)
+            
         except Exception as Ex:
             self._LOGGER.write(
                 f"\n{str(now)} - Error caught while trying to run plugin {self._NAME}:"
@@ -86,7 +88,7 @@ class _Script:
 
 class _ScriptManager:
     # It manages scripts!
-    _SCRIPTS: list[Script] = None
+    _SCRIPTS: list[_Script] = None
 
     def __init__(self):
         self._SCRIPTS = {}
@@ -94,9 +96,9 @@ class _ScriptManager:
     def LoadPlugins(self, _globals: dict):
         # call globals() in WriterClassic so we can access them here.
         # I ain't importing shit!
-        _folders = glob(".\\plugins\\*\\")  # sorry c++ plugins, though import DLLs might be a possibility...
+        _folders = glob(f"{_globals['plugin_dir']}/*/")  # sorry c++ plugins, though import DLLs might be a possibility...
         for folder in _folders:
-            scr = Script (
+            scr = _Script (
                 folder, _globals['_LOG'],
                 desktop_win     = _globals['desktop_win'],
                 TextWidget      = _globals['TextWidget'],
