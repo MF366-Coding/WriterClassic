@@ -199,3 +199,23 @@ WriterClassic - Generate a desktop entry
 Language
 This file has been modified.
 Do you wish to save the changes before leaving the software?
+Version
+Which version of the plugin would you like to install?
+Plugin Installation Wizard
+Choose between 1 and
+Pick the number of a plugin to run.
+Tip: if you want to run the plugin stored inside 'plugins/plugin_3', the number would be 3.
+Run?
+You're about to run a possibly dangerous plugin!
+If you installed this plugin from within WriterClassic
+or from the official plugins GitHub repository, then
+you can go ahead and run this plugin, since they are
+all verified.
+Check the 'Details.txt' file inside the folder you indicated
+before running this plugin to make sure you're running the correct plugin.
+Continue and run?
+Run a Plugin
+Install a Plugin
+Do you understand that WriterClassic or any of its developers and contributors are NOT responsible for any damage caused by an unsafe plugin or misuse of such?
+Tip: all the verified plugins are at https://bit.ly/writerclassic-plugins inside the Verified_Plugins folder.
+Please type the name of the folder where the plugin you want to install is.

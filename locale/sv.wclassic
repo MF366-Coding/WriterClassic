@@ -199,3 +199,23 @@ WriterClassic - Skapa en *.desktop-fil
 Språk
 Denna fil har ändrats.
 Vill du spara ändringarna innan du lämnar programvaran?
+Version
+Vilken version av insticksprogrammet vill du installera?
+Installationsguide för plugin
+Välj mellan 1 och
+Välj numret på ett plugin som ska köras.
+Tips: om du vill köra det plugin som finns lagrat i 'plugins/plugin_3', blir numret 3.
+Kör?
+Du är på väg att köra ett eventuellt farligt plugin!
+Om du installerade detta plugin från WriterClassic
+eller från det officiella plugins GitHub-förvaret, då
+kan du gå vidare och köra detta plugin, eftersom de är
+alla är verifierade.
+Kontrollera filen "Details.txt" i mappen som du angav
+innan du kör detta plugin för att se till att du kör rätt plugin.
+Fortsätt och kör?
+Kör ett plugin
+Installera ett insticksprogram
+Förstår du att WriterClassic eller någon av dess utvecklare och bidragsgivare INTE är ansvariga för eventuella skador som orsakas av ett osäkert plugin eller missbruk av sådant?
+Tips: Alla verifierade plugins finns på https://bit.ly/writerclassic-plugins i mappen Verified_Plugins.
+Ange namnet på den mapp där det insticksprogram du vill installera finns.

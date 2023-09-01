@@ -199,3 +199,23 @@ WriterClassic - Genererer en *.desktop-fil
 Språk
 Denne filen har blitt endret.
 Ønsker du å lagre endringene før du forlater programmet?
+Versjon
+Hvilken versjon av programtillegget ønsker du å installere?
+Veiviser for installasjon av plugin
+Velg mellom 1 og
+Velg nummeret på en plugin som skal kjøres.
+Tips: Hvis du vil kjøre programtillegget som er lagret i "plugins/plugin_3", er nummeret 3.
+Kjør?
+Du er i ferd med å kjøre en muligens farlig plugin!
+Hvis du installerte denne plugin-modulen fra WriterClassic
+eller fra det offisielle GitHub-depotet for programtillegg, kan du
+kan du kjøre denne plugin-modulen, siden alle er verifisert.
+alle er verifisert.
+Sjekk filen 'Details.txt' i mappen du har angitt
+før du kjører denne plugin-modulen for å forsikre deg om at du kjører riktig plugin-modul.
+Fortsette og kjøre?
+Kjør en plugin
+Installere en plugin-modul
+Er du innforstått med at WriterClassic eller noen av utviklerne og bidragsyterne IKKE er ansvarlige for skader forårsaket av en usikker plugin eller misbruk av en slik?
+Tips: Alle verifiserte plugins finnes på https://bit.ly/writerclassic-plugins i mappen Verified_Plugins.
+Skriv inn navnet på mappen der programtillegget du vil installere, ligger.

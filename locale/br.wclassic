@@ -199,3 +199,23 @@ WriterClassic - Gerar um arquivo *.desktop
 Língua
 Esse arquivo foi modificado.
 Deseja salvar as mudanças antes de sair do aplicativo?
+Versão
+Qual versão do plug-in você gostaria de instalar?
+Assistente de instalação do plug-in
+Escolha entre 1 e
+Escolha o número de um plug-in a ser executado.
+Dica: se você quiser executar o plug-in armazenado em "plugins/plugin_3", o número será 3.
+Executar?
+Você está prestes a executar um plug-in possivelmente perigoso!
+Se você instalou esse plug-in a partir do WriterClassic
+ou do repositório oficial de plug-ins do GitHub, então
+você pode ir em frente e executar esse plug-in, pois eles são
+todos verificados.
+Verifique o arquivo "Details.txt" dentro da pasta que você indicou
+antes de executar esse plug-in para ter certeza de que está executando o plug-in correto.
+Continuar e executar?
+Executar um plug-in
+Instalar um plug-in
+Você entende que o WriterClassic ou qualquer um de seus desenvolvedores e colaboradores NÃO são responsáveis por qualquer dano causado por um plug-in inseguro ou pelo uso indevido do mesmo?
+Dica: todos os plug-ins verificados estão em https://bit.ly/writerclassic-plugins dentro da pasta Verified_Plugins.
+Digite o nome da pasta onde está o plug-in que você deseja instalar.

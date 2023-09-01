@@ -199,3 +199,23 @@ WriterClassic - Erzeugen einer *.desktop-Datei
 Sprache
 Diese Datei wurde geändert.
 Möchten Sie die Änderungen speichern, bevor Sie die Software verlassen?
+Version
+Welche Version des Plugins möchten Sie installieren?
+Plugin-Installations-Assistent
+Wählen Sie zwischen 1 und
+Wählen Sie die Nummer des Plugins, das Sie ausführen möchten.
+Tipp: Wenn Sie das in 'plugins/plugin_3' gespeicherte Plugin ausführen möchten, wäre die Nummer 3.
+Ausführen?
+Sie sind im Begriff, ein möglicherweise gefährliches Plugin auszuführen!
+Wenn Sie dieses Plugin von WriterClassic aus installiert haben
+oder aus dem offiziellen Plugin-Repository auf GitHub installiert haben, dann
+können Sie dieses Plugin ausführen, da alle Plugins
+alle verifiziert sind.
+Überprüfen Sie die Datei "Details.txt" in dem von Ihnen angegebenen Ordner
+bevor Sie dieses Plugin ausführen, um sicherzustellen, dass Sie das richtige Plugin ausführen.
+Fortfahren und ausführen?
+Ein Plugin ausführen
+Installieren Sie ein Plugin
+Verstehen Sie, dass WriterClassic oder seine Entwickler und Mitwirkenden NICHT für Schäden verantwortlich sind, die durch ein unsicheres Plugin oder den Missbrauch eines solchen verursacht werden?
+Tipp: Alle geprüften Plugins befinden sich unter https://bit.ly/writerclassic-plugins im Ordner Verified_Plugins.
+Bitte geben Sie den Namen des Ordners ein, in dem sich das Plugin befindet, das Sie installieren möchten.

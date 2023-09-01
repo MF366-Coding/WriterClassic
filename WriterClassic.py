@@ -30,6 +30,8 @@ lines = 0
 
 from icecream import ic
 
+import zipfile
+
 from setting_loader import get_settings, dump_settings
 
 ic.configureOutput(prefix="ic debug statement | -> ")
@@ -50,6 +52,14 @@ plugin_dir = _PATH.join(script_dir, 'plugins')
 data_dir = _PATH.join(script_dir, 'data')
 locale = _PATH.join(script_dir, 'locale')
 
+
+def check_paths(var) -> str:
+    if not os.path.exists(var):
+        os.mkdir(var)
+        return "Criada."
+    
+    return "Existia."
+
 debug_a = []
 debug_a.append(config)
 debug_a.append(user_data)
@@ -58,10 +68,14 @@ debug_a.append(plugin_dir)
 debug_a.append(data_dir)
 debug_a.append(locale)
 
+for i in debug_a:
+    check_paths(i)
+
 import json
 
 import datetime # Really, bro?
-now = datetime.datetime.now()
+def now() -> str:
+    return datetime.datetime.now()
 
 _LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
 
@@ -81,7 +95,7 @@ TextWidget = Text(desktop_win, font=("Calibri", 13), borderwidth=5)
 TextWidget.pack()
 
 _LOG.write("\n")
-_LOG.write(f"{str(now)} - WriterClassic was executed: OK\n")
+_LOG.write(f"{str(now())} - WriterClassic was executed: OK\n")
 
 import random
 
@@ -113,15 +127,15 @@ for debug_b in debug_a:
 startApp = settings["startup"]
 if not startApp:
     startApp = "0"
-    _LOG.write(f"{str(now)} - Check for updates on startup: DISABLED\n")
+    _LOG.write(f"{str(now())} - Check for updates on startup: DISABLED\n")
 
 elif startApp:
     startApp = "1"
-    _LOG.write(f"{str(now)} - Check for updates on startup: ENABLED\n")
+    _LOG.write(f"{str(now())} - Check for updates on startup: ENABLED\n")
 
 else:
     startApp = "1"
-    _LOG.write(f"{str(now)} - Check for updates on startup: ENABLED\n")
+    _LOG.write(f"{str(now())} - Check for updates on startup: ENABLED\n")
 
 ic(startApp)
 
@@ -131,24 +145,24 @@ ic(f"{data_dir}/logo.png")
 
 # Importing the goodies
 from py_compile import compile as _compile
-_LOG.write(f"{str(now)} - Imported compile from py_compile: OK\n")
+_LOG.write(f"{str(now())} - Imported compile from py_compile: OK\n")
 
 from getpass import getuser
-_LOG.write(f"{str(now)} - Imported getuser from getpass: OK\n")
+_LOG.write(f"{str(now())} - Imported getuser from getpass: OK\n")
 
 from tkinter import simpledialog as sdg # Inputs with GUI
-_LOG.write(f"{str(now)} - Imported simpledialog from tkinter: OK\n")
+_LOG.write(f"{str(now())} - Imported simpledialog from tkinter: OK\n")
 
 import tkinter.filedialog as dlg # File Dialogs were never this easy...
-_LOG.write(f"{str(now)} - Imported filedialog from tkinter: OK\n")
+_LOG.write(f"{str(now())} - Imported filedialog from tkinter: OK\n")
 
 import tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
-_LOG.write(f"{str(now)} - Imported messagebox from tkinter: OK\n")
+_LOG.write(f"{str(now())} - Imported messagebox from tkinter: OK\n")
 
 from tkinter.font import Font # Ouchie mama (font, daaah)
-_LOG.write(f"{str(now)} - Imported Font from tkinter.font: OK\n")
+_LOG.write(f"{str(now())} - Imported Font from tkinter.font: OK\n")
 
-ic(now)
+ic(now())
 
 setLang = settings["language"]
 
@@ -157,14 +171,14 @@ ic(setLang)
 with open(f'{locale}/'+str(setLang[0:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
     lang = usedLang.split('\n')
-    _LOG.write(f"{str(now)} - Language has been configured correctly: OK\n")
+    _LOG.write(f"{str(now())} - Language has been configured correctly: OK\n")
 
 try:
     from simple_webbrowser import simple_webbrowser
-    _LOG.write(f"{str(now)} - simple_webbrowser by MF366 has been imported: OK\n")
+    _LOG.write(f"{str(now())} - simple_webbrowser by MF366 has been imported: OK\n")
 
 except (ModuleNotFoundError, ImportError):
-    _LOG.write(f"{str(now)} - simple_webbrowser by MF366 has been imported: ERROR\n")
+    _LOG.write(f"{str(now())} - simple_webbrowser by MF366 has been imported: ERROR\n")
     mb.showerror(lang[155], lang[156])
     module_pip = mb.askyesno(lang[155], lang[157])
     if module_pip:
@@ -172,83 +186,69 @@ except (ModuleNotFoundError, ImportError):
         if sys.platform == "win32":
             os.system("python -m pip install simple_webbrowser")
             mb.showinfo(lang[155], lang[158])
-            _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: OK\n")
-            _LOG.write(f"{str(now)} - End of session\n")
+            _LOG.write(f"{str(now())} - Command 'pip install simple_webbrowser' has been executed: OK\n")
+            _LOG.write(f"{str(now())} - End of session\n")
             quit()
 
         elif sys.platform in UNIX_OSES:
             os.system("pip install simple_webbrowser")
             mb.showinfo(lang[155], lang[158])
-            _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: OK\n")
-            _LOG.write(f"{str(now)} - End of session\n")
+            _LOG.write(f"{str(now())} - Command 'pip install simple_webbrowser' has been executed: OK\n")
+            _LOG.write(f"{str(now())} - End of session\n")
             quit()
 
         else:
             mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
-            _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: NO (OS ERROR)\n")
-            _LOG.write(f"{str(now)} - End of session\n")
+            _LOG.write(f"{str(now())} - Command 'pip install simple_webbrowser' has been executed: NO (OS ERROR)\n")
+            _LOG.write(f"{str(now())} - End of session\n")
             quit()
 
     elif module_pip == False:
         mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
-        _LOG.write(f"{str(now)} - Command 'pip install simple_webbrowser' has been executed: NO (USER DECISION)\n")
-        _LOG.write(f"{str(now)} - End of session\n")
+        _LOG.write(f"{str(now())} - Command 'pip install simple_webbrowser' has been executed: NO (USER DECISION)\n")
+        _LOG.write(f"{str(now())} - End of session\n")
         quit()
 
 if startApp == "1":
     try:
         from requests import get, exceptions # it's a module yay!
-        _LOG.write(f"{str(now)} - requests has been imported: OK\n")
+        _LOG.write(f"{str(now())} - requests has been imported: OK\n")
     except (ModuleNotFoundError, ImportError):
-        _LOG.write(f"{str(now)} - requests has been imported: ERROR\n")
+        _LOG.write(f"{str(now())} - requests has been imported: ERROR\n")
         mb.showerror(lang[155], lang[156])
         module_pip = mb.askyesno(lang[155], lang[157])
         if module_pip:
             if sys.platform == "win32":
                 os.system("python -m pip install requests")
                 mb.showinfo(lang[155], lang[158])
-                _LOG.write(f"{str(now)} - Command 'pip install requests' has been executed: OK\n")
-                _LOG.write(f"{str(now)} - End of session\n")
+                _LOG.write(f"{str(now())} - Command 'pip install requests' has been executed: OK\n")
+                _LOG.write(f"{str(now())} - End of session\n")
                 quit()
             elif sys.platform in UNIX_OSES:
                 os.system("pip install requests")
                 mb.showinfo(lang[155], lang[158])
-                _LOG.write(f"{str(now)} - Command 'pip install requests' has been executed: OK\n")
-                _LOG.write(f"{str(now)} - End of session\n")
+                _LOG.write(f"{str(now())} - Command 'pip install requests' has been executed: OK\n")
+                _LOG.write(f"{str(now())} - End of session\n")
                 quit()
             else:
                 mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
-                _LOG.write(f"{str(now)} - Command 'pip install requests' has been executed: NO (OS ERROR)\n")
-                _LOG.write(f"{str(now)} - End of session\n")
+                _LOG.write(f"{str(now())} - Command 'pip install requests' has been executed: NO (OS ERROR)\n")
+                _LOG.write(f"{str(now())} - End of session\n")
                 quit()
         elif module_pip == False:
             mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
-            _LOG.write(f"{str(now)} - Command 'pip install requests' has been executed: NO (USER DECISION)\n")
-            _LOG.write(f"{str(now)} - End of session\n")
+            _LOG.write(f"{str(now())} - Command 'pip install requests' has been executed: NO (USER DECISION)\n")
+            _LOG.write(f"{str(now())} - End of session\n")
             quit()
 
 # Windowing
-_LOG.write(f"{str(now)} - WriterClassic launched: OK\n")
+_LOG.write(f"{str(now())} - WriterClassic launched: OK\n")
 
-# Norb infiltration
-from plugin_system import _Script, _ScriptManager
-
-ScriptManager = _ScriptManager()
-ScriptManager.LoadPlugins(globals())
-
-def SyncSettings(plugin_name: str):
-    """
-    Call this function after calling .RunScript()
-    to sync the variables
-    """
-
-    global ScriptManager, NOW_FILE
-    # I assume only NOW_FILE is changeable by plugins
-    NOW_FILE = ScriptManager.GetPlugin(plugin_name).GetGlobals()['NOW_FILE']
+from plugin_system import initializer, run_a_plugin
 
 if sys.platform == "win32":
     desktop_win.iconbitmap(f"{data_dir}/app_icon.ico")
-    _LOG.write(f"{str(now)} - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK\n")
+    _LOG.write(f"{str(now())} - Icon has been changed to WriterClassic's icon [WINDOWS ONLY]: OK\n")
 
 latest_version = None
 
@@ -257,25 +257,25 @@ IGNORE_CHECKING = False
 if startApp == '1':
     try:
         response = get('https://api.github.com/repos/MF366-Coding/WriterClassic/releases/latest', timeout=3.5)
-        _LOG.write(f"{str(now)} - Connected to GitHub: OK\n")
+        _LOG.write(f"{str(now())} - Connected to GitHub: OK\n")
         data = json.loads(response.text)
-        _LOG.write(f"{str(now)} - Got WriterClassic Releases data: OK\n")
+        _LOG.write(f"{str(now())} - Got WriterClassic Releases data: OK\n")
         latest_version = data['tag_name']
-        _LOG.write(f"{str(now)} - Got the latest release's tag: OK\n")
+        _LOG.write(f"{str(now())} - Got the latest release's tag: OK\n")
 
     except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout):
         mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
-        _LOG.write(f"{str(now)} - Connected to GitHub: ERROR\n")
-        _LOG.write(f"{str(now)} - Connection has timed out, is restricted or is simply unavailable: INFO\n")
+        _LOG.write(f"{str(now())} - Connected to GitHub: ERROR\n")
+        _LOG.write(f"{str(now())} - Connection has timed out, is restricted or is simply unavailable: INFO\n")
         IGNORE_CHECKING = True
-        _LOG.write(f"{str(now)} - WriterClassic is launching without checking for updates: OK\n")
+        _LOG.write(f"{str(now())} - WriterClassic is launching without checking for updates: OK\n")
 
 ic(IGNORE_CHECKING)
 ic(latest_version)
 
 # Config files
-appV = "v8.7.0"
-advV ="v8.7.0.210-r"
+appV = "v8.8.0"
+advV ="v8.8.0.213-r"
 
 ic(appV)
 ic(advV)
@@ -284,11 +284,11 @@ theme = settings["theme"]
 
 ic(theme)
 
-_LOG.write(f"{str(now)} - Got the current theme: OK\n")
+_LOG.write(f"{str(now())} - Got the current theme: OK\n")
 
 font_use = settings["font"]
-_LOG.write(f"{str(now)} - Got the current font family/type: OK\n")
-_LOG.write(f"{str(now)} - Got the current font size: OK\n")
+_LOG.write(f"{str(now())} - Got the current font family/type: OK\n")
+_LOG.write(f"{str(now())} - Got the current font size: OK\n")
 
 def fast_dump():
     dump_settings(f"{config}/settings.json", settings)
@@ -297,20 +297,20 @@ def fast_dump():
 if NOW_FILE == False:
     desktop_win.title(lang[1])
 
-_LOG.write(f"{str(now)} - Window's title was set to WriterClassic: OK\n")
+_LOG.write(f"{str(now())} - Window's title was set to WriterClassic: OK\n")
 
 try:
     FontSet = Font(family=font_use["type"], size=font_use["size"])
     __font_type = font_use["type"]
     __font_size = font_use["size"]
-    _LOG.write(f"{str(now)} - Font size is {str(__font_size)}: OK\n")
-    _LOG.write(f"{str(now)} - Font family/type is {str(__font_type)}: OK\n")
+    _LOG.write(f"{str(now())} - Font size is {str(__font_size)}: OK\n")
+    _LOG.write(f"{str(now())} - Font family/type is {str(__font_type)}: OK\n")
 
 except TclError:
     mb.showerror(lang[149], f"{lang[144]}\n{lang[145]}\n{lang[146]}")
-    _LOG.write(f"{str(now)} - Font size is set to 14 because of a font error: OK\n")
+    _LOG.write(f"{str(now())} - Font size is set to 14 because of a font error: OK\n")
     FontSet = Font(family="Segoe UI", size=14)
-    _LOG.write(f"{str(now)} - Font type is set to Segoe UI because of a font error: OK\n")
+    _LOG.write(f"{str(now())} - Font type is set to Segoe UI because of a font error: OK\n")
     settings["font"] = {
         "type": "Segoe UI",
         "size": 14
@@ -319,48 +319,48 @@ except TclError:
     fast_dump()
 
 
-_LOG.write(f"{str(now)} - The editing interface has been created: OK\n")
+_LOG.write(f"{str(now())} - The editing interface has been created: OK\n")
 
 geomValue = settings["geometry"]
-_LOG.write(f"{str(now)} - Got the window's dimensions settings: OK\n")
+_LOG.write(f"{str(now())} - Got the window's dimensions settings: OK\n")
 GeomValues = geomValue.split('x')
 
 try:
     desktop_win.geometry(geomValue)
-    _LOG.write(f"{str(now)} - Applied the window's dimensions: OK\n")
+    _LOG.write(f"{str(now())} - Applied the window's dimensions: OK\n")
 except TclError:
     desktop_win.geometry("700x500")
     GeomValues = [700, 500]
-    _LOG.write(f"{str(now)} - Applied the window's dimensions: ERROR\n")
-    _LOG.write(f"{str(now)} - Reverted to 700x500: OK\n")
+    _LOG.write(f"{str(now())} - Applied the window's dimensions: ERROR\n")
+    _LOG.write(f"{str(now())} - Reverted to 700x500: OK\n")
     mb.showerror(lang[166], f"{lang[167]}\n{lang[168]}")
 
 try:
     TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=int(GeomValues[0]), height=int(GeomValues[1]), insertbackground=theme["ct"], font=FontSet)
-    _LOG.write(f"{str(now)} - Applied configurations to the editing interface: OK\n")
+    _LOG.write(f"{str(now())} - Applied configurations to the editing interface: OK\n")
 
 except TclError:
-    _LOG.write(f"{str(now)} - Applied configurations to the editing interface: ERROR\n")
+    _LOG.write(f"{str(now())} - Applied configurations to the editing interface: ERROR\n")
     mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
     TextWidget.configure(bg="black", fg="white", width=int(GeomValues[0]), height=int(GeomValues[1]), insertbackground="white", font=FontSet)
-    _LOG.write(f"{str(now)} - Reconfigured the editing interface: OK\n")
+    _LOG.write(f"{str(now())} - Reconfigured the editing interface: OK\n")
 
-_LOG.write(f"{str(now)} - 'Packed' the editing interface: OK\n")
+_LOG.write(f"{str(now())} - 'Packed' the editing interface: OK\n")
 
 # Defining the menu bar
 menu_bar = Menu(desktop_win)
-_LOG.write(f"{str(now)} - Created the menu bar: OK\n")
+_LOG.write(f"{str(now())} - Created the menu bar: OK\n")
 
 try:
     if sys.platform == "linux":
         menu_bar.configure(background=theme["menu"], foreground=theme["mfg"])
-        _LOG.write(f"{str(now)} - Applied the theme to the menu bar: OK\n")
+        _LOG.write(f"{str(now())} - Applied the theme to the menu bar: OK\n")
 except TclError:
     if sys.platform == "linux":
-        _LOG.write(f"{str(now)} - Applied the theme to the menu bar: ERROR\n")
+        _LOG.write(f"{str(now())} - Applied the theme to the menu bar: ERROR\n")
         mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
         menu_bar.configure(background="white", foreground="black")
-        _LOG.write(f"{str(now)} - Applied the light theme to the menu bar as last resource: OK\n")
+        _LOG.write(f"{str(now())} - Applied the light theme to the menu bar as last resource: OK\n")
 
 ic(sys.platform)
 
@@ -389,12 +389,12 @@ menu_13 = Menu(menu_12)
 if ADVANCED:
     menu_14 = Menu(menu_bar)
 
-_LOG.write(f"{str(now)} - Created all the menus: OK\n")
+_LOG.write(f"{str(now())} - Created all the menus: OK\n")
 
 def writeStartup(text: bool):
     settings["startup"] = text
     fast_dump()
-    _LOG.write(f"{str(now)} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
+    _LOG.write(f"{str(now())} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
 
 # Check for Updates
 class UpdateCheck:
@@ -406,13 +406,13 @@ class UpdateCheck:
 
         if appV != latest_version and IGNORE_CHECKING == False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
-            _LOG.write(f"{str(now)} - Versions don't match: WARNING\n")
+            _LOG.write(f"{str(now())} - Versions don't match: WARNING\n")
             if askForUpdate:
                 simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
-                _LOG.write(f"{str(now)} - Went to the latest release at GitHub: OK\n")
+                _LOG.write(f"{str(now())} - Went to the latest release at GitHub: OK\n")
 
         elif IGNORE_CHECKING == True:
-            _LOG.write(f"{str(now)} - Couldn't check for updates on startup: WARNING\n")
+            _LOG.write(f"{str(now())} - Couldn't check for updates on startup: WARNING\n")
             pass
 
     @staticmethod
@@ -424,57 +424,57 @@ class UpdateCheck:
         if appV != latest_version and IGNORE_CHECKING == False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             if askForUpdate:
-                _LOG.write(f"{str(now)} - Went to the latest release at GitHub: OK\n")
+                _LOG.write(f"{str(now())} - Went to the latest release at GitHub: OK\n")
                 simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
 
         elif appV == latest_version and IGNORE_CHECKING == False:
             mb.showinfo(title=lang[93], message=lang[92])
-            _LOG.write(f"{str(now)} - Versions match | WriterClassic is up to date: OK\n")
+            _LOG.write(f"{str(now())} - Versions match | WriterClassic is up to date: OK\n")
 
         else:
             mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
-            _LOG.write(f"{str(now)} - Couldn't check for updates (Bad Internet, Connection Timeout, Restricted Internet): WARNING\n")
+            _LOG.write(f"{str(now())} - Couldn't check for updates (Bad Internet, Connection Timeout, Restricted Internet): WARNING\n")
 
     @staticmethod
     def change():
         if startApp == '1':
             writeStartup(False)
             mb.showinfo(title=lang[1], message=lang[101])
-            _LOG.write(f"{str(now)} - Check for updates on startup has been disabled: OK\n")
+            _LOG.write(f"{str(now())} - Check for updates on startup has been disabled: OK\n")
         else:
             writeStartup(True)
             mb.showinfo(title=lang[1], message=lang[101])
-            _LOG.write(f"{str(now)} - Check for updates on startup has been enabled: OK\n")
+            _LOG.write(f"{str(now())} - Check for updates on startup has been enabled: OK\n")
 
 if startApp == '1':
     UpdateCheck.check_other()
-    _LOG.write(f"{str(now)} - Checked for updates on startup: AWAITING REPLY\n")
+    _LOG.write(f"{str(now())} - Checked for updates on startup: AWAITING REPLY\n")
 
 # Windowing... one more time...
 def SetWinSize():
     widthSet = sdg.askinteger(lang[1], lang[57])
-    _LOG.write(f"{str(now)} - Got a width value: AWAITING FOR ANTI-BUG CHECK\n")
+    _LOG.write(f"{str(now())} - Got a width value: AWAITING FOR ANTI-BUG CHECK\n")
     if widthSet in NOT_ALLOWED:
         mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
-        _LOG.write(f"{str(now)} - Got a width value: ERROR (ILLEGAL VALUE)\n")
+        _LOG.write(f"{str(now())} - Got a width value: ERROR (ILLEGAL VALUE)\n")
 
     elif widthSet not in NOT_ALLOWED:
-        _LOG.write(f"{str(now)} - Got a width value: OK\n")
+        _LOG.write(f"{str(now())} - Got a width value: OK\n")
         heightSet = sdg.askinteger(lang[1], lang[58])
-        _LOG.write(f"{str(now)} - Got a height value: AWAITING FOR ANTI-BUG CHECK\n")
+        _LOG.write(f"{str(now())} - Got a height value: AWAITING FOR ANTI-BUG CHECK\n")
 
         if heightSet in NOT_ALLOWED:
             mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
-            _LOG.write(f"{str(now)} - Got a width value: ERROR (ILLEGAL VALUE)\n")
+            _LOG.write(f"{str(now())} - Got a width value: ERROR (ILLEGAL VALUE)\n")
 
         elif heightSet not in NOT_ALLOWED:
-            _LOG.write(f"{str(now)} - Got a width value: OK\n")
+            _LOG.write(f"{str(now())} - Got a width value: OK\n")
             TextWidget.configure(width=widthSet, height=heightSet)
-            _LOG.write(f"{str(now)} - Editing interface has been reconfigured: OK\n")
+            _LOG.write(f"{str(now())} - Editing interface has been reconfigured: OK\n")
             desktop_win.geometry(str(widthSet)+'x'+str(heightSet))
-            _LOG.write(f"{str(now)} - Window's dimensions were set: OK\n")
+            _LOG.write(f"{str(now())} - Window's dimensions were set: OK\n")
 
-            _LOG.write(f"{str(now)} - Configured default window's dimensions: OK\n")
+            _LOG.write(f"{str(now())} - Configured default window's dimensions: OK\n")
             settings["geometry"] = str(widthSet)+'x'+str(heightSet)
             fast_dump()
 
@@ -491,43 +491,43 @@ def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fi
     fast_dump()
 
     TextWidget.configure(bg=colour_first, fg=colour_second, insertbackground=colour_third)
-    _LOG.write(f"{str(now)} - Editing interface has been reconfigured: OK\n")
+    _LOG.write(f"{str(now())} - Editing interface has been reconfigured: OK\n")
 
     TextWidget.pack()
 
     waitResponse = mb.askyesno(parent=desktop_win, title=lang[30], message=lang[31])
-    _LOG.write(f"{str(now)} - Asked for app restart: AWAITING RESPONSE\n")
+    _LOG.write(f"{str(now())} - Asked for app restart: AWAITING RESPONSE\n")
 
     if waitResponse:
         desktop_win.destroy()
-        _LOG.write(f"{str(now)} - End of session: QUIT\n")
+        _LOG.write(f"{str(now())} - End of session: QUIT\n")
 
     else:
-        _LOG.write(f"{str(now)} - Cancel/No as response: OK\n")
+        _LOG.write(f"{str(now())} - Cancel/No as response: OK\n")
 
 # ragequit
 def quickway():
-    _LOG.write(f"{str(now)} - End of session: QUIT\n")
+    _LOG.write(f"{str(now())} - End of session: QUIT\n")
     desktop_win.destroy()
 
 # Setup (Lang files)
 def LanguageSet(language_set, root_win):
     settings["language"] = language_set
-    _LOG.write(f"{str(now)} - A new language has been set ({str(language_set)}): OK\n")
+    _LOG.write(f"{str(now())} - A new language has been set ({str(language_set)}): OK\n")
     fast_dump()
 
     popup_define = mb.askyesno(parent=root_win, title=lang[30], message=lang[31])
-    _LOG.write(f"{str(now)} - Asked for app restart: AWAITING RESPONSE\n")
+    _LOG.write(f"{str(now())} - Asked for app restart: AWAITING RESPONSE\n")
     if popup_define:
         root_win.destroy()
-        _LOG.write(f"{str(now)} - End of session: QUIT\n")
+        _LOG.write(f"{str(now())} - End of session: QUIT\n")
     else:
-        _LOG.write(f"{str(now)} - Cancel/No as response: OK\n")
+        _LOG.write(f"{str(now())} - Cancel/No as response: OK\n")
 
 # Notepad
 def new_window():
     newWindow = Toplevel(desktop_win)
-    _LOG.write(f"{str(now)} - A new window has been called: AWAITING CONFIGURATION\n")
+    _LOG.write(f"{str(now())} - A new window has been called: AWAITING CONFIGURATION\n")
 
     # Windowing... yet once more LMAO...
     newWindow.title(lang[22])
@@ -538,7 +538,7 @@ def new_window():
     TextWidget2.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"], font=FontSet)
     TextWidget2.pack()
 
-    _LOG.write(f"{str(now)} - Notes Plugin's window has been fully configured: OK\n")
+    _LOG.write(f"{str(now())} - Notes Plugin's window has been fully configured: OK\n")
 
     newWindow.mainloop()
 
@@ -546,18 +546,18 @@ def DOC_STATS():
     global lines
 
     _data = TextWidget.get(0.0, END)
-    _LOG.write(f"{str(now)} - Extracted text from the editing interface: OK\n")
+    _LOG.write(f"{str(now())} - Extracted text from the editing interface: OK\n")
 
     if _data in NOT_ALLOWED:
         lines = 0
-        _LOG.write(f"{str(now)} - There were {str(lines)} lines: INFO (EMPTY FILE)\n")
+        _LOG.write(f"{str(now())} - There were {str(lines)} lines: INFO (EMPTY FILE)\n")
 
     else:
         _lines = _data.split("\n")
         y_lines = list(filter(("").__ne__, _lines))
         x_lines = int(len(y_lines))
         lines = x_lines
-        _LOG.write(f"{str(now)} - There were {str(lines)} lines: OK\n")
+        _LOG.write(f"{str(now())} - There were {str(lines)} lines: OK\n")
 
     mb.showinfo(lang[164], f"{lang[165]}: {str(lines)}")
 
@@ -566,26 +566,26 @@ def repo():
     ourRepo = "https://github.com/MF366-Coding/WriterClassic/"
 
     simple_webbrowser.Website(ourRepo)
-    _LOG.write(f"{str(now)} - Opened the repository: AWAITING FOR FUNCTION OR ERROR\n")
+    _LOG.write(f"{str(now())} - Opened the repository: AWAITING FOR FUNCTION OR ERROR\n")
 
 # Clock
 def clockPlugin():
     clockWindow = Toplevel(desktop_win)
     clockWindow.geometry('275x65')
     clockWindow.resizable(False, False)
-    _LOG.write(f"{str(now)} - A new window has been called: AWAITING CONFIGURATION\n")
+    _LOG.write(f"{str(now())} - A new window has been called: AWAITING CONFIGURATION\n")
 
     #Windowing
     clockWindow.title(lang[23])
 
     TextWidget2 = Label(clockWindow)
 
-    TextWidget2.configure(text=datetime.datetime.now())
+    TextWidget2.configure(text=datetime.datetime.now()())
     TextWidget2.configure(
         font=(100)
         )
 
-    _LOG.write(f"{str(now)} - Clock Plugin's window has been configured: OK\n")
+    _LOG.write(f"{str(now())} - Clock Plugin's window has been configured: OK\n")
 
     TextWidget.pack()
     clockWindow.mainloop()
@@ -600,7 +600,7 @@ def fontEdit(winType):
             font_use["size"] = fontSize
             settings["font"]["size"] = fontSize
             fast_dump()
-            _LOG.write(f"{str(now)} - Font size has been changed to {str(fontSize)}: OK\n")
+            _LOG.write(f"{str(now())} - Font size has been changed to {str(fontSize)}: OK\n")
             mb.showinfo(lang[1], lang[63])
     else:
         fontType = sdg.askstring(lang[61], lang[62])
@@ -610,7 +610,7 @@ def fontEdit(winType):
             font_use["type"] = fontType
             settings["font"]["type"] = fontType
             fast_dump()
-            _LOG.write(f"{str(now)} - Font type has been changed to {str(fontType)}: OK\n")
+            _LOG.write(f"{str(now())} - Font type has been changed to {str(fontType)}: OK\n")
             mb.showinfo(lang[1], lang[63])
 
 # clears the screen
@@ -621,7 +621,7 @@ def newFile():
     TextWidget.delete(index1=0.0, index2=END)
     NOW_FILE = False
 
-    _LOG.write(f"{str(now)} - A new file has been created: OK\n")
+    _LOG.write(f"{str(now())} - A new file has been created: OK\n")
 
     ic(NOW_FILE)
 
@@ -667,7 +667,7 @@ file_types = [(lang[32], '*.txt'),
               (lang[127], "*.*")
               ]
 
-_LOG.write(f"{str(now)} - Filetypes have been configured correctly: OK\n")
+_LOG.write(f"{str(now())} - Filetypes have been configured correctly: OK\n")
 
 # opens a file
 def OpenFile(root_win):
@@ -700,7 +700,7 @@ def OpenFile(root_win):
         TextWidget.delete(index1=0.0, index2=END)
         TextWidget.insert(chars=file_data, index=0.0)
 
-        _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
+        _LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
 
         NOW_FILE = str(file_path)
         file_input.close()
@@ -738,7 +738,7 @@ def SaveFile(root_win):
     mb.showinfo(lang[1], lang[101])
     root_win.title(f"{lang[1]} - {file_path}")
 
-    _LOG.write(f"{str(now)} - A file has been saved as {str(file_path)}: OK\n")
+    _LOG.write(f"{str(now())} - A file has been saved as {str(file_path)}: OK\n")
 
     NOW_FILE = str(file_path)
     ic(NOW_FILE)
@@ -759,7 +759,7 @@ def Save(root_win):
         mb.showinfo(lang[1], lang[101])
         root_win.title(f"{lang[1]} - {file_path}")
 
-        _LOG.write(f"{str(now)} - An existing file has been saved over ({str(file_path)}): OK\n")
+        _LOG.write(f"{str(now())} - An existing file has been saved over ({str(file_path)}): OK\n")
 
         NOW_FILE = str(file_path)
         ic(NOW_FILE)
@@ -785,7 +785,7 @@ def WipeFile(root_win):
         file_input.write('')
         mb.showinfo(title=lang[1], message=lang[101])
 
-        _LOG.write(f"{str(now)} - A file has been wiped at {str(file_path)}: OK\n")
+        _LOG.write(f"{str(now())} - A file has been wiped at {str(file_path)}: OK\n")
 
         root_win.title(lang[1])
         file_input.close()
@@ -865,7 +865,7 @@ def desktop_create_win():
 # credits
 def appCredits():
     mb.showinfo(title=lang[28], message=lang[65])
-    _LOG.write(f"{str(now)} - The Credits have been shown: OK\n")
+    _LOG.write(f"{str(now())} - The Credits have been shown: OK\n")
 
 # easter egg super secret!
 def surprise_egg():
@@ -890,7 +890,7 @@ def surprise_egg():
 # help me pls!!!
 def APP_HELP():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic#help")
-    _LOG.write(f"{str(now)} - Requested online help: AWAITING FOR CONNECTION\n")
+    _LOG.write(f"{str(now())} - Requested online help: AWAITING FOR CONNECTION\n")
     ic()
 
 # infoooooo
@@ -950,7 +950,7 @@ def aboutApp():
 
     about_dialogue.mainloop()
 
-    _LOG.write(f"{str(now)} - The About dialogue has been shown\n")
+    _LOG.write(f"{str(now())} - The About dialogue has been shown\n")
     about_d.close()
 
     ic()
@@ -962,14 +962,18 @@ def Tips_Tricks():
         lang[142],
         lang[143]
     ))
+    
+    ic(picked_text)
 
     mb.showinfo(lang[1], picked_text)
-    _LOG.write(f"{str(now)} - Requested Tips & Tricks: OK\n")
+    _LOG.write(f"{str(now())} - Requested Tips & Tricks: OK\n")
 
     ic()
 
 def resetWriter(*args):
     global settings
+
+    ic(settings)
 
     askSOS = mb.askyesno(lang[77], lang[78])
     if askSOS:
@@ -998,23 +1002,25 @@ def resetWriter(*args):
             "dencrypt": "",
 
             "debugging": False,
-            
+
             "email": ""
         }
 
+        ic(settings)
+
         fast_dump()
 
-        _LOG.write(f"{str(now)} - Fonts have been reset: OK\n")
+        _LOG.write(f"{str(now())} - Fonts have been reset: OK\n")
 
-        _LOG.write(f"{str(now)} - Language and theme have both been reset: OK\n")
+        _LOG.write(f"{str(now())} - Language and theme have both been reset: OK\n")
 
         desktop_win.geometry('700x500')
 
-        _LOG.write(f"{str(now)} - Window's dimensions have been reset: OK\n")
+        _LOG.write(f"{str(now())} - Window's dimensions have been reset: OK\n")
 
         with open(f"{config}/signature.wclassic", "w", encoding='utf-8') as sigFILE:
             sigFILE.write("--\nBest regards,\nThis is a customizable signature in a file named signature.wclassic in the data folder...")
-            _LOG.write(f"{str(now)} - The Custom Signature has been reset: OK\n")
+            _LOG.write(f"{str(now())} - The Custom Signature has been reset: OK\n")
 
     ic(settings)
 
@@ -1023,7 +1029,7 @@ def _terminal_get(entry_selection):
 
     os.system(_data)
 
-    _LOG.write(f"{str(now)} - Used the following command on the Terminal - {str(_data)}: OK\n")
+    _LOG.write(f"{str(now())} - Used the following command on the Terminal - {str(_data)}: OK\n")
 
     ic(_data)
 
@@ -1031,15 +1037,16 @@ def _trick_terminal(func, window):
     window.destroy()
 
     func()
+    ic()
 
-    _LOG.write(f"{str(now)} - Refreshed the Terminal Inputs: OK\n")
+    _LOG.write(f"{str(now())} - Refreshed the Terminal Inputs: OK\n")
 
 def Terminal():
     terminal = Toplevel(desktop_win)
 
     terminal.title(lang[183])
 
-    _LOG.write(f"{str(now)} - Opened the Terminal Inputs: OK\n")
+    _LOG.write(f"{str(now())} - Opened the Terminal Inputs: OK\n")
 
     entry_1 = Entry(terminal, font=("Calibri", 13))
     butt_1 = Button(terminal, text=lang[178], command=lambda:
@@ -1060,7 +1067,7 @@ class InternetOnWriter:
         askForLink = sdg.askstring(lang[80], lang[91])
         if askForLink != ' ' or askForLink != '':
             simple_webbrowser.Website(askForLink)
-            _LOG.write(f"{str(now)} - Went to {str(askForLink)} via WriterClassic: OK\n")
+            _LOG.write(f"{str(now())} - Went to {str(askForLink)} via WriterClassic: OK\n")
         ic()
 
     @staticmethod
@@ -1069,107 +1076,110 @@ class InternetOnWriter:
             askForTyping = sdg.askstring(lang[83], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Google(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Google: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Google: OK\n")
 
         elif engine == 'bing':
             askForTyping = sdg.askstring(lang[82], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Bing(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Bing: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Bing: OK\n")
 
         elif engine == 'ysearch':
             # stands for Yahoo!
             askForTyping = sdg.askstring(lang[85], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Yahoo(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Yahoo!: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Yahoo!: OK\n")
 
         elif engine == 'ddgo':
             # stands for DuckDuckGo
             askForTyping = sdg.askstring(lang[84], lang[90])
             if askForTyping != '':
                 simple_webbrowser.DuckDuckGo(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on DuckDuckGo: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on DuckDuckGo: OK\n")
 
         elif engine == "yt":
             # stands for YouTube
             askForTyping = sdg.askstring(lang[99], lang[90])
             if askForTyping != '':
                 simple_webbrowser.YouTube(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on YouTube: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on YouTube: OK\n")
 
         elif engine == "ecosia":
             askForTyping = sdg.askstring(lang[98], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Ecosia(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Ecosia: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Ecosia: OK\n")
 
         elif engine == "stack":
             # stands for Stack Overflow
             askForTyping = sdg.askstring(lang[100], lang[90])
             if askForTyping != '':
                 simple_webbrowser.StackOverflow(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on StackOverflow: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on StackOverflow: OK\n")
 
         elif engine == "soundcloud":
             askForTyping = sdg.askstring(lang[104], lang[90])
             if askForTyping != '':
                 simple_webbrowser.SoundCloud(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on SoundCloud: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on SoundCloud: OK\n")
 
         elif engine == "archive":
             # stands for The Internet Archive
             askForTyping = sdg.askstring(lang[109], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Archive(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on The Internet Archive: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on The Internet Archive: OK\n")
 
         elif engine == "qwant":
             # stands for Qwant.com
             askForTyping = sdg.askstring(lang[108], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Qwant(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Qwant: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Qwant: OK\n")
 
         elif engine == "spotify":
             # stands for Spotify Online
             askForTyping = sdg.askstring(lang[126], lang[90])
             if askForTyping != '':
                 simple_webbrowser.SpotifyOnline(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Spotify Online: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Spotify Online: OK\n")
 
         elif engine == 'brave':
             # stands for Brave Search
             askForTyping = sdg.askstring(lang[139], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Brave(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on Brave Search: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Brave Search: OK\n")
 
         elif engine == "github":
             askForTyping = sdg.askstring(lang[170], lang[90])
             if askForTyping != '':
                 simple_webbrowser.GitHub(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on GitHub: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on GitHub: OK\n")
 
         elif engine == "gitlab":
             askForTyping = sdg.askstring(lang[172], lang[90])
             if askForTyping != '':
                 simple_webbrowser.GitLab(askForTyping)
-                _LOG.write(f"{str(now)} - Searched for {str(askForTyping)} on GitLab: OK\n")
+                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on GitLab: OK\n")
 
 def lock_a_win(window, _type: bool):
     if _type:
         window.resizable(False, False)
+        ic()
+        
     elif _type == False:
         window.resizable(True, True)
+        ic()
 
 def plugin_help():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/wiki/Plugin-Setup")
-    _LOG.write(f"{str(now)} - Requested help with the Plugin Central: OK\n")
+    _LOG.write(f"{str(now())} - Requested help with the Plugin Central: OK\n")
 
 def article_md():
     simple_webbrowser.Website(url='https://github.com/MF366-Coding/WriterClassic/wiki/Manual-Configuration-Setup')
-    _LOG.write(f"{str(now)} - Requested help with the Manual Configuration: OK\n")
+    _LOG.write(f"{str(now())} - Requested help with the Manual Configuration: OK\n")
 
 
 class _Plugin:
@@ -1188,26 +1198,30 @@ class _Plugin:
         self.MAIN_FILE = None
         self.ICON_FILE = None
         self.ICON = None
-    
+
     def _get_files(self) -> None:
         try:
-            self.DETAILS_FILE = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Details.txt", timeout=3.5)
-            _LOG.write(f"{str(now)} - Connected to GitHub: OK\n")
-            self.DETAILS_CONTENT = self.DETAILS_FILE.text
-            # --
-            QUICK_DETAILS = self.DETAILS_CONTENT.split("\n")
-            # --
-            self.MAIN_FILE = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/{QUICK_DETAILS[0].replace(' ', '_')}.py", timeout=3.5)
-            _LOG.write(f"{str(now)} - Connected to GitHub: OK\n")
-            self.MAIN_CONTENT = self.MAIN_FILE.text
-            # --
-            self.ICON_FILE = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Details.txt", timeout=3.5)
-            _LOG.write(f"{str(now)} - Connected to GitHub: OK\n")
-            self.ICON = self.ICON_FILE.text
+            versioning_file = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Versions.txt", timeout=3.5)
+
+            versioning_data = versioning_file.text
+
+            # Window Creation
+            datax = sdg.askinteger(title=f"{lang[1]} - {lang[203]}", prompt=f'{lang[202]}\n{lang[204]} {int(versioning_data)}.', initialvalue=int(versioning_data), minvalue=1, maxvalue=int(versioning_data))
+
+            #-> Some of the following code belongs to ChatGPT and other AIs!
+
+            # URL of the zip file
+            zip_url = f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Version{int(datax)}.zip"
+
+            # Send a GET request to download the zip file
+            zip_response = get(zip_url, timeout=4.5)
 
         except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout):
             mb.showerror(lang[148], {lang[135]})
-        
+
+        except Exception:
+            mb.showerror(lang[133], lang[134])
+
         else:
             parent_directory = plugin_dir
             new_folder_base_name = 'plugin'
@@ -1220,35 +1234,47 @@ class _Plugin:
                 if not os.path.exists(new_folder_path):
                     os.makedirs(new_folder_path)
                     break
-                
+
                 counter += 1
-            
-            DETAIL = QUICK_DETAILS[0].replace(" ", "_")
-            
-            with open(f"{new_folder_path}/{DETAIL}.py", "w", encoding="utf-8") as open_plugin_file:
-                open_plugin_file.write(self.MAIN_CONTENT)
-                
-            with open(f"{new_folder_path}/Details.txt", "w", encoding="utf-8") as open_details_file:
-                open_details_file.write(self.DETAILS_CONTENT)
-                
-            with open(f"{new_folder_path}/icon.png", "w", encoding="utf-8") as open_icon_file:
-                open_icon_file.write(self.ICON)
-                
-            with open(f"{new_folder_path}/__init__.py", "w", encoding="utf-8") as open_init_file:
-                open_init_file.write("") 
 
-''' Test area if u need Norb
-test2 = _Plugin("test2")
-test2._get_files()
+            if zip_response.status_code == 200:
+                zip_filepath = os.path.join(new_folder_path, "Plugin.zip")
+                
+                # Save the downloaded zip file
+                with open(zip_filepath, "wb") as f:
+                    f.write(zip_response.content)
 
-def run_a_plugin(plugin_name: str):
-    ScriptManager.LoadPlugins(globals())
-    ScriptManager.RunPlugin(name=plugin_name)
+                # Extract the contents of the zip file to the same location
+                with zipfile.ZipFile(zip_filepath, mode="r") as zip_ref:
+                    zip_ref.extractall(new_folder_path)
+
+                # Delete the downloaded zip file
+                os.remove(zip_filepath)
+
+
+def install_plugin():
+    questiony = sdg.askstring(lang[1], f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
     
-run_a_plugin("Kill_Window")
-'''
+    plugin = _Plugin(folder_name=str(questiony))
+    plugin._get_files()
     
+    
+def execute(datay: int):
+    # Initializes the plugin system
+    initializer(_LOG, plugin_dir, settings, desktop_win, TextWidget, NOW_FILE, lang, mb)
+    
+    run_a_plugin(datay)
 
+def run_plugin():
+    questionx = mb.askyesnocancel(title=lang[1], message=lang[218])
+    
+    if not questionx or questionx == None:
+        return
+    
+    datax = sdg.askinteger(lang[1], f"{lang[205]}\n{lang[206]}", initialvalue=1, minvalue=1)
+    
+    execute(datay=datax)
+  
 def clear_log_screen(text_interface):
     text_interface.delete(0.0, END)
 
@@ -1257,8 +1283,7 @@ def clear_log_screen(text_interface):
         text_interface.insert(0.0, str(temp_log))
         _TEMP_LOG.close()
 
-    _LOG.write(f"{str(now)} - Log File has been refreshed: OK\n")
-
+    _LOG.write(f"{str(now())} - Log File has been refreshed: OK\n")
 
 def show_log():
     _new_window = Toplevel(desktop_win)
@@ -1275,8 +1300,9 @@ def show_log():
         _new_editor.insert(0.0, str(temp_log))
         _TEMP_LOG.close()
 
-    _LOG.write(f"{str(now)} - The Log File has been shown: OK\n")
+    _LOG.write(f"{str(now())} - The Log File has been shown: OK\n")
 
+ic(settings["dencrypt"])
 
 class SignaturePlugin:
     @staticmethod
@@ -1287,14 +1313,14 @@ class SignaturePlugin:
 
         TextWidget.insert(END, f"\n\n{str(signature)}")
 
-        _LOG.write(f"{str(now)} - The Custom signature has been inserted: OK\n")
+        _LOG.write(f"{str(now())} - The Custom signature has been inserted: OK\n")
 
     @staticmethod
     def getx() -> str:
         with open(f"{config}/signature.wclassic", "r", encoding="utf-8") as SIGNATURE_FILE:
             signature = SIGNATURE_FILE.read()
             SIGNATURE_FILE.close()
-            
+
         return signature
 
     @staticmethod
@@ -1306,7 +1332,7 @@ class SignaturePlugin:
 
         TextWidget.insert(END, f"\n\n{str(signature)}")
 
-        _LOG.write(f"{str(now)} - The Auto signature has been inserted: OK\n")
+        _LOG.write(f"{str(now())} - The Auto signature has been inserted: OK\n")
 
 def commandPrompt():
     askNow = sdg.askstring(lang[68], lang[69])
@@ -1401,17 +1427,23 @@ desktop_win.bind('<Control-w>', lambda m:
 
 
 def on_closing():
+    ic()
+    
     result = mb.askyesno(lang[53], lang[54])
 
     if result == False:
+        ic()
         return
 
+    ic()
     desktop_win.destroy()
 
 def QUIT_WRITER(*args, **kargs):
     """
     QUIT_WRITER quits the software using on_closing
     """
+
+    ic()
 
     on_closing()
 
@@ -1467,8 +1499,8 @@ menu_8.add_command(label=lang[10], command=lambda:
     WipeFile(desktop_win))
 menu_8.add_separator()
 
-#menu_8.add_command(label=lang[173], command=lambda:
-    #PluginCentral(window=Toplevel(desktop_win)))
+menu_8.add_command(label=lang[217], command=install_plugin)
+menu_8.add_command(label=lang[216], command=run_plugin)
 
 menu_9.add_command(label=lang[81], command=InternetOnWriter.Website)
 menu_9.add_separator()
@@ -1599,6 +1631,9 @@ if sys.platform == "win32":
     menu_6.add_command(label='[EXTRA] PowerShell Theme', command=lambda:
         ThemeSet("#012456", "#eeedf0", "#fedba9", "#eeedf0", "#012456"))
 
+ic(settings["advanced-mode"])
+ic(settings["debugging"])
+
 def adv_change():
     if settings["advanced-mode"]:
         settings["advanced-mode"] = False
@@ -1700,6 +1735,8 @@ def readme_gen(*entries):
         readme_generated += f"""[Liked it? Sponsor it!]({_sponsor_site})\n"""
 
     TextWidget.insert(chars=readme_generated, index=0.0)
+    
+    ic(readme_generated)
 
 def readme_gen_win():
     # Window Creation
@@ -1794,10 +1831,10 @@ def open_with_adv():
 
 def send_email_with_attachment(win, signa: bool, sender_email: str, sender_password: str, recipient_email: str, subject: str, body: str):
     win.destroy()
-    
+
     if not signa:
         body += "\n\nSent with WriterClassic (https://mf366-coding.github.io/writerclassic.html)"
-    
+
     elif signa:
         body += f"\n\n{SignaturePlugin.getx()}"
 
@@ -1820,7 +1857,7 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
             part.add_header('Content-Disposition', f"attachment; filename= {os.path.basename(NOW_FILE)}")
             message.attach(part)
         server.sendmail(sender_email, recipient_email, message.as_string())
-    
+
     except Exception:
         mb.showerror(lang[1], "A fatal error ocurred.\nThe already cached emails will probably be sent but the rest won't.")
 
@@ -1828,84 +1865,84 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
 
 def message_write(mail: str, pwd: str, _variable, win):
     win.destroy()
-    
+
     if _variable == '1':
         try:
             settings["email"] = str(mail)
             fast_dump()
         except Exception:
             pass
-    
+
     # Window Creation
     window = Toplevel(desktop_win)
     window.title("WriterClassic - Write the email")
-    
+
     window.resizable(False, False)
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
-        
+
     label_1 = Label(window, text="Send to: ", font=("Noto Sans", 13))
     label_2 = Label(window, text="Only one email allowed.", font=("Noto Sans", 11))
     label_3 = Label(window, text="Subject: ", font=("Noto Sans", 13))
     label_4 = Label(window, text="Message: ", font=("Noto Sans", 13))
-    
+
     entry_1 = Entry(window, font=("Noto Sans", 13))
     entry_2 = Entry(window, font=("Noto Sans", 13))
-    
+
     text_1 = Text(window, borderwidth=5, font=(font_use["type"], font_use["size"]), insertbackground=theme["ct"], fg=theme["fg"], bg=theme["color"], height=10)
-    
+
     butt_1 = Button(window, text="Send", command=lambda:
         send_email_with_attachment(window, False, mail, pwd, entry_2.get(), entry_1.get(), text_1.get(0.0, END)))
-    
+
     butt_2 = Button(window, text="Send using your Custom Signature", command=lambda:
         send_email_with_attachment(window, True, mail, pwd, entry_2.get(), entry_1.get(), text_1.get(0.0, END)))
-    
+
     label_1.pack()
     label_2.pack()
     entry_2.pack()
-    
+
     label_3.pack()
     entry_1.pack()
-    
+
     label_4.pack()
     text_1.pack()
-    
+
     butt_1.pack()
     butt_2.pack()
-    
+
     window.mainloop()
-    
+
 
 def adv_login():
     # Window Creation
     if not NOW_FILE:
         mb.showerror(lang[1], "The file must be saved.")
         return
-    
+
     window = Toplevel(desktop_win)
     window.title("WriterClassic - Login with your Personal Outlook account")
-    
+
     window.resizable(False, False)
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
-        
+
     label_1 = Label(window, text="Login with your Personal Outlook account", font=("Noto Sans", 14))
     label_2 = Label(window, text="WriterClassic has no affiliation with Microsoft in any way. Please note that!", font=("Noto Sans", 11))
     label_3 = Label(window, text="We will NEVER save your password. We respect your security and privacy.", font=("Noto Sans", 12))
     label_4 = Label(window, text="Email: ", font=("Noto Sans", 13))
     label_5 = Label(window, text="Password: ", font=("Noto Sans", 13))
-    
+
     entry_1 = Entry(window, font=("Noto Sans", 12))
     entry_2 = Entry(window, font=("Noto Sans", 10))
-    
+
     entry_1.insert(0, settings["email"])
-    
+
     a = StringVar(window)
-    
+
     butt_1 = Checkbutton(window, text="Save my email for future use", variable=a)
     butt_2 = Button(window, text="Login", command=lambda:
         message_write(entry_1.get(), entry_2.get(), a.get(), window))
-    
+
     label_1.pack()
     label_2.pack()
     label_3.pack()
@@ -1915,11 +1952,12 @@ def adv_login():
     entry_2.pack()
     butt_1.pack()
     butt_2.pack()
-    
+
     window.mainloop()
 
 def show_advV():
     mb.showinfo(lang[1], f"You are running WriterClassic {advV}.")
+    ic(advV)
 
 if ADVANCED:
     menu_14.add_command(label="Show/hide debugging sentences (Not recommended)", command=show_debug)
@@ -1946,7 +1984,7 @@ try:
         menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_13.configure(background=theme["menu"], foreground=theme["mfg"])
-        _LOG.write(f"{str(now)} - The Menus have been themed [LINUX ONLY]: OK\n")
+        _LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 except TclError:
     if sys.platform == "linux":
         # Themed menus in case of: Linux Python3
@@ -1964,7 +2002,7 @@ except TclError:
         menu_8.configure(background="white", foreground="black")
         menu_9.configure(background="white", foreground="black")
         menu_13.configure(background="white", foreground="black")
-        _LOG.write(f"{str(now)} - The Menus have been themed [LINUX ONLY]: OK\n")
+        _LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
 # dropdowns/cascades
 menu_bar.add_cascade(label=lang[2],menu=menu_10)
@@ -1983,14 +2021,17 @@ menu_bar.add_cascade(label=lang[6], menu=menu_11)
 
 if ADVANCED:
     menu_bar.add_cascade(label="Advanced Mode [English]", menu=menu_14)
+    
+ic(ADVANCED)
 
 # Yes, menu_bar is desktop_win's menu bar lmfao
 desktop_win.configure(menu=menu_bar)
-_LOG.write(f"{str(now)} - The Menu bar has been configured correctly: OK\n")
+_LOG.write(f"{str(now())} - The Menu bar has been configured correctly: OK\n")
 
 if len(sys.argv) > 1:
     # The first command-line argument is the file path
     file_path = sys.argv[1]
+    ic(file_path)
 
     try:
         file_input = open(file_path, "rt", encoding="utf-8")
@@ -2002,7 +2043,7 @@ if len(sys.argv) > 1:
 
         NOW_FILE = str(file_path)
         file_input.close()
-        _LOG.write(f"{str(now)} - A file at the path {str(file_path)} has been opened: OK\n")
+        _LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
 
     except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
         mb.showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
@@ -2012,7 +2053,8 @@ if len(sys.argv) > 1:
 
     except FileNotFoundError as e:
         desktop_win.destroy()
-        print(e)
+        ic(e)
+        _LOG.write(f"{str(now())} - Found error {e} while trying to open file at {str(file_path)}: INFO\n")
         quit()
 
     finally:

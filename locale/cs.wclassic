@@ -199,3 +199,23 @@ WriterClassic - Generování souboru *.desktop
 Jazyk
 Tento soubor byl upraven.
 Přejete si uložit změny před opuštěním softwaru?
+Verze
+Kterou verzi zásuvného modulu chcete nainstalovat?
+Průvodce instalací pluginu
+Vyberte mezi 1 a
+Vyberte číslo zásuvného modulu, který chcete spustit.
+Tip: pokud chcete spustit zásuvný modul uložený uvnitř 'plugins/plugin_3', číslo bude 3.
+Spustit?
+Chystáte se spustit možná nebezpečný zásuvný modul!
+Pokud jste tento zásuvný modul nainstalovali ze systému WriterClassic.
+nebo z oficiálního repozitáře pluginů GitHub, pak
+můžete pokračovat a spustit tento zásuvný modul, protože jsou to
+všechny ověřeny.
+Zkontrolujte soubor 'Details.txt' uvnitř uvedené složky.
+před spuštěním tohoto zásuvného modulu, abyste se ujistili, že spouštíte správný zásuvný modul.
+Pokračovat a spustit?
+Spuštění zásuvného modulu
+Nainstalujte zásuvný modul
+Rozumíte tomu, že WriterClassic ani žádný z jeho vývojářů a přispěvatelů NENESOU odpovědnost za škody způsobené nebezpečným zásuvným modulem nebo jeho nesprávným použitím?
+Tip: všechny ověřené zásuvné moduly jsou na adrese https://bit.ly/writerclassic-plugins uvnitř složky Verified_Plugins.
+Zadejte prosím název složky, ve které se nachází zásuvný modul, který chcete nainstalovat.

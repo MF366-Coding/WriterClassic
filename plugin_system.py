@@ -1,119 +1,90 @@
-# Hello world, Norb here.
+# this is MF366's mediocre plugin system
 
-from glob import glob
-# Look ma, no imports from WriterClassic!
-import datetime # Really, bro?
-now = datetime.datetime.now()
-# yes bro
+import os
+import datetime
+import imp
 
-_PLUGIN_DATA_FILE = "Details.txt"
+"""
+The imp module is obsolete but still works.
 
-def ParsePluginData(pluginpath: str):
-    """
-    Plugin path is assumed to be the folder where the .py is
-    We load the Details.txt file and read it
-    """
-    with open(pluginpath + _PLUGIN_DATA_FILE, "rt", encoding="utf-8") as Data:
-        return {
-            "Name": Data.readline().strip(),
-            "Author": Data.readline().strip(),
-            "Desc": Data.readline().strip()
-        }
+Until I find a better option (for what I want, importlib ain't an option),
+I'll use imp module. What a weird name, imp!
 
-class _Script:
-    # The base script class.
-    _GLOBALS = {}  # What ever variables the script can legally modify
-    _BYTECODE = None
-    _NAME = None
-    _PATH = None
-    _LOGGER = None
-    _SUCCESS = None
+--
+Truly yours, MF366
+"""
 
-    def __init__(self, path: str, logger, **_globals):
-        """
-        Load and compile a plugin.
+desktop_winx = None
+NOW_FILEX = None
+textwdigetx = None
+settingsx = None
 
-        Args:
-            path: Where is the plugin
-            _globals: The name of the variable : the variable value before running the plugin
-        """
+paths = None
+_LOG = None
+lang = None
+mb = None
 
-        # path is the folder with the .py
-        PluginData = ParsePluginData(path)
+def now() -> str:
+    return datetime.datetime.now()
 
-        self._NAME = PluginData["Name"].replace(" ", "_")
-        self._PATH = path
-        self._GLOBALS = _globals
-        self._LOGGER = logger  # is this necessary? yeah, gotta log everything right? ;)
+def initializer(_logger, _paths, _sets, _wins, _texts, _filex, langz: list, _mb):
+    global _LOG, paths, settingsx, desktop_winx, NOW_FILEX, textwdigetx, lang, mb
+    
+    _LOG = _logger
+    paths = _paths
+    settingsx = _sets
+    desktop_winx = _wins
+    textwdigetx = _texts
+    NOW_FILEX = _filex
+    lang = langz
+    mb = _mb
+    
+    _LOG.write(f"{str(now())} - Initializing Plugin System: OK\n")
 
-        try:
-            self._BYTECODE = compile(
-                open( glob(f"{self._PATH}{PluginData['Name']}.py")[0], "rt", encoding="utf-8" ).read(),
-                f"{self._PATH}{self._NAME}.py",
-                'exec'
-            )
-        except Exception as Ex:
-            self._SUCCESS = False
-            self._LOGGER.write(
-                f"\n{str(now)} - Error caught while trying to compile plugin {self._NAME}:"
-                f"\n{Ex}\nFile located at {self._PATH}{self._NAME}.py\n\n"
-            )
+def run_a_plugin(number: int):
+    try:
+        new_folder = os.path.join(paths, f"plugin_{number}")
+
+        if not os.path.exists(path=new_folder):
+            mb.showerror(lang[161], lang[162])
             return
-
-        self._SUCCESS = True
-        self._LOGGER.write(f"{str(now)} - Lock and loaded plugin {self._NAME}!\n")
-
-    def GetName(self):
-        return self._NAME
-
-    def GetGlobals(self):
-        return self._GLOBALS
-
-    def RunScript(self):
-        """
-        Run the actual thingy.
-        """
-        self._LOGGER.write(f"{str(now)} - Running script {self._NAME}!\n")
         
-        try:
-            exec(self._BYTECODE, self._GLOBALS)
+        details_file = os.path.join(new_folder, "Details.txt")
+        
+        with open(details_file, "r", encoding="utf-8") as f:
+            _f = f.read()
+            _title = _f.split("\n")
+            f.close()
             
-        except Exception as Ex:
-            self._LOGGER.write(
-                f"\n{str(now)} - Error caught while trying to run plugin {self._NAME}:"
-                f"\n{Ex}\nFile located at {self._PATH}{self._NAME}.py\n\n"
-            )
-        # now obviously one should run verified plugins only, unless you potentially want your pc
-        # to spontaneously combust.
+        possible_plugin_filepath = os.path.join(new_folder, f"{_title[0].replace(' ', '_')}.py")
+        
+        if not os.path.exists(possible_plugin_filepath):
+            mb.showerror(lang[161], lang[162])
+            return
+        
+        plugin_filepath = possible_plugin_filepath
+        
+        _LOG.write(f"{str(now())} - Running the plugin number {str(number)} stored at {plugin_filepath}: OK\n")
 
-class _ScriptManager:
-    # It manages scripts!
-    _SCRIPTS: list[_Script] = None
 
-    def __init__(self):
-        self._SCRIPTS = {}
+        #-> ChatGPT help down here :)
+        # Absolute path to the module's .py file
+        module_path = plugin_filepath
 
-    def LoadPlugins(self, _globals: dict):
-        # call globals() in WriterClassic so we can access them here.
-        # I ain't importing shit!
-        _folders = glob(f"{_globals['plugin_dir']}/*/")  # sorry c++ plugins, though import DLLs might be a possibility...
-        for folder in _folders:
-            scr = _Script (
-                folder, _globals['_LOG'],
-                desktop_win     = _globals['desktop_win'],
-                TextWidget      = _globals['TextWidget'],
-                config          = _globals['config'],
-                data_dir        = _globals['data_dir'],
-                user_data       = _globals['user_data'],
-                nix_assets      = _globals['nix_assets'],
-                plugin_dir      = _globals['plugin_dir'],
-                locale          = _globals['locale'],
-                NOW_FILE        = _globals['NOW_FILE']
-            )
-            self._SCRIPTS[scr.GetName()] = scr
+        # Load the module using imp.load_source
+        module = imp.load_source(_title[0].replace(" ", "_"), module_path)
+        
+        module.plugin(desktop_win=desktop_winx,
+                    TextWidget=textwdigetx,
+                    settings=settingsx,
+                    _lang=lang,
+                    NOW_FILE=NOW_FILEX,
+                    logger=_LOG,
+                    plugin_dir=paths)
 
-    def RunPlugin(self, name):
-        self._SCRIPTS[name].RunScript()
+        # Now you can use functions/classes/etc. defined in the module
 
-    def GetPlugin(self, name):
-        return self._SCRIPTS[name]
+    except Exception as e:
+        mb.showerror(lang[133], lang[134])
+        
+        _LOG.write(f"{str(now())} - Running the plugin number {str(number)}: ERROR - {e}\n")

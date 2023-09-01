@@ -199,3 +199,23 @@ WriterClassic - Générer un fichier *.desktop
 Langue
 Ce fichier a été modifié.
 Souhaitez-vous enregistrer les modifications avant de quitter le logiciel ?
+Version
+Quelle version du plugin souhaitez-vous installer ?
+Assistant d'installation du plugin
+Choisissez entre 1 et
+Choisissez le numéro du plugin à exécuter.
+Astuce : si vous voulez exécuter le plugin stocké dans 'plugins/plugin_3', le numéro sera 3.
+Exécuter ?
+Vous êtes sur le point d'exécuter un plugin potentiellement dangereux !
+Si vous avez installé ce plugin depuis WriterClassic
+ou depuis le dépôt officiel GitHub des plugins, alors
+vous pouvez exécuter ce plugin, puisqu'ils sont tous vérifiés.
+vérifiés.
+Vérifiez le fichier 'Details.txt' dans le dossier que vous avez indiqué
+avant d'exécuter ce plugin pour vous assurer que vous exécutez le bon plugin.
+Continuer et lancer ?
+Exécuter un plugin
+Installer un plugin
+Comprenez-vous que WriterClassic ou l'un de ses développeurs et contributeurs ne sont PAS responsables des dommages causés par un plugin non sécurisé ou une mauvaise utilisation de celui-ci ?
+Astuce : tous les plugins vérifiés sont à https://bit.ly/writerclassic-plugins dans le dossier Verified_Plugins.
+Veuillez saisir le nom du dossier dans lequel se trouve le plugin que vous souhaitez installer.

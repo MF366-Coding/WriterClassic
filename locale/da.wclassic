@@ -199,3 +199,23 @@ WriterClassic - Generer en *.desktop-fil
 Sprog
 Denne fil er blevet ændret.
 Ønsker du at gemme ændringerne, før du forlader softwaren?
+Version
+Hvilken version af pluginet vil du gerne installere?
+Plugin-installationsguide
+Vælg mellem 1 og
+Vælg nummeret på et plugin, der skal køres.
+Tip: Hvis du vil køre det plugin, der er gemt i 'plugins/plugin_3', skal nummeret være 3.
+Køre?
+Du er ved at køre et muligvis farligt plugin!
+Hvis du har installeret dette plugin fra WriterClassic
+eller fra den officielle plugins GitHub repository, så kan
+kan du fortsætte og køre dette plugin, da de alle er
+alle er verificerede.
+Tjek filen 'Details.txt' inde i den mappe, du angav
+før du kører dette plugin for at sikre, at du kører det rigtige plugin.
+Fortsæt og kør?
+Kør et plugin
+Installer et plugin
+Forstår du, at WriterClassic eller nogen af dets udviklere og bidragydere IKKE er ansvarlige for skader forårsaget af et usikkert plugin eller misbrug af et sådant?
+Tip: Alle de verificerede plugins findes på https://bit.ly/writerclassic-plugins i mappen Verified_Plugins.
+Skriv venligst navnet på den mappe, hvor det plugin, du vil installere, er.
