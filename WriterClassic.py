@@ -275,7 +275,7 @@ ic(latest_version)
 
 # Config files
 appV = "v8.8.0"
-advV ="v8.8.0.213-r"
+advV ="v8.8.0.214-r.fix"
 
 ic(appV)
 ic(advV)
@@ -1261,7 +1261,7 @@ def install_plugin():
     
 def execute(datay: int):
     # Initializes the plugin system
-    initializer(_LOG, plugin_dir, settings, desktop_win, TextWidget, NOW_FILE, lang, mb)
+    initializer(_LOG, plugin_dir, settings, desktop_win, TextWidget, NOW_FILE, lang, mb, END)
     
     run_a_plugin(datay)
 

@@ -23,12 +23,13 @@ paths = None
 _LOG = None
 lang = None
 mb = None
+END = None
 
 def now() -> str:
     return datetime.datetime.now()
 
-def initializer(_logger, _paths, _sets, _wins, _texts, _filex, langz: list, _mb):
-    global _LOG, paths, settingsx, desktop_winx, NOW_FILEX, textwdigetx, lang, mb
+def initializer(_logger, _paths, _sets, _wins, _texts, _filex, langz: list, _mb, _endx):
+    global _LOG, paths, settingsx, desktop_winx, NOW_FILEX, textwdigetx, lang, mb, END
     
     _LOG = _logger
     paths = _paths
@@ -38,6 +39,7 @@ def initializer(_logger, _paths, _sets, _wins, _texts, _filex, langz: list, _mb)
     NOW_FILEX = _filex
     lang = langz
     mb = _mb
+    END = _endx
     
     _LOG.write(f"{str(now())} - Initializing Plugin System: OK\n")
 
@@ -80,7 +82,9 @@ def run_a_plugin(number: int):
                     _lang=lang,
                     NOW_FILE=NOW_FILEX,
                     logger=_LOG,
-                    plugin_dir=paths)
+                    plugin_dir=paths,
+                    mb=mb,
+                    END_OF_WIDGET=END)
 
         # Now you can use functions/classes/etc. defined in the module
 
