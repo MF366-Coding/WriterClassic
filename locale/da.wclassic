@@ -219,3 +219,67 @@ Installer et plugin
 Forstår du, at WriterClassic eller nogen af dets udviklere og bidragydere IKKE er ansvarlige for skader forårsaget af et usikkert plugin eller misbrug af et sådant?
 Tip: Alle de verificerede plugins findes på https://bit.ly/writerclassic-plugins i mappen Verified_Plugins.
 Skriv venligst navnet på den mappe, hvor det plugin, du vil installere, er.
+Filen skal være gemt, før den kan forhåndsvises.
+Kun Markdown-filer med filtypenavnene *.md, *.mdown, *.mkd eller *.mkdn kan forhåndsvises.
+Forhåndsvisning af markdown
+Vis/skjul debugging-sætninger (anbefales ikke)
+Krypter/dekrypter den aktuelle fil med d3NCRYP7
+README.md-generator
+Åbn med...
+Send fil via e-mail
+Avanceret versionering af app
+Du kører WriterClassic
+Gem min e-mail til fremtidig brug
+Login
+Adgangskode
+E-mail
+Vi gemmer ALDRIG din adgangskode. Vi respekterer din sikkerhed og dit privatliv.
+WriterClassic har ingen tilknytning til Microsoft på nogen måde.
+Log ind med din personlige Outlook-konto
+Log ind med din personlige Outlook-konto
+Filen skal være gemt.
+Send med din brugerdefinerede signatur
+Send
+Besked
+Emne
+Kun én e-mail er tilladt.
+Send til
+Skriv e-mailen
+Der opstod en fatal fejl.
+De allerede cachelagrede e-mails vil sandsynligvis blive sendt, men resten vil ikke.
+Sendt med WriterClassic
+Åbn med appen på...
+Brugerdefineret sti:
+...eller...
+Brug standardappen
+Åbn med...
+Annuller
+Generer
+Denne handling sletter den aktuelle tekst i editoren.
+BEMÆRK
+Sponsor/donations-hjemmeside
+Projektets hjemmeside
+Forfatterens hjemmeside
+Forfatterens e-mail
+Kort beskrivelse
+Titel
+Kunne du lide det? Sponsorér det!
+Find dette projekt på
+Jeg er online på
+Kontakt mig
+Beskriv venligst
+Indsæt titel her
+Hvad er d3NCRYP7 af MF366?
+Brug særlige indstillinger
+d3NCRYP7 Sti
+Brug d3NCRYP7
+Du skal genåbne filen for at se ændringerne, medmindre du har brugt '-o'-flaget.
+Aktiver/deaktiver avanceret tilstand
+Avanceret tilstand
+WriterClassics hjemmeside
+Eksempel på Markdown
+Udvikler
+Initialiser projekt (forældet)
+Byg kode
+Kør kode
+Denne filtype svarer ikke til det valgte programmeringssprog.

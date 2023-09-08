@@ -6,7 +6,7 @@
 
 # pylint: disable=W0621
 # That one is so annoying 'cause...
-# PYTHON CAN'T REDEFINE SOMETHING FROM OUTER SCOPE WITHOUT A GLOBAL INSTRUCTION 
+# PYTHON CAN'T REDEFINE SOMETHING FROM OUTER SCOPE WITHOUT A GLOBAL INSTRUCTION
 # omg!
 
 # pylint: disable=W0212
@@ -44,12 +44,12 @@ Fully developed by: MF366
 Small but lovely contributions by:
     Norb (norbcodes at GitHub)
     Zeca70 (Zeca70 at GitHub)
-    
-TODO:
-- Add the Developer options
-- Update the languages
-- I already updated the About and version but I need to update advV
 '''
+
+# TODO
+# * Add the Developer options
+# * Update the languages
+# * I already updated the About and version but I need to update advV
 
 NOW_FILE = False
 
@@ -64,28 +64,27 @@ from setting_loader import get_settings, dump_settings
 ic.configureOutput(prefix="ic debug statement | -> ")
 
 import os
-_PATH = os.path
 
 # Get the absolute path of the script
-script_path = _PATH.abspath(__file__)
+script_path = os.path.abspath(__file__)
 
 # Get the directory containing the script
-script_dir = _PATH.dirname(script_path)
+script_dir = os.path.dirname(script_path)
 
-config = _PATH.join(script_dir, 'config')
-user_data = _PATH.join(script_dir, 'user_data')
-nix_assets = _PATH.join(script_dir, 'nix_assets')
-plugin_dir = _PATH.join(script_dir, 'plugins')
-data_dir = _PATH.join(script_dir, 'data')
-locale = _PATH.join(script_dir, 'locale')
-temp_dir = _PATH.join(script_dir, 'temp')
+config = os.path.join(script_dir, 'config')
+user_data = os.path.join(script_dir, 'user_data')
+nix_assets = os.path.join(script_dir, 'nix_assets')
+plugin_dir = os.path.join(script_dir, 'plugins')
+data_dir = os.path.join(script_dir, 'data')
+locale = os.path.join(script_dir, 'locale')
+temp_dir = os.path.join(script_dir, 'temp')
 
 
 def check_paths(var) -> str:
     if not os.path.exists(var):
         os.mkdir(var)
         return "Criada."
-    
+
     return "Existia."
 
 debug_a = []
@@ -306,7 +305,7 @@ ic(latest_version)
 
 # Config files
 appV = "v9.0.0"
-advV ="v9.0.0.216-r"
+advV ="v9.0.0.217-r"
 
 ic(appV)
 ic(advV)
@@ -426,6 +425,10 @@ menu_13 = Menu(menu_12)
 
 if ADVANCED:
     menu_14 = Menu(menu_bar)
+
+menu_15 = Menu(menu_bar)
+menu_16 = Menu(menu_15)
+menu_17 = Menu(menu_15)
 
 _LOG.write(f"{str(now())} - Created all the menus: OK\n")
 
@@ -752,21 +755,21 @@ def OpenFile(root_win):
     finally:
         ic(NOW_FILE)
 
-# Saving as
+# [i] Saving as
 def SaveFile(root_win):
     global NOW_FILE
 
     dados = TextWidget.get(0.0, END)
     file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=file_types, defaultextension="*.*", initialfile="New File To Save")
 
-    # Get the selected file extension
+    # [*] Get the selected file extension
     selected_extension = None
     for ft in file_types:
         if file_path.lower().endswith(ft[1]):
             selected_extension = ft[1]
             break
 
-    # Append the selected extension if not already included
+    # [*] Append the selected extension if not already included
     if selected_extension and not file_path.lower().endswith(selected_extension):
         file_path += selected_extension
 
@@ -802,20 +805,20 @@ def Save(root_win):
         NOW_FILE = str(file_path)
         ic(NOW_FILE)
 
-# Whatever... (File Eraser)
+# [*] Whatever... (File Eraser)
 def WipeFile(root_win):
     sureConfirm = mb.askyesno(title=lang[55], message=lang[56])
     if sureConfirm:
         file_path = dlg.asksaveasfilename(parent=root_win, confirmoverwrite=False, filetypes=file_types, defaultextension="*.*", initialfile="File to Wipe")
 
-        # Get the selected file extension
+        # [*] Get the selected file extension
         selected_extension = None
         for ft in file_types:
             if file_path.lower().endswith(ft[1]):
                 selected_extension = ft[1]
                 break
 
-        # Append the selected extension if not already included
+        # [*] Append the selected extension if not already included
         if selected_extension and not file_path.lower().endswith(selected_extension):
             file_path += selected_extension
 
@@ -829,6 +832,114 @@ def WipeFile(root_win):
         file_input.close()
 
 desktop_entry = None
+
+
+# [!] Use this instead of the class DevOption!!!!
+def dev_option(prog_lang: str, mode: str = "build") -> None:
+    """
+    dev_option is the actual responsible for the developer options
+
+    Not to be confused with DevOption, the deprecated module, also in this file!
+
+    Args:
+        prog_lang (str): The programming language to use
+        mode (str, optional): Sets a different mode. Options: 'build' (default) or 'run'
+
+    Returns:
+        None: return is only used to end the function
+    """
+
+    mode = mode.replace(" ", "_").lower()
+    prog_lang = prog_lang.strip()
+
+    if not NOW_FILE:
+        mb.showerror(lang[1], lang[239])
+        return
+
+    if mode == "build":
+        if prog_lang.upper() == "C#":
+            if not NOW_FILE.strip().endswith(("cs", "csproj")):
+                mb.showerror(lang[1], lang[284])
+                return
+            
+            os.system(f"dotnet build \"{os.path.dirname(NOW_FILE)}\"")
+            return
+            
+    elif mode == "run":
+        if prog_lang.upper() == "C#":
+            if not NOW_FILE.strip().endswith((".cs", ".csproj")):
+                mb.showerror(lang[1], lang[284])
+                return
+            
+            os.system(f"dotnet run --project \"{os.path.dirname(NOW_FILE)}\"")
+            return
+            
+        if prog_lang.title() == "Python":
+            if not NOW_FILE.strip().endswith('.py'):
+                mb.showerror(lang[1], lang[284])
+                return
+            
+            if sys.platform == "win32":
+                os.system(f"python \"{NOW_FILE}\"")
+                return
+            
+            os.system(f"python3 \"{NOW_FILE}\"")
+
+
+# [!] Over all... a deprecated class lol
+class DevOption:
+    # [!] Deprecated function - only here for hmmmm... compatibility reasons?
+    def old_init(self, filetypes: str | tuple , programming_language: str, run_cmd: str, build_cmd: str, can_build: bool = False, can_run: bool = True) -> None:
+        """
+        old_init initializes the DevOption class
+
+        Args:
+            filetypes (str | tuple): Filetype(s) that is/are assigned to that programming language
+            programming_language (str): The actual programming language
+            run_cmd (str): The command you use to run the code
+            build_cmd (str): The command you use to build the code without running
+            can_build (bool, optional): Can the code be built? Defaults to False.
+            can_run (bool, optional): Can the code run without building it? Defaults to True.
+        """
+
+        self.filetypes = filetypes
+        self.programming_lang = programming_language
+        self.build_cmd = build_cmd
+        self.run_cmd = run_cmd
+
+        self.CAN_BUILD = can_build
+        self.CAN_RUN = can_run
+
+    # [!] Another deprecated function
+    def _build(self) -> None:
+        if not self.CAN_BUILD:
+            return
+
+        if not NOW_FILE:
+            mb.showerror(lang[1], lang[239])
+
+        if type(self.filetypes) == str:
+            self.filetypes = (self.filetypes)
+
+        if NOW_FILE.strip().endswith(self.filetypes):
+            os.system(f'cd "{os.path.dirname(NOW_FILE)}"')
+            os.system(self.build_cmd)
+
+    # [!] Ugh... one more yay!
+    def _run_code(self) -> None:
+        if not self.CAN_RUN:
+            return
+
+        if not NOW_FILE:
+            mb.showerror(lang[1], lang[239])
+
+        if type(self.filetypes) == str:
+            self.filetypes = (self.filetypes)
+
+        if NOW_FILE.strip().endswith(self.filetypes):
+            os.system(f'cd "{os.path.dirname(NOW_FILE)}"')
+            os.system(self.run_cmd)
+
 
 def desktop_create(pycommand: str):
     """
@@ -900,12 +1011,13 @@ def desktop_create_win():
     ButtA.pack()
     ButtB.pack()
 
-# credits
+# [i] Credits
 def appCredits():
     mb.showinfo(title=lang[28], message=lang[65])
     _LOG.write(f"{str(now())} - The Credits have been shown: OK\n")
 
-# easter egg super secret!
+# /-/ Super Secret Easter Eggs
+# (you saw nothin')
 def surprise_egg():
     askNow = sdg.askstring(lang[29], lang[66])
 
@@ -925,13 +1037,13 @@ def surprise_egg():
         mb.showerror(lang[29], lang[67])
         ic()
 
-# help me pls!!!
+# [i] The Help section
 def APP_HELP():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic#help")
     _LOG.write(f"{str(now())} - Requested online help: AWAITING FOR CONNECTION\n")
     ic()
 
-# infoooooo
+# [i] This is... well the About section
 def aboutApp():
     with open(f"{data_dir}/about.wclassic", mode="r", encoding='utf-8') as about_d:
         about_data = about_d.read()
@@ -946,39 +1058,42 @@ def aboutApp():
 
     from PIL import Image, ImageTk
 
-    # Load the PNG image using PIL
+    # [!] ChatGPT instrusion down here (lol)
+
+    # [*] Load the PNG image using PIL
     image = Image.open(f"{data_dir}/logo.png")
 
-    # Get the dimensions of the image
+    # [*] Get the dimensions of the image
     image_width, image_height = image.size
 
-    # Define the maximum width and height for the resized image
+    # [*] Define the maximum width and height for the resized image
     max_width = 200
     max_height = 200
 
-    # Calculate the desired dimensions while maintaining the aspect ratio
+    # [*] Calculate the desired dimensions while maintaining the aspect ratio
     if image_width > image_height:
-        # Calculate the desired width based on the maximum width
+        # [i] Calculate the desired width based on the maximum width
         desired_width = min(image_width, max_width)
-        # Calculate the corresponding height
+        # [i] Calculate the corresponding height
         desired_height = int(desired_width * image_height / image_width)
     else:
-        # Calculate the desired height based on the maximum height
+        # [i] Calculate the desired height based on the maximum height
         desired_height = min(image_height, max_height)
-        # Calculate the corresponding width
+        # [i] Calculate the corresponding width
         desired_width = int(desired_height * image_width / image_height)
 
-    # Resize the image
+    # [*] Resize the image
+    # [?] Should I not use LANCZOS? It seems the best for this but...
     resized_image = image.resize((desired_width, desired_height), Image.LANCZOS)
 
-    # Create a PhotoImage object from the resized image
+    # [*] Create a PhotoImage object from the resized image
     photo = ImageTk.PhotoImage(resized_image)
 
     button_1 = Button(about_dialogue, text="Ok", command=about_dialogue.destroy)
     button_2 = Button(about_dialogue, text=lang[278], command=lambda:
         simple_webbrowser.webbrowser.open("https://mf366-coding.github.io/writerclassic.html", new=2))
 
-    # Create a Label widget to display the image
+    # [*] Create a Label widget to display the image
     image_label = Label(about_dialogue, image=photo)
 
     image_label.grid(column=1, row=1)
@@ -998,14 +1113,14 @@ def markdown_preview() -> None:
     if not NOW_FILE:
         mb.showerror(lang[1], lang[221])
         return
-    
+
     if not NOW_FILE.lower().endswith((".md", ".mdown", ".mkd", ".mkdn")):
         mb.showerror(lang[1], lang[222])
         return
-    
+
     temp_html_path = os.path.join(temp_dir, f"{random.randint(1, 1000)}_{os.path.basename(NOW_FILE).replace(' ', '_')}.html")
     html_content = markdown2.markdown(TextWidget.get(0.0, END))
-    
+
     with open(temp_html_path, "w", encoding="utf-8")as temp_html_f:
         temp_html_f.write(html_content)
         temp_html_f.close()
@@ -1020,7 +1135,7 @@ def Tips_Tricks():
         lang[142],
         lang[143]
     ))
-    
+
     ic(picked_text)
 
     mb.showinfo(lang[1], picked_text)
@@ -1143,21 +1258,21 @@ class InternetOnWriter:
                 _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Bing: OK\n")
 
         elif engine == 'ysearch':
-            # stands for Yahoo!
+            # [i] stands for Yahoo!
             askForTyping = sdg.askstring(lang[85], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Yahoo(askForTyping)
                 _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Yahoo!: OK\n")
 
         elif engine == 'ddgo':
-            # stands for DuckDuckGo
+            # [i] stands for DuckDuckGo
             askForTyping = sdg.askstring(lang[84], lang[90])
             if askForTyping != '':
                 simple_webbrowser.DuckDuckGo(askForTyping)
                 _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on DuckDuckGo: OK\n")
 
         elif engine == "yt":
-            # stands for YouTube
+            # [i] stands for YouTube
             askForTyping = sdg.askstring(lang[99], lang[90])
             if askForTyping != '':
                 simple_webbrowser.YouTube(askForTyping)
@@ -1170,7 +1285,7 @@ class InternetOnWriter:
                 _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Ecosia: OK\n")
 
         elif engine == "stack":
-            # stands for Stack Overflow
+            # [i] stands for Stack Overflow
             askForTyping = sdg.askstring(lang[100], lang[90])
             if askForTyping != '':
                 simple_webbrowser.StackOverflow(askForTyping)
@@ -1183,28 +1298,28 @@ class InternetOnWriter:
                 _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on SoundCloud: OK\n")
 
         elif engine == "archive":
-            # stands for The Internet Archive
+            # [i] stands for The Internet Archive
             askForTyping = sdg.askstring(lang[109], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Archive(askForTyping)
                 _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on The Internet Archive: OK\n")
 
         elif engine == "qwant":
-            # stands for Qwant.com
+            # [i] stands for Qwant.com
             askForTyping = sdg.askstring(lang[108], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Qwant(askForTyping)
                 _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Qwant: OK\n")
 
         elif engine == "spotify":
-            # stands for Spotify Online
+            # [i] stands for Spotify Online
             askForTyping = sdg.askstring(lang[126], lang[90])
             if askForTyping != '':
                 simple_webbrowser.SpotifyOnline(askForTyping)
                 _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Spotify Online: OK\n")
 
         elif engine == 'brave':
-            # stands for Brave Search
+            # [i] stands for Brave Search
             askForTyping = sdg.askstring(lang[139], lang[90])
             if askForTyping != '':
                 simple_webbrowser.Brave(askForTyping)
@@ -1226,7 +1341,7 @@ def lock_a_win(window, _type: bool):
     if _type:
         window.resizable(False, False)
         ic()
-        
+
     elif _type == False:
         window.resizable(True, True)
         ic()
@@ -1263,15 +1378,15 @@ class _Plugin:
 
             versioning_data = versioning_file.text
 
-            # Window Creation
+            # [*] Window Creation
             datax = sdg.askinteger(title=f"{lang[1]} - {lang[203]}", prompt=f'{lang[202]}\n{lang[204]} {int(versioning_data)}.', initialvalue=int(versioning_data), minvalue=1, maxvalue=int(versioning_data))
 
-            #-> Some of the following code belongs to ChatGPT and other AIs!
+            # [!] Some of the following code belongs to ChatGPT and other AIs!
 
-            # URL of the zip file
+            # [i] URL of the zip file
             zip_url = f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Version{int(datax)}.zip"
 
-            # Send a GET request to download the zip file
+            # [i] Send a GET request to download the zip file
             zip_response = get(zip_url, timeout=4.5)
 
         except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout):
@@ -1297,42 +1412,42 @@ class _Plugin:
 
             if zip_response.status_code == 200:
                 zip_filepath = os.path.join(new_folder_path, "Plugin.zip")
-                
-                # Save the downloaded zip file
+
+                # [i] Save the downloaded zip file
                 with open(zip_filepath, "wb") as f:
                     f.write(zip_response.content)
 
-                # Extract the contents of the zip file to the same location
+                # [i] Extract the contents of the zip file to the same location
                 with zipfile.ZipFile(zip_filepath, mode="r") as zip_ref:
                     zip_ref.extractall(new_folder_path)
 
-                # Delete the downloaded zip file
+                # [!] Delete the downloaded zip file
                 os.remove(zip_filepath)
 
 
 def install_plugin():
     questiony = sdg.askstring(lang[1], f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
-    
+
     plugin = _Plugin(folder_name=str(questiony))
     plugin._get_files()
-    
-    
+
+
 def execute(datay: int):
-    # Initializes the plugin system
+    # [i] Initializes the plugin system
     initializer(_LOG, plugin_dir, settings, desktop_win, TextWidget, NOW_FILE, lang, mb, END)
-    
+
     run_a_plugin(datay)
 
 def run_plugin():
     questionx = mb.askyesnocancel(title=lang[1], message=lang[218])
-    
+
     if not questionx or questionx == None:
         return
-    
+
     datax = sdg.askinteger(lang[1], f"{lang[205]}\n{lang[206]}", initialvalue=1, minvalue=1)
-    
+
     execute(datay=datax)
-  
+
 def clear_log_screen(text_interface):
     text_interface.delete(0.0, END)
 
@@ -1400,7 +1515,7 @@ def commandPrompt():
 
     elif askNow == 'about':
         aboutApp()
-        
+
     elif askNow == "md_preview":
         markdown_preview()
 
@@ -1448,11 +1563,11 @@ def commandPrompt():
 
     elif askNow == 'win_size':
         SetWinSize()
-    
+
     else:
         mb.showerror(lang[68], lang[70])
 
-# Key bindings
+# [i] Key bindings
 desktop_win.bind('<Control-o>', lambda b:
     OpenFile(desktop_win))
 
@@ -1486,7 +1601,7 @@ desktop_win.bind('<Control-w>', lambda m:
 
 def on_closing():
     ic()
-    
+
     result = mb.askyesno(lang[53], lang[54])
 
     if result == False:
@@ -1642,6 +1757,20 @@ menu_12.add_separator()
 menu_12.add_command(label=lang[105], command=article_md)
 
 
+menu_15.add_command(label=lang[279], command=markdown_preview)
+menu_15.add_separator()
+menu_15.add_cascade(menu=menu_16, label=lang[282])
+menu_15.add_cascade(menu=menu_17, label=lang[283])
+
+menu_16.add_command(label="C#", command=lambda:
+    dev_option("C#"))
+
+menu_17.add_command(label="C#", command=lambda:
+    dev_option("C#", "run"))
+menu_17.add_command(label="Python", command=lambda:
+    dev_option("Python", "run"))
+
+
 menu_5.add_command(label=lang[16], command=lambda:
     ThemeSet('white', 'black', 'black', 'black', 'white'))
 menu_5.add_command(label=lang[17], command=lambda:
@@ -1791,7 +1920,7 @@ def readme_gen(*entries):
         readme_generated += f"""[{lang[265]}]({_sponsor_site})\n"""
 
     TextWidget.insert(chars=readme_generated, index=0.0)
-    
+
     ic(readme_generated)
 
 def readme_gen_win():
@@ -1894,8 +2023,8 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
     elif signa:
         body += f"\n\n{SignaturePlugin.getx()}"
 
-    # Certain parts of this function belongs to:
-    # https://medium.com/@hannanmentor/20-python-scripts-with-code-to-automate-your-work-68662a8dcbc1
+    # i Certain parts of this function belongs to:
+    # i https://medium.com/@hannanmentor/20-python-scripts-with-code-to-automate-your-work-68662a8dcbc1
     server = smtplib.SMTP('smtp.office365.com', 587)
     server.starttls()
     server.login(sender_email, sender_password)
@@ -1929,7 +2058,7 @@ def message_write(mail: str, pwd: str, _variable, win):
         except Exception:
             pass
 
-    # Window Creation
+    # [*] Window Creation
     window = Toplevel(desktop_win)
     window.title(f"{lang[1]} - {lang[246]}")
 
@@ -1970,7 +2099,7 @@ def message_write(mail: str, pwd: str, _variable, win):
 
 
 def adv_login():
-    # Window Creation
+    # [*] Window Creation
     if not NOW_FILE:
         mb.showerror(lang[1], lang[239])
         return
@@ -2026,7 +2155,8 @@ if ADVANCED:
 
 try:
     if sys.platform == "linux":
-        # Themed menus in case of: Linux Python3
+        # [i] Themed menus only on Linux Python3
+        # /-/ Themed menus are also compatible with Windows and Mac, tho
         menu_10.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_11.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_1.configure(background=theme["menu"], foreground=theme["mfg"])
@@ -2040,10 +2170,16 @@ try:
         menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_13.configure(background=theme["menu"], foreground=theme["mfg"])
+        if ADVANCED:
+            menu_14.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_15.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_16.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_17.configure(background=theme["menu"], foreground=theme["mfg"])
         _LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 except TclError:
     if sys.platform == "linux":
-        # Themed menus in case of: Linux Python3
+        # [i] Themed menus only on Linux Python3
+        # /-/ Themed menus are also compatible with Windows and Mac, tho
         mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
         menu_10.configure(background="white", foreground="black")
         menu_11.configure(background="white", foreground="black")
@@ -2058,9 +2194,14 @@ except TclError:
         menu_8.configure(background="white", foreground="black")
         menu_9.configure(background="white", foreground="black")
         menu_13.configure(background="white", foreground="black")
+        if ADVANCED:
+            menu_14.configure(background="white", foreground="black")
+        menu_15.configure(background="white", foreground="black")
+        menu_17.configure(background="white", foreground="black")
+        menu_16.configure(background="white", foreground="black")
         _LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
-# dropdowns/cascades
+# [*] dropdowns/cascades
 menu_bar.add_cascade(label=lang[2],menu=menu_10)
 menu_bar.add_cascade(label=lang[3],menu=menu_1)
 menu_1.add_cascade(label=lang[13], menu=menu_4)
@@ -2074,18 +2215,19 @@ menu_bar.add_cascade(label=lang[4], menu=menu_8)
 menu_bar.add_cascade(label=lang[79], menu=menu_9)
 menu_bar.add_cascade(label=lang[5], menu=menu_12)
 menu_bar.add_cascade(label=lang[6], menu=menu_11)
+menu_bar.add_cascade(label=lang[280], menu=menu_15)
 
 if ADVANCED:
     menu_bar.add_cascade(label=lang[277], menu=menu_14)
-    
+
 ic(ADVANCED)
 
-# Yes, menu_bar is desktop_win's menu bar lmfao
+# [i] Yes, menu_bar is desktop_win's menu bar lmfao
 desktop_win.configure(menu=menu_bar)
 _LOG.write(f"{str(now())} - The Menu bar has been configured correctly: OK\n")
 
 if len(sys.argv) > 1:
-    # The first command-line argument is the file path
+    # [i] The first command-line argument is the file path
     file_path = sys.argv[1]
     ic(file_path)
 
@@ -2104,6 +2246,7 @@ if len(sys.argv) > 1:
     except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
         mb.showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
         run_default = mb.askyesno(title=lang[187], message=lang[189])
+        # [?] What if WriterClassic is the default thought lol?
         if run_default:
             os.system(str(file_path))
 
@@ -2118,5 +2261,5 @@ if len(sys.argv) > 1:
 
 desktop_win.protocol("WM_DELETE_WINDOW", on_closing)
 
-# And done! Now, it will continuously mainlooping! Enjoy!
+# [*] And done! Now, it will continuously mainlooping! Enjoy!
 desktop_win.mainloop()

@@ -219,3 +219,67 @@ Installera ett insticksprogram
 Förstår du att WriterClassic eller någon av dess utvecklare och bidragsgivare INTE är ansvariga för eventuella skador som orsakas av ett osäkert plugin eller missbruk av sådant?
 Tips: Alla verifierade plugins finns på https://bit.ly/writerclassic-plugins i mappen Verified_Plugins.
 Ange namnet på den mapp där det insticksprogram du vill installera finns.
+Filen måste vara sparad för att den ska kunna förhandsgranskas.
+Endast Markdown-filer med filändelserna *.md, *.mdown, *.mkd eller *.mkdn kan förhandsgranskas.
+Förhandsgranskning av Markdown
+Visa/dölj felsökningsmeningar (rekommenderas inte)
+Kryptera/dekryptera aktuell fil med d3NCRYP7
+README.md-generator
+Öppna med...
+Skicka fil via e-post
+Avancerad versionering av appen
+Du kör WriterClassic
+Spara min e-post för framtida bruk
+Logga in
+Lösenord
+E-post
+Vi kommer ALDRIG att spara ditt lösenord. Vi respekterar din säkerhet och integritet.
+WriterClassic har ingen anknytning till Microsoft på något sätt.
+Logga in med ditt personliga Outlook-konto
+Logga in med ditt personliga Outlook-konto
+Filen måste vara sparad.
+Skicka med din anpassade signatur
+Skicka
+Meddelande
+Ämne
+Endast ett e-postmeddelande tillåtet.
+Skicka till
+Skriv e-postmeddelandet
+Ett allvarligt fel inträffade.
+De redan cachade e-postmeddelandena kommer förmodligen att skickas men resten kommer inte att göra det.
+Skickas med WriterClassic
+Öppna med appen på...
+Anpassad sökväg:
+...eller...
+Använd standardappen
+Öppna med...
+Avbryt
+Generera
+Denna åtgärd raderar den aktuella texten i editorn.
+NOTERA
+Webbplats för sponsor/donation
+Projektets webbplats
+Författarens webbplats
+E-post till författare
+Kort beskrivning
+Titel
+Gillade du det? Sponsra det!
+Hitta detta projekt på
+Jag är online på
+Kontakta mig
+Vänligen beskriv
+Infoga titel här
+Vad är d3NCRYP7 av MF366?
+Använd speciella alternativ
+d3NCRYP7 Väg
+Använd d3NCRYP7
+Du måste öppna filen igen för att se ändringarna om du inte använde flaggan '-o'.
+Aktivera/inaktivera avancerat läge
+Avancerat läge
+WriterClassics webbplats
+Förhandsgranskning av Markdown
+Utvecklare
+Initiera projekt (föråldrad)
+Bygga kod
+Kör kod
+Denna filtyp motsvarar inte det valda programmeringsspråket.
