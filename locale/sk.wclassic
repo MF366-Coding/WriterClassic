@@ -100,7 +100,7 @@ WriterClassic - Vyhľadávanie pomocou aplikácie Ecosia
 WriterClassic - Vyhľadávanie na YouTube
 WriterClassic - Hľadať na Stack Overflow
 Hotovo.
-Súbory JSON
+Súbor JSON
 Vyhľadávanie na službe SoundCloud
 WriterClassic - Hľadať na SoundCloud
 Pomoc pri manuálnej konfigurácii [anglický článok]
@@ -149,12 +149,12 @@ WriterClassic - Chyba operácie
 WriterClassic - Chyba internetového pripojenia
 WriterClassic - Chyba písma
 WriterClassic - Chyba témy
-Existuje aspoň jedna nezákonná hodnota témy.
+Existuje aspoň jedna nepovolená hodnota témy.
 WriterClassic sa spustí s inou témou, ako ste nastavili.
 Získajte témy z oficiálneho zdroja
 Získajte zásuvné moduly z oficiálneho zdroja
-WriterClassic - Chyba modulu Python
-Chýba modul Python.
+WriterClassic - Chyba Python modulu
+Chýba Python modulu.
 Chcete ho nainštalovať pomocou pip?
 Musíte reštartovať WriterClassic.
 WriterClassic sa za týchto podmienok nedá spustiť.
@@ -177,18 +177,18 @@ Plugin 1
 Plugin 2
 Plugin
 Spustiť
-Zobrazenie súboru protokolu
-WriterClassic - Súbor denníka
-Obnoviť protokol
-Vstupy terminálov [BETA]
+Zobrazenie súboru záznamu
+WriterClassic - Súbor záznamu
+Obnoviť záznam
+Terminálový vstup [BETA]
 WriterClassic - Terminálový vstup
 Odstrániť položku
 Konfiguračný súbor WriterClassic
 Darujte
 WriterClassic - Chyba kódovania
-Pri pokuse o otvorenie bola nájdená chyba Unicode
+Pri otvorení bol zachytení problém s Unikódom
 Chcete ho otvoriť pomocou predvoleného textového editora?
-Uzamknite okno
+Uzamknúť okno
 Odomknúť okno
 Generovanie súboru *.desktop
 Tento súbor *.desktop sa nahrá do hlavného priečinka WriterClassic.
@@ -242,7 +242,7 @@ Odoslať pomocou vlastného podpisu
 Odoslať
 Správa
 Predmet
-Povolený je len jeden e-mail.
+Povolený je iba jeden e-mail.
 Odoslať na adresu
 Napíšte e-mail
 Vyskytla sa fatálna chyba.
@@ -263,16 +263,16 @@ Webová stránka autora
 E-mail autora
 Krátky popis
 Názov
-Páči sa vám to? Sponzorujte ju!
+Páči sa vám to? Sponzorujte to!
 Tento projekt nájdete na
 Som online na
 Kontaktujte ma
 Prosím, opíšte
-Sem vložte názov
-Čo je d3NCRYP7 od MF366?
+Sem napíšte názov
+Čo je MF366-ho d3NCRYP7?
 Použite špeciálne možnosti
 d3NCRYP7 Cesta
-Použite d3NCRYP7
+Použiť d3NCRYP7
 Ak ste nepoužili príznak '-o', musíte súbor znovu otvoriť, aby ste videli zmeny.
 Zapnutie/vypnutie rozšíreného režimu
 Rozšírený režim
@@ -280,6 +280,6 @@ Webová stránka WriterClassic
 Náhľad Markdown
 Vývojár
 Inicializovať projekt (zastarané)
-Zostaviť kód
+Zastaviť kód
 Spustiť kód
 Tento typ súboru nezodpovedá vybranému programovaciemu jazyku.
