@@ -47,9 +47,7 @@ Small but lovely contributions by:
 '''
 
 # TODO
-# * Add the Developer options
-# * Update the languages
-# * I already updated the About and version but I need to update advV
+# [*] Nothing, yay!
 
 NOW_FILE = False
 
@@ -305,7 +303,7 @@ ic(latest_version)
 
 # Config files
 appV = "v9.0.0"
-advV ="v9.0.0.217-r"
+advV ="v9.0.0.218-r"
 
 ic(appV)
 ic(advV)
