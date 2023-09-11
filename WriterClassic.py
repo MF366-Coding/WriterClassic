@@ -1,26 +1,25 @@
-# disabling stuff!
+# WriterClassic.py
+# [!?] disabling stuff!
 
 # pylint: disable=E1101
-# For some reason, Pylint is giving me PIL.Image.LANCZOS does not exist error,
-# so I had to deactivate the no-member category. Stupid Pylint!
+# [!?] For some reason, Pylint is giving me PIL.Image.LANCZOS does not exist error,
+# [!?] so I had to deactivate the no-member category. Stupid Pylint!
 
 # pylint: disable=W0621
-# That one is so annoying 'cause...
-# PYTHON CAN'T REDEFINE SOMETHING FROM OUTER SCOPE WITHOUT A GLOBAL INSTRUCTION
-# omg!
+# [!?] That one is so annoying 'cause...
+# [!?] PYTHON CAN'T REDEFINE SOMETHING FROM OUTER SCOPE WITHOUT A GLOBAL INSTRUCTION
+# [!?] omg!
 
 # pylint: disable=W0212
-# ngl this one is freaking annoying too
+# [!?] ngl this one is freaking annoying too
 
 # pylint: disable=W0718
-# bruh I use a general exception if I want, my friend!
+# [!?] bruh I use a general exception if I want, my friend!
 
 # pylint: disable=W0603
-# My dearest friend Pylint, what the hell is wrong with using global?
-# If it has been made, it's supposed to be used.
-# then why the hell do you prompt me a warning every time I'm using it?
-
-# WriterClassic.py
+# [!?] My dearest friend Pylint, what the hell is wrong with using global?
+# [!?] If it has been made, it's supposed to be used.
+# [!?] then why the hell do you prompt me a warning every time I'm using it?
 
 '''
 WriterClassic
@@ -63,10 +62,10 @@ ic.configureOutput(prefix="ic debug statement | -> ")
 
 import os
 
-# Get the absolute path of the script
+# [*] Get the absolute path of the script
 script_path = os.path.abspath(__file__)
 
-# Get the directory containing the script
+# [*] Get the directory containing the script
 script_dir = os.path.dirname(script_path)
 
 config = os.path.join(script_dir, 'config')
@@ -99,7 +98,7 @@ for i in debug_a:
 
 import json
 
-import datetime # Really, bro?
+import datetime
 def now() -> str:
     return datetime.datetime.now()
 
@@ -116,7 +115,7 @@ from email import encoders
 
 import markdown2
 
-import sys # Platforms and OSes
+import sys # [i] Platforms and OSes
 
 desktop_win = Tk()
 TextWidget = Text(desktop_win, font=("Calibri", 13), borderwidth=5)
@@ -171,23 +170,23 @@ ic(script_dir)
 ic(script_path)
 ic(f"{data_dir}/logo.png")
 
-# Importing the goodies
+# [i] Importing the goodies
 from py_compile import compile as _compile
 _LOG.write(f"{str(now())} - Imported compile from py_compile: OK\n")
 
 from getpass import getuser
 _LOG.write(f"{str(now())} - Imported getuser from getpass: OK\n")
 
-from tkinter import simpledialog as sdg # Inputs with GUI
+from tkinter import simpledialog as sdg
 _LOG.write(f"{str(now())} - Imported simpledialog from tkinter: OK\n")
 
-import tkinter.filedialog as dlg # File Dialogs were never this easy...
+import tkinter.filedialog as dlg
 _LOG.write(f"{str(now())} - Imported filedialog from tkinter: OK\n")
 
-import tkinter.messagebox as mb # Never gonna give you up... (Pop-ups)
+import tkinter.messagebox as mb
 _LOG.write(f"{str(now())} - Imported messagebox from tkinter: OK\n")
 
-from tkinter.font import Font # Ouchie mama (font, daaah)
+from tkinter.font import Font
 _LOG.write(f"{str(now())} - Imported Font from tkinter.font: OK\n")
 
 ic(now())
@@ -239,7 +238,7 @@ except (ModuleNotFoundError, ImportError):
 
 if startApp == "1":
     try:
-        from requests import get, exceptions # it's a module yay!
+        from requests import get, exceptions # [i] it's a module yay!
         _LOG.write(f"{str(now())} - requests has been imported: OK\n")
     except (ModuleNotFoundError, ImportError):
         _LOG.write(f"{str(now())} - requests has been imported: ERROR\n")
@@ -269,7 +268,7 @@ if startApp == "1":
             _LOG.write(f"{str(now())} - End of session\n")
             quit()
 
-# Windowing
+# [*] Windowing
 _LOG.write(f"{str(now())} - WriterClassic launched: OK\n")
 
 from plugin_system import initializer, run_a_plugin
@@ -301,9 +300,10 @@ if startApp == '1':
 ic(IGNORE_CHECKING)
 ic(latest_version)
 
-# Config files
+
+# [i] Config files
 appV = "v9.0.0"
-advV ="v9.0.0.218-r"
+advV ="v9.0.0.219.fix"
 
 ic(appV)
 ic(advV)
@@ -328,7 +328,7 @@ for temp_file in temp_files:
     if os.path.isfile(file_to_delete):
         os.remove(file_to_delete)
 
-# Windowing... again
+# [i] Windowing... again
 if NOW_FILE == False:
     desktop_win.title(lang[1])
 
@@ -382,7 +382,7 @@ except TclError:
 
 _LOG.write(f"{str(now())} - 'Packed' the editing interface: OK\n")
 
-# Defining the menu bar
+# [i] Defining the menu bar
 menu_bar = Menu(desktop_win)
 _LOG.write(f"{str(now())} - Created the menu bar: OK\n")
 
@@ -435,7 +435,7 @@ def writeStartup(text: bool):
     fast_dump()
     _LOG.write(f"{str(now())} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
 
-# Check for Updates
+# [i] Check for Updates
 class UpdateCheck:
     @staticmethod
     def check_other():
@@ -489,7 +489,7 @@ if startApp == '1':
     UpdateCheck.check_other()
     _LOG.write(f"{str(now())} - Checked for updates on startup: AWAITING REPLY\n")
 
-# Windowing... one more time...
+# [i] Windowing... one more time...
 def SetWinSize():
     widthSet = sdg.askinteger(lang[1], lang[57])
     _LOG.write(f"{str(now())} - Got a width value: AWAITING FOR ANTI-BUG CHECK\n")
@@ -517,7 +517,7 @@ def SetWinSize():
             settings["geometry"] = str(widthSet)+'x'+str(heightSet)
             fast_dump()
 
-# Theme Picker
+# [i] Theme Picker
 def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fifth):
     settings["theme"] = {
         "color":str(colour_first),
@@ -544,12 +544,16 @@ def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fi
     else:
         _LOG.write(f"{str(now())} - Cancel/No as response: OK\n")
 
-# ragequit
+# [!] Althrought not deprecated at all, must not be used.
+# [i] quickway() quits the app without asking for confirmation
+# [!?] Which means it might break stuff that was being saved when the function was called
+# [i] Can only be called from the Command Menu
+# [i] Ctrl + W and type 'ragequit'
 def quickway():
     _LOG.write(f"{str(now())} - End of session: QUIT\n")
     desktop_win.destroy()
 
-# Setup (Lang files)
+# [i] Setup (Lang files)
 def LanguageSet(language_set, root_win):
     settings["language"] = language_set
     _LOG.write(f"{str(now())} - A new language has been set ({str(language_set)}): OK\n")
@@ -563,12 +567,12 @@ def LanguageSet(language_set, root_win):
     else:
         _LOG.write(f"{str(now())} - Cancel/No as response: OK\n")
 
-# Notepad
+# [i] Notepad
 def new_window():
     newWindow = Toplevel(desktop_win)
     _LOG.write(f"{str(now())} - A new window has been called: AWAITING CONFIGURATION\n")
 
-    # Windowing... yet once more LMAO...
+    # [i] Windowing... yet once more LMAO...
     newWindow.title(lang[22])
     newWindow.geometry("600x400")
 
@@ -600,21 +604,21 @@ def DOC_STATS():
 
     mb.showinfo(lang[164], f"{lang[165]}: {str(lines)}")
 
-# Repo
+# [i] Repo
 def repo():
     ourRepo = "https://github.com/MF366-Coding/WriterClassic/"
 
     simple_webbrowser.Website(ourRepo)
     _LOG.write(f"{str(now())} - Opened the repository: AWAITING FOR FUNCTION OR ERROR\n")
 
-# Clock
+# [i] Clock
 def clockPlugin():
     clockWindow = Toplevel(desktop_win)
     clockWindow.geometry('275x65')
     clockWindow.resizable(False, False)
     _LOG.write(f"{str(now())} - A new window has been called: AWAITING CONFIGURATION\n")
 
-    #Windowing
+    # [i] Windowing
     clockWindow.title(lang[23])
 
     TextWidget2 = Label(clockWindow)
@@ -629,7 +633,7 @@ def clockPlugin():
     TextWidget.pack()
     clockWindow.mainloop()
 
-# Text font
+# [i] Text font
 def fontEdit(winType):
     if winType == 1:
         fontSize = sdg.askinteger(lang[59], lang[60], minvalue=1)
@@ -652,7 +656,7 @@ def fontEdit(winType):
             _LOG.write(f"{str(now())} - Font type has been changed to {str(fontType)}: OK\n")
             mb.showinfo(lang[1], lang[63])
 
-# clears the screen
+# [i] clears the screen
 def newFile():
     global NOW_FILE
 
@@ -708,7 +712,7 @@ file_types = [(lang[32], '*.txt'),
 
 _LOG.write(f"{str(now())} - Filetypes have been configured correctly: OK\n")
 
-# opens a file
+# [i] opens a file
 def OpenFile(root_win):
     """
     OpenFile opens a file selected from the following interface
@@ -720,16 +724,17 @@ def OpenFile(root_win):
 
     file_path = dlg.asksaveasfilename(parent=root_win, filetypes=file_types, defaultextension="*.*", initialfile="Open a File", confirmoverwrite=False, title=lang[7])
 
-    # Get the selected file extension
-    selected_extension = None
-    for ft in file_types:
-        if file_path.lower().endswith(ft[1]):
-            selected_extension = ft[1]
-            break
+    if sys.platform != 'linux':
+        # [*] Get the selected file extension
+        selected_extension = None
+        for ft in file_types:
+            if file_path.lower().endswith(ft[1]):
+                selected_extension = ft[1]
+                break
 
-    # Append the selected extension if not already included
-    if selected_extension and not file_path.lower().endswith(selected_extension):
-        file_path += selected_extension
+        # [*] Append the selected extension if not already included
+        if selected_extension and not file_path.lower().endswith(selected_extension):
+            file_path += selected_extension
 
     try:
         file_input = open(file_path, "rt", encoding="utf-8")
@@ -760,16 +765,17 @@ def SaveFile(root_win):
     dados = TextWidget.get(0.0, END)
     file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=file_types, defaultextension="*.*", initialfile="New File To Save")
 
-    # [*] Get the selected file extension
-    selected_extension = None
-    for ft in file_types:
-        if file_path.lower().endswith(ft[1]):
-            selected_extension = ft[1]
-            break
+    if sys.platform != 'linux':
+        # [*] Get the selected file extension
+        selected_extension = None
+        for ft in file_types:
+            if file_path.lower().endswith(ft[1]):
+                selected_extension = ft[1]
+                break
 
-    # [*] Append the selected extension if not already included
-    if selected_extension and not file_path.lower().endswith(selected_extension):
-        file_path += selected_extension
+        # [*] Append the selected extension if not already included
+        if selected_extension and not file_path.lower().endswith(selected_extension):
+            file_path += selected_extension
 
     file = open(file_path, "wt", encoding='utf-8')
     file.write(str(dados))
@@ -809,16 +815,17 @@ def WipeFile(root_win):
     if sureConfirm:
         file_path = dlg.asksaveasfilename(parent=root_win, confirmoverwrite=False, filetypes=file_types, defaultextension="*.*", initialfile="File to Wipe")
 
-        # [*] Get the selected file extension
-        selected_extension = None
-        for ft in file_types:
-            if file_path.lower().endswith(ft[1]):
-                selected_extension = ft[1]
-                break
+        if sys.platform != 'linux':
+            # [*] Get the selected file extension
+            selected_extension = None
+            for ft in file_types:
+                if file_path.lower().endswith(ft[1]):
+                    selected_extension = ft[1]
+                    break
 
-        # [*] Append the selected extension if not already included
-        if selected_extension and not file_path.lower().endswith(selected_extension):
-            file_path += selected_extension
+            # [*] Append the selected extension if not already included
+            if selected_extension and not file_path.lower().endswith(selected_extension):
+                file_path += selected_extension
 
         file_input = open(file_path, "wt", encoding="utf-8")
         file_input.write('')
@@ -886,7 +893,7 @@ def dev_option(prog_lang: str, mode: str = "build") -> None:
 
 # [!] Over all... a deprecated class lol
 class DevOption:
-    # [!] Deprecated function - only here for hmmmm... compatibility reasons?
+    # [!!] Deprecated function - only here for hmmmm... compatibility reasons?
     def old_init(self, filetypes: str | tuple , programming_language: str, run_cmd: str, build_cmd: str, can_build: bool = False, can_run: bool = True) -> None:
         """
         old_init initializes the DevOption class
@@ -908,7 +915,7 @@ class DevOption:
         self.CAN_BUILD = can_build
         self.CAN_RUN = can_run
 
-    # [!] Another deprecated function
+    # [!!] Another deprecated function
     def _build(self) -> None:
         if not self.CAN_BUILD:
             return
@@ -923,7 +930,7 @@ class DevOption:
             os.system(f'cd "{os.path.dirname(NOW_FILE)}"')
             os.system(self.build_cmd)
 
-    # [!] Ugh... one more yay!
+    # [!!] Ugh... one more yay!
     def _run_code(self) -> None:
         if not self.CAN_RUN:
             return
@@ -1056,7 +1063,7 @@ def aboutApp():
 
     from PIL import Image, ImageTk
 
-    # [!] ChatGPT instrusion down here (lol)
+    # [!?] ChatGPT instrusion down here (lol)
 
     # [*] Load the PNG image using PIL
     image = Image.open(f"{data_dir}/logo.png")
@@ -1379,7 +1386,7 @@ class _Plugin:
             # [*] Window Creation
             datax = sdg.askinteger(title=f"{lang[1]} - {lang[203]}", prompt=f'{lang[202]}\n{lang[204]} {int(versioning_data)}.', initialvalue=int(versioning_data), minvalue=1, maxvalue=int(versioning_data))
 
-            # [!] Some of the following code belongs to ChatGPT and other AIs!
+            # [!?] Some of the following code belongs to ChatGPT and other AIs!
 
             # [i] URL of the zip file
             zip_url = f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Version{int(datax)}.zip"
@@ -1419,15 +1426,22 @@ class _Plugin:
                 with zipfile.ZipFile(zip_filepath, mode="r") as zip_ref:
                     zip_ref.extractall(new_folder_path)
 
-                # [!] Delete the downloaded zip file
+                # [!?] Delete the downloaded zip file
                 os.remove(zip_filepath)
 
 
-def install_plugin():
-    questiony = sdg.askstring(lang[1], f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
-
-    plugin = _Plugin(folder_name=str(questiony))
-    plugin._get_files()
+def install_plugin(**options):
+    """
+    install_plugin installs a plugin using _Plugin
+    """
+    if len(options["folder_name"]) >= 1:
+        questiony = options["folder_name"]
+        
+    else:
+        questiony = sdg.askstring(lang[1], f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
+        
+        plugin = _Plugin(folder_name=str(questiony))
+        plugin._get_files()
 
 
 def execute(datay: int):
@@ -1618,7 +1632,7 @@ def QUIT_WRITER():
 
     on_closing()
 
-# Creating the menu dropdowns and buttons
+# [i] Creating the menu dropdowns and buttons
 menu_10.add_command(label=lang[94], command=newFile)
 menu_10.add_command(label=lang[7], command=lambda:
     OpenFile(desktop_win))
@@ -1707,14 +1721,31 @@ menu_9.add_command(label=lang[169], command=lambda:
 menu_9.add_command(label=lang[171], command=lambda:
     InternetOnWriter.Search("gitlab"))
 
+# [!!] Languages need to be fixed 
+# [!!] Some languages are in a beta verification state 
+# [!!] They might stay in such state for ages 
+# [!] Please be patient
+# [!?] Thank you!
+# --
+# [!?] Portuguese also requires some attention
+# [i] I just don't feel like fixing it rn
+# --
+# [i] English verified by MF366
+# [i] Slovak verified by Norb
+# [!?] Portuguese still being verified by MF366 and Zeca70
+# --
+# [i] Thank you, dear contributors for all the help!
+'''
 menu_13.add_command(label="Čeština (Čechie)", command=lambda:
     LanguageSet("cs", desktop_win))
 menu_13.add_command(label="Dansk (Danmark)", command=lambda:
     LanguageSet("da", desktop_win))
 menu_13.add_command(label="Deutsch (Deutschland)", command=lambda:
     LanguageSet("de", desktop_win))
-menu_13.add_command(label='English (America)', command=lambda:
+'''
+menu_13.add_command(label='English (USA)', command=lambda:
     LanguageSet('en', desktop_win))
+'''
 menu_13.add_command(label='Español (España)', command=lambda:
     LanguageSet('es', desktop_win))
 menu_13.add_command(label='Français (France)', command=lambda:
@@ -1727,14 +1758,17 @@ menu_13.add_command(label="Norsk (Norge)", command=lambda:
     LanguageSet("nb", desktop_win))
 menu_13.add_command(label='Português (Brasil)', command=lambda:
     LanguageSet('br', desktop_win))
+'''
 menu_13.add_command(label='Português (Portugal)', command=lambda:
     LanguageSet('pt', desktop_win))
 menu_13.add_command(label='Slovenčina (Slovensko)', command=lambda:
     LanguageSet('sk', desktop_win))
+'''
 menu_13.add_command(label="Svenska (Sverige)", command=lambda:
     LanguageSet("sv", desktop_win))
 menu_13.add_command(label="Українська (Україна)", command=lambda:
     LanguageSet("uk", desktop_win))
+'''
 
 menu_12.add_cascade(label=lang[198], menu=menu_13)
 menu_12.add_separator()
@@ -1922,7 +1956,7 @@ def readme_gen(*entries):
     ic(readme_generated)
 
 def readme_gen_win():
-    # Window Creation
+    # [i] Window Creation
     window = Toplevel(desktop_win)
     window.title(f"{lang[1]} - {lang[226]}")
     window.resizable(False, False)
@@ -2021,8 +2055,8 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
     elif signa:
         body += f"\n\n{SignaturePlugin.getx()}"
 
-    # i Certain parts of this function belongs to:
-    # i https://medium.com/@hannanmentor/20-python-scripts-with-code-to-automate-your-work-68662a8dcbc1
+    # [!?] Certain parts of this function belongs to:
+    # [*] https://medium.com/@hannanmentor/20-python-scripts-with-code-to-automate-your-work-68662a8dcbc1
     server = smtplib.SMTP('smtp.office365.com', 587)
     server.starttls()
     server.login(sender_email, sender_password)
