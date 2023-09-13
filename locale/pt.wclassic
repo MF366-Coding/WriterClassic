@@ -51,7 +51,7 @@ Ficheiro ActionScript
 Ficheiro de configuração ASP
 Ficheiro de código fonte em linguagem Assembly
 Ficheiros Markdown
-WriterClassic - Terminar sessão?
+WriterClassic - Sair?
 Tem certeza de que deseja sair do Writer?
 WriterClassic - Apagador de ficheiros
 Tem a certeza de que pretende apagar um ficheiro?
@@ -64,8 +64,8 @@ Introduza o nome de um tipo de letra que tenha instalado no seu dispositivo.
 É necessário reiniciar para aplicar as alterações.
 WriterClassic - Acerca de
 Esta aplicação foi criada por MF366 e é alimentada por Python 3.10.11.
-Escreve a cadeia de código ESPECIAL para obteres o Ovo da Páscoa...
-Problemas em encontrar o Ovo da Páscoa? Ninguém disse que seria fácil...
+Introduza a cadeia de código ESPECIAL para obteres o Ovo da Páscoa...
+Não está a conseguir encontrar o Ovo da Páscoa? Ninguém disse que seria fácil...
 WriterClassic - Menu de comandos
 Digite um comando para o menu de comandos do Writer.
 Este não é um comando do WriterClassic.

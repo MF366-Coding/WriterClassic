@@ -1,4 +1,11 @@
-# this is MF366's mediocre plugin system
+# pylint: disable=W4901
+# pylint: disable=W0105
+# pylint: disable=W0603
+# pylint: disable=W0718
+
+# [!!] All these "errors" annoy me!
+
+# [!?] this is MF366's mediocre plugin system
 
 import os
 import datetime
@@ -9,9 +16,6 @@ The imp module is obsolete but still works.
 
 Until I find a better option (for what I want, importlib ain't an option),
 I'll use imp module. What a weird name, imp!
-
---
-Truly yours, MF366
 """
 
 desktop_winx = None
