@@ -104,7 +104,8 @@ def now() -> str:
 
 _LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
 
-from tkinter import Tk, Toplevel, TclError, Label, Button, Text, StringVar, Entry, END, Menu, Checkbutton
+from tkinter import Tk, Toplevel, TclError, Label, Button, DISABLED, StringVar, Entry, END, Menu, Checkbutton
+from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import *
 
 import smtplib
@@ -118,7 +119,7 @@ import markdown2
 import sys # [i] Platforms and OSes
 
 desktop_win = Tk()
-TextWidget = Text(desktop_win, font=("Calibri", 13), borderwidth=5)
+TextWidget = ScrolledText(desktop_win, font=("Calibri", 13), borderwidth=5)
 TextWidget.pack()
 
 _LOG.write("\n")
@@ -371,13 +372,13 @@ except TclError:
     mb.showerror(lang[166], f"{lang[167]}\n{lang[168]}")
 
 try:
-    TextWidget.configure(bg=theme["color"], fg=theme["fg"], width=int(GeomValues[0]), height=int(GeomValues[1]), insertbackground=theme["ct"], font=FontSet)
+    TextWidget.configure(background=theme["color"], foreground=theme["fg"], width=int(GeomValues[0]), height=int(GeomValues[1]), insertbackground=theme["ct"], font=FontSet)
     _LOG.write(f"{str(now())} - Applied configurations to the editing interface: OK\n")
 
 except TclError:
     _LOG.write(f"{str(now())} - Applied configurations to the editing interface: ERROR\n")
     mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
-    TextWidget.configure(bg="black", fg="white", width=int(GeomValues[0]), height=int(GeomValues[1]), insertbackground="white", font=FontSet)
+    TextWidget.configure(background="black", foreground="white", width=int(GeomValues[0]), height=int(GeomValues[1]), insertbackground="white", font=FontSet)
     _LOG.write(f"{str(now())} - Reconfigured the editing interface: OK\n")
 
 _LOG.write(f"{str(now())} - 'Packed' the editing interface: OK\n")
@@ -529,7 +530,7 @@ def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fi
 
     fast_dump()
 
-    TextWidget.configure(bg=colour_first, fg=colour_second, insertbackground=colour_third)
+    TextWidget.configure(background=colour_first, foreground=colour_second, insertbackground=colour_third)
     _LOG.write(f"{str(now())} - Editing interface has been reconfigured: OK\n")
 
     TextWidget.pack()
@@ -576,9 +577,9 @@ def new_window():
     newWindow.title(lang[22])
     newWindow.geometry("600x400")
 
-    TextWidget2 = Text(newWindow, borderwidth=5)
+    TextWidget2 = ScrolledText(newWindow, borderwidth=5)
 
-    TextWidget2.configure(bg=theme["color"], fg=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"], font=FontSet)
+    TextWidget2.configure(background=theme["color"], foreground=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"], font=FontSet)
     TextWidget2.pack()
 
     _LOG.write(f"{str(now())} - Notes Plugin's window has been fully configured: OK\n")
@@ -866,28 +867,28 @@ def dev_option(prog_lang: str, mode: str = "build") -> None:
             if not NOW_FILE.strip().endswith(("cs", "csproj")):
                 mb.showerror(lang[1], lang[284])
                 return
-            
+
             os.system(f"dotnet build \"{os.path.dirname(NOW_FILE)}\"")
             return
-            
+
     elif mode == "run":
         if prog_lang.upper() == "C#":
             if not NOW_FILE.strip().endswith((".cs", ".csproj")):
                 mb.showerror(lang[1], lang[284])
                 return
-            
+
             os.system(f"dotnet run --project \"{os.path.dirname(NOW_FILE)}\"")
             return
-            
+
         if prog_lang.title() == "Python":
             if not NOW_FILE.strip().endswith('.py'):
                 mb.showerror(lang[1], lang[284])
                 return
-            
+
             if sys.platform == "win32":
                 os.system(f"python \"{NOW_FILE}\"")
                 return
-            
+
             os.system(f"python3 \"{NOW_FILE}\"")
 
 
@@ -1436,10 +1437,10 @@ def install_plugin(**options):
     """
     if len(options["folder_name"]) >= 1:
         questiony = options["folder_name"]
-        
+
     else:
         questiony = sdg.askstring(lang[1], f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
-        
+
         plugin = _Plugin(folder_name=str(questiony))
         plugin._get_files()
 
@@ -1470,10 +1471,14 @@ def clear_log_screen(text_interface):
 
     _LOG.write(f"{str(now())} - Log File has been refreshed: OK\n")
 
+def do_nothing(event):
+    return "break"
+
 def show_log():
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
-    _new_editor = Text(_new_window, bg=theme["color"], fg=theme["fg"], insertbackground=theme["ct"], font=("Calibri", 14), borderwidth=5)
+    _new_editor = ScrolledText(_new_window, background=theme["color"], foreground=theme["fg"], insertbackground=theme["ct"], font=("Calibri", 14), borderwidth=5)
+    _new_editor.bind("<Key>", do_nothing)
     _new_window.title(lang[180])
     _new_editor.pack()
     _new_button = Button(_new_window, text=lang[181], command=lambda:
@@ -1721,9 +1726,9 @@ menu_9.add_command(label=lang[169], command=lambda:
 menu_9.add_command(label=lang[171], command=lambda:
     InternetOnWriter.Search("gitlab"))
 
-# [!!] Languages need to be fixed 
-# [!!] Some languages are in a beta verification state 
-# [!!] They might stay in such state for ages 
+# [!!] Languages need to be fixed
+# [!!] Some languages are in a beta verification state
+# [!!] They might stay in such state for ages
 # [!] Please be patient
 # [!?] Thank you!
 # --
@@ -2106,7 +2111,7 @@ def message_write(mail: str, pwd: str, _variable, win):
     entry_1 = Entry(window, font=("Noto Sans", 13))
     entry_2 = Entry(window, font=("Noto Sans", 13))
 
-    text_1 = Text(window, borderwidth=5, font=(font_use["type"], font_use["size"]), insertbackground=theme["ct"], fg=theme["fg"], bg=theme["color"], height=10)
+    text_1 = ScrolledText(window, borderwidth=5, font=(font_use["type"], font_use["size"]), insertbackground=theme["ct"], foreground=theme["fg"], background=theme["color"], height=10)
 
     butt_1 = Button(window, text=lang[241], command=lambda:
         send_email_with_attachment(window, False, mail, pwd, entry_2.get(), entry_1.get(), text_1.get(0.0, END)))
