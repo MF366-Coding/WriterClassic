@@ -9,6 +9,6 @@ def get_settings(file_location) -> dict:
     
 def dump_settings(file_location, configs_dict: dict):
     with open(file_location, mode="wt", encoding="utf-8") as config_file:
-        json.dump(configs_dict, config_file)
+        json.dump(configs_dict, config_file, indent=4)
         config_file.close()
         
