@@ -283,3 +283,13 @@ Inicializovať projekt (zastarané)
 Zastaviť kód
 Spustiť kód
 Tento typ súboru nezodpovedá vybranému programovaciemu jazyku.
+Tento súbor obsahuje skript Python napájaný súborom *.wscript (WriterClassic Script).
+Tento skript spúšťajte len vtedy, ak ste si istí, čo robí, a ak ste si overili jeho bezpečnosť.
+Súbor je možné otvoriť aj bez spustenia skriptu, ak kliknete na možnosť "Nie".
+Súbor so skriptom WriterClassic
+S programom WriterClassic je spojená automatická akcia.
+Ste si istí, že ju chcete spustiť? Škodlivé automatické akcie by mohli poškodiť vaše zariadenie!
+Aplikácia sa môže naďalej používať bez spustenia akcie, ak kliknete na možnosť "Nie".
+Rýchly prístup
+Zrušiť
+Znovu

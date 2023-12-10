@@ -1,5 +1,8 @@
 # WriterClassic.py
-# [!?] disabling stuff!
+# [!?] disabling some Pylint stuff!
+
+# pylint: disable=W0122
+# [!?] I use exec when I want to so shut it, Pylint!
 
 # pylint: disable=E1101
 # [!?] For some reason, Pylint is giving me PIL.Image.LANCZOS does not exist error,
@@ -75,14 +78,15 @@ plugin_dir = os.path.join(script_dir, 'plugins')
 data_dir = os.path.join(script_dir, 'data')
 locale = os.path.join(script_dir, 'locale')
 temp_dir = os.path.join(script_dir, 'temp')
+scripts_dir = os.path.join(script_dir, "scripts")
 
 
 def check_paths(var) -> str:
     if not os.path.exists(var):
         os.mkdir(var)
-        return "Criada."
+        return "Created."
 
-    return "Existia."
+    return "Was there."
 
 debug_a = []
 debug_a.append(config)
@@ -92,6 +96,9 @@ debug_a.append(plugin_dir)
 debug_a.append(data_dir)
 debug_a.append(locale)
 debug_a.append(temp_dir)
+debug_a.append(scripts_dir)
+
+# /-/ QUICK_ACESS_DATA = []
 
 for i in debug_a:
     check_paths(i)
@@ -102,9 +109,23 @@ import datetime
 def now() -> str:
     return datetime.datetime.now()
 
+'''
+if os.path.exists(os.path.join(scripts_dir, "quick_acess.wscript")):
+    quick_acess_content = open(os.path.join(scripts_dir, "quick_acess.wscript"), "r", encoding="utf-8").read().split("\n")
+    
+    for i in range(len(quick_acess_content)):
+        if i != 10:
+            QUICK_ACESS_DATA.append(quick_acess_content[i])
+            
+        else:
+            break
+            
+    quick_acess_content = None
+'''        
+
 _LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
 
-from tkinter import Tk, Toplevel, TclError, Label, Button, DISABLED, StringVar, Entry, END, Menu, Checkbutton
+from tkinter import Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import *
 
@@ -119,8 +140,9 @@ import markdown2
 import sys # [i] Platforms and OSes
 
 desktop_win = Tk()
-TextWidget = ScrolledText(desktop_win, font=("Calibri", 13), borderwidth=5)
+TextWidget = ScrolledText(desktop_win, font=("Calibri", 13), borderwidth=5, undo=True)
 TextWidget.pack()
+# /-/ TextWidget.insert(0.0, "WriterClassic is a free and open-source project made by MF366.\n\nYour support is appreciated: https://www.buymeacoffee.com/mf366\n\nThank you <3")
 
 _LOG.write("\n")
 _LOG.write(f"{str(now())} - WriterClassic was executed: OK\n")
@@ -303,8 +325,8 @@ ic(latest_version)
 
 
 # [i] Config files
-appV = "v9.0.0"
-advV ="v9.0.0.219.fix"
+appV = "v10.0.0"
+advV ="v10.0.0.225"
 
 ic(appV)
 ic(advV)
@@ -328,6 +350,14 @@ for temp_file in temp_files:
     file_to_delete = os.path.join(temp_dir, temp_file)
     if os.path.isfile(file_to_delete):
         os.remove(file_to_delete)
+        
+if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
+    auto_content = open(os.path.join(scripts_dir, "auto.wscript"), "r", encoding="utf-8").read()
+    
+    _run_auto = mb.askyesno(lang[1], f"{lang[289]}\n{lang[290]}\n{lang[291]}")
+            
+    if _run_auto == True:
+        exec(auto_content)
 
 # [i] Windowing... again
 if NOW_FILE == False:
@@ -428,6 +458,7 @@ if ADVANCED:
 menu_15 = Menu(menu_bar)
 menu_16 = Menu(menu_15)
 menu_17 = Menu(menu_15)
+# /-/ menu_18 = Menu(menu_10)
 
 _LOG.write(f"{str(now())} - Created all the menus: OK\n")
 
@@ -658,7 +689,7 @@ def fontEdit(winType):
             mb.showinfo(lang[1], lang[63])
 
 # [i] clears the screen
-def newFile():
+def NewFile():
     global NOW_FILE
 
     desktop_win.title(lang[1])
@@ -693,6 +724,7 @@ file_types = [(lang[32], '*.txt'),
               (lang[52], '*.md'),
               (lang[102], '*.json'),
               (lang[185], '*.wclassic'),
+              (lang[288], "*.wscript"),
               (lang[110], '*.ath'),
               (lang[111], "*.att"),
               (lang[112], "*.avs"),
@@ -713,7 +745,49 @@ file_types = [(lang[32], '*.txt'),
 
 _LOG.write(f"{str(now())} - Filetypes have been configured correctly: OK\n")
 
-# [i] opens a file
+# [i] functions to open a file
+def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
+    """
+    OpenFile opens a file selected from the following interface
+
+    Args:
+        file_path: The filepath to open with extension
+        (optional, defaults to the main window) root_win (Tk): WriterClassic's main window
+    """
+    global NOW_FILE
+
+    file_path = os.path.abspath(file_path)
+
+    _basepath = os.path.join(os.path.dirname(file_path), os.path.basename(file_path) + ".wscript")
+
+    if os.path.exists(_basepath) and file_path.lower().endswith(".wclassic"):
+        run_auto = mb.askyesno(lang[1], f"{lang[285]}\n{lang[286]}\n{lang[287]}")
+            
+        if run_auto == True:
+            exec(open(_basepath, "r", encoding="utf-8").read())
+
+    try:
+        file_input = open(file_path, "rt", encoding="utf-8")
+        file_data = file_input.read()
+
+        root_win.title(f"{lang[1]} - {file_path}")
+        TextWidget.delete(index1=0.0, index2=END)
+        TextWidget.insert(chars=file_data, index=0.0)
+
+        _LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
+
+        NOW_FILE = str(file_path)
+        file_input.close()
+
+    except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
+        mb.showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
+        run_default = mb.askyesno(title=lang[187], message=lang[189])
+        if run_default:
+            os.system(str(file_path))
+
+    finally:
+        ic(NOW_FILE)
+
 def OpenFile(root_win):
     """
     OpenFile opens a file selected from the following interface
@@ -736,6 +810,15 @@ def OpenFile(root_win):
         # [*] Append the selected extension if not already included
         if selected_extension and not file_path.lower().endswith(selected_extension):
             file_path += selected_extension
+
+        _basepath = os.path.join(str(os.path.dirname(file_path)), str(os.path.basename(file_path)) + ".wscript")
+        ic(_basepath)
+
+        if os.path.exists(_basepath) and file_path.lower().endswith(".wclassic"):
+            run_auto = mb.askyesno(lang[1], f"{lang[285]}\n{lang[286]}\n{lang[287]}")
+            
+            if run_auto == True:
+                exec(open(_basepath, "r", encoding="utf-8").read())
 
     try:
         file_input = open(file_path, "rt", encoding="utf-8")
@@ -1023,7 +1106,7 @@ def appCredits():
     _LOG.write(f"{str(now())} - The Credits have been shown: OK\n")
 
 # /-/ Super Secret Easter Eggs
-# (you saw nothin')
+# [!?] you saw nothin'
 def surprise_egg():
     askNow = sdg.askstring(lang[29], lang[66])
 
@@ -1045,7 +1128,7 @@ def surprise_egg():
 
 # [i] The Help section
 def APP_HELP():
-    simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic#help")
+    simple_webbrowser.Website("https://mf366-coding.github.io/writerclassic.html#docs")
     _LOG.write(f"{str(now())} - Requested online help: AWAITING FOR CONNECTION\n")
     ic()
 
@@ -1537,7 +1620,7 @@ def commandPrompt():
         markdown_preview()
 
     elif askNow == "newfile":
-        newFile()
+        NewFile()
 
     elif askNow == 'help':
         APP_HELP()
@@ -1559,6 +1642,12 @@ def commandPrompt():
 
     elif askNow == 'save':
         Save(desktop_win)
+        
+    elif askNow == 'undo':
+        TextWidget.edit_undo()
+
+    elif askNow == 'redo':
+        TextWidget.edit_redo()
 
     elif askNow == 'clock_open':
         clockPlugin()
@@ -1569,7 +1658,7 @@ def commandPrompt():
     elif askNow == 'font_size':
         fontEdit(1)
 
-    elif askNow == 'ragequit':
+    elif askNow == 'forcequit' or askNow == "ragequit":
         quickway()
 
     elif askNow == 'repo':
@@ -1588,16 +1677,25 @@ def commandPrompt():
 desktop_win.bind('<Control-o>', lambda b:
     OpenFile(desktop_win))
 
+desktop_win.bind('<Control-n>', lambda b:
+    NewFile())
+
 desktop_win.bind('<Control-s>', lambda c:
     Save(desktop_win))
 
-desktop_win.bind('<Control-z>', lambda c:
+desktop_win.bind('<Control-S>', lambda c:
     SaveFile(desktop_win))
 
-desktop_win.bind('<Control-a>', lambda e:
+desktop_win.bind('<Control-z>', lambda c:
+    TextWidget.edit_undo())
+
+desktop_win.bind('<Control-y>', lambda c:
+    TextWidget.edit_redo())
+
+desktop_win.bind('<Control-i>', lambda e:
     aboutApp())
 
-desktop_win.bind('<Control-h>', lambda f:
+desktop_win.bind('<F1>', lambda f:
     APP_HELP())
 
 desktop_win.bind('<Control-d>', lambda g:
@@ -1606,13 +1704,10 @@ desktop_win.bind('<Control-d>', lambda g:
 desktop_win.bind('<Control-l>', lambda h:
     ThemeSet('white', 'black', 'black', 'black', 'white'))
 
-desktop_win.bind('<Control-g>', lambda j:
+desktop_win.bind('<Control-G>', lambda j:
     SetWinSize())
 
-desktop_win.bind('<Control-r>', lambda l:
-    clockPlugin())
-
-desktop_win.bind('<Control-w>', lambda m:
+desktop_win.bind('<Control-P>', lambda m:
     commandPrompt())
 
 
@@ -1638,19 +1733,31 @@ def QUIT_WRITER():
     on_closing()
 
 # [i] Creating the menu dropdowns and buttons
-menu_10.add_command(label=lang[94], command=newFile)
+menu_10.add_command(label=lang[94], command=NewFile)
 menu_10.add_command(label=lang[7], command=lambda:
     OpenFile(desktop_win))
+'''
+if QUICK_ACESS_DATA != []:
+    menu_10.add_cascade(label=lang[292], menu=menu_18)
+'''
 menu_10.add_separator()
 menu_10.add_command(label = lang[8], command=lambda:
     Save(desktop_win))
 menu_10.add_command(label = lang[9], command=lambda:
     SaveFile(desktop_win))
 menu_10.add_separator()
+menu_10.add_command(label=lang[293], command=TextWidget.edit_undo)
+menu_10.add_command(label=lang[294], command=TextWidget.edit_redo)
+menu_10.add_separator()
 menu_10.add_command(label=lang[163], command=DOC_STATS)
 menu_10.add_separator()
 menu_10.add_command(label=lang[11], command=QUIT_WRITER)
 
+'''
+for i in range(len(QUICK_ACESS_DATA)):
+    menu_18.add_command(label=str(QUICK_ACESS_DATA[i]), command=lambda:
+        OpenFileManually(str(QUICK_ACESS_DATA[i])))
+'''
 
 if startApp == "1":
     menu_11.add_command(label=lang[75], command=UpdateCheck.check)
@@ -1666,7 +1773,7 @@ menu_11.add_command(label=lang[28], command=appCredits)
 menu_11.add_separator()
 menu_11.add_command(label=lang[137], command=Tips_Tricks)
 menu_11.add_separator()
-menu_11.add_command(label=lang[29], command=surprise_egg)
+menu_11.add_command(label=lang[29], command=surprise_egg, state='disabled')
 
 menu_1.add_command(label=lang[12], command=SetWinSize)
 
@@ -1727,53 +1834,44 @@ menu_9.add_command(label=lang[171], command=lambda:
     InternetOnWriter.Search("gitlab"))
 
 # [!!] Languages need to be fixed
-# [!!] Some languages are in a beta verification state
+# [!!] Some languages are in a verification state
 # [!!] They might stay in such state for ages
 # [!] Please be patient
 # [!?] Thank you!
-# --
-# [!?] Portuguese also requires some attention
-# [i] I just don't feel like fixing it rn
 # --
 # [i] English verified by MF366
 # [i] Slovak verified by Norb
 # [!?] Portuguese still being verified by MF366 and Zeca70
 # --
 # [i] Thank you, dear contributors for all the help!
-'''
 menu_13.add_command(label="Čeština (Čechie)", command=lambda:
-    LanguageSet("cs", desktop_win))
+    LanguageSet("cs", desktop_win), state='disabled')
 menu_13.add_command(label="Dansk (Danmark)", command=lambda:
-    LanguageSet("da", desktop_win))
+    LanguageSet("da", desktop_win), state='disabled')
 menu_13.add_command(label="Deutsch (Deutschland)", command=lambda:
-    LanguageSet("de", desktop_win))
-'''
+    LanguageSet("de", desktop_win), state='disabled')
 menu_13.add_command(label='English (USA)', command=lambda:
     LanguageSet('en', desktop_win))
-'''
 menu_13.add_command(label='Español (España)', command=lambda:
-    LanguageSet('es', desktop_win))
+    LanguageSet('es', desktop_win), state='disabled')
 menu_13.add_command(label='Français (France)', command=lambda:
-    LanguageSet('fr', desktop_win))
+    LanguageSet('fr', desktop_win), state='disabled')
 menu_13.add_command(label='Italiano (Italia)', command=lambda:
-    LanguageSet('it', desktop_win))
+    LanguageSet('it', desktop_win), state='disabled')
 menu_13.add_command(label='Ελληνικά (Ελλάδα)', command=lambda:
-    LanguageSet("el", desktop_win))
+    LanguageSet("el", desktop_win), state='disabled')
 menu_13.add_command(label="Norsk (Norge)", command=lambda:
-    LanguageSet("nb", desktop_win))
+    LanguageSet("nb", desktop_win), state='disabled')
 menu_13.add_command(label='Português (Brasil)', command=lambda:
-    LanguageSet('br', desktop_win))
-'''
+    LanguageSet('br', desktop_win), state='disabled')
 menu_13.add_command(label='Português (Portugal)', command=lambda:
     LanguageSet('pt', desktop_win))
 menu_13.add_command(label='Slovenčina (Slovensko)', command=lambda:
     LanguageSet('sk', desktop_win))
-'''
 menu_13.add_command(label="Svenska (Sverige)", command=lambda:
-    LanguageSet("sv", desktop_win))
+    LanguageSet("sv", desktop_win), state='disabled')
 menu_13.add_command(label="Українська (Україна)", command=lambda:
-    LanguageSet("uk", desktop_win))
-'''
+    LanguageSet("uk", desktop_win), state='disabled')
 
 menu_12.add_cascade(label=lang[198], menu=menu_13)
 menu_12.add_separator()
@@ -1791,7 +1889,7 @@ menu_12.add_command(label=lang[191], command=lambda:
 menu_12.add_separator()
 menu_12.add_command(label=lang[76], command=resetWriter)
 menu_12.add_separator()
-menu_12.add_command(label=lang[105], command=article_md)
+menu_12.add_command(label=lang[105], command=article_md, state='disabled')
 
 
 menu_15.add_command(label=lang[279], command=markdown_preview)
@@ -1817,22 +1915,21 @@ menu_5.add_command(label=lang[18], command=lambda:
     ThemeSet('grey', 'black', 'black', 'black', 'white'))
 
 
-menu_6.add_command(label="Official WriterClassic v8.1.1+ Theme by Norb", command=lambda:
+menu_6.add_command(label="WriterClassic v8.1.1 (Norb)", command=lambda:
     ThemeSet("#0055FF", "#B3BFFF", "#fcfff7", "#fcfff7", "#0055FF"))
 
 menu_6.add_separator()
 
-menu_6.add_command(label='Light Yellow', command=lambda:
-    ThemeSet('light yellow', 'black', 'black', '#f5b949', 'black'))
+menu_6.add_command(label='WriterClassic Aqua', command=lambda:
+    ThemeSet('#12aace', '#040426', '#040426', '#070755', '#bcf6f1'))
 
-menu_6.add_command(label='Magic', command=lambda:
-    ThemeSet('purple', 'white', 'white', '#290340', 'white'))
-
-menu_6.add_command(label='Through the Sky', command=lambda:
-    ThemeSet('light blue', 'black', 'black', '#031882', 'white'))
+menu_6.add_command(label='WriterClassic Earth', command=lambda:
+    ThemeSet('#4a0d0d', '#eccccc', '#e8bebe', '#2b0808', '#e8bebe'))
 
 menu_6.add_command(label='Codetime', command=lambda:
-    ThemeSet('black', 'green', 'green', 'black', 'light green'))
+    ThemeSet('#0f0e0e', '#3fdc24', '#33e814', 'black', '#2af48e'))
+
+menu_6.add_separator()
 
 menu_6.add_command(label='Darkest Night Ever', command=lambda:
     ThemeSet('#040114', '#e8a78e', '#e8a78e', 'black', '#e8a78e'))
@@ -1846,11 +1943,8 @@ menu_6.add_command(label='Christmas Night', command=lambda:
 menu_6.add_command(label='Silent Night', command=lambda:
     ThemeSet('#020421','pink', 'pink', '#020312', '#ebd1ed'))
 
-menu_6.add_command(label="Penguins", command=lambda:
-    ThemeSet('#b8d8e0', '#bd5200', 'black', '#ffc738', 'black'))
-
 if sys.platform == "win32":
-    menu_6.add_command(label='[EXTRA] PowerShell Theme', command=lambda:
+    menu_6.add_command(label='PowerShell Theme', command=lambda:
         ThemeSet("#012456", "#eeedf0", "#fedba9", "#eeedf0", "#012456"))
 
 ic(settings["advanced-mode"])
@@ -1939,10 +2033,10 @@ def readme_gen(*entries):
     if _describe in NOT_ALLOWED:
         _describe = f"{lang[269]} {_title}"
 
-    readme_generated = f'''# {_title}
+    readme_generated = f"""{_title}
 **{_describe}**
 
-'''
+"""
 
     if _author_email not in NOT_ALLOWED:
         readme_generated += f"""[{lang[268]}]({_author_email})\n"""
@@ -2155,7 +2249,7 @@ def adv_login():
     label_5 = Label(window, text=f"{lang[233]}: ", font=("Noto Sans", 13))
 
     entry_1 = Entry(window, font=("Noto Sans", 12))
-    entry_2 = Entry(window, font=("Noto Sans", 10))
+    entry_2 = Entry(window, font=("Noto Sans", 10), show="*")
 
     entry_1.insert(0, settings["email"])
 
@@ -2269,16 +2363,7 @@ if len(sys.argv) > 1:
     ic(file_path)
 
     try:
-        file_input = open(file_path, "rt", encoding="utf-8")
-        file_data = file_input.read()
-
-        desktop_win.title(f"WriterClassic - {file_path}")
-        TextWidget.delete(index1=0.0, index2=END)
-        TextWidget.insert(chars=file_data, index=0.0)
-
-        NOW_FILE = str(file_path)
-        file_input.close()
-        _LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
+        OpenFileManually(file_path)
 
     except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
         mb.showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
@@ -2298,5 +2383,6 @@ if len(sys.argv) > 1:
 
 desktop_win.protocol("WM_DELETE_WINDOW", on_closing)
 
-# [*] And done! Now, it will continuously mainlooping! Enjoy!
+# [*] And done!
+# [i] Now, it will continuously mainlooping! Enjoy!
 desktop_win.mainloop()

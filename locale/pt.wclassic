@@ -283,3 +283,13 @@ Inicializar projeto (obsoleto)
 Construir código
 Executar código
 Este tipo de ficheiro não corresponde à linguagem de programação selecionada.
+Este ficheiro contém um script Python alimentado por um ficheiro *.wscript (WriterClassic Script).
+Execute este script APENAS se tiver a certeza do que ele faz e se o tiver verificado como seguro.
+O ficheiro pode ser aberto na mesma sem que o script seja executado se clicar na opção 'Não'.
+Ficheiro de Script do WriterClassic
+Está associada uma ação automática ao WriterClassic.
+Tem a certeza que a quer executar? As ações automáticas maliciosas poderão danificar o seu dispositivo!
+A aplicação pode continuar a ser utilizada sem que a ação seja executada se clicar na opção 'Não'.
+Acesso rápido
+Desfazer
+Refazer

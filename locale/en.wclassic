@@ -283,3 +283,13 @@ Initialize Project (Deprecated)
 Build Code
 Run Code
 This filetype doesn't correspond to the selected programming language.
+This file contains a Python script powered by a *.wscript (WriterClassic Script) file.
+Only run this script if you are sure of what it does and have verified it as safe.
+The file can still be opened without the script being run if you press No.
+WriterClassic Script File
+There is an auto action associated with WriterClassic.
+Are you sure you wanna run it? Malicious actions might break your device!
+The app can still be used without the action being run if you press No.
+Quick Acess
+Undo
+Redo
