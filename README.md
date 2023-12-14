@@ -24,7 +24,7 @@ Go to https://github.com/MF366-Coding/WriterClassic/releases/latest to get the l
 
 Then, run it! 
 
-## For Linux and MacOS
+## For Linux and MacOS (or if you simply want the source)
 Do the same thing but for the source code. Either run the main Python file or compile it yourself.
 
 All files and folders inside the zipped one **must** be on the same location!
@@ -158,3 +158,4 @@ You can do that using...
 - Spotify Online (v7.0.4+)
 
 > ## Thanks for using WriterClassic! ❤️
+
