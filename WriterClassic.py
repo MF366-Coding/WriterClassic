@@ -24,6 +24,10 @@
 # [!?] If it has been made, it's supposed to be used.
 # [!?] then why the hell do you prompt me a warning every time I'm using it?
 
+# pylint: disable=W0404
+# pylint: disable=W0201
+# pylint: disable=W0105
+
 '''
 WriterClassic
 
@@ -127,13 +131,14 @@ _LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
 
 from tkinter import Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton
 from tkinter.scrolledtext import ScrolledText
-from tkinter.ttk import *
+from tkinter.ttk import Button, Checkbutton, Label, Entry
 
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
+import keyboard
 
 import markdown2
 
@@ -770,7 +775,7 @@ def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
         file_input = open(file_path, "rt", encoding="utf-8")
         file_data = file_input.read()
 
-        root_win.title(f"{lang[1]} - {file_path}")
+        root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
         TextWidget.delete(index1=0.0, index2=END)
         TextWidget.insert(chars=file_data, index=0.0)
 
@@ -824,7 +829,7 @@ def OpenFile(root_win):
         file_input = open(file_path, "rt", encoding="utf-8")
         file_data = file_input.read()
 
-        root_win.title(f"{lang[1]} - {file_path}")
+        root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
         TextWidget.delete(index1=0.0, index2=END)
         TextWidget.insert(chars=file_data, index=0.0)
 
@@ -865,7 +870,7 @@ def SaveFile(root_win):
     file.write(str(dados))
     file.close()
     mb.showinfo(lang[1], lang[101])
-    root_win.title(f"{lang[1]} - {file_path}")
+    root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
 
     _LOG.write(f"{str(now())} - A file has been saved as {str(file_path)}: OK\n")
 
@@ -886,7 +891,7 @@ def Save(root_win):
         file.write(str(data))
         file.close()
         mb.showinfo(lang[1], lang[101])
-        root_win.title(f"{lang[1]} - {file_path}")
+        root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
 
         _LOG.write(f"{str(now())} - An existing file has been saved over ({str(file_path)}): OK\n")
 
@@ -916,12 +921,28 @@ def WipeFile(root_win):
         mb.showinfo(title=lang[1], message=lang[101])
 
         _LOG.write(f"{str(now())} - A file has been wiped at {str(file_path)}: OK\n")
-
-        root_win.title(lang[1])
         file_input.close()
 
 desktop_entry = None
 
+rmb_menu = Menu(desktop_win, tearoff = 0) 
+rmb_menu.add_command(label=lang[295], command=lambda:
+    keyboard.send("Control+x"))
+rmb_menu.add_command(label=lang[296], command=lambda:
+    keyboard.send("Control+c")) 
+rmb_menu.add_command(label=lang[297], command=lambda:
+    keyboard.send("Control+v")) 
+rmb_menu.add_separator() 
+rmb_menu.add_command(label=lang[293], command=TextWidget.edit_undo)
+rmb_menu.add_command(label=lang[294], command=TextWidget.edit_redo)
+  
+def rmb_popup(event): 
+    try: 
+        rmb_menu.tk_popup(event.x_root, event.y_root) 
+    finally: 
+        rmb_menu.grab_release() 
+  
+TextWidget.bind("<Button-3>", rmb_popup) 
 
 # [!] Use this instead of the class DevOption!!!!
 def dev_option(prog_lang: str, mode: str = "build") -> None:
@@ -1110,15 +1131,7 @@ def appCredits():
 def surprise_egg():
     askNow = sdg.askstring(lang[29], lang[66])
 
-    if askNow == 'Nice stuff!!':
-        simple_webbrowser.Website('https://www.youtube.com/watch?v=W6FG7yVUaKQ')
-        ic()
-
-    elif askNow == 'Scan':
-        mb.showwarning("Your PC has virus!", "Press Alt+F4 to remove all viruses!!!\nDo it!!!")
-        ic()
-
-    elif askNow == "":
+    if askNow == "":
         ic()
         return None
 
@@ -1554,14 +1567,11 @@ def clear_log_screen(text_interface):
 
     _LOG.write(f"{str(now())} - Log File has been refreshed: OK\n")
 
-def do_nothing(event):
-    return "break"
-
 def show_log():
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
     _new_editor = ScrolledText(_new_window, background=theme["color"], foreground=theme["fg"], insertbackground=theme["ct"], font=("Calibri", 14), borderwidth=5)
-    _new_editor.bind("<Key>", do_nothing)
+    _new_editor.bind("<Key>")
     _new_window.title(lang[180])
     _new_editor.pack()
     _new_button = Button(_new_window, text=lang[181], command=lambda:
@@ -1616,7 +1626,7 @@ def commandPrompt():
     elif askNow == 'about':
         aboutApp()
 
-    elif askNow == "md_preview":
+    elif askNow == "md preview":
         markdown_preview()
 
     elif askNow == "newfile":
@@ -1648,14 +1658,17 @@ def commandPrompt():
 
     elif askNow == 'redo':
         TextWidget.edit_redo()
+        
+    elif askNow == "clear history":
+        TextWidget.edit_reset()
 
-    elif askNow == 'clock_open':
+    elif askNow == 'clock open':
         clockPlugin()
 
-    elif askNow == 'font_family':
+    elif askNow == 'font family':
         fontEdit(2)
 
-    elif askNow == 'font_size':
+    elif askNow == 'font size':
         fontEdit(1)
 
     elif askNow == 'forcequit' or askNow == "ragequit":
@@ -1667,7 +1680,7 @@ def commandPrompt():
     elif askNow == 'notes':
         new_window()
 
-    elif askNow == 'win_size':
+    elif askNow == 'win size':
         SetWinSize()
 
     else:
