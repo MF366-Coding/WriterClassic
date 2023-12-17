@@ -1,7 +1,7 @@
 {
     "font": {
-        "type": "Segoe UI",
-        "size": 13
+        "type": "Arial",
+        "size": 12
     },
     "theme": {
         "color": "black",

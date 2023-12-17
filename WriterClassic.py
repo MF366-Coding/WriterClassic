@@ -84,6 +84,7 @@ locale = os.path.join(script_dir, 'locale')
 temp_dir = os.path.join(script_dir, 'temp')
 scripts_dir = os.path.join(script_dir, "scripts")
 
+rmb_total_clicks = 0
 
 def check_paths(var) -> str:
     if not os.path.exists(var):
@@ -147,7 +148,7 @@ import sys # [i] Platforms and OSes
 desktop_win = Tk()
 TextWidget = ScrolledText(desktop_win, font=("Calibri", 13), borderwidth=5, undo=True)
 TextWidget.pack()
-# /-/ TextWidget.insert(0.0, "WriterClassic is a free and open-source project made by MF366.\n\nYour support is appreciated: https://www.buymeacoffee.com/mf366\n\nThank you <3")
+# /-/ TextWidget.insert(END, "WriterClassic is a free and open-source project made by MF366.\n\nYour support is appreciated: https://www.buymeacoffee.com/mf366\n\nThank you <3")
 
 _LOG.write("\n")
 _LOG.write(f"{str(now())} - WriterClassic was executed: OK\n")
@@ -777,7 +778,7 @@ def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
 
         root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
         TextWidget.delete(index1=0.0, index2=END)
-        TextWidget.insert(chars=file_data, index=0.0)
+        TextWidget.insert(chars=file_data, index=END)
 
         _LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
 
@@ -831,7 +832,7 @@ def OpenFile(root_win):
 
         root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
         TextWidget.delete(index1=0.0, index2=END)
-        TextWidget.insert(chars=file_data, index=0.0)
+        TextWidget.insert(chars=file_data, index=END)
 
         _LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
 
@@ -925,6 +926,23 @@ def WipeFile(root_win):
 
 desktop_entry = None
 
+def lorem_ipsum():
+    TextWidget.insert(END, """
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque lobortis lacus nibh, ut mattis nisi cursus nec. In aliquam scelerisque eleifend. Suspendisse tempor sem ut ipsum imperdiet, a iaculis dui congue. In in ex massa. Aliquam in dignissim ligula. Mauris pretium mi at molestie feugiat. Cras quam ipsum, congue tempus erat id, rhoncus facilisis mauris. Nam augue nunc, porta ac vestibulum nec, euismod ac est. Duis consectetur risus eu justo pretium volutpat. Vestibulum fringilla purus velit, sed sagittis augue porta a. Vivamus vestibulum turpis ac quam eleifend, ut luctus eros placerat. Praesent pellentesque faucibus ligula, nec varius mi viverra ut. Mauris blandit vitae purus auctor imperdiet. Nullam non sem nisi.
+
+Nullam ullamcorper lacus quis libero luctus ullamcorper. Vestibulum id nisl sit amet ipsum cursus consectetur. Nam et metus leo. Ut a justo scelerisque, imperdiet sapien sed, pharetra ligula. Fusce vel tortor rhoncus nisi elementum commodo at vel massa. Proin suscipit ipsum tristique, ornare quam et, finibus mauris. Curabitur hendrerit, odio eu venenatis aliquam, mi est tincidunt lorem, lacinia placerat lectus nunc rutrum libero.
+
+Maecenas hendrerit diam id mi blandit, vitae dignissim tellus consequat. Vestibulum bibendum convallis nibh eget mattis. Fusce aliquam molestie eros et finibus. Quisque vehicula ex est, vitae convallis lacus dictum at. In id congue velit, sed auctor odio. Aliquam erat volutpat. Ut et molestie lectus, dignissim aliquam libero. Suspendisse potenti.
+
+In pulvinar gravida condimentum. Proin nec sem vitae urna egestas mollis nec vel tortor. Ut sodales eget felis in bibendum. Fusce eu lacus a purus tempus rhoncus non nec magna. Donec sed egestas eros, ut vulputate leo. Sed non libero purus. Suspendisse suscipit nisi vel fringilla suscipit. Integer dapibus tincidunt iaculis. Vivamus risus tortor, cursus vel tincidunt vel, ullamcorper non quam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel magna dui.
+
+Nam gravida nibh leo, eget tincidunt neque facilisis sed. Integer malesuada dui sit amet nulla cursus, eget porttitor nulla fringilla. Proin condimentum mattis posuere. Vivamus sit amet sem non felis aliquet vehicula vel a lorem. Nam accumsan tortor a mattis lacinia. Curabitur ultricies eros lacus, tempor pretium nibh laoreet vel. Curabitur a orci sit amet massa iaculis imperdiet. Phasellus porta aliquet nunc vitae vulputate. Ut non elementum nibh. Sed bibendum ultricies sapien eget dapibus. Pellentesque at lacus sed elit gravida dignissim. Phasellus eu tempus nisl. Suspendisse feugiat risus in laoreet fringilla. Nam sit amet purus laoreet, aliquam augue a, fringilla diam. """)
+
+def readme_writer_classic():
+    with open(os.path.join(script_dir, "README.md"), "r", encoding='utf-8') as readme_wrcl_f:
+        TextWidget.insert(END, f"\n--\nREADME.md (WriterClassic at GitHub; Markdown)\n{readme_wrcl_f.read()}")
+        readme_wrcl_f.close()
+
 rmb_menu = Menu(desktop_win, tearoff = 0) 
 rmb_menu.add_command(label=lang[295], command=lambda:
     keyboard.send("Control+x"))
@@ -936,9 +954,19 @@ rmb_menu.add_separator()
 rmb_menu.add_command(label=lang[293], command=TextWidget.edit_undo)
 rmb_menu.add_command(label=lang[294], command=TextWidget.edit_redo)
   
-def rmb_popup(event): 
+def rmb_popup(event):
+    global rmb_total_clicks
+    
+    if rmb_total_clicks >= 5:
+        rmb_menu.add_separator()
+        rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
+        rmb_menu.add_command(label="README.md", command=readme_writer_classic)
+        rmb_total_clicks = 0
+    
     try: 
-        rmb_menu.tk_popup(event.x_root, event.y_root) 
+        rmb_menu.tk_popup(event.x_root, event.y_root)
+        rmb_total_clicks += 1
+        
     finally: 
         rmb_menu.grab_release() 
   
@@ -1562,16 +1590,20 @@ def clear_log_screen(text_interface):
 
     with open(f"{user_data}/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
         temp_log = _TEMP_LOG.read()
-        text_interface.insert(0.0, str(temp_log))
+        text_interface.insert(END, str(temp_log))
         _TEMP_LOG.close()
 
     _LOG.write(f"{str(now())} - Log File has been refreshed: OK\n")
+
+def do_nothing(event):
+    event = 'break'
+    return event
 
 def show_log():
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
     _new_editor = ScrolledText(_new_window, background=theme["color"], foreground=theme["fg"], insertbackground=theme["ct"], font=("Calibri", 14), borderwidth=5)
-    _new_editor.bind("<Key>")
+    _new_editor.bind("<Key>", do_nothing)
     _new_window.title(lang[180])
     _new_editor.pack()
     _new_button = Button(_new_window, text=lang[181], command=lambda:
@@ -1580,7 +1612,7 @@ def show_log():
 
     with open(f"{user_data}/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
         temp_log = _TEMP_LOG.read()
-        _new_editor.insert(0.0, str(temp_log))
+        _new_editor.insert(END, str(temp_log))
         _TEMP_LOG.close()
 
     _LOG.write(f"{str(now())} - The Log File has been shown: OK\n")
@@ -2063,7 +2095,7 @@ def readme_gen(*entries):
     if _sponsor_site not in NOT_ALLOWED:
         readme_generated += f"""[{lang[265]}]({_sponsor_site})\n"""
 
-    TextWidget.insert(chars=readme_generated, index=0.0)
+    TextWidget.insert(chars=readme_generated, index=END)
 
     ic(readme_generated)
 
