@@ -1,12 +1,12 @@
 # Writer Classic
-![WriterClassic's New Logo, by Norb](/data/logo.png?raw=true "WriterClassic's Logo")
+![WriterClassic's New Logo, by Norb](https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/data/logo.png "WriterClassic's Logo")
 
 Writer Classic is a rather small Python project that brings to the user a whole new text editing experience. 🤔👍
 
 ## Important info
 **For Windows Users:** check this Issue -> https://github.com/MF366-Coding/WriterClassic/issues/20
 
-**For Linux Users:** check this Issue -> https://github.com/MF366-Coding/WriterClassic/issues/18
+**For Linux Users:** check these 2 Issues -> https://github.com/MF366-Coding/WriterClassic/issues/18 and https://github.com/MF366-Coding/WriterClassic/issues/34
 
 **VERY IMPORTANT!**
 - LICENSE -> https://github.com/MF366-Coding/WriterClassic/blob/main/LICENSE
