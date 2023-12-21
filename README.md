@@ -1,12 +1,12 @@
 # Writer Classic
-![WriterClassic's New Logo, by Norb](/data/logo.png?raw=true "WriterClassic's Logo")
+![WriterClassic's New Logo, by Norb](https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/data/logo.png "WriterClassic's Logo")
 
 Writer Classic is a rather small Python project that brings to the user a whole new text editing experience. 🤔👍
 
 ## Important info
 **For Windows Users:** check this Issue -> https://github.com/MF366-Coding/WriterClassic/issues/20
 
-**For Linux Users:** check this Issue -> https://github.com/MF366-Coding/WriterClassic/issues/18
+**For Linux Users:** check these 2 Issues -> https://github.com/MF366-Coding/WriterClassic/issues/18 and https://github.com/MF366-Coding/WriterClassic/issues/34
 
 **VERY IMPORTANT!**
 - LICENSE -> https://github.com/MF366-Coding/WriterClassic/blob/main/LICENSE
@@ -126,8 +126,12 @@ All of those make use of control key plus another key so that you have to press 
 * __Ctrl + Shift + P__ - Opens the Command Menu
 * __Ctrl + L__ - Changes to light mode
 * __Ctrl + D__ - Changes to dark mode 
-* __Ctrl + Shift + G__ - Chooses default window size (600x400 px)
+* __Ctrl + Shift + G__ - Opens the set window size dialogue
 * __F1__ - Leads you to help 
+* __Ctrl + Z__ - Undo last action
+* __Ctrl + Y__ - Redo last action
+* __Ctrl + N__ - New file
+* __Ctrl + I__ - Opens the About section
 
 ## New stuff
 ### Open With... WriterClassic
