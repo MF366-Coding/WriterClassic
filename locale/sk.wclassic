@@ -293,3 +293,15 @@ Aplikácia sa môže naďalej používať bez spustenia akcie, ak kliknete na mo
 Rýchly prístup
 Zrušiť
 Znovu
+Rez
+Kopírovať
+Vložiť
+Kontrola aktualizácií pri spustení
+Automatický skript môžete vytvoriť pomocou jazyka Python v súbore scripts/auto.wscript v priečinku WriterClassic.
+Mať súbor.wclassic a súbor.wclassic.wscript na rovnakom mieste (kde posledný je štruktúrovaný súbor Pythonu) spôsobí určité zvláštne správanie, eh eh!
+Okno môžete zamknúť a odomknúť. Ak ho necháte odomknuté, môže ktokoľvek meniť jeho veľkosť, ale kým je zamknuté, môže meniť veľkosť len WriterClassic.
+Pred verziou 10.0.0 nemal WriterClassic možnosti Undo/Redo. Našťastie teraz tieto funkcie má.
+WriterClassic má super špeciálnu ponuku príkazov, ktorú možno vyvolať pomocou klávesovej skratky Ctrl + Shift + P.
+Ak 6-krát kliknete pravým tlačidlom myši na textový editor, získate prístup k 2 super špeciálnym možnostiam.
+Tipy a triky sú plne náhodné. Stavím sa však, že ste to už vedeli.
+Povolenie rozšíreného režimu

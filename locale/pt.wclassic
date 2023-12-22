@@ -293,3 +293,15 @@ A aplicação pode continuar a ser utilizada sem que a ação seja executada se 
 Acesso rápido
 Desfazer
 Refazer
+Cortar
+Copiar
+Colar
+Verificar se há atualizações ao iniciar
+É possível criar um script automático com Python em scripts/auto.wscript dentro da pasta do WriterClassic.
+Ter ficheiro.wclassic e ficheiro.wclassic.wscript na mesma localização (onde o último é um ficheiro estruturado em Python) irá causar um comportamento particular, eh eh!
+Pode-se bloquear e desbloquear a janela. Deixá-la desbloqueada permite que qualquer pessoa a redimensione, mas enquanto ela estiver bloqueada, apenas o WriterClassic pode redimensionar-se.
+Antes da versão 10.0.0, o WriterClassic não tinha as opções Desfazer/Refazer. Felizmente, agora tem essas funcionalidades.
+O WriterClassic tem um menu de comandos super especial que pode ser acedido utilizando Ctrl + Shift + P.
+Se clicar com o botão direito do rato no seu editor de texto 6 vezes, tem acesso a 2 opções super especiais.
+As Dicas e Truques são totalmente aleatórias. Mas aposto que já sabia disso.
+Ativar o Modo Avançado

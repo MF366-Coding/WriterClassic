@@ -296,3 +296,12 @@ Redo
 Cut
 Copy
 Paste
+Check for Updates on Startup
+You can create an automated script with Python on scripts/auto.wscript inside the WriterClassic folder.
+Having file.wclassic and file.wclassic.wscript on the same location (where the last one is a Python structurated file) will cause some special behavior, eh eh!
+You can lock and unlock your window. Leaving it unlocked allows for anyone to resize it but while it's locked, only WriterClassic can resize itself.
+Before v10.0.0, WriterClassic didn't have Undo/Redo options. Thankfully, it has those features now.
+WriterClassic has a super special command menu that can be called by using Ctrl + Shift + P.
+If you right click on your text editor 6 times, you get access to 2 super special options.
+Tips and Tricks are fully randomized. I bet you knew that already though.
+Enable Advanced Mode
