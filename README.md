@@ -1,7 +1,11 @@
 # Writer Classic
-![WriterClassic's New Logo, by Norb](https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/data/logo.png "WriterClassic's Logo")
+<img src="https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/data/logo.png" alt="WriterClassic's Logo by Norb" align="right" width="96" height="96">
 
 Writer Classic is a rather small Python project that brings to the user a whole new text editing experience. 🤔👍
+
+[![Latest Version](https://img.shields.io/github/v/tag/MF366-Coding/WriterClassic?color=%23000184)](https://github.com/MF366-Coding/WriterClassic/releases/latest)
+[![Documentation](https://img.shields.io/badge/online-now?label=docs%20status&color=%23000085)](https://mf366-coding.github.io/writerclassic.html#docs)
+[![License](https://img.shields.io/github/license/MF366-Coding/WriterClassic)](https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/LICENSE)
 
 ## Important info
 **For Windows Users:** check this Issue -> https://github.com/MF366-Coding/WriterClassic/issues/20

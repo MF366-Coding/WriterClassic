@@ -53,7 +53,7 @@ Small but lovely contributions by:
 '''
 
 # TODO
-# [*] Nothing, yay!
+# [!!] Translate the new entries to PT and Slovak :) 
 
 NOW_FILE = False
 
@@ -62,6 +62,7 @@ lines = 0
 from icecream import ic
 
 import zipfile
+import asyncio
 
 from setting_loader import get_settings, dump_settings
 
@@ -83,8 +84,6 @@ data_dir = os.path.join(script_dir, 'data')
 locale = os.path.join(script_dir, 'locale')
 temp_dir = os.path.join(script_dir, 'temp')
 scripts_dir = os.path.join(script_dir, "scripts")
-
-rmb_total_clicks = 0
 
 def check_paths(var) -> str:
     if not os.path.exists(var):
@@ -130,7 +129,9 @@ if os.path.exists(os.path.join(scripts_dir, "quick_acess.wscript")):
 
 _LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
 
-from tkinter import Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton
+from tkinter import Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT
+import tracemalloc
+tracemalloc.start()
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import Button, Checkbutton, Label, Entry
 
@@ -185,15 +186,14 @@ if not startApp:
     startApp = "0"
     _LOG.write(f"{str(now())} - Check for updates on startup: DISABLED\n")
 
-elif startApp:
-    startApp = "1"
-    _LOG.write(f"{str(now())} - Check for updates on startup: ENABLED\n")
-
 else:
     startApp = "1"
     _LOG.write(f"{str(now())} - Check for updates on startup: ENABLED\n")
 
 ic(startApp)
+autosave_cooldown = None
+update_check_button = IntVar(desktop_win, 1)
+update_check_button.set(int(startApp))
 
 ic(script_dir)
 ic(script_path)
@@ -221,6 +221,8 @@ _LOG.write(f"{str(now())} - Imported Font from tkinter.font: OK\n")
 ic(now())
 
 setLang = settings["language"]
+autosave_cooldown = 60.0
+can_autosave = IntVar(desktop_win, 0)
 
 ic(setLang)
 
@@ -329,11 +331,10 @@ if startApp == '1':
 ic(IGNORE_CHECKING)
 ic(latest_version)
 
+appV = "v10.1.0"
+advV ="v10.1.0.234"
 
 # [i] Config files
-appV = "v10.0.0"
-advV ="v10.0.0.225"
-
 ic(appV)
 ic(advV)
 
@@ -436,6 +437,11 @@ except TclError:
 
 ic(sys.platform)
 
+window_lock_status = IntVar(desktop_win, 1)
+advanced_mode_status = IntVar(desktop_win, 0)
+
+desktop_win.resizable(bool(window_lock_status.get()), bool(window_lock_status.get()))
+
 if settings["advanced-mode"]:
     ADVANCED = True
 
@@ -443,6 +449,8 @@ else:
     ADVANCED = False
 
 ic(ADVANCED)
+
+advanced_mode_status.set(int(ADVANCED))
 
 menu_1 = Menu(menu_bar)
 menu_2 = Menu(menu_1)
@@ -514,14 +522,9 @@ class UpdateCheck:
 
     @staticmethod
     def change():
-        if startApp == '1':
-            writeStartup(False)
-            mb.showinfo(title=lang[1], message=lang[101])
-            _LOG.write(f"{str(now())} - Check for updates on startup has been disabled: OK\n")
-        else:
-            writeStartup(True)
-            mb.showinfo(title=lang[1], message=lang[101])
-            _LOG.write(f"{str(now())} - Check for updates on startup has been enabled: OK\n")
+        writeStartup(bool(update_check_button.get()))
+        mb.showinfo(title=lang[1], message=lang[101])
+        _LOG.write(f"{str(now())} - Check for updates on startup setting has been changed: OK\n")
 
 if startApp == '1':
     UpdateCheck.check_other()
@@ -610,7 +613,7 @@ def new_window():
     newWindow = Toplevel(desktop_win)
     _LOG.write(f"{str(now())} - A new window has been called: AWAITING CONFIGURATION\n")
 
-    # [i] Windowing... yet once more LMAO...
+    # [i] Windowing
     newWindow.title(lang[22])
     newWindow.geometry("600x400")
 
@@ -649,27 +652,43 @@ def repo():
     simple_webbrowser.Website(ourRepo)
     _LOG.write(f"{str(now())} - Opened the repository: AWAITING FOR FUNCTION OR ERROR\n")
 
+def bool_swap(value: bool | None, default_for_none: bool = True):
+    if value:
+        value = False
+    
+    elif not value:
+        value = True
+        
+    elif value == None:
+        value = default_for_none
+        
+    return value
+    
+
 # [i] Clock
-def clockPlugin():
+async def clockPlugin():
     clockWindow = Toplevel(desktop_win)
     clockWindow.geometry('275x65')
     clockWindow.resizable(False, False)
+    running = True
+    clockWindow.protocol("WM_DELETE_WINDOW", lambda: bool_swap(running))
     _LOG.write(f"{str(now())} - A new window has been called: AWAITING CONFIGURATION\n")
 
     # [i] Windowing
     clockWindow.title(lang[23])
 
     TextWidget2 = Label(clockWindow)
-
-    TextWidget2.configure(text=datetime.datetime.now()())
     TextWidget2.configure(
         font=(100)
         )
+    
+    while running:
+        await asyncio.sleep(0.01)
+        TextWidget2.configure(text=now())
+        TextWidget.pack()
 
     _LOG.write(f"{str(now())} - Clock Plugin's window has been configured: OK\n")
 
-    TextWidget.pack()
-    clockWindow.mainloop()
 
 # [i] Text font
 def fontEdit(winType):
@@ -927,8 +946,7 @@ def WipeFile(root_win):
 desktop_entry = None
 
 def lorem_ipsum():
-    TextWidget.insert(END, """
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque lobortis lacus nibh, ut mattis nisi cursus nec. In aliquam scelerisque eleifend. Suspendisse tempor sem ut ipsum imperdiet, a iaculis dui congue. In in ex massa. Aliquam in dignissim ligula. Mauris pretium mi at molestie feugiat. Cras quam ipsum, congue tempus erat id, rhoncus facilisis mauris. Nam augue nunc, porta ac vestibulum nec, euismod ac est. Duis consectetur risus eu justo pretium volutpat. Vestibulum fringilla purus velit, sed sagittis augue porta a. Vivamus vestibulum turpis ac quam eleifend, ut luctus eros placerat. Praesent pellentesque faucibus ligula, nec varius mi viverra ut. Mauris blandit vitae purus auctor imperdiet. Nullam non sem nisi.
+    TextWidget.insert(TextWidget.index(INSERT), """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque lobortis lacus nibh, ut mattis nisi cursus nec. In aliquam scelerisque eleifend. Suspendisse tempor sem ut ipsum imperdiet, a iaculis dui congue. In in ex massa. Aliquam in dignissim ligula. Mauris pretium mi at molestie feugiat. Cras quam ipsum, congue tempus erat id, rhoncus facilisis mauris. Nam augue nunc, porta ac vestibulum nec, euismod ac est. Duis consectetur risus eu justo pretium volutpat. Vestibulum fringilla purus velit, sed sagittis augue porta a. Vivamus vestibulum turpis ac quam eleifend, ut luctus eros placerat. Praesent pellentesque faucibus ligula, nec varius mi viverra ut. Mauris blandit vitae purus auctor imperdiet. Nullam non sem nisi.
 
 Nullam ullamcorper lacus quis libero luctus ullamcorper. Vestibulum id nisl sit amet ipsum cursus consectetur. Nam et metus leo. Ut a justo scelerisque, imperdiet sapien sed, pharetra ligula. Fusce vel tortor rhoncus nisi elementum commodo at vel massa. Proin suscipit ipsum tristique, ornare quam et, finibus mauris. Curabitur hendrerit, odio eu venenatis aliquam, mi est tincidunt lorem, lacinia placerat lectus nunc rutrum libero.
 
@@ -940,32 +958,26 @@ Nam gravida nibh leo, eget tincidunt neque facilisis sed. Integer malesuada dui 
 
 def readme_writer_classic():
     with open(os.path.join(script_dir, "README.md"), "r", encoding='utf-8') as readme_wrcl_f:
-        TextWidget.insert(END, f"\n--\nREADME.md (WriterClassic at GitHub; Markdown)\n{readme_wrcl_f.read()}")
+        TextWidget.insert(TextWidget.index(INSERT), f"README.md (WriterClassic at GitHub; Markdown)\n{readme_wrcl_f.read()}")
         readme_wrcl_f.close()
 
 rmb_menu = Menu(desktop_win, tearoff = 0) 
 rmb_menu.add_command(label=lang[295], command=lambda:
-    keyboard.send("Control+x"))
+    keyboard.send("Control+x"), accelerator="Ctrl + X")
 rmb_menu.add_command(label=lang[296], command=lambda:
-    keyboard.send("Control+c")) 
+    keyboard.send("Control+c"), accelerator="Ctrl + C") 
 rmb_menu.add_command(label=lang[297], command=lambda:
-    keyboard.send("Control+v")) 
+    keyboard.send("Control+v"), accelerator="Ctrl + V") 
 rmb_menu.add_separator() 
-rmb_menu.add_command(label=lang[293], command=TextWidget.edit_undo)
-rmb_menu.add_command(label=lang[294], command=TextWidget.edit_redo)
-  
-def rmb_popup(event):
-    global rmb_total_clicks
-    
-    if rmb_total_clicks >= 5:
-        rmb_menu.add_separator()
-        rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
-        rmb_menu.add_command(label="README.md", command=readme_writer_classic)
-        rmb_total_clicks = 0
-    
+rmb_menu.add_command(label=lang[293], command=TextWidget.edit_undo, accelerator="Ctrl + Z")
+rmb_menu.add_command(label=lang[294], command=TextWidget.edit_redo, accelerator="Ctrl + Y")
+rmb_menu.add_separator()
+rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
+rmb_menu.add_command(label="README.md", command=readme_writer_classic)
+
+def rmb_popup(event):    
     try: 
         rmb_menu.tk_popup(event.x_root, event.y_root)
-        rmb_total_clicks += 1
         
     finally: 
         rmb_menu.grab_release() 
@@ -1263,7 +1275,14 @@ def Tips_Tricks():
         lang[140],
         lang[141],
         lang[142],
-        lang[143]
+        lang[143],
+        lang[299],
+        lang[300],
+        lang[301],
+        lang[302],
+        lang[303],
+        lang[304],
+        lang[305]
     ))
 
     ic(picked_text)
@@ -1283,9 +1302,8 @@ def resetWriter():
         settings = {
             "font": {
                 "type": "Segoe UI",
-                "size": 13
+                "size": 12
             },
-
             "theme": {
                 "color": "black",
                 "ct": "white",
@@ -1293,19 +1311,12 @@ def resetWriter():
                 "mfg": "black",
                 "menu": "dark grey"
             },
-
             "advanced-mode": False,
-
             "startup": True,
-
             "geometry": "700x500",
-
             "language": "en",
-
             "dencrypt": "",
-
             "debugging": False,
-
             "email": ""
         }
 
@@ -1362,7 +1373,6 @@ def Terminal():
     butt_2.pack()
 
     terminal.mainloop()
-
 
 class InternetOnWriter:
     @staticmethod
@@ -1467,14 +1477,8 @@ class InternetOnWriter:
                 simple_webbrowser.GitLab(askForTyping)
                 _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on GitLab: OK\n")
 
-def lock_a_win(window, _type: bool):
-    if _type:
-        window.resizable(False, False)
-        ic()
-
-    elif _type == False:
-        window.resizable(True, True)
-        ic()
+def lock_a_win(window: Tk = desktop_win):
+    window.resizable(bool(window_lock_status.get()), bool(window_lock_status.get()))
 
 def plugin_help():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/wiki/Plugin-Setup")
@@ -1559,12 +1563,16 @@ def install_plugin(**options):
     """
     install_plugin installs a plugin using _Plugin
     """
-    if len(options["folder_name"]) >= 1:
-        questiony = options["folder_name"]
-
-    else:
+    questiony = None
+    
+    try:
+        if len(options["folder_name"]) >= 1:
+            questiony = options["folder_name"]
+    
+    except KeyError:
         questiony = sdg.askstring(lang[1], f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
-
+        
+    finally:
         plugin = _Plugin(folder_name=str(questiony))
         plugin._get_files()
 
@@ -1590,7 +1598,7 @@ def clear_log_screen(text_interface):
 
     with open(f"{user_data}/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
         temp_log = _TEMP_LOG.read()
-        text_interface.insert(END, str(temp_log))
+        text_interface.insert(0.0, str(temp_log))
         _TEMP_LOG.close()
 
     _LOG.write(f"{str(now())} - Log File has been refreshed: OK\n")
@@ -1612,12 +1620,43 @@ def show_log():
 
     with open(f"{user_data}/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
         temp_log = _TEMP_LOG.read()
-        _new_editor.insert(END, str(temp_log))
+        _new_editor.insert(0.0, str(temp_log))
         _TEMP_LOG.close()
 
     _LOG.write(f"{str(now())} - The Log File has been shown: OK\n")
 
 ic(settings["dencrypt"])
+
+
+async def autosave():
+    return
+
+    if NOW_FILE == False or can_autosave.get() != 1:
+        ic('autosave() return None')
+        await asyncio.sleep(0.01)
+        return
+    
+    can_autosave.set(0)
+    ic('Cannot autosave.')
+    await asyncio.sleep(autosave_cooldown)
+    ic('Can autosave.')
+    can_autosave.set(1)
+    
+def autosave_config():
+    return
+
+    global autosave_cooldown
+
+    y = sdg.askfloat(lang[309], f"{lang[310]}\n{lang[311]}", initialvalue=60.0, minvalue=10.0, maxvalue=3600.0)
+    
+    ic(y)
+    
+    if y != None:
+        ic()
+        settings['autosave']['cooldown'] = y
+        autosave_cooldown = y
+        fast_dump()
+        return
 
 class SignaturePlugin:
     @staticmethod
@@ -1667,9 +1706,6 @@ def commandPrompt():
     elif askNow == 'help':
         APP_HELP()
 
-    elif askNow == 'fun' or askNow == 'egg':
-        surprise_egg()
-
     elif askNow == 'data':
         appCredits()
 
@@ -1694,9 +1730,6 @@ def commandPrompt():
     elif askNow == "clear history":
         TextWidget.edit_reset()
 
-    elif askNow == 'clock open':
-        clockPlugin()
-
     elif askNow == 'font family':
         fontEdit(2)
 
@@ -1719,42 +1752,86 @@ def commandPrompt():
         mb.showerror(lang[68], lang[70])
 
 # [i] Key bindings
-desktop_win.bind('<Control-o>', lambda b:
+desktop_win.bind('<Control-o>', lambda a:
     OpenFile(desktop_win))
 
-desktop_win.bind('<Control-n>', lambda b:
+desktop_win.bind('<Control-n>', lambda a:
     NewFile())
 
-desktop_win.bind('<Control-s>', lambda c:
+desktop_win.bind('<Control-s>', lambda a:
     Save(desktop_win))
 
-desktop_win.bind('<Control-S>', lambda c:
+desktop_win.bind('<Control-S>', lambda a:
     SaveFile(desktop_win))
 
-desktop_win.bind('<Control-z>', lambda c:
+desktop_win.bind('<Control-z>', lambda a:
     TextWidget.edit_undo())
 
-desktop_win.bind('<Control-y>', lambda c:
+desktop_win.bind('<Control-y>', lambda a:
     TextWidget.edit_redo())
 
-desktop_win.bind('<Control-i>', lambda e:
+desktop_win.bind('<Control-i>', lambda a:
     aboutApp())
 
-desktop_win.bind('<F1>', lambda f:
+desktop_win.bind('<F1>', lambda a:
     APP_HELP())
 
-desktop_win.bind('<Control-d>', lambda g:
+desktop_win.bind('<Control-d>', lambda a:
     ThemeSet('black', 'white', 'white', 'dark grey', 'black'))
 
-desktop_win.bind('<Control-l>', lambda h:
+desktop_win.bind('<Control-l>', lambda a:
     ThemeSet('white', 'black', 'black', 'black', 'white'))
 
-desktop_win.bind('<Control-G>', lambda j:
+desktop_win.bind('<Control-G>', lambda a:
     SetWinSize())
 
-desktop_win.bind('<Control-P>', lambda m:
+desktop_win.bind('<Control-P>', lambda a:
     commandPrompt())
 
+desktop_win.bind('<Control-F1>', lambda a:
+    execute(1))
+
+desktop_win.bind('<Control-F2>', lambda a:
+    execute(2))
+
+desktop_win.bind('<Control-F3>', lambda a:
+    execute(3))
+
+desktop_win.bind('<Control-F4>', lambda a:
+    execute(4))
+
+desktop_win.bind('<Control-F5>', lambda a:
+    execute(5))
+
+desktop_win.bind('<Control-F6>', lambda a:
+    execute(6))
+
+desktop_win.bind('<Control-F7>', lambda a:
+    execute(7))
+
+desktop_win.bind('<Control-F8>', lambda a:
+    execute(8))
+
+desktop_win.bind('<Control-F9>', lambda a:
+    execute(9))
+
+desktop_win.bind('<Control-F10>', lambda a:
+    execute(10))
+
+desktop_win.bind('<Control-F11>', lambda a:
+    execute(11))
+
+desktop_win.bind('<Control-F12>', lambda a:
+    execute(12))
+
+def autosave_apply():
+    ic()
+    return
+
+    settings['autosave']['status'] = bool(can_autosave.get())
+    ic(settings['autosave'])
+    ic(bool(can_autosave.get()))
+    fast_dump()
 
 def on_closing():
     ic()
@@ -1778,25 +1855,25 @@ def QUIT_WRITER():
     on_closing()
 
 # [i] Creating the menu dropdowns and buttons
-menu_10.add_command(label=lang[94], command=NewFile)
+menu_10.add_command(label=lang[94], command=NewFile, accelerator="Ctrl + N")
 menu_10.add_command(label=lang[7], command=lambda:
-    OpenFile(desktop_win))
+    OpenFile(desktop_win), accelerator="Ctrl + O")
 '''
 if QUICK_ACESS_DATA != []:
     menu_10.add_cascade(label=lang[292], menu=menu_18)
 '''
 menu_10.add_separator()
 menu_10.add_command(label = lang[8], command=lambda:
-    Save(desktop_win))
+    Save(desktop_win), accelerator="Ctrl + S")
 menu_10.add_command(label = lang[9], command=lambda:
-    SaveFile(desktop_win))
+    SaveFile(desktop_win), accelerator="Ctrl + Shift + S")
 menu_10.add_separator()
-menu_10.add_command(label=lang[293], command=TextWidget.edit_undo)
-menu_10.add_command(label=lang[294], command=TextWidget.edit_redo)
+menu_10.add_command(label=lang[293], command=TextWidget.edit_undo, accelerator="Ctrl + Z")
+menu_10.add_command(label=lang[294], command=TextWidget.edit_redo, accelerator="Ctrl + Y")
 menu_10.add_separator()
 menu_10.add_command(label=lang[163], command=DOC_STATS)
 menu_10.add_separator()
-menu_10.add_command(label=lang[11], command=QUIT_WRITER)
+menu_10.add_command(label=lang[11], command=QUIT_WRITER, accelerator="Alt + F4")
 
 '''
 for i in range(len(QUICK_ACESS_DATA)):
@@ -1807,10 +1884,10 @@ for i in range(len(QUICK_ACESS_DATA)):
 if startApp == "1":
     menu_11.add_command(label=lang[75], command=UpdateCheck.check)
     menu_11.add_separator()
-menu_11.add_command(label=lang[25], command=aboutApp)
+menu_11.add_command(label=lang[25], command=aboutApp, accelerator="Ctrl + I")
 menu_11.add_command(label=lang[186], command=lambda:
     simple_webbrowser.Website("https://www.buymeacoffee.com/mf366"))
-menu_11.add_command(label=lang[26], command=APP_HELP)
+menu_11.add_command(label=lang[26], command=APP_HELP, accelerator="F1")
 menu_11.add_command(label=lang[27], command=repo)
 menu_11.add_command(label=lang[179], command=show_log)
 menu_11.add_separator()
@@ -1820,7 +1897,7 @@ menu_11.add_command(label=lang[137], command=Tips_Tricks)
 menu_11.add_separator()
 menu_11.add_command(label=lang[29], command=surprise_egg, state='disabled')
 
-menu_1.add_command(label=lang[12], command=SetWinSize)
+menu_1.add_command(label=lang[12], command=SetWinSize, accelerator="Ctrl + Shift + G")
 
 
 menu_7.add_command(label=lang[20], command=lambda:
@@ -1830,7 +1907,7 @@ menu_7.add_command(label=lang[21], command=lambda:
 
 
 menu_8.add_command(label=lang[22], command=new_window)
-menu_8.add_command(label=lang[23], command=clockPlugin)
+menu_8.add_command(label=lang[23], command=clockPlugin, state="disabled")
 menu_8.add_command(label=lang[182], command=Terminal)
 menu_8.add_separator()
 menu_8.add_command(label=lang[131], command=SignaturePlugin.custom)
@@ -1919,18 +1996,20 @@ menu_13.add_command(label="Українська (Україна)", command=lambd
     LanguageSet("uk", desktop_win), state='disabled')
 
 menu_12.add_cascade(label=lang[198], menu=menu_13)
+'''
 menu_12.add_separator()
-menu_12.add_command(label=lang[74], command=UpdateCheck.change)
+menu_12.add_checkbutton(label=lang[307], variable=can_autosave, command=autosave_apply)
+menu_12.add_command(label=lang[308], command=autosave_config)
+'''
+menu_12.add_separator()
+menu_12.add_checkbutton(label=lang[298], variable=update_check_button, command=UpdateCheck.change)
 menu_12.add_separator()
 
 if sys.platform == "linux":
     menu_12.add_command(label=lang[192], command=desktop_create_win)
     menu_12.add_separator()
 
-menu_12.add_command(label=lang[190], command=lambda:
-    lock_a_win(desktop_win, True))
-menu_12.add_command(label=lang[191], command=lambda:
-    lock_a_win(desktop_win, False))
+menu_12.add_checkbutton(label=lang[191], variable=window_lock_status, command=lock_a_win)
 menu_12.add_separator()
 menu_12.add_command(label=lang[76], command=resetWriter)
 menu_12.add_separator()
@@ -1952,9 +2031,9 @@ menu_17.add_command(label="Python", command=lambda:
 
 
 menu_5.add_command(label=lang[16], command=lambda:
-    ThemeSet('white', 'black', 'black', 'black', 'white'))
+    ThemeSet('white', 'black', 'black', 'black', 'white'), accelerator="Ctrl + L")
 menu_5.add_command(label=lang[17], command=lambda:
-    ThemeSet('black', 'white', 'white', 'white', 'black'))
+    ThemeSet('black', 'white', 'white', 'white', 'black'), accelerator="Ctrl + D")
 menu_5.add_separator()
 menu_5.add_command(label=lang[18], command=lambda:
     ThemeSet('grey', 'black', 'black', 'black', 'white'))
@@ -1996,11 +2075,7 @@ ic(settings["advanced-mode"])
 ic(settings["debugging"])
 
 def adv_change():
-    if settings["advanced-mode"]:
-        settings["advanced-mode"] = False
-
-    else:
-        settings["advanced-mode"] = True
+    settings["advanced-mode"] = bool(advanced_mode_status.get())
 
     ic(settings["advanced-mode"])
     fast_dump()
@@ -2008,7 +2083,7 @@ def adv_change():
     mb.showinfo(message=lang[63], title=lang[1])
 
 menu_12.add_separator()
-menu_12.add_command(label=lang[276], command=adv_change)
+menu_12.add_checkbutton(label=lang[306], variable=advanced_mode_status, command=adv_change)
 
 def show_debug():
     if settings["debugging"]:
@@ -2095,7 +2170,7 @@ def readme_gen(*entries):
     if _sponsor_site not in NOT_ALLOWED:
         readme_generated += f"""[{lang[265]}]({_sponsor_site})\n"""
 
-    TextWidget.insert(chars=readme_generated, index=END)
+    TextWidget.insert(chars=readme_generated, index=0.0)
 
     ic(readme_generated)
 
