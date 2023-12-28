@@ -1,3 +1,0 @@
-name: Publish Release
-uses: eregon/publish-release@v1.0.5
-on: [release]
