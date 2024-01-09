@@ -305,3 +305,11 @@ O WriterClassic tem um menu de comandos super especial que pode ser acedido util
 Se clicar com o botão direito do rato no seu editor de texto 6 vezes, tem acesso a 2 opções super especiais.
 As Dicas e Truques são totalmente aleatórias. Mas aposto que já sabia disso.
 Ativar o Modo Avançado
+Um plugin pretende remover um ficheiro/diretório pertencente ao WriterClassic em:
+WriterClassic - Ação de Remoção
+Não foi possível remover o ficheiro/diretório localizado em:
+Remover Plugin
+WriterClassic - Remoção de plugins
+Escolha o número do plugin a remover.
+Dica: se quiser remover o plugin armazenado em 'plugins/plugin_3', o número será 3.
+Tem a certeza de que pretende remover um plugin?

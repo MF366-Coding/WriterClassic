@@ -10,6 +10,7 @@
 import os
 import datetime
 import imp
+from tkinter import messagebox as mb
 
 """
 The imp module is obsolete but still works.
@@ -18,38 +19,27 @@ Until I find a better option (for what I want, importlib ain't an option),
 I'll use imp module. What a weird name, imp!
 """
 
-desktop_winx = None
-NOW_FILEX = None
-textwdigetx = None
-settingsx = None
-
-paths = None
+wclassic_vars = {}
 _LOG = None
-lang = None
-mb = None
-END = None
+plugin_dir = ""
+lang = []
 
 def now() -> str:
     return datetime.datetime.now()
 
-def initializer(_logger, _paths, _sets, _wins, _texts, _filex, langz: list, _mb, _endx):
-    global _LOG, paths, settingsx, desktop_winx, NOW_FILEX, textwdigetx, lang, mb, END
+def initializer(wclassic_globals):
+    global wclassic_vars, _LOG, plugin_dir, lang
     
-    _LOG = _logger
-    paths = _paths
-    settingsx = _sets
-    desktop_winx = _wins
-    textwdigetx = _texts
-    NOW_FILEX = _filex
-    lang = langz
-    mb = _mb
-    END = _endx
+    wclassic_vars = wclassic_globals
+    _LOG = wclassic_vars["_LOG"]
+    plugin_dir = wclassic_vars["plugin_dir"]
+    lang = wclassic_vars["lang"]
     
     _LOG.write(f"{str(now())} - Initializing Plugin System: OK\n")
 
 def run_a_plugin(number: int):
     try:
-        new_folder = os.path.join(paths, f"plugin_{number}")
+        new_folder = os.path.join(plugin_dir, f"plugin_{number}")
 
         if not os.path.exists(path=new_folder):
             mb.showerror(lang[161], lang[162])
@@ -80,15 +70,7 @@ def run_a_plugin(number: int):
         # Load the module using imp.load_source
         module = imp.load_source(_title[0].replace(" ", "_"), module_path)
         
-        module.plugin(desktop_win=desktop_winx,
-                    TextWidget=textwdigetx,
-                    settings=settingsx,
-                    _lang=lang,
-                    NOW_FILE=NOW_FILEX,
-                    logger=_LOG,
-                    plugin_dir=paths,
-                    mb=mb,
-                    END_OF_WIDGET=END)
+        module.start(wclassic_vars)
 
         # Now you can use functions/classes/etc. defined in the module
 

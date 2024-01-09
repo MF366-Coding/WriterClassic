@@ -305,3 +305,11 @@ WriterClassic má super špeciálnu ponuku príkazov, ktorú možno vyvolať pom
 Ak 6-krát kliknete pravým tlačidlom myši na textový editor, získate prístup k 2 super špeciálnym možnostiam.
 Tipy a triky sú plne náhodné. Stavím sa však, že ste to už vedeli.
 Povolenie rozšíreného režimu
+Zásuvný modul chce odstrániť súbor/adresár patriaci do WriterClassic v:
+WriterClassic - Remove Action
+Nebolo možné odstrániť súbor/adresár nachádzajúci sa na adrese:
+Odstrániť zásuvný modul
+WriterClassic - Odstránenie zásuvných modulov
+Vyberte číslo zásuvného modulu, ktorý chcete odstrániť.
+Tip: ak chcete odstrániť zásuvný modul uložený v adresári 'plugins/plugin_3', číslo bude 3.
+Ste si istí, že chcete odstrániť zásuvný modul?

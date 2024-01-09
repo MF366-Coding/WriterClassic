@@ -53,7 +53,6 @@ Small but lovely contributions by:
 '''
 
 # TODO
-# [!!] Translate the new entries to PT and Slovak :) 
 
 NOW_FILE = False
 
@@ -84,6 +83,15 @@ data_dir = os.path.join(script_dir, 'data')
 locale = os.path.join(script_dir, 'locale')
 temp_dir = os.path.join(script_dir, 'temp')
 scripts_dir = os.path.join(script_dir, "scripts")
+
+def clamp(val, _min, _max):
+    if val < _min:
+        return _min
+
+    if val > _max:
+        return _max
+
+    return val
 
 def check_paths(var) -> str:
     if not os.path.exists(var):
@@ -116,16 +124,16 @@ def now() -> str:
 '''
 if os.path.exists(os.path.join(scripts_dir, "quick_acess.wscript")):
     quick_acess_content = open(os.path.join(scripts_dir, "quick_acess.wscript"), "r", encoding="utf-8").read().split("\n")
-    
+
     for i in range(len(quick_acess_content)):
         if i != 10:
             QUICK_ACESS_DATA.append(quick_acess_content[i])
-            
+
         else:
             break
-            
+
     quick_acess_content = None
-'''        
+'''
 
 _LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
 
@@ -331,8 +339,8 @@ if startApp == '1':
 ic(IGNORE_CHECKING)
 ic(latest_version)
 
-appV = "v10.1.0"
-advV ="v10.1.0.234"
+appV = "v10.1.1"
+advV ="v10.1.1.239"
 
 # [i] Config files
 ic(appV)
@@ -357,12 +365,12 @@ for temp_file in temp_files:
     file_to_delete = os.path.join(temp_dir, temp_file)
     if os.path.isfile(file_to_delete):
         os.remove(file_to_delete)
-        
+
 if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
     auto_content = open(os.path.join(scripts_dir, "auto.wscript"), "r", encoding="utf-8").read()
-    
+
     _run_auto = mb.askyesno(lang[1], f"{lang[289]}\n{lang[290]}\n{lang[291]}")
-            
+
     if _run_auto == True:
         exec(auto_content)
 
@@ -655,15 +663,15 @@ def repo():
 def bool_swap(value: bool | None, default_for_none: bool = True):
     if value:
         value = False
-    
+
     elif not value:
         value = True
-        
+
     elif value == None:
         value = default_for_none
-        
+
     return value
-    
+
 
 # [i] Clock
 async def clockPlugin():
@@ -681,7 +689,7 @@ async def clockPlugin():
     TextWidget2.configure(
         font=(100)
         )
-    
+
     while running:
         await asyncio.sleep(0.01)
         TextWidget2.configure(text=now())
@@ -787,7 +795,7 @@ def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
 
     if os.path.exists(_basepath) and file_path.lower().endswith(".wclassic"):
         run_auto = mb.askyesno(lang[1], f"{lang[285]}\n{lang[286]}\n{lang[287]}")
-            
+
         if run_auto == True:
             exec(open(_basepath, "r", encoding="utf-8").read())
 
@@ -841,7 +849,7 @@ def OpenFile(root_win):
 
         if os.path.exists(_basepath) and file_path.lower().endswith(".wclassic"):
             run_auto = mb.askyesno(lang[1], f"{lang[285]}\n{lang[286]}\n{lang[287]}")
-            
+
             if run_auto == True:
                 exec(open(_basepath, "r", encoding="utf-8").read())
 
@@ -961,28 +969,28 @@ def readme_writer_classic():
         TextWidget.insert(TextWidget.index(INSERT), f"README.md (WriterClassic at GitHub; Markdown)\n{readme_wrcl_f.read()}")
         readme_wrcl_f.close()
 
-rmb_menu = Menu(desktop_win, tearoff = 0) 
+rmb_menu = Menu(desktop_win, tearoff = 0)
 rmb_menu.add_command(label=lang[295], command=lambda:
     keyboard.send("Control+x"), accelerator="Ctrl + X")
 rmb_menu.add_command(label=lang[296], command=lambda:
-    keyboard.send("Control+c"), accelerator="Ctrl + C") 
+    keyboard.send("Control+c"), accelerator="Ctrl + C")
 rmb_menu.add_command(label=lang[297], command=lambda:
-    keyboard.send("Control+v"), accelerator="Ctrl + V") 
-rmb_menu.add_separator() 
+    keyboard.send("Control+v"), accelerator="Ctrl + V")
+rmb_menu.add_separator()
 rmb_menu.add_command(label=lang[293], command=TextWidget.edit_undo, accelerator="Ctrl + Z")
 rmb_menu.add_command(label=lang[294], command=TextWidget.edit_redo, accelerator="Ctrl + Y")
 rmb_menu.add_separator()
 rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
 rmb_menu.add_command(label="README.md", command=readme_writer_classic)
 
-def rmb_popup(event):    
-    try: 
+def rmb_popup(event):
+    try:
         rmb_menu.tk_popup(event.x_root, event.y_root)
-        
-    finally: 
-        rmb_menu.grab_release() 
-  
-TextWidget.bind("<Button-3>", rmb_popup) 
+
+    finally:
+        rmb_menu.grab_release()
+
+TextWidget.bind("<Button-3>", rmb_popup)
 
 # [!] Use this instead of the class DevOption!!!!
 def dev_option(prog_lang: str, mode: str = "build") -> None:
@@ -1564,24 +1572,99 @@ def install_plugin(**options):
     install_plugin installs a plugin using _Plugin
     """
     questiony = None
-    
+
     try:
         if len(options["folder_name"]) >= 1:
             questiony = options["folder_name"]
-    
+
     except KeyError:
         questiony = sdg.askstring(lang[1], f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
-        
+
     finally:
         plugin = _Plugin(folder_name=str(questiony))
         plugin._get_files()
 
+def remove_action(_id: int, _plug: int = 1):
+    """
+    remove_action removes a directory related to WriterClassic
+
+    It first asks the user's consent.
+
+    Args:
+        _id (int): the ID of the dir to remove
+        _plug (int, optional): the plugin you want to remove. This will be ignored unless the _id argument is 2 or 3. Defaults to 1.
+
+    The Possible IDs:
+        0 - Dir where all plugins are stored (plugins)
+        1 - WriterClassic's main dir
+        2 or 3 - X plugin (used alongside the _plug arg)
+        4 - Dir where settings are stored (config)
+        5 - Dir where the Log File is stored (user_data)
+        6 - Optional dir where a Linux *.desktop file comes (nix_assets)
+        7 - Dir where data like versioning and logos are (data)
+        8 - Dir where all language files are stored (locale)
+        9 - Dir where all temporary files get stored (temp; this folder is cleared every time you open WriterClassic)
+        10 - Dir where auto scripts are stored (scripts)
+    """
+
+    ids = (
+        plugin_dir,
+        script_dir,
+        "plugx",
+        "plugx",
+        config,
+        user_data,
+        nix_assets,
+        data_dir,
+        locale,
+        temp_dir,
+        scripts_dir
+    )
+
+    _id = clamp(_id, 0, len(ids) - 1)
+
+    path_to_remove = ids[_id]
+
+    if path_to_remove == "plugx":
+        path_to_remove = os.path.join(plugin_dir, f"plugin_{_plug}")
+
+    c = mb.askyesno(lang[308], f"{lang[307]} '{path_to_remove}'.")
+
+    if c:
+        try:
+            if sys.platform == "win32":
+                os.system(f'rmdir /s /q {path_to_remove}')
+                return
+            
+            os.system(f'rm -rf {path_to_remove}')
+
+        except Exception as e:
+            mb.showerror(lang[308], f"{lang[309]} '{path_to_remove}':\n{e}")
+
 
 def execute(datay: int):
     # [i] Initializes the plugin system
-    initializer(_LOG, plugin_dir, settings, desktop_win, TextWidget, NOW_FILE, lang, mb, END)
+    initializer(globals())
 
     run_a_plugin(datay)
+
+def remove_plugin():
+    c = mb.askyesno(lang[311], lang[314])
+    
+    if not c:
+        return
+    
+    datax = sdg.askinteger(lang[311], f"{lang[312]}\n{lang[313]}", initialvalue=1, minvalue=1)
+
+    try:
+        if sys.platform == "win32":
+            os.system(f'rmdir /s /q {os.path.join(plugin_dir, f"plugin_{datax}")}')
+            return
+        
+        os.system(f'rm -rf {os.path.join(plugin_dir, f"plugin_{datax}")}')
+        
+    except Exception as e:
+        mb.showerror(lang[311], f"{lang[309]} '{os.path.join(plugin_dir, f'plugin_{datax}')}':\n{e}")
 
 def run_plugin():
     questionx = mb.askyesnocancel(title=lang[1], message=lang[218])
@@ -1592,6 +1675,14 @@ def run_plugin():
     datax = sdg.askinteger(lang[1], f"{lang[205]}\n{lang[206]}", initialvalue=1, minvalue=1)
 
     execute(datay=datax)
+
+def clear_log_file():
+    with open(os.path.join(user_data, "log.wclassic"), "w", encoding="utf-8") as f:
+        f.write("""--
+Log File
+--
+""")
+        f.close()
 
 def clear_log_screen(text_interface):
     text_interface.delete(0.0, END)
@@ -1627,7 +1718,6 @@ def show_log():
 
 ic(settings["dencrypt"])
 
-
 async def autosave():
     return
 
@@ -1635,22 +1725,22 @@ async def autosave():
         ic('autosave() return None')
         await asyncio.sleep(0.01)
         return
-    
+
     can_autosave.set(0)
     ic('Cannot autosave.')
     await asyncio.sleep(autosave_cooldown)
     ic('Can autosave.')
     can_autosave.set(1)
-    
+
 def autosave_config():
     return
 
     global autosave_cooldown
 
     y = sdg.askfloat(lang[309], f"{lang[310]}\n{lang[311]}", initialvalue=60.0, minvalue=10.0, maxvalue=3600.0)
-    
+
     ic(y)
-    
+
     if y != None:
         ic()
         settings['autosave']['cooldown'] = y
@@ -1720,13 +1810,13 @@ def commandPrompt():
 
     elif askNow == 'save':
         Save(desktop_win)
-        
+
     elif askNow == 'undo':
         TextWidget.edit_undo()
 
     elif askNow == 'redo':
         TextWidget.edit_redo()
-        
+
     elif askNow == "clear history":
         TextWidget.edit_reset()
 
@@ -1905,7 +1995,6 @@ menu_7.add_command(label=lang[20], command=lambda:
 menu_7.add_command(label=lang[21], command=lambda:
                         fontEdit(2))
 
-
 menu_8.add_command(label=lang[22], command=new_window)
 menu_8.add_command(label=lang[23], command=clockPlugin, state="disabled")
 menu_8.add_command(label=lang[182], command=Terminal)
@@ -1919,6 +2008,7 @@ menu_8.add_separator()
 
 menu_8.add_command(label=lang[217], command=install_plugin)
 menu_8.add_command(label=lang[216], command=run_plugin)
+menu_8.add_command(label=lang[310], command=remove_plugin)
 
 menu_9.add_command(label=lang[81], command=InternetOnWriter.Website)
 menu_9.add_separator()

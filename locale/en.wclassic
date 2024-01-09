@@ -305,3 +305,11 @@ WriterClassic has a super special command menu that can be called by using Ctrl 
 If you right click on your text editor 6 times, you get access to 2 super special options.
 Tips and Tricks are fully randomized. I bet you knew that already though.
 Enable Advanced Mode
+A plugin wants to remove a WriterClassic file/dir at:
+WriterClassic - Removal Action
+Couldn't remove the file/dir at:
+Remove Plugin
+WriterClassic - Plugin Removal
+Pick the number of a plugin to remove.
+Tip: if you want to remove the plugin stored inside 'plugins/plugin_3', the number would be 3.
+Are you sure you want to remove a plugin?
