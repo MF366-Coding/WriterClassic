@@ -313,3 +313,4 @@ WriterClassic - Plugin Removal
 Pick the number of a plugin to remove.
 Tip: if you want to remove the plugin stored inside 'plugins/plugin_3', the number would be 3.
 Are you sure you want to remove a plugin?
+Insert the number/name of the plugin you wish run.

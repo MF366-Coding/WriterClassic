@@ -339,8 +339,8 @@ if startApp == '1':
 ic(IGNORE_CHECKING)
 ic(latest_version)
 
-appV = "v10.1.1"
-advV ="v10.1.1.239"
+appV = "v10.1.2"
+advV ="v10.1.2.240"
 
 # [i] Config files
 ic(appV)
@@ -1642,7 +1642,7 @@ def remove_action(_id: int, _plug: int = 1):
             mb.showerror(lang[308], f"{lang[309]} '{path_to_remove}':\n{e}")
 
 
-def execute(datay: int):
+def execute(datay: int | str):
     # [i] Initializes the plugin system
     initializer(globals())
 
@@ -1672,7 +1672,10 @@ def run_plugin():
     if not questionx or questionx == None:
         return
 
-    datax = sdg.askinteger(lang[1], f"{lang[205]}\n{lang[206]}", initialvalue=1, minvalue=1)
+    datax: str = sdg.askstring(lang[1], lang[315], initialvalue=1)
+    
+    if datax.isdigit():
+        datax = int(datax)
 
     execute(datay=datax)
 
