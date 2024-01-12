@@ -597,7 +597,7 @@ def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fi
 # [i] quickway() quits the app without asking for confirmation
 # [!?] Which means it might break stuff that was being saved when the function was called
 # [i] Can only be called from the Command Menu
-# [i] Ctrl + W and type 'ragequit'
+# [i] Ctrl + Shift + P and type 'ragequit'
 def quickway():
     _LOG.write(f"{str(now())} - End of session: QUIT\n")
     desktop_win.destroy()
@@ -912,7 +912,7 @@ def Save(root_win):
         SaveFile(root_win=root_win)
 
     elif NOW_FILE != False:
-        data = TextWidget.get(0.0, END)
+        data: str = TextWidget.get(0.0, END)
 
         file_path = NOW_FILE
         file = open(file_path, "wt", encoding='utf-8')
