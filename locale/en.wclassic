@@ -314,3 +314,10 @@ Pick the number of a plugin to remove.
 Tip: if you want to remove the plugin stored inside 'plugins/plugin_3', the number would be 3.
 Are you sure you want to remove a plugin?
 Insert the number/name of the plugin you wish run.
+Save backup at...
+Load backup...
+Zipped Folder
+This file is not a WriterClassic backup.
+Create a WriterClassic backup
+Restore a WriterClassic backup
+Couldn't restore the backup.

@@ -89,6 +89,8 @@ try:
     # [*] Imports down here
     # [*] Time to organize this tho
     
+    from typing import Literal # [i] Making things nicer, I guess
+    
     from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
     
     from icecream import ic # [i] Used for debugging
@@ -288,7 +290,7 @@ ic(latest_version)
 
 # [!] Very Important: Keeping track of versions and commits
 appV = "v10.1.2"
-advV ="v10.1.2.252"
+advV ="v10.1.2.254"
 
 # [i] Config files
 ic(appV)
@@ -622,6 +624,76 @@ def bool_swap(value: bool | None, default_for_none: bool = True):
 
     return value
 
+class BackupSystem:
+    def __init__(self, plugin_path: str = plugin_dir, autoscr_path: str = scripts_dir, config_path: str = config, main_dir: str = script_dir) -> None:
+        self._folder_paths = [plugin_path, autoscr_path, config_path]
+        self.__orig_folder_paths = (plugin_path, autoscr_path, config_path)
+        self._main_dir = main_dir
+    
+    def _zip_files(self, root_path: str):
+        with zipfile.ZipFile(os.path.join(root_path, f"Backup_WriterClassic_{datetime.datetime.now().day}-{datetime.datetime.now().month}-{datetime.datetime.now().year}.zip"), 'w') as zip_file:
+            for folder_path in self._folder_paths:
+                if "plugin_" in folder_path:
+                    arcname = folder_path
+                else:
+                    arcname = os.path.basename(folder_path)
+                zip_file.write(folder_path, arcname=arcname)
+                for filename in os.listdir(folder_path):
+                    file_path = os.path.join(folder_path, filename)
+                    if os.path.isfile(file_path):
+                        zip_file.write(file_path, arcname=os.path.join(arcname, filename))
+                    
+                    elif os.path.isdir(file_path) and '__pycache__' not in file_path:
+                        zip_file.write(file_path, arcname=os.path.join(arcname, filename))
+                        if "plugin_" in file_path:
+                            self._folder_paths.append(f"plugins/{filename}")
+    
+    def _extract_files(self, file_path: str):
+        with zipfile.ZipFile(file_path, 'r') as zip_file:
+            for path_to_remove in self.__orig_folder_paths:
+                try:
+                    if sys.platform == "win32":
+                        os.system(f'rmdir /s /q {path_to_remove}')
+                        
+                    else:
+                        os.system(f'rm -rf {path_to_remove}')
+                        
+                except Exception:
+                    mb.showerror(lang[1], lang[322])
+                    continue
+                
+            zip_file.extractall(self._main_dir)
+            
+    def run_action(self, _type: Literal["zip", "extract", "make", "load", "create", "restore", "unzip"], root_win: Tk | Toplevel = desktop_win):
+        """
+        run_action runs an action related to either extracting or creating a backup
+
+        Args:
+            _type (Literal, in the form of str): if it's supposed to extract or create the backup
+            root_win (Tk | Toplevel, optional): the window wjere the dialogues should appear. Defaults to desktop_win.
+        """
+        
+        _DIR: str | None = None
+        
+        loading_types = ("extract", "load", "restore", "unzip")
+        making_types = ("zip", "make", "create")
+        
+        if _type in making_types:
+            _DIR = dlg.askdirectory(mustexist=True, title=lang[316])
+            
+            self._zip_files(_DIR)
+            
+        elif _type in loading_types:
+            file_path = dlg.asksaveasfilename(parent=root_win, filetypes=[(lang[318], '*.zip')], defaultextension="*.*", initialfile="Load a Backup", confirmoverwrite=False, title=lang[317])
+            
+            if not file_path.lower().endswith(".zip") or not os.path.exists(file_path):
+                mb.showerror(lang[1], lang[319])
+                return
+            
+            self._extract_files(file_path)
+            
+        else:
+            mb.showerror(lang[1], lang[319])
 
 # [i] Clock
 async def clockPlugin():
@@ -1545,7 +1617,7 @@ def install_plugin(**options):
         plugin = _Plugin(folder_name=str(questiony))
         plugin._get_files()
 
-def remove_action(_id: int, _plug: int = 1):
+def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: int = 1):
     """
     remove_action removes a directory related to WriterClassic
 
@@ -1804,6 +1876,8 @@ def commandPrompt():
 
     else:
         mb.showerror(lang[68], lang[70])
+
+backup_system = BackupSystem()
 
 # [i] Key bindings
 desktop_win.bind('<Control-o>', lambda a:
@@ -2070,6 +2144,11 @@ if sys.platform == "linux":
     menu_12.add_separator()
 
 menu_12.add_checkbutton(label=lang[191], variable=window_lock_status, command=lock_a_win)
+menu_12.add_separator()
+menu_12.add_command(label=lang[320], command=lambda:
+    backup_system.run_action("zip"))
+menu_12.add_command(label=lang[321], command=lambda:
+    backup_system.run_action("load"))
 menu_12.add_separator()
 menu_12.add_command(label=lang[76], command=resetWriter)
 menu_12.add_separator()
