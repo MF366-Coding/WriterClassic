@@ -1,35 +1,35 @@
-Brasileiro (Nota de desenvolvedor)
+Português do Brasil (Nota de desenvolvedor)
 WriterClassic
 Arquivo
 Aparência
-Plug-ins
+Suplementos
 Configurações
-Informações
+Informação
 Abrir arquivo...
 Salvar arquivo...
 Salvar como...
-Formatar arquivo...
+Limpar arquivo...
 Sair
 Dimensões da janela
 Temas
-Alterar fontes
-Temas padrão
+Alterar tipos de letra
+Temas predefinidos
 Modo claro
 Modo escuro
-Temas em cinza
+Temas cinzentos
 Temas modernos
-Alterar tamanho
-Alterar família
-Notas
+Mudar tamanho
+Mudar família
+Anotações
 Relógio
 Temas da comunidade
-Sobre o site
+Sobre
 Ajuda
 Repositório
 Créditos
 Ovo de Páscoa
 WriterClassic - Sair agora?
-Você deve reabrir o Writer para aplicar as alterações! Reiniciar agora?
+Tens de reabrir o Writer para aplicar as alterações! Reiniciar agora?
 Arquivo de texto
 Arquivos de configuração
 Folha de estilo em cascata
@@ -37,46 +37,46 @@ Arquivo de valores separados por vírgula
 Arquivo HTML
 Arquivo de informações de configuração
 Arquivo de informações genéricas
-Arquivo de inicialização do Windows
+Arquivo de arranque do Windows
 Arquivo JavaScript
-Script Python
-Arquivo de registro
+Arquivo Python
+Arquivo de registo
 Arquivo XML
-Arquivo Leiame
+Arquivo Readme
 Arquivo de biblioteca estática
 Script Anim8or
 Arquivo de texto ANSI
 Arquivo Quake 3 Engine Arena
 Arquivo ActionScript
 Arquivo de configuração ASP
-Arquivo de código-fonte da linguagem Assembly
+Arquivo de código fonte em linguagem Assembly
 Arquivos Markdown
-WriterClassic - Logout?
+WriterClassic - Sair?
 Tem certeza de que deseja sair do Writer?
 WriterClassic - Apagador de arquivos
-Tem certeza de que deseja excluir um arquivo?
+Tem a certeza de que pretende apagar um arquivo?
 Escolha um valor de largura para a janela principal.
 Escolha um valor de altura para a janela principal.
-WriterClassic - Alterar o tamanho da fonte
+WriterClassic - Mudar o tamanho do tipo de letra
 Escolha um número (mínimo de 1).
 WriterClassic - Alterar família
-Digite o nome de uma fonte instalada em seu dispositivo.
+Introduza o nome de um tipo de letra que tenha instalado no seu dispositivo.
 É necessário reiniciar para aplicar as alterações.
-WriterClassic - Sobre
-Este aplicativo foi criado por MF366 e é alimentado por Python 3.10.11.
-Escreva a cadeia de código ESPECIAL para obter o Ovo de Páscoa...
-Problemas para encontrar o Ovo de Páscoa? Ninguém disse que seria fácil...
+WriterClassic - Acerca de
+Esta aplicação foi criada por MF366 e é alimentada por Python 3.10.11.
+Introduza a cadeia de código ESPECIAL para obteres o Ovo da Páscoa...
+Não está a conseguir encontrar o Ovo da Páscoa? Ninguém disse que seria fácil...
 WriterClassic - Menu de comandos
 Digite um comando para o menu de comandos do Writer.
 Este não é um comando do WriterClassic.
-Esse arquivo está vazio.
-WriterClassic - Verificar se há atualizações
-Você está usando uma versão mais antiga ou uma versão instável. No entanto, é recomendável atualizar para a versão estável mais recente. Atualizar agora?
-Ativar/desativar atualizações na inicialização
-Verificar se há atualizações
+Este arquivo está vazio.
+WriterClassic - Verificar se há actualizações
+Está a utilizar uma versão mais antiga ou uma versão instável. No entanto, recomenda-se a atualização para a versão estável mais recente. Atualizar agora?
+Ativar/desativar actualizações no arranque
+Verificar se há actualizações
 Limpar dados
 WriterClassic - Limpar dados?
-Tem certeza de que deseja limpar TODOS os dados do WriterClassic?
+Tem a certeza de que pretende limpar TODOS os dados do WriterClassic?
 Internet
 WriterClassic - Ir para o URL
 Ir para o URL...
@@ -85,201 +85,232 @@ WriterClassic - Pesquisar com o Google
 WriterClassic - Pesquisar com o DuckDuckGo
 WriterClassic - Pesquisar com o Yahoo!
 Pesquisar com o Bing
-Pesquisar no Google
+Pesquisar com o Google
 Pesquisar com o DuckDuckGo
 Pesquisar com o Yahoo!
-O que você gostaria de pesquisar na Web?
-Digite um URL para abrir em seu navegador da Web padrão.
-Sua versão do WriterClassic está atualizada.
-WriterClassic - Atualizada
+O que gostaria de pesquisar na Web?
+Introduza um URL para abrir no seu navegador Web predefinido.
+A sua versão do WriterClassic está actualizada.
+WriterClassic - Atualizado
 Novo arquivo
-Pesquisar com o Ecosia
+Pesquisar com Ecosia
 Pesquisar no YouTube
 Pesquisar no Stack Overflow
-WriterClassic - Pesquisar com o Ecosia
+WriterClassic - Pesquisar com Ecosia
 WriterClassic - Pesquisar no YouTube
 WriterClassic - Pesquisar no Stack Overflow
 Concluído.
 Arquivos JSON
 Pesquisar no SoundCloud
 WriterClassic - Pesquisar no SoundCloud
-Ajuda para configuração manual [Artigo em inglês]
+Ajuda de configuração manual [Artigo em inglês]
 Pesquisar com o Qwant
-Pesquisar no Internet Archive
+Pesquisar no Arquivo da Internet
 WriterClassic - Pesquisar com o Qwant
-WriterClassic - Pesquisar no Internet Archive
+WriterClassic - Pesquisar no Arquivo da Internet
 Arquivo do tema Alienware AlienFX
-Arquivo de dados de postagem de formulário da Web
-Arquivo de script do AviSynth
-Arquivo de backup do BerryBuzz
-Arquivo de configurações de calibração do Boland
-Arquivo de marcador de dispositivo Nokia
+Arquivo de dados de publicação de formulário Web
+Arquivo de Script AviSynth
+Arquivo de Backup do BerryBuzz
+Boland Calibration Settings File
+Arquivo de marcadores de dispositivos Nokia
 Arquivo do livro Budget In Brief
-Arquivo Bitmap World
+Bitmap World File
 Arquivo BSDL
-Arquivo Boundary Scan Description Language (Linguagem de descrição de varredura de limites)
-Script BeanShell
+Arquivo Boundary Scan Description Language (linguagem de descrição de digitalização de limites)
+Arquivo BeanShell Script
 Arquivo de perfil de modelo de aparência de cor WCS
-Arquivo de script do Celestia
+Arquivo de Script Celestia
 Script Celestia
 Script de interface de gateway comum
-Pesquisar no Spotify Online
-WriterClassic - Pesquisar no Spotify Online
+Pesquisar Spotify Online
+WriterClassic - Pesquisar Spotify Online
 Todos os arquivos
-Plug-ins personalizados [BETA]
-Configuração de plugins [Artigo em inglês]
+Suplementos personalizados [BETA]
+Configuração de Suplementos [Artigo em Inglês]
 Inserir assinatura automática
-Inserir assinatura customizada
+Inserir assinatura personalizada
 Assinado,
-Operação não autorizada.
-A operação não foi bem-sucedida.
-A Internet não está disponível, é restrita ou o tempo de conexão foi esgotado.
-Não foi possível verificar se há atualizações.
+Operação não permitida.
+A operação não foi bem sucedida.
+Internet não disponível, restrita ou a ligação expirou.
+Não foi possível verificar se existem actualizações.
 Dicas e truques para o WriterClassic [BETA]
 Pesquisar com o Brave Search
 WriterClassic - Pesquisar com o Brave Search
-Você pode abrir qualquer arquivo de texto simples selecionando a extensão de arquivo *.*.
-Você pode baixar temas e suplementos criados por MF366 no GitHub.
-Não se esqueça de customizar sua assinatura ;)
-Easter Eggs são difíceis de achar, mas tente usar algumas palavras bem simples.
-Você deve ter selecionado um tamanho de fonte inválido ou incorreto.
-O WriterClassic será executado no Segoe UI, 14 para você e alterará as configurações.
-Você poderá alterá-las mais tarde.
+Pode abrir qualquer arquivo de texto simples seleccionando a extensão de arquivo *.*.
+Podes descarregar temas e Suplementos criados por MF366 no GitHub.
+Não te esqueças de personalizar a tua assinatura ;)
+Os Easter Eggs são difíceis de encontrar, mas talvez devesses tentar algumas palavras mais simples.
+Podes ter selecionado um tamanho de letra nulo ou ilegal.
+O WriterClassic irá correr no Segoe UI, 14 para ti e irá alterar as definições.
+Poderá alterá-las mais tarde.
 WriterClassic - Erro de operação
-WriterClassic - Erro de conexão com a Internet
+WriterClassic - Erro de Ligação à Internet
 WriterClassic - Erro de fonte
 WriterClassic - Erro de tema
 Há pelo menos um valor de tema ilegal.
-O WriterClassic será executado com um tema diferente daquele que você definiu.
+O WriterClassic será executado com um tema diferente daquele que foi definido.
 Obter temas da fonte oficial
-Obter plug-ins da fonte oficial
+Obter Suplementos da fonte oficial
 WriterClassic - Erro de módulo Python
-Módulo Python faltando.
-Deseja instalá-lo com o comando pip?
-Você precisa reiniciar o WriterClassic.
-O WriterClassic não pode ser iniciado nessas condições.
-Encerrando.
+Módulo Python em falta.
+Deseja instalá-lo com o pip?
+É necessário reiniciar o WriterClassic.
+O WriterClassic não pode ser executado nestas condições.
+Desistindo.
 WriterClassic - Erro de suplemento
-O arquivo de suplementos está corrompido ou não existe.
+O arquivo do suplemento está danificado ou não existe.
 Contagem de linhas
 WriterClassic - Contagem de linhas
 Linhas
 WriterClassic - Erro de janela
-Dimensões ruins da janela.
-O WriterClassic usará 700x500 para essa instância.
+Dimensões da janela incorrectas.
+O WriterClassic usará 700x500 para esta instância.
 Pesquisar no GitHub (requer uma conta)
 WriterClassic - Pesquisar no GitHub
 Pesquisar no GitLab (requer uma conta)
 WriterClassic - Pesquisar no GitLab
-Central de plug-ins
-WriterClassic - Central de Plugins
-Plugin 1
-Plugin 2
-Plugin
+Central de Suplementos
+WriterClassic - Central de Suplementos
+suplemento 1
+suplemento 2
+suplemento
 Executar
-Exibir arquivo de registro
-WriterClassic - Arquivo de registro
-Atualização do registro
-Inputs do Terminal [BETA]
-WriterClassic - Input do terminal
-Excluir entrada
+Ver arquivo de registo
+WriterClassic - Arquivo de registo
+Atualizar o registo
+Entradas de terminal [BETA]
+WriterClassic - Entrada de terminal
+Eliminar entrada
 Arquivo de configuração do WriterClassic
-Apoio | Doação
+Doar
 WriterClassic - Erro de codificação
-Foi encontrado um erro de Unicode ao tentar abrir o WriterClassic.
-Deseja abri-lo com seu editor de texto padrão?
+Foi encontrado um erro de codificação Unicode ao tentar abrir
+Deseja abrir o arquivo com o seu editor de texto predefinido?
 Bloquear a janela
 Desbloquear a janela
 Gerar um arquivo *.desktop
-Esse arquivo *.desktop será colocado na pasta principal do WriterClassic.
-Agradecimentos a Zeca70 pela ajuda com o arquivo *.desktop.
-Use python como comando Python
-Use python3 como comando Python
+Este arquivo *.desktop será enviado para a pasta principal do WriterClassic.
+Obrigado ao Zeca70 por ajudar com o arquivo *.desktop.
+Usar python como comando Python
+Usar python3 como comando Python
 WriterClassic - Gerar um arquivo *.desktop
-Língua
-Esse arquivo foi modificado.
-Deseja salvar as mudanças antes de sair do aplicativo?
+Idioma
+Este arquivo foi modificado.
+Deseja guardar as alterações antes de abandonar o software?
 Versão
-Qual versão do plug-in você gostaria de instalar?
-Assistente de instalação do plug-in
+Que versão do suplemento gostaria de instalar?
+Assistente de instalação do suplemento
 Escolha entre 1 e
-Escolha o número de um plug-in a ser executado.
-Dica: se você quiser executar o plug-in armazenado em "plugins/plugin_3", o número será 3.
+Escolha o número do suplemento a ser executado.
+Sugestão: se pretender executar o suplemento armazenado em 'Suplementos/suplemento_3', o número deverá ser 3.
 Executar?
-Você está prestes a executar um plug-in possivelmente perigoso!
-Se você instalou esse plug-in a partir do WriterClassic
-ou do repositório oficial de plug-ins do GitHub, então
-você pode ir em frente e executar esse plug-in, pois eles são
+Está prestes a executar um suplemento possivelmente perigoso!
+Se instalou este suplemento a partir do WriterClassic
+ou do repositório oficial de Suplementos do GitHub, então
+pode prosseguir e executar este suplemento, uma vez que eles são
 todos verificados.
-Verifique o arquivo "Details.txt" dentro da pasta que você indicou
-antes de executar esse plug-in para ter certeza de que está executando o plug-in correto.
+Verifique o arquivo 'Details.txt' dentro da pasta que indicou
+antes de executar este suplemento para se certificar de que está a executar o suplemento correto.
 Continuar e executar?
-Executar um plug-in
-Instalar um plug-in
-Você entende que o WriterClassic ou qualquer um de seus desenvolvedores e colaboradores NÃO são responsáveis por qualquer dano causado por um plug-in inseguro ou pelo uso indevido do mesmo?
-Dica: todos os plug-ins verificados estão em https://bit.ly/writerclassic-plugins dentro da pasta Verified_Plugins.
-Digite o nome da pasta onde está o plug-in que você deseja instalar.
-O arquivo deve ser salvo para que possa ser visualizado.
-Somente arquivos Markdown com as extensões *.md, *.mdown, *.mkd ou *.mkdn podem ser visualizados.
-Visualização do Markdown
-Mostrar/ocultar frases de depuração (não recomendado)
-Criptografar/descriptografar o arquivo atual com d3NCRYP7
+Executar um suplemento
+Instalar um suplemento
+Compreende que o WriterClassic ou qualquer um dos seus criadores e colaboradores NÃO são responsáveis por quaisquer danos causados por um suplemento inseguro ou por uma utilização incorrecta do mesmo?
+Sugestão: todos os Suplementos verificados estão em https://bit.ly/writerclassic-Suplementos, dentro da pasta Verified_Suplementos.
+Introduza o nome da pasta onde se encontra o suplemento que pretende instalar.
+O arquivo tem de estar guardado para poder ser pré-visualizado.
+Apenas os arquivos Markdown com as extensões *.md, *.mdown, *.mkd ou *.mkdn podem ser pré-visualizados.
+Pré-visualização de Markdown
+Mostrar/ocultar frases de depuração (Não recomendado)
+Encriptar/desencriptar o arquivo atual com d3NCRYP7
 Gerador de README.md
 Abrir com...
 Enviar arquivo por e-mail
-Controle de versão avançado do aplicativo
-Você está executando o WriterClassic
-Salvar meu e-mail para uso futuro
-Login
-Senha
-E-mail
-NUNCA salvaremos sua senha. Respeitamos sua segurança e privacidade.
-O WriterClassic não tem nenhuma afiliação com a Microsoft.
-Faça login com sua conta pessoal do Outlook
-Faça login com sua conta pessoal do Outlook
-O arquivo deve ser salvo.
-Envie usando sua assinatura personalizada
+Controlo avançado de versão da aplicação
+Está a executar o WriterClassic
+Guardar o meu e-mail para utilização futura
+Iniciar sessão
+Palavra-passe
+Email
+A sua palavra-passe NUNCA será guardada. Respeitamos a sua segurança e privacidade.
+O WriterClassic não tem qualquer tipo de afiliação com a Microsoft.
+Iniciar sessão com a sua conta pessoal do Outlook
+Iniciar sessão com a sua conta pessoal do Outlook
+O arquivo deve ser guardado.
+Enviar utilizando a sua assinatura personalizada
 Enviar
 Mensagem
 Assunto
-Somente um e-mail é permitido.
+Só é permitido um e-mail.
 Enviar para
-Escreva o e-mail
-Ocorreu um erro fatal.
-Os e-mails já armazenados em cache provavelmente serão enviados, mas os demais não.
+Escrever o e-mail
+Um erro ocorreu.
+Os e-mails já armazenados em cache serão provavelmente enviados, mas os restantes não.
 Enviado com o WriterClassic
-Abra com o aplicativo em...
+Abrir com a aplicação em...
 Caminho personalizado:
 ...ou...
-Usar o aplicativo padrão
+Utilizar a aplicação predefinida
 Abrir com...
 Cancelar
 Gerar
-Essa ação apagará o texto atual no editor.
-OBSERVAÇÃO
-Site do patrocinador/doação
-Site do projeto
-Site do autor
+Esta ação irá apagar o texto atual no editor.
+NOTA
+Website do Patrocinador/Doação
+Sítio Web do projeto
+Sítio Web do autor
 E-mail do autor
-Descrição resumida
+Descrição breve
 Título do projeto
-Gostou do projeto? Patrocine-o!
-Encontre este projeto em
-Estou on-line em
-Entre em contato comigo
+Gostou? Patrocine-o!
+Encontrar este projeto em
+Estou online em
+Contacte-me
 Por favor, descreva
-Insira o título aqui
-O que é o d3NCRYP7 da MF366?
-Use opções especiais
-Caminho da d3NCRYP7
-Usar o d3NCRYP7
-Você precisa reabrir o arquivo para ver as alterações, a menos que tenha usado o sinalizador '-o'.
-Ativar/desativar o modo avançado
-Modo avançado
-Site da WriterClassic
-Visualização do Markdown
+Inserir título aqui
+O que é o d3NCRYP7 de MF366?
+Utilizar flags especiais
+Caminho do d3NCRYP7
+Usar d3NCRYP7
+É necessário reabrir o arquivo para ver as alterações, a não ser que tenha usado a flag '-o'.
+Ativar/desativar o Modo Avançado
+Modo Avançado
+Site do WriterClassic
+Pré-visualização do Markdown
 Desenvolvedor
 Inicializar projeto (obsoleto)
-Criar código
+Construir código
 Executar código
-Esse tipo de arquivo não corresponde à linguagem de programação selecionada.
+Este tipo de arquivo não corresponde à linguagem de programação selecionada.
+Este arquivo contém um script Python alimentado por um arquivo *.wscript (WriterClassic Script).
+Execute este script APENAS se tiver a certeza do que ele faz e se o tiver verificado como seguro.
+O arquivo pode ser aberto na mesma sem que o script seja executado se clicar na opção 'Não'.
+Arquivo de Script do WriterClassic
+Está associada uma ação automática ao WriterClassic.
+Tem a certeza que a quer executar? As ações automáticas maliciosas poderão danificar o seu dispositivo!
+A aplicação pode continuar a ser utilizada sem que a ação seja executada se clicar na opção 'Não'.
+Acesso rápido
+Desfazer
+Refazer
+Cortar
+Copiar
+Colar
+Verificar se há atualizações ao iniciar
+É possível criar um script automático com Python em scripts/auto.wscript dentro da pasta do WriterClassic.
+Ter arquivo.wclassic e arquivo.wclassic.wscript na mesma localização (onde o último é um arquivo estruturado em Python) irá causar um comportamento particular, eh eh!
+Pode-se bloquear e desbloquear a janela. Deixá-la desbloqueada permite que qualquer pessoa a redimensione, mas enquanto ela estiver bloqueada, apenas o WriterClassic pode redimensionar-se.
+Antes da versão 10.0.0, o WriterClassic não tinha as opções Desfazer/Refazer. Felizmente, agora tem essas funcionalidades.
+O WriterClassic tem um menu de comandos super especial que pode ser acedido utilizando Ctrl + Shift + P.
+Se clicar com o botão direito do rato no seu editor de texto 6 vezes, tem acesso a 2 opções super especiais.
+As Dicas e Truques são totalmente aleatórias. Mas aposto que já sabia disso.
+Ativar o Modo Avançado
+Um suplemento pretende remover um arquivo/diretório pertencente ao WriterClassic em:
+WriterClassic - Ação de Remoção
+Não foi possível remover o arquivo/diretório localizado em:
+Remover suplemento
+WriterClassic - Remoção de Suplementos
+Escolha o número do suplemento a remover.
+Dica: se quiser remover o suplemento armazenado em 'Suplementos/suplemento_3', o número será 3.
+Tem a certeza de que pretende remover um suplemento?
+Introduza o número/nome do suplemento que pretende executar.

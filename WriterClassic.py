@@ -1,29 +1,12 @@
 # WriterClassic.py
-# [!?] disabling some Pylint stuff!
 
+# [i] Just disabling some annoying Pylint stuff, don't mind me :D
 # pylint: disable=W0122
-# [!?] I use exec when I want to so shut it, Pylint!
-
 # pylint: disable=E1101
-# [!?] For some reason, Pylint is giving me PIL.Image.LANCZOS does not exist error,
-# [!?] so I had to deactivate the no-member category. Stupid Pylint!
-
 # pylint: disable=W0621
-# [!?] That one is so annoying 'cause...
-# [!?] PYTHON CAN'T REDEFINE SOMETHING FROM OUTER SCOPE WITHOUT A GLOBAL INSTRUCTION
-# [!?] omg!
-
 # pylint: disable=W0212
-# [!?] ngl this one is freaking annoying too
-
 # pylint: disable=W0718
-# [!?] bruh I use a general exception if I want, my friend!
-
 # pylint: disable=W0603
-# [!?] My dearest friend Pylint, what the hell is wrong with using global?
-# [!?] If it has been made, it's supposed to be used.
-# [!?] then why the hell do you prompt me a warning every time I'm using it?
-
 # pylint: disable=W0404
 # pylint: disable=W0201
 # pylint: disable=W0105
@@ -52,22 +35,12 @@ Small but lovely contributions by:
     Zeca70 (Zeca70 at GitHub)
 '''
 
-# TODO
-
+# [i] NOW_FILE is the currently opened file
+# [i] if none is open, then it's False
 NOW_FILE = False
-
 lines = 0
 
-from icecream import ic
-
-import zipfile
-import asyncio
-
-from setting_loader import get_settings, dump_settings
-
-ic.configureOutput(prefix="ic debug statement | -> ")
-
-import os
+import os, sys, json, random, datetime
 
 # [*] Get the absolute path of the script
 script_path = os.path.abspath(__file__)
@@ -84,14 +57,8 @@ locale = os.path.join(script_dir, 'locale')
 temp_dir = os.path.join(script_dir, 'temp')
 scripts_dir = os.path.join(script_dir, "scripts")
 
-def clamp(val, _min, _max):
-    if val < _min:
-        return _min
-
-    if val > _max:
-        return _max
-
-    return val
+def now() -> str:
+    return datetime.datetime.now()
 
 def check_paths(var) -> str:
     if not os.path.exists(var):
@@ -110,16 +77,88 @@ debug_a.append(locale)
 debug_a.append(temp_dir)
 debug_a.append(scripts_dir)
 
-# /-/ QUICK_ACESS_DATA = []
-
 for i in debug_a:
     check_paths(i)
 
-import json
+_LOG = open(os.path.join(user_data, "log.wclassic"), mode="a", encoding="utf-8")
 
-import datetime
-def now() -> str:
-    return datetime.datetime.now()
+_LOG.write("\n")
+_LOG.write(f"{str(now())} - WriterClassic was executed: OK\n")
+
+try:
+    # [*] Imports down here
+    # [*] Time to organize this tho
+    
+    from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
+    
+    from icecream import ic # [i] Used for debugging
+    
+    from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
+    
+    import zipfile # [i] Used to extract the zip files used by plugins
+    
+    import asyncio # /-/ [i] Used for an attempt at making an autosave feature
+    import tracemalloc # /-/ [i] Also used for an attempt at making an autosave feature
+    
+    from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
+    
+    from tkinter import Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT # [i] Used for the UI
+    from tkinter.scrolledtext import ScrolledText # [i] Used instead of the regular Text widget, since this one has a scroll bar
+    from tkinter.ttk import Button, Checkbutton, Label, Entry # [i] Used because of the auto syling in tkinter.ttk
+    import tkinter.messagebox as mb # [i] Used for the message boxes
+    import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
+    from tkinter import simpledialog as sdg # [i] Used for dialogues that ask you for an input
+    from tkinter.font import Font # [i] Used for controlling the fonts in the Text widget
+    
+    import pyautogui # [i] Literally only used for the Right Click Menu
+    import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
+    
+    import smtplib # [i] Used for the Send E-mail option - server management
+    
+    # [i] The next 4 are all used for the Send E-mail option - encodings and e-mail parts
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.base import MIMEBase
+    from email.mime.text import MIMEText
+    from email import encoders
+    
+    import markdown2 # [i] Used to make HTML files from Markdown
+    
+    from plugin_system import initializer, run_a_plugin # [i] WriterClassic's Plugin "API"
+    
+    from simple_webbrowser import simple_webbrowser # [i] My own Python module (used for the Search with... options)
+    from requests import get, exceptions # [i] Used for regular interactions with the Internet
+
+except (ModuleNotFoundError, ImportError) as e:
+    _LOG.write(f"{str(now())} - A required module has not been found in the device: ERROR\n")
+    _LOG.write(f"{str(now())} - Proceeding with the installation of the dependencies: AWAITING\n")
+
+    _command: str = "pip install --upgrade -r \"{os.path.join(script_dir, 'requirements.txt')}\""
+
+    if sys.platform == "win32":
+        _command: str = f"python -m pip install --upgrade -r \"{os.path.join(script_dir, 'requirements.txt')}\""
+
+    try:
+        os.system(_command)
+
+    except Exception as e:
+        _LOG.write(f"{str(now())} - Something went wrong: ABORTING - {e}\n")
+        sys.exit()
+
+    else:
+        _LOG.write(f"{str(now())} - Installation completed: LOADING GUI\n")
+
+tracemalloc.start()
+
+ic.configureOutput(prefix="ic debug statement | -> ")
+
+def clamp(val, _min, _max):
+    if val < _min:
+        return _min
+
+    if val > _max:
+        return _max
+
+    return val
 
 '''
 if os.path.exists(os.path.join(scripts_dir, "quick_acess.wscript")):
@@ -135,34 +174,10 @@ if os.path.exists(os.path.join(scripts_dir, "quick_acess.wscript")):
     quick_acess_content = None
 '''
 
-_LOG = open(f"{user_data}/log.wclassic", mode="a", encoding="utf-8")
-
-from tkinter import Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT
-import tracemalloc
-tracemalloc.start()
-from tkinter.scrolledtext import ScrolledText
-from tkinter.ttk import Button, Checkbutton, Label, Entry
-
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email.mime.text import MIMEText
-from email import encoders
-import keyboard
-
-import markdown2
-
-import sys # [i] Platforms and OSes
-
 desktop_win = Tk()
 TextWidget = ScrolledText(desktop_win, font=("Calibri", 13), borderwidth=5, undo=True)
 TextWidget.pack()
 # /-/ TextWidget.insert(END, "WriterClassic is a free and open-source project made by MF366.\n\nYour support is appreciated: https://www.buymeacoffee.com/mf366\n\nThank you <3")
-
-_LOG.write("\n")
-_LOG.write(f"{str(now())} - WriterClassic was executed: OK\n")
-
-import random
 
 UNIX_OSES = [
             "darwin",
@@ -207,23 +222,25 @@ ic(script_dir)
 ic(script_path)
 ic(f"{data_dir}/logo.png")
 
-# [i] Importing the goodies
+# [!] py_compile is not needed anymore
+'''
 from py_compile import compile as _compile
 _LOG.write(f"{str(now())} - Imported compile from py_compile: OK\n")
+'''
 
-from getpass import getuser
+
 _LOG.write(f"{str(now())} - Imported getuser from getpass: OK\n")
 
-from tkinter import simpledialog as sdg
+
 _LOG.write(f"{str(now())} - Imported simpledialog from tkinter: OK\n")
 
-import tkinter.filedialog as dlg
+
 _LOG.write(f"{str(now())} - Imported filedialog from tkinter: OK\n")
 
-import tkinter.messagebox as mb
+
 _LOG.write(f"{str(now())} - Imported messagebox from tkinter: OK\n")
 
-from tkinter.font import Font
+
 _LOG.write(f"{str(now())} - Imported Font from tkinter.font: OK\n")
 
 ic(now())
@@ -239,78 +256,8 @@ with open(f'{locale}/'+str(setLang[0:2])+'.wclassic', 'r', encoding='utf-8') as 
     lang = usedLang.split('\n')
     _LOG.write(f"{str(now())} - Language has been configured correctly: OK\n")
 
-try:
-    from simple_webbrowser import simple_webbrowser
-    _LOG.write(f"{str(now())} - simple_webbrowser by MF366 has been imported: OK\n")
-
-except (ModuleNotFoundError, ImportError):
-    _LOG.write(f"{str(now())} - simple_webbrowser by MF366 has been imported: ERROR\n")
-    mb.showerror(lang[155], lang[156])
-    module_pip = mb.askyesno(lang[155], lang[157])
-    if module_pip:
-
-        if sys.platform == "win32":
-            os.system("python -m pip install simple_webbrowser")
-            mb.showinfo(lang[155], lang[158])
-            _LOG.write(f"{str(now())} - Command 'pip install simple_webbrowser' has been executed: OK\n")
-            _LOG.write(f"{str(now())} - End of session\n")
-            quit()
-
-        elif sys.platform in UNIX_OSES:
-            os.system("pip install simple_webbrowser")
-            mb.showinfo(lang[155], lang[158])
-            _LOG.write(f"{str(now())} - Command 'pip install simple_webbrowser' has been executed: OK\n")
-            _LOG.write(f"{str(now())} - End of session\n")
-            quit()
-
-        else:
-            mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
-            _LOG.write(f"{str(now())} - Command 'pip install simple_webbrowser' has been executed: NO (OS ERROR)\n")
-            _LOG.write(f"{str(now())} - End of session\n")
-            quit()
-
-    elif module_pip == False:
-        mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
-        _LOG.write(f"{str(now())} - Command 'pip install simple_webbrowser' has been executed: NO (USER DECISION)\n")
-        _LOG.write(f"{str(now())} - End of session\n")
-        quit()
-
-if startApp == "1":
-    try:
-        from requests import get, exceptions # [i] it's a module yay!
-        _LOG.write(f"{str(now())} - requests has been imported: OK\n")
-    except (ModuleNotFoundError, ImportError):
-        _LOG.write(f"{str(now())} - requests has been imported: ERROR\n")
-        mb.showerror(lang[155], lang[156])
-        module_pip = mb.askyesno(lang[155], lang[157])
-        if module_pip:
-            if sys.platform == "win32":
-                os.system("python -m pip install requests")
-                mb.showinfo(lang[155], lang[158])
-                _LOG.write(f"{str(now())} - Command 'pip install requests' has been executed: OK\n")
-                _LOG.write(f"{str(now())} - End of session\n")
-                quit()
-            elif sys.platform in UNIX_OSES:
-                os.system("pip install requests")
-                mb.showinfo(lang[155], lang[158])
-                _LOG.write(f"{str(now())} - Command 'pip install requests' has been executed: OK\n")
-                _LOG.write(f"{str(now())} - End of session\n")
-                quit()
-            else:
-                mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
-                _LOG.write(f"{str(now())} - Command 'pip install requests' has been executed: NO (OS ERROR)\n")
-                _LOG.write(f"{str(now())} - End of session\n")
-                quit()
-        elif module_pip == False:
-            mb.showerror(lang[155], f"{lang[159]}\n{lang[160]}")
-            _LOG.write(f"{str(now())} - Command 'pip install requests' has been executed: NO (USER DECISION)\n")
-            _LOG.write(f"{str(now())} - End of session\n")
-            quit()
-
 # [*] Windowing
 _LOG.write(f"{str(now())} - WriterClassic launched: OK\n")
-
-from plugin_system import initializer, run_a_plugin
 
 if sys.platform == "win32":
     desktop_win.iconbitmap(f"{data_dir}/app_icon.ico")
@@ -339,8 +286,9 @@ if startApp == '1':
 ic(IGNORE_CHECKING)
 ic(latest_version)
 
+# [!] Very Important: Keeping track of versions and commits
 appV = "v10.1.2"
-advV ="v10.1.2.240"
+advV ="v10.1.2.252"
 
 # [i] Config files
 ic(appV)
@@ -409,6 +357,7 @@ GeomValues = geomValue.split('x')
 try:
     desktop_win.geometry(geomValue)
     _LOG.write(f"{str(now())} - Applied the window's dimensions: OK\n")
+
 except TclError:
     desktop_win.geometry("700x500")
     GeomValues = [700, 500]
@@ -436,6 +385,7 @@ try:
     if sys.platform == "linux":
         menu_bar.configure(background=theme["menu"], foreground=theme["mfg"])
         _LOG.write(f"{str(now())} - Applied the theme to the menu bar: OK\n")
+
 except TclError:
     if sys.platform == "linux":
         _LOG.write(f"{str(now())} - Applied the theme to the menu bar: ERROR\n")
@@ -983,9 +933,22 @@ rmb_menu.add_separator()
 rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
 rmb_menu.add_command(label="README.md", command=readme_writer_classic)
 
-def rmb_popup(event):
+def rmb_popup(event, root: Tk | Toplevel = desktop_win):
+    x, y = 0, 0
+    if event == None:
+        x, y = root.winfo_pointerxy()
+
+        window_x = root.winfo_rootx()
+        window_y = root.winfo_rooty()
+
+        x = clamp(x, window_x, root.winfo_width() - 50)
+        y = clamp(y, window_y, root.winfo_height() - 5)
+
+    else:
+        x, y = event.x_root, event.y_root
+
     try:
-        rmb_menu.tk_popup(event.x_root, event.y_root)
+        rmb_menu.tk_popup(x, y)
 
     finally:
         rmb_menu.grab_release()
@@ -1205,8 +1168,6 @@ def aboutApp():
 
     about_dialogue.title(lang[64])
     label_1 = Label(about_dialogue, text=str(about_data), font=("Calibri", 13))
-
-    from PIL import Image, ImageTk
 
     # [!?] ChatGPT instrusion down here (lol)
 
@@ -1635,7 +1596,7 @@ def remove_action(_id: int, _plug: int = 1):
             if sys.platform == "win32":
                 os.system(f'rmdir /s /q {path_to_remove}')
                 return
-            
+
             os.system(f'rm -rf {path_to_remove}')
 
         except Exception as e:
@@ -1650,19 +1611,19 @@ def execute(datay: int | str):
 
 def remove_plugin():
     c = mb.askyesno(lang[311], lang[314])
-    
+
     if not c:
         return
-    
+
     datax = sdg.askinteger(lang[311], f"{lang[312]}\n{lang[313]}", initialvalue=1, minvalue=1)
 
     try:
         if sys.platform == "win32":
             os.system(f'rmdir /s /q {os.path.join(plugin_dir, f"plugin_{datax}")}')
             return
-        
+
         os.system(f'rm -rf {os.path.join(plugin_dir, f"plugin_{datax}")}')
-        
+
     except Exception as e:
         mb.showerror(lang[311], f"{lang[309]} '{os.path.join(plugin_dir, f'plugin_{datax}')}':\n{e}")
 
@@ -1673,7 +1634,7 @@ def run_plugin():
         return
 
     datax: str = sdg.askstring(lang[1], lang[315], initialvalue=1)
-    
+
     if datax.isdigit():
         datax = int(datax)
 
@@ -1917,6 +1878,9 @@ desktop_win.bind('<Control-F11>', lambda a:
 desktop_win.bind('<Control-F12>', lambda a:
     execute(12))
 
+keyboard.on_press_key(93, lambda a:
+    rmb_popup(None))
+
 def autosave_apply():
     ic()
     return
@@ -1931,12 +1895,15 @@ def on_closing():
 
     result = mb.askyesno(lang[53], lang[54])
 
-    if result == False:
+    if not result:
         ic()
         return
 
     ic()
+    
     desktop_win.destroy()
+    _LOG.close()
+    sys.exit()
 
 def QUIT_WRITER():
     """
