@@ -7,7 +7,35 @@ Writer Classic is a rather small Python project that brings to the user a whole 
 [![Documentation](https://img.shields.io/badge/online-now?label=docs%20status&color=%23000085)](https://mf366-coding.github.io/writerclassic.html#docs)
 [![License](https://img.shields.io/github/license/MF366-Coding/WriterClassic)](https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/LICENSE)
 
-## Important info
+## Known Issues
+<table>
+  <thead>
+    <tr>
+      <th><img src="https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/.github/win10.png" alt="Windows Users" width="96" height="96"></th>
+      <th><img src="https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/.github/linux.png" alt="Linux Users" width="96" height="96"></th>
+      <th><img src="https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/.github/macos.png" alt="MacOS Users" width="96" height="96"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/MF366-Coding/WriterClassic/issues/20">https://github.com/MF366-Coding/WriterClassic/issues/20</a></td>
+      <td><a href="https://github.com/MF366-Coding/WriterClassic/issues/18">https://github.com/MF366-Coding/WriterClassic/issues/18</a></td>
+      <td>Unkown compatibility (not tested)</td>
+    </tr>
+    <tr>
+      <td>Tested on both Windows 10 and 11</td>
+      <td><a href="https://github.com/MF366-Coding/WriterClassic/issues/34">https://github.com/MF366-Coding/WriterClassic/issues/34</a></td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td>--</td>
+      <td><a href="https://github.com/MF366-Coding/WriterClassic/issues/50">https://github.com/MF366-Coding/WriterClassic/issues/50</a></td>
+      <td>--</td>
+    </tr>
+  </tbody>
+</table>
+
+
 **For Windows Users:** check this Issue -> https://github.com/MF366-Coding/WriterClassic/issues/20
 
 **For Linux Users:** check these 2 Issues -> https://github.com/MF366-Coding/WriterClassic/issues/18 and https://github.com/MF366-Coding/WriterClassic/issues/34

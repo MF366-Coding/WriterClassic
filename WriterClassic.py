@@ -332,7 +332,7 @@ ic(latest_version)
 
 # [!] Very Important: Keeping track of versions and commits
 appV = "v10.1.2"
-advV ="v10.1.2.257"
+advV ="v10.1.2.258"
 
 # [i] Config files
 ic(appV)
