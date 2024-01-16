@@ -11,9 +11,9 @@ Writer Classic is a rather small Python project that brings to the user a whole 
 <table>
   <thead>
     <tr>
-      <th><img src="https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/.github/win10.png" alt="Windows Users" width="96" height="96"></th>
-      <th><img src="https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/.github/linux.png" alt="Linux Users" width="96" height="96"></th>
-      <th><img src="https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/.github/macos.png" alt="MacOS Users" width="96" height="96"></th>
+      <th><img src="https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/.github/win10.png" alt="Windows Users" align="center" width="96" height="96"></th>
+      <th><img src="https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/.github/linux.png" alt="Linux Users" align="center" width="96" height="96"></th>
+      <th><img src="https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/.github/macos.png" alt="MacOS Users" align="center" width="96" height="96"></th>
     </tr>
   </thead>
   <tbody>
