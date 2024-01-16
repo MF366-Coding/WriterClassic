@@ -133,7 +133,7 @@ except (ModuleNotFoundError, ImportError) as e:
     _LOG.write(f"{str(now())} - A required module has not been found in the device: ERROR\n")
     _LOG.write(f"{str(now())} - Proceeding with the installation of the dependencies: AWAITING\n")
 
-    _command: str = "pip install --upgrade -r \"{os.path.join(script_dir, 'requirements.txt')}\""
+    _command: str = f"pip install --upgrade -r \"{os.path.join(script_dir, 'requirements.txt')}\""
 
     if sys.platform == "win32":
         _command: str = f"python -m pip install --upgrade -r \"{os.path.join(script_dir, 'requirements.txt')}\""
@@ -332,7 +332,7 @@ ic(latest_version)
 
 # [!] Very Important: Keeping track of versions and commits
 appV = "v10.1.2"
-advV ="v10.1.2.256"
+advV ="v10.1.2.257"
 
 # [i] Config files
 ic(appV)
