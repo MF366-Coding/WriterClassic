@@ -112,7 +112,6 @@ try:
     from tkinter import simpledialog as sdg # [i] Used for dialogues that ask you for an input
     from tkinter.font import Font # [i] Used for controlling the fonts in the Text widget
 
-    import pyautogui # [i] Literally only used for the Right Click Menu
     import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
 
     import smtplib # [i] Used for the Send E-mail option - server management
@@ -149,7 +148,50 @@ except (ModuleNotFoundError, ImportError) as e:
     else:
         _LOG.write(f"{str(now())} - Installation completed: LOADING GUI\n")
 
-tracemalloc.start()
+finally:
+    # [*] reapeating the imports, Goddamn it!
+    
+    from typing import Literal # [i] Making things nicer, I guess
+
+    from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
+
+    from icecream import ic # [i] Used for debugging
+
+    from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
+
+    import zipfile # [i] Used to extract the zip files used by plugins
+
+    import asyncio # /-/ [i] Used for an attempt at making an autosave feature
+    import tracemalloc # /-/ [i] Also used for an attempt at making an autosave feature
+
+    from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
+
+    from tkinter import Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT # [i] Used for the UI
+    from tkinter.scrolledtext import ScrolledText # [i] Used instead of the regular Text widget, since this one has a scroll bar
+    from tkinter.ttk import Button, Checkbutton, Label, Entry # [i] Used because of the auto syling in tkinter.ttk
+    import tkinter.messagebox as mb # [i] Used for the message boxes
+    import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
+    from tkinter import simpledialog as sdg # [i] Used for dialogues that ask you for an input
+    from tkinter.font import Font # [i] Used for controlling the fonts in the Text widget
+    
+    import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
+
+    import smtplib # [i] Used for the Send E-mail option - server management
+
+    # [i] The next 4 are all used for the Send E-mail option - encodings and e-mail parts
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.base import MIMEBase
+    from email.mime.text import MIMEText
+    from email import encoders
+
+    import markdown2 # [i] Used to make HTML files from Markdown
+
+    from plugin_system import initializer, run_a_plugin # [i] WriterClassic's Plugin "API"
+
+    from simple_webbrowser import simple_webbrowser # [i] My own Python module (used for the Search with... options)
+    from requests import get, exceptions # [i] Used for regular interactions with the Internet
+    
+    tracemalloc.start()
 
 ic.configureOutput(prefix="ic debug statement | -> ")
 
@@ -290,7 +332,7 @@ ic(latest_version)
 
 # [!] Very Important: Keeping track of versions and commits
 appV = "v10.1.2"
-advV ="v10.1.2.255"
+advV ="v10.1.2.256"
 
 # [i] Config files
 ic(appV)
