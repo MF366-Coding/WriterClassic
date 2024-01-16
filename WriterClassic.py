@@ -88,22 +88,22 @@ _LOG.write(f"{str(now())} - WriterClassic was executed: OK\n")
 try:
     # [*] Imports down here
     # [*] Time to organize this tho
-    
+
     from typing import Literal # [i] Making things nicer, I guess
-    
+
     from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
-    
+
     from icecream import ic # [i] Used for debugging
-    
+
     from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
-    
+
     import zipfile # [i] Used to extract the zip files used by plugins
-    
+
     import asyncio # /-/ [i] Used for an attempt at making an autosave feature
     import tracemalloc # /-/ [i] Also used for an attempt at making an autosave feature
-    
+
     from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
-    
+
     from tkinter import Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT # [i] Used for the UI
     from tkinter.scrolledtext import ScrolledText # [i] Used instead of the regular Text widget, since this one has a scroll bar
     from tkinter.ttk import Button, Checkbutton, Label, Entry # [i] Used because of the auto syling in tkinter.ttk
@@ -111,22 +111,22 @@ try:
     import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
     from tkinter import simpledialog as sdg # [i] Used for dialogues that ask you for an input
     from tkinter.font import Font # [i] Used for controlling the fonts in the Text widget
-    
+
     import pyautogui # [i] Literally only used for the Right Click Menu
     import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
-    
+
     import smtplib # [i] Used for the Send E-mail option - server management
-    
+
     # [i] The next 4 are all used for the Send E-mail option - encodings and e-mail parts
     from email.mime.multipart import MIMEMultipart
     from email.mime.base import MIMEBase
     from email.mime.text import MIMEText
     from email import encoders
-    
+
     import markdown2 # [i] Used to make HTML files from Markdown
-    
+
     from plugin_system import initializer, run_a_plugin # [i] WriterClassic's Plugin "API"
-    
+
     from simple_webbrowser import simple_webbrowser # [i] My own Python module (used for the Search with... options)
     from requests import get, exceptions # [i] Used for regular interactions with the Internet
 
@@ -290,7 +290,7 @@ ic(latest_version)
 
 # [!] Very Important: Keeping track of versions and commits
 appV = "v10.1.2"
-advV ="v10.1.2.254"
+advV ="v10.1.2.255"
 
 # [i] Config files
 ic(appV)
@@ -629,7 +629,7 @@ class BackupSystem:
         self._folder_paths = [plugin_path, autoscr_path, config_path]
         self.__orig_folder_paths = (plugin_path, autoscr_path, config_path)
         self._main_dir = main_dir
-    
+
     def _zip_files(self, root_path: str):
         with zipfile.ZipFile(os.path.join(root_path, f"Backup_WriterClassic_{datetime.datetime.now().day}-{datetime.datetime.now().month}-{datetime.datetime.now().year}.zip"), 'w') as zip_file:
             for folder_path in self._folder_paths:
@@ -642,28 +642,28 @@ class BackupSystem:
                     file_path = os.path.join(folder_path, filename)
                     if os.path.isfile(file_path):
                         zip_file.write(file_path, arcname=os.path.join(arcname, filename))
-                    
+
                     elif os.path.isdir(file_path) and '__pycache__' not in file_path:
                         zip_file.write(file_path, arcname=os.path.join(arcname, filename))
                         if "plugin_" in file_path:
                             self._folder_paths.append(f"plugins/{filename}")
-    
+
     def _extract_files(self, file_path: str):
         with zipfile.ZipFile(file_path, 'r') as zip_file:
             for path_to_remove in self.__orig_folder_paths:
                 try:
                     if sys.platform == "win32":
                         os.system(f'rmdir /s /q {path_to_remove}')
-                        
+
                     else:
                         os.system(f'rm -rf {path_to_remove}')
-                        
+
                 except Exception:
                     mb.showerror(lang[1], lang[322])
                     continue
-                
+
             zip_file.extractall(self._main_dir)
-            
+
     def run_action(self, _type: Literal["zip", "extract", "make", "load", "create", "restore", "unzip"], root_win: Tk | Toplevel = desktop_win):
         """
         run_action runs an action related to either extracting or creating a backup
@@ -672,26 +672,26 @@ class BackupSystem:
             _type (Literal, in the form of str): if it's supposed to extract or create the backup
             root_win (Tk | Toplevel, optional): the window wjere the dialogues should appear. Defaults to desktop_win.
         """
-        
+
         _DIR: str | None = None
-        
+
         loading_types = ("extract", "load", "restore", "unzip")
         making_types = ("zip", "make", "create")
-        
+
         if _type in making_types:
             _DIR = dlg.askdirectory(mustexist=True, title=lang[316])
-            
+
             self._zip_files(_DIR)
-            
+
         elif _type in loading_types:
             file_path = dlg.asksaveasfilename(parent=root_win, filetypes=[(lang[318], '*.zip')], defaultextension="*.*", initialfile="Load a Backup", confirmoverwrite=False, title=lang[317])
-            
+
             if not file_path.lower().endswith(".zip") or not os.path.exists(file_path):
                 mb.showerror(lang[1], lang[319])
                 return
-            
+
             self._extract_files(file_path)
-            
+
         else:
             mb.showerror(lang[1], lang[319])
 
@@ -974,6 +974,48 @@ def WipeFile(root_win):
         file_input.close()
 
 desktop_entry = None
+
+def select_all(text_widget: ScrolledText = TextWidget):
+    text_widget.tag_add("sel", 0.0, END)
+
+def search_for(replace: bool = False, index_a = INSERT, line_limit: int = 100):
+    text = sdg.askstring(lang[1], lang[323])
+
+    if replace:
+        replaced_text = sdg.askstring(lang[1], lang[324] + "\n" + lang[325])
+
+    search_backwards = mb.askyesno(lang[1], lang[326])
+    case_sensitive = mb.askyesno(lang[1], lang[327])
+
+    x = TextWidget.search(text, index_a, END, forwards=True, backwards=search_backwards, nocase=bool_swap(case_sensitive))
+
+    if x != "":
+        b: list[str] = x.split(".")
+        c: int = b[1] + 1
+
+        for i in range(len(text)):
+            if c >= line_limit:
+                break
+
+            if text[i] == TextWidget.get(f"{b[0]}.{str(c)}"):
+                if replace:
+                    TextWidget.delete(f"{b[0]}.{str(c)}")
+
+                    try:
+                        TextWidget.insert(f"{b[0]}.{str(c-1)}", replaced_text[i])
+                        
+                    except IndexError:
+                        pass
+
+                c += 1
+                continue
+
+            break
+
+        TextWidget.tag_add("search", x, f"{b[0]}.{str(c)}")
+
+    else:
+        mb.showwarning(lang[1], lang[328])
 
 def lorem_ipsum():
     TextWidget.insert(TextWidget.index(INSERT), """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque lobortis lacus nibh, ut mattis nisi cursus nec. In aliquam scelerisque eleifend. Suspendisse tempor sem ut ipsum imperdiet, a iaculis dui congue. In in ex massa. Aliquam in dignissim ligula. Mauris pretium mi at molestie feugiat. Cras quam ipsum, congue tempus erat id, rhoncus facilisis mauris. Nam augue nunc, porta ac vestibulum nec, euismod ac est. Duis consectetur risus eu justo pretium volutpat. Vestibulum fringilla purus velit, sed sagittis augue porta a. Vivamus vestibulum turpis ac quam eleifend, ut luctus eros placerat. Praesent pellentesque faucibus ligula, nec varius mi viverra ut. Mauris blandit vitae purus auctor imperdiet. Nullam non sem nisi.
@@ -1916,6 +1958,14 @@ desktop_win.bind('<Control-G>', lambda a:
 desktop_win.bind('<Control-P>', lambda a:
     commandPrompt())
 
+'''
+desktop_win.bind('<Control-h>', lambda a:
+    search_for(True, line_limit=120))
+
+desktop_win.bind('<Control-f>', lambda a:
+    search_for(line_limit=120))
+'''
+
 desktop_win.bind('<Control-F1>', lambda a:
     execute(1))
 
@@ -1952,6 +2002,9 @@ desktop_win.bind('<Control-F11>', lambda a:
 desktop_win.bind('<Control-F12>', lambda a:
     execute(12))
 
+desktop_win.bind('<Control-a>', lambda a:
+    select_all())
+
 keyboard.on_press_key(93, lambda a:
     rmb_popup(None))
 
@@ -1974,7 +2027,7 @@ def on_closing():
         return
 
     ic()
-    
+
     desktop_win.destroy()
     _LOG.close()
     sys.exit()
@@ -2004,6 +2057,12 @@ menu_10.add_command(label = lang[9], command=lambda:
 menu_10.add_separator()
 menu_10.add_command(label=lang[293], command=TextWidget.edit_undo, accelerator="Ctrl + Z")
 menu_10.add_command(label=lang[294], command=TextWidget.edit_redo, accelerator="Ctrl + Y")
+'''
+menu_10.add_separator()
+menu_10.add_command(label=lang[329], command=search_for, accelerator="Ctrl + F")
+menu_10.add_command(label=lang[330], command=lambda:
+    search_for(True), accelerator="Ctrl + H")
+'''
 menu_10.add_separator()
 menu_10.add_command(label=lang[163], command=DOC_STATS)
 menu_10.add_separator()
