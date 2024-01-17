@@ -39,6 +39,9 @@ Small but lovely contributions by:
 # [i] if none is open, then it's False
 NOW_FILE = False
 lines = 0
+cur_data: str = ""
+SAVE_STATUS: bool = True
+keys_to_go: int = 0
 
 import os, sys, json, random, datetime
 
@@ -58,9 +61,29 @@ temp_dir = os.path.join(script_dir, 'temp')
 scripts_dir = os.path.join(script_dir, "scripts")
 
 def now() -> str:
+    """
+    now returns the current time and date in the form of a string
+    
+    This is simply an easier way to call `datetime.datetime.now()`
+
+    Returns:
+        str: the current date and time
+    """
     return datetime.datetime.now()
 
 def check_paths(var) -> str:
+    """
+    check_paths checks if the directories exist
+
+    This function checks if the directories related to WriterClassic exist or should be created.
+
+    Args:
+        var (str, absolute filepath): the path that must be checked
+
+    Returns:
+        str: either 'Created' or 'Was there', depending on if it existed before or not
+    """
+    
     if not os.path.exists(var):
         os.mkdir(var)
         return "Created."
@@ -196,6 +219,20 @@ finally:
 ic.configureOutput(prefix="ic debug statement | -> ")
 
 def clamp(val, _min, _max):
+    """
+    clamp clamps and returns a value
+
+    Clamping a value is setting it between the max value and min value in case it exceeds those
+
+    Args:
+        val (Any): the value to clamp
+        _min (Any): the min value allowed
+        _max (Any): the max value allowed
+
+    Returns:
+        type(val): the clamped value of val
+    """
+    
     if val < _min:
         return _min
 
@@ -221,6 +258,7 @@ if os.path.exists(os.path.join(scripts_dir, "quick_acess.wscript")):
 desktop_win = Tk()
 TextWidget = ScrolledText(desktop_win, font=("Calibri", 13), borderwidth=5, undo=True)
 TextWidget.pack()
+cur_data = TextWidget.get(0.0, END)
 # /-/ TextWidget.insert(END, "WriterClassic is a free and open-source project made by MF366.\n\nYour support is appreciated: https://www.buymeacoffee.com/mf366\n\nThank you <3")
 
 UNIX_OSES = [
@@ -331,8 +369,9 @@ ic(IGNORE_CHECKING)
 ic(latest_version)
 
 # [!] Very Important: Keeping track of versions and commits
-appV = "v10.1.2"
-advV ="v10.1.2.258"
+appV = "v10.2.0"
+advV ="v10.2.0.260"
+# [i] the fourth number up here, is the commit where this changes have been made
 
 # [i] Config files
 ic(appV)
@@ -349,6 +388,10 @@ _LOG.write(f"{str(now())} - Got the current font family/type: OK\n")
 _LOG.write(f"{str(now())} - Got the current font size: OK\n")
 
 def fast_dump():
+    """
+    fast_dump allows to quickly dump the app's settings
+    """
+    
     dump_settings(f"{config}/settings.json", settings)
 
 temp_files = os.listdir(temp_dir)
@@ -479,6 +522,13 @@ menu_17 = Menu(menu_15)
 _LOG.write(f"{str(now())} - Created all the menus: OK\n")
 
 def writeStartup(text: bool):
+    """
+    writeStartup changes the startup value on the settings and then saves it
+
+    Args:
+        text (bool): the new startup value
+    """
+    
     settings["startup"] = text
     fast_dump()
     _LOG.write(f"{str(now())} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
@@ -524,6 +574,9 @@ class UpdateCheck:
 
     @staticmethod
     def change():
+        """
+        change swaps the current value of the startup setting
+        """
         writeStartup(bool(update_check_button.get()))
         mb.showinfo(title=lang[1], message=lang[101])
         _LOG.write(f"{str(now())} - Check for updates on startup setting has been changed: OK\n")
@@ -534,6 +587,10 @@ if startApp == '1':
 
 # [i] Windowing... one more time...
 def SetWinSize():
+    """
+    SetWinSize creates a GUI in order to change the dimensions of the window
+    """
+    
     widthSet = sdg.askinteger(lang[1], lang[57])
     _LOG.write(f"{str(now())} - Got a width value: AWAITING FOR ANTI-BUG CHECK\n")
     if widthSet in NOT_ALLOWED:
@@ -562,6 +619,17 @@ def SetWinSize():
 
 # [i] Theme Picker
 def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fifth):
+    """
+    ThemeSet sets a new theme
+
+    Args:
+        colour_first (str): the background color
+        colour_second (str): the color of the cursor, usually the same as the foreground color
+        colour_third (str): the color of the text (foreground)
+        colour_fourth (str): the color of the text in the menus (LINUX ONLY; menu foreground)
+        colour_fifth (str): the background of the menus (LINUX ONLY; menu background)
+    """
+    
     settings["theme"] = {
         "color":str(colour_first),
         "ct":str(colour_third),
@@ -593,11 +661,25 @@ def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fi
 # [i] Can only be called from the Command Menu
 # [i] Ctrl + Shift + P and type 'ragequit'
 def quickway():
+    """
+    quickway instantly quits the app without any confirmation
+    
+    Not recommended at all!
+    """
     _LOG.write(f"{str(now())} - End of session: QUIT\n")
+    _LOG.close()
     desktop_win.destroy()
+    sys.exit()
 
 # [i] Setup (Lang files)
 def LanguageSet(language_set, root_win):
+    """
+    LanguageSet sets a new language as the setting
+
+    Args:
+        language_set (str): the string that represents the locale file. Examples: `pt`, `sk` and `en`
+        root_win (Tk | Toplevel): the window where this change takes place
+    """
     settings["language"] = language_set
     _LOG.write(f"{str(now())} - A new language has been set ({str(language_set)}): OK\n")
     fast_dump()
@@ -787,10 +869,14 @@ def fontEdit(winType):
 
 # [i] clears the screen
 def NewFile():
-    global NOW_FILE
+    global NOW_FILE, cur_data, SAVE_STATUS
+    
+    SAVE_STATUS = True
 
     desktop_win.title(lang[1])
     TextWidget.delete(index1=0.0, index2=END)
+    cur_data = TextWidget.get(0.0, END)
+    
     NOW_FILE = False
 
     _LOG.write(f"{str(now())} - A new file has been created: OK\n")
@@ -851,7 +937,7 @@ def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
         file_path: The filepath to open with extension
         (optional, defaults to the main window) root_win (Tk): WriterClassic's main window
     """
-    global NOW_FILE
+    global NOW_FILE, cur_data, SAVE_STATUS
 
     file_path = os.path.abspath(file_path)
 
@@ -870,6 +956,8 @@ def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
         root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
         TextWidget.delete(index1=0.0, index2=END)
         TextWidget.insert(chars=file_data, index=END)
+        cur_data = TextWidget.get(0.0, END)
+        SAVE_STATUS = True
 
         _LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
 
@@ -892,7 +980,7 @@ def OpenFile(root_win):
     Args:
         root_win (Tk): WriterClassic's main window
     """
-    global NOW_FILE
+    global NOW_FILE, cur_data, SAVE_STATUS
 
     file_path = dlg.asksaveasfilename(parent=root_win, filetypes=file_types, defaultextension="*.*", initialfile="Open a File", confirmoverwrite=False, title=lang[7])
 
@@ -924,6 +1012,8 @@ def OpenFile(root_win):
         root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
         TextWidget.delete(index1=0.0, index2=END)
         TextWidget.insert(chars=file_data, index=END)
+        cur_data = TextWidget.get(0.0, END)
+        SAVE_STATUS = True
 
         _LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
 
@@ -941,9 +1031,10 @@ def OpenFile(root_win):
 
 # [i] Saving as
 def SaveFile(root_win):
-    global NOW_FILE
+    global NOW_FILE, cur_data, SAVE_STATUS
 
     dados = TextWidget.get(0.0, END)
+    SAVE_STATUS = True
     file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=file_types, defaultextension="*.*", initialfile="New File To Save")
 
     if sys.platform != 'linux':
@@ -960,6 +1051,7 @@ def SaveFile(root_win):
 
     file = open(file_path, "wt", encoding='utf-8')
     file.write(str(dados))
+    cur_data = dados
     file.close()
     mb.showinfo(lang[1], lang[101])
     root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
@@ -970,17 +1062,20 @@ def SaveFile(root_win):
     ic(NOW_FILE)
 
 def Save(root_win):
-    global NOW_FILE
+    global NOW_FILE, cur_data, SAVE_STATUS
 
     if NOW_FILE == False:
         SaveFile(root_win=root_win)
 
     elif NOW_FILE != False:
         data: str = TextWidget.get(0.0, END)
+        
+        SAVE_STATUS = True
 
         file_path = NOW_FILE
         file = open(file_path, "wt", encoding='utf-8')
         file.write(str(data))
+        cur_data = data
         file.close()
         mb.showinfo(lang[1], lang[101])
         root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
@@ -1074,6 +1169,27 @@ def readme_writer_classic():
     with open(os.path.join(script_dir, "README.md"), "r", encoding='utf-8') as readme_wrcl_f:
         TextWidget.insert(TextWidget.index(INSERT), f"README.md (WriterClassic at GitHub; Markdown)\n{readme_wrcl_f.read()}")
         readme_wrcl_f.close()
+
+def ModifiedStatus(text_widget: ScrolledText = TextWidget, main_win: Tk | Toplevel = desktop_win) -> bool | None:
+    global SAVE_STATUS, keys_to_go
+    
+    if keys_to_go > 0:
+        keys_to_go -= 1
+        keys_to_go = clamp(keys_to_go, 0, 10)
+        return None
+    
+    if cur_data == text_widget.get(0.0, END):
+        if " (*)" in main_win.title():
+            main_win.title(main_win.title().removesuffix(" (*)"))
+            
+        SAVE_STATUS = True
+        return SAVE_STATUS
+        
+    if " (*)" not in main_win.title():
+        main_win.title(f"{main_win.title()} (*)")
+        
+    SAVE_STATUS = False
+    return SAVE_STATUS
 
 rmb_menu = Menu(desktop_win, tearoff = 0)
 rmb_menu.add_command(label=lang[295], command=lambda:
@@ -2047,6 +2163,9 @@ desktop_win.bind('<Control-F12>', lambda a:
 desktop_win.bind('<Control-a>', lambda a:
     select_all())
 
+desktop_win.bind('<KeyRelease>', lambda a:
+    ModifiedStatus())
+
 keyboard.on_press_key(93, lambda a:
     rmb_popup(None))
 
@@ -2059,7 +2178,35 @@ def autosave_apply():
     ic(bool(can_autosave.get()))
     fast_dump()
 
+def close_confirm() -> None:
+    ic()
+    
+    if not ModifiedStatus():
+        choice = mb.askyesnocancel(lang[53], f"{lang[199]}\n{lang[200]}")
+
+        if choice == None:
+            ic()
+            return None
+
+        if choice:
+            ic()
+            Save(desktop_win)
+            ic("Called the save function.")
+
+    ic()
+    desktop_win.destroy()
+    _LOG.close()
+    sys.exit()
+
+# [!] Deprecated way to call the closing of a window
+# [!?] Please use to close_confirm instead
 def on_closing():
+    """
+    on_closing asks for the user's confirmation before closing
+
+    XXX This function is deprecated because `close_confirm` offers a better way to handle this situation
+    """
+    
     ic()
 
     result = mb.askyesno(lang[53], lang[54])
@@ -2076,12 +2223,14 @@ def on_closing():
 
 def QUIT_WRITER():
     """
-    QUIT_WRITER quits the software using on_closing
+    QUIT_WRITER quits the software using close_confirm
+    
+    It serves as a connection bridge.
     """
 
     ic()
 
-    on_closing()
+    close_confirm()
 
 # [i] Creating the menu dropdowns and buttons
 menu_10.add_command(label=lang[94], command=NewFile, accelerator="Ctrl + N")
@@ -2741,7 +2890,7 @@ if len(sys.argv) > 1:
     finally:
         ic(NOW_FILE)
 
-desktop_win.protocol("WM_DELETE_WINDOW", on_closing)
+desktop_win.protocol("WM_DELETE_WINDOW", close_confirm)
 
 # [*] And done!
 # [i] Now, it will continuously mainlooping! Enjoy!
