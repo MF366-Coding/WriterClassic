@@ -694,6 +694,12 @@ def LanguageSet(language_set, root_win):
 
 # [i] Notepad
 def new_window():
+    """
+    new_window loads the GUI for the Notepad plugin/tool
+
+    In the early days, this function was supposed to launch a new WriterClassic window.
+    """
+    
     newWindow = Toplevel(desktop_win)
     _LOG.write(f"{str(now())} - A new window has been called: AWAITING CONFIGURATION\n")
 
@@ -711,6 +717,13 @@ def new_window():
     newWindow.mainloop()
 
 def DOC_STATS():
+    """
+    DOC_STATS presents the stats of the current editor to the user
+
+    Stats:
+    - No of lines
+    """
+    
     global lines
 
     _data = TextWidget.get(0.0, END)
@@ -731,12 +744,37 @@ def DOC_STATS():
 
 # [i] Repo
 def repo():
-    ourRepo = "https://github.com/MF366-Coding/WriterClassic/"
-
-    simple_webbrowser.Website(ourRepo)
+    """
+    repo sends the user to the official repository
+    """
+    
+    simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/")
     _LOG.write(f"{str(now())} - Opened the repository: AWAITING FOR FUNCTION OR ERROR\n")
 
 def bool_swap(value: bool | None, default_for_none: bool = True):
+    """
+    bool_swap swaps the value of a boolean and returns it
+
+    When a value, either a bool or None, is given, if it's True, the function will return False. If False, return True.
+    
+    If the `default_for_none` is specified (defaults to True), when the given value is None, the fucntion returns `default_for_none`'s value.
+    
+    Example:
+        `bool_swap(True)` will return False
+        `bool_swap(True, False)` will also return False
+        `bool_swap(False)` will return True
+        `bool_swap(False, True)` will also return True
+        `bool_swap(None)` will return True (because that's the default for `default_for_none`)
+        `bool_swap(None, False)` will return False (because `default_for_none` was set to False)
+
+    Args:
+        value (bool | None): the value to swap
+        default_for_none (bool, optional): in case None is given as `value`, this argument will be returned. Defaults to True.
+
+    Returns:
+        bool: the swapped value
+    """
+    
     if value:
         value = False
 
@@ -750,11 +788,28 @@ def bool_swap(value: bool | None, default_for_none: bool = True):
 
 class BackupSystem:
     def __init__(self, plugin_path: str = plugin_dir, autoscr_path: str = scripts_dir, config_path: str = config, main_dir: str = script_dir) -> None:
+        """
+        __init__ is the initializer for the BackupSystem
+
+        Args:
+            plugin_path (str, optional): the path where plugins are stored. Defaults to plugin_dir.
+            autoscr_path (str, optional): the path where auto scripts are stored. Defaults to scripts_dir.
+            config_path (str, optional): the path where the settings are saved. Defaults to config.
+            main_dir (str, optional): the dir where WriterClassic is stored. Defaults to script_dir.
+        """
+        
         self._folder_paths = [plugin_path, autoscr_path, config_path]
         self.__orig_folder_paths = (plugin_path, autoscr_path, config_path)
         self._main_dir = main_dir
 
     def _zip_files(self, root_path: str):
+        """
+        _zip_files is responsible for creating the Backup file
+
+        Args:
+            root_path (str): directory where the zip file will be saved
+        """
+        
         with zipfile.ZipFile(os.path.join(root_path, f"Backup_WriterClassic_{datetime.datetime.now().day}-{datetime.datetime.now().month}-{datetime.datetime.now().year}.zip"), 'w') as zip_file:
             for folder_path in self._folder_paths:
                 if "plugin_" in folder_path:
@@ -773,6 +828,13 @@ class BackupSystem:
                             self._folder_paths.append(f"plugins/{filename}")
 
     def _extract_files(self, file_path: str):
+        """
+        _extract_files extracts the backup to the location where WriterClassic is stored
+
+        Args:
+            file_path (str): the path where the zip backup is
+        """
+        
         with zipfile.ZipFile(file_path, 'r') as zip_file:
             for path_to_remove in self.__orig_folder_paths:
                 try:
@@ -820,7 +882,14 @@ class BackupSystem:
             mb.showerror(lang[1], lang[319])
 
 # [i] Clock
+# [!] Deprecated feature
 async def clockPlugin():
+    """
+    clockPlugin shows the current time on the screen
+
+    XXX Deprecated feature because of its lack of purpose
+    """
+    
     clockWindow = Toplevel(desktop_win)
     clockWindow.geometry('275x65')
     clockWindow.resizable(False, False)
@@ -845,7 +914,17 @@ async def clockPlugin():
 
 
 # [i] Text font
-def fontEdit(winType):
+def fontEdit(winType: int | bool):
+    """
+    fontEdit allows the user to easily change their font settings
+
+    If `winType` is 1 or True, the size will be changed.
+    
+    Otherwise, the font setting itself will be modified.
+
+    Args:
+        winType (int | bool): controls whether the size or the font should be changed
+    """
     if winType == 1:
         fontSize = sdg.askinteger(lang[59], lang[60], minvalue=1)
         if fontSize in NOT_ALLOWED:
@@ -869,6 +948,12 @@ def fontEdit(winType):
 
 # [i] clears the screen
 def NewFile():
+    """
+    NewFile clears the editor and purges current cached data on the last file to be opened/saved
+
+    It also resets the modified status (check `ModifiedStatus` - function and `SAVE_STATUS` - global variable, bool type)
+    """
+
     global NOW_FILE, cur_data, SAVE_STATUS
     
     SAVE_STATUS = True
@@ -973,7 +1058,7 @@ def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
     finally:
         ic(NOW_FILE)
 
-def OpenFile(root_win):
+def OpenFile(root_win: Tk = desktop_win):
     """
     OpenFile opens a file selected from the following interface
 
@@ -1030,7 +1115,15 @@ def OpenFile(root_win):
         ic(NOW_FILE)
 
 # [i] Saving as
-def SaveFile(root_win):
+def SaveFile(root_win: Tk = desktop_win):
+    """
+    SaveFile saves the current file as
+
+    Basically, the tipical Save As feature.
+
+    Args:
+        root_win (Tk, optional): the window where changes take place. Defaults to desktop_win.
+    """
     global NOW_FILE, cur_data, SAVE_STATUS
 
     dados = TextWidget.get(0.0, END)
@@ -1061,7 +1154,18 @@ def SaveFile(root_win):
     NOW_FILE = str(file_path)
     ic(NOW_FILE)
 
-def Save(root_win):
+def Save(root_win: Tk = desktop_win):
+    """
+    Save saves the current file
+
+    If the file exists, then it will be saved over without asking questions.
+    
+    If the file doesn't exist though, the `SaveFile` feature gets called (Save As)
+
+    Args:
+        root_win (Tk, optional): the window where changes take place. Defaults to desktop_win.
+    """
+    
     global NOW_FILE, cur_data, SAVE_STATUS
 
     if NOW_FILE == False:
@@ -1086,7 +1190,7 @@ def Save(root_win):
         ic(NOW_FILE)
 
 # [*] Whatever... (File Eraser)
-def WipeFile(root_win):
+def WipeFile(root_win: Tk = desktop_win):
     sureConfirm = mb.askyesno(title=lang[55], message=lang[56])
     if sureConfirm:
         file_path = dlg.asksaveasfilename(parent=root_win, confirmoverwrite=False, filetypes=file_types, defaultextension="*.*", initialfile="File to Wipe")
@@ -2014,68 +2118,64 @@ class SignaturePlugin:
 
         _LOG.write(f"{str(now())} - The Auto signature has been inserted: OK\n")
 
-def commandPrompt():
-    askNow = sdg.askstring(lang[68], lang[69]).lower().strip()
+def commandPrompt() -> None | bool:
+    askNow = sdg.askstring(lang[68], lang[69]).title().replace(" ", "")
 
-    if askNow == 'open' or askNow == 'openfile':
-        OpenFile(desktop_win)
+    commands: dict[str] = {
+        "Editor:Undo": TextWidget.edit_undo,
+        "Editor:Redo": TextWidget.edit_redo,
+        "Editor:Reset": NewFile,
+        "File:Open": OpenFile,
+        "File:SaveAs": SaveFile,
+        "Status:Save": Save,
+        "Status:Refresh": ModifiedStatus,
+        "Plugins:Install": install_plugin,
+        "Plugins:Run": run_plugin,
+        "Plugins:Remove": remove_plugin,
+        "History:Reset": TextWidget.edit_reset,
+        "Software:Quit": QUIT_WRITER,
+        "Software:ForceQuit": quickway,
+        "Software:About": aboutApp,
+        "Software:Help": APP_HELP,
+        "Software:Repo": repo,
+        "Software:Credits": appCredits,
+        "Log:Clear": clear_log_file,
+        "Log:Preview": show_log,
+        "Advanced:Send": adv_login,
+        "Debug:Swap": show_debug,
+        "Tools:ReadmeGen": readme_gen_win,
+        "Tools:D3Ncryp7": dencrypt,
+        "Advanced:Dencrypt": dencrypt,
+        "Software:Version": UpdateCheck.check,
+        "Advanced:Version": show_advV,
+        "File:OpenWith": open_with_adv,
+        "Advanced:Open": open_with_adv,
+        "Settings:Dump": fast_dump,
+        "Settings:Save": fast_dump,
+        "Settings:Size": SetWinSize,
+        "Tools:Notepad": new_window,
+        "Editor:Stats": DOC_STATS,
+        "Tools:WipeFile": WipeFile,
+        "Editor:Select": select_all,
+        "Editor:SelectAll": select_all,
+        "Editor:Lorem": lorem_ipsum,
+        "Editor:Readme": readme_writer_classic,
+        "Advanced:DesktopFile": desktop_create_win,
+        "Tools:Markdown": markdown_preview,
+        "Software:Tips": Tips_Tricks,
+        "Settings:Reset": resetWriter,
+        "Tools:Terminal": Terminal,
+        "Internet:Website": InternetOnWriter.Website
+    }
 
-    elif askNow == 'about':
-        aboutApp()
+    if askNow in commands.keys():
+        commands[askNow]()
 
-    elif askNow == "md preview":
-        markdown_preview()
-
-    elif askNow == "newfile":
-        NewFile()
-
-    elif askNow == 'help':
-        APP_HELP()
-
-    elif askNow == 'data':
-        appCredits()
-
-    elif askNow == 'exit' or askNow == 'quit':
-        QUIT_WRITER()
-
-    elif askNow == 'clear':
-        WipeFile(desktop_win)
-
-    elif askNow == 'saveas':
-        SaveFile(desktop_win)
-
-    elif askNow == 'save':
-        Save(desktop_win)
-
-    elif askNow == 'undo':
-        TextWidget.edit_undo()
-
-    elif askNow == 'redo':
-        TextWidget.edit_redo()
-
-    elif askNow == "clear history":
-        TextWidget.edit_reset()
-
-    elif askNow == 'font family':
-        fontEdit(2)
-
-    elif askNow == 'font size':
-        fontEdit(1)
-
-    elif askNow == 'forcequit' or askNow == "ragequit":
-        quickway()
-
-    elif askNow == 'repo':
-        repo()
-
-    elif askNow == 'notes':
-        new_window()
-
-    elif askNow == 'win size':
-        SetWinSize()
-
-    else:
-        mb.showerror(lang[68], lang[70])
+    elif askNow == None:
+        return
+    
+    mb.showerror(lang[68], lang[70])
+    return
 
 backup_system = BackupSystem()
 
@@ -2278,8 +2378,10 @@ menu_11.add_separator()
 menu_11.add_command(label=lang[28], command=appCredits)
 menu_11.add_separator()
 menu_11.add_command(label=lang[137], command=Tips_Tricks)
+'''
 menu_11.add_separator()
 menu_11.add_command(label=lang[29], command=surprise_egg, state='disabled')
+'''
 
 menu_1.add_command(label=lang[12], command=SetWinSize, accelerator="Ctrl + Shift + G")
 
@@ -2290,7 +2392,9 @@ menu_7.add_command(label=lang[21], command=lambda:
                         fontEdit(2))
 
 menu_8.add_command(label=lang[22], command=new_window)
+'''
 menu_8.add_command(label=lang[23], command=clockPlugin, state="disabled")
+'''
 menu_8.add_command(label=lang[182], command=Terminal)
 menu_8.add_separator()
 menu_8.add_command(label=lang[131], command=SignaturePlugin.custom)
@@ -2350,10 +2454,12 @@ menu_9.add_command(label=lang[171], command=lambda:
 # [!?] Portuguese still being verified by MF366 and Zeca70
 # --
 # [i] Thank you, dear contributors for all the help!
+'''
 menu_13.add_command(label="Čeština (Čechie)", command=lambda:
     LanguageSet("cs", desktop_win), state='disabled')
 menu_13.add_command(label="Dansk (Danmark)", command=lambda:
     LanguageSet("da", desktop_win), state='disabled')
+'''
 menu_13.add_command(label="Deutsch (Deutschland)", command=lambda:
     LanguageSet("de", desktop_win), state='disabled')
 menu_13.add_command(label='English (USA)', command=lambda:
@@ -2364,20 +2470,24 @@ menu_13.add_command(label='Français (France)', command=lambda:
     LanguageSet('fr', desktop_win), state='disabled')
 menu_13.add_command(label='Italiano (Italia)', command=lambda:
     LanguageSet('it', desktop_win), state='disabled')
+'''
 menu_13.add_command(label='Ελληνικά (Ελλάδα)', command=lambda:
     LanguageSet("el", desktop_win), state='disabled')
 menu_13.add_command(label="Norsk (Norge)", command=lambda:
     LanguageSet("nb", desktop_win), state='disabled')
+'''
 menu_13.add_command(label='Português (Brasil)', command=lambda:
     LanguageSet('br', desktop_win), state='disabled')
 menu_13.add_command(label='Português (Portugal)', command=lambda:
     LanguageSet('pt', desktop_win))
 menu_13.add_command(label='Slovenčina (Slovensko)', command=lambda:
     LanguageSet('sk', desktop_win))
+'''
 menu_13.add_command(label="Svenska (Sverige)", command=lambda:
     LanguageSet("sv", desktop_win), state='disabled')
 menu_13.add_command(label="Українська (Україна)", command=lambda:
     LanguageSet("uk", desktop_win), state='disabled')
+'''
 
 menu_12.add_cascade(label=lang[198], menu=menu_13)
 '''
@@ -2401,8 +2511,10 @@ menu_12.add_command(label=lang[321], command=lambda:
     backup_system.run_action("load"))
 menu_12.add_separator()
 menu_12.add_command(label=lang[76], command=resetWriter)
+'''
 menu_12.add_separator()
 menu_12.add_command(label=lang[105], command=article_md, state='disabled')
+'''
 
 
 menu_15.add_command(label=lang[279], command=markdown_preview)
