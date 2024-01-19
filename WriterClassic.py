@@ -370,7 +370,7 @@ ic(latest_version)
 
 # [!] Very Important: Keeping track of versions and commits
 appV = "v10.2.0"
-advV ="v10.2.0.260"
+advV ="v10.2.0.261"
 # [i] the fourth number up here, is the commit where this changes have been made
 
 # [i] Config files
@@ -618,33 +618,86 @@ def SetWinSize():
             fast_dump()
 
 # [i] Theme Picker
-def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fifth):
+def ThemeSet(*colors):
     """
     ThemeSet sets a new theme
 
-    Args:
-        colour_first (str): the background color
-        colour_second (str): the color of the cursor, usually the same as the foreground color
-        colour_third (str): the color of the text (foreground)
-        colour_fourth (str): the color of the text in the menus (LINUX ONLY; menu foreground)
-        colour_fifth (str): the background of the menus (LINUX ONLY; menu background)
+    Args in the following order:
+        - the background color
+        - the foreground color (text color)
+        - the color of the cursor, usually the same as the foreground color
+        - the background of the menus (LINUX ONLY; menu background)
+        - the color of the text in the menus (LINUX ONLY; menu foreground)
     """
     
-    settings["theme"] = {
-        "color":str(colour_first),
-        "ct":str(colour_third),
-        "fg":str(colour_second),
-        "mfg":str(colour_fifth),
-        "menu":str(colour_fourth)
+    global theme
+    
+    theme = {
+        "color": str(colors[0]),
+        "ct": str(colors[2]),
+        "fg": str(colors[1]),
+        "mfg": str(colors[4]),
+        "menu": str(colors[3])
     }
+
+    settings["theme"] = theme
 
     fast_dump()
 
-    TextWidget.configure(background=colour_first, foreground=colour_second, insertbackground=colour_third)
+    TextWidget.configure(background=colors[0], foreground=colors[1], insertbackground=colors[2])
     _LOG.write(f"{str(now())} - Editing interface has been reconfigured: OK\n")
 
-    TextWidget.pack()
+    try:
+        if sys.platform == "linux":
+            # [i] Themed menus only on Linux Python3
+            # /-/ Themed menus are also compatible with Windows and Mac, tho
+            menu_10.configure(background=colors[3], foreground=colors[4])
+            menu_11.configure(background=colors[3], foreground=colors[4])
+            menu_1.configure(background=colors[3], foreground=colors[4])
+            menu_2.configure(background=colors[3], foreground=colors[4])
+            menu_3.configure(background=colors[3], foreground=colors[4])
+            menu_5.configure(background=colors[3], foreground=colors[4])
+            menu_4.configure(background=colors[3], foreground=colors[4])
+            menu_6.configure(background=colors[3], foreground=colors[4])
+            menu_7.configure(background=colors[3], foreground=colors[4])
+            menu_12.configure(background=colors[3], foreground=colors[4])
+            menu_8.configure(background=colors[3], foreground=colors[4])
+            menu_9.configure(background=colors[3], foreground=colors[4])
+            menu_13.configure(background=colors[3], foreground=colors[4])
+            if ADVANCED:
+                menu_14.configure(background=colors[3], foreground=colors[4])
+            menu_15.configure(background=colors[3], foreground=colors[4])
+            menu_16.configure(background=colors[3], foreground=colors[4])
+            menu_17.configure(background=colors[3], foreground=colors[4])
+            _LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
+    
+    except (TypeError, ValueError, TclError):
+        if sys.platform == "linux":
+            # [i] Themed menus only on Linux Python3
+            # /-/ Themed menus are also compatible with Windows and Mac, tho
+            mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
+            menu_10.configure(background="white", foreground="black")
+            menu_11.configure(background="white", foreground="black")
+            menu_1.configure(background="white", foreground="black")
+            menu_2.configure(background="white", foreground="black")
+            menu_3.configure(background="white", foreground="black")
+            menu_5.configure(background="white", foreground="black")
+            menu_4.configure(background="white", foreground="black")
+            menu_6.configure(background="white", foreground="black")
+            menu_7.configure(background="white", foreground="black")
+            menu_12.configure(background="white", foreground="black")
+            menu_8.configure(background="white", foreground="black")
+            menu_9.configure(background="white", foreground="black")
+            menu_13.configure(background="white", foreground="black")
+            if ADVANCED:
+                menu_14.configure(background="white", foreground="black")
+            menu_15.configure(background="white", foreground="black")
+            menu_17.configure(background="white", foreground="black")
+            menu_16.configure(background="white", foreground="black")
+            _LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
+    # [i] Themes now update in real time
+    '''
     waitResponse = mb.askyesno(parent=desktop_win, title=lang[30], message=lang[31])
     _LOG.write(f"{str(now())} - Asked for app restart: AWAITING RESPONSE\n")
 
@@ -654,6 +707,7 @@ def ThemeSet(colour_first, colour_second, colour_third, colour_fourth, colour_fi
 
     else:
         _LOG.write(f"{str(now())} - Cancel/No as response: OK\n")
+    '''
 
 # [!] Althrought not deprecated at all, must not be used.
 # [i] quickway() quits the app without asking for confirmation
@@ -1306,6 +1360,8 @@ rmb_menu.add_separator()
 rmb_menu.add_command(label=lang[293], command=TextWidget.edit_undo, accelerator="Ctrl + Z")
 rmb_menu.add_command(label=lang[294], command=TextWidget.edit_redo, accelerator="Ctrl + Y")
 rmb_menu.add_separator()
+rmb_menu.add_command(label=lang[331], command=select_all, accelerator="Ctrl + A")
+rmb_menu.add_separator()
 rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
 rmb_menu.add_command(label="README.md", command=readme_writer_classic)
 
@@ -1618,15 +1674,12 @@ def markdown_preview() -> None:
 def Tips_Tricks():
     picked_text = random.choice((
         lang[140],
-        lang[141],
         lang[142],
-        lang[143],
         lang[299],
         lang[300],
         lang[301],
         lang[302],
         lang[303],
-        lang[304],
         lang[305]
     ))
 
@@ -2205,10 +2258,10 @@ desktop_win.bind('<F1>', lambda a:
     APP_HELP())
 
 desktop_win.bind('<Control-d>', lambda a:
-    ThemeSet('black', 'white', 'white', 'dark grey', 'black'))
+    ThemeSet('#010110', '#fcfcfc', 'white', 'black', '#f4f8f8'))
 
 desktop_win.bind('<Control-l>', lambda a:
-    ThemeSet('white', 'black', 'black', 'black', 'white'))
+    ThemeSet('#fcfcfc', '#010110', 'black', '#f4f8f8', 'black'))
 
 desktop_win.bind('<Control-G>', lambda a:
     SetWinSize())
@@ -2534,7 +2587,7 @@ menu_17.add_command(label="Python", command=lambda:
 menu_5.add_command(label=lang[16], command=lambda:
     ThemeSet('white', 'black', 'black', 'black', 'white'), accelerator="Ctrl + L")
 menu_5.add_command(label=lang[17], command=lambda:
-    ThemeSet('black', 'white', 'white', 'white', 'black'), accelerator="Ctrl + D")
+    ThemeSet('#010110', '#fcfcfc', 'white', 'black', '#f4f8f8'), accelerator="Ctrl + D")
 menu_5.add_separator()
 menu_5.add_command(label=lang[18], command=lambda:
     ThemeSet('grey', 'black', 'black', 'black', 'white'))

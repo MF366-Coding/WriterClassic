@@ -4,11 +4,11 @@
         "size": 12
     },
     "theme": {
-        "color": "black",
+        "color": "#010110",
         "ct": "white",
-        "fg": "white",
-        "mfg": "black",
-        "menu": "dark grey"
+        "fg": "#fcfcfc",
+        "mfg": "#f4f8f8",
+        "menu": "black"
     },
     "advanced-mode": false,
     "startup": true,
