@@ -9,20 +9,24 @@
 
 import os
 import datetime
-import imp
 from tkinter import messagebox as mb
-
-"""
-The imp module is obsolete but still works.
-
-Until I find a better option (for what I want, importlib ain't an option),
-I'll use imp module. What a weird name, imp!
-"""
+import importlib.machinery
 
 wclassic_vars = {}
 _LOG = None
 plugin_dir = ""
 lang = []
+
+# [!?] Alternative to using deprecated imp module
+def load_module_from_source(module_name, source_path):
+    loader = importlib.machinery.SourceFileLoader(module_name, source_path)
+    spec = importlib.util.spec_from_loader(module_name, loader)
+    module = importlib.util.module_from_spec(spec)
+    loader.exec_module(module)
+    return module
+
+# [i] the 'load_module_from_source' function is used like this
+# [*] loaded_module = load_module_from_source("something", "C:\\Users\\user\\johndoe.py")
 
 def now() -> str:
     return datetime.datetime.now()
@@ -49,11 +53,10 @@ def run_a_plugin(number_or_name: int | str):
             details_file = os.path.join(new_folder, "Details.txt")
             
             with open(details_file, "r", encoding="utf-8") as f:
-                _f = f.read()
-                _title = _f.split("\n")
+                _title = f.readline().strip()
                 f.close()
                 
-            possible_plugin_filepath = os.path.join(new_folder, f"{_title[0].replace(' ', '_')}.py")
+            possible_plugin_filepath = os.path.join(new_folder, f"{_title.replace(' ', '_')}.py")
             
             if not os.path.exists(possible_plugin_filepath):
                 mb.showerror(lang[161], lang[162])
@@ -67,8 +70,7 @@ def run_a_plugin(number_or_name: int | str):
             # [i] Absolute path to the module's .py file
             module_path = plugin_filepath
 
-            # [*] Load the module using imp.load_source
-            module = imp.load_source(_title[0].replace(" ", "_"), module_path)
+            module = load_module_from_source(_title.replace(" ", "_"), module_path)
             
             module.start(wclassic_vars)
 
@@ -102,8 +104,7 @@ def run_a_plugin(number_or_name: int | str):
                 # [i] Absolute path to the module's .py file
                 module_path = plugin_filepath
 
-                # [*] Load the module using imp.load_source
-                module = imp.load_source(_title.replace(" ", "_"), module_path)
+                module = load_module_from_source(_title.replace(" ", "_"), module_path)
 
                 module.start(wclassic_vars)
 
