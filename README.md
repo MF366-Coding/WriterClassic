@@ -35,11 +35,6 @@ Writer Classic is a rather small Python project that brings to the user a whole 
   </tbody>
 </table>
 
-
-**For Windows Users:** check this Issue -> https://github.com/MF366-Coding/WriterClassic/issues/20
-
-**For Linux Users:** check these 2 Issues -> https://github.com/MF366-Coding/WriterClassic/issues/18 and https://github.com/MF366-Coding/WriterClassic/issues/34
-
 **VERY IMPORTANT!**
 - LICENSE -> https://github.com/MF366-Coding/WriterClassic/blob/main/LICENSE
 
