@@ -149,7 +149,7 @@ try:
 
     from plugin_system import initializer, run_a_plugin # [i] WriterClassic's Plugin "API"
 
-    from simple_webbrowser import simple_webbrowser # [i] My own Python module (used for the Search with... options)
+    import simple_webbrowser # [i] My own Python module (used for the Search with... options)
     from requests import get, exceptions # [i] Used for regular interactions with the Internet
 
 except (ModuleNotFoundError, ImportError) as e:
