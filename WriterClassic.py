@@ -43,7 +43,7 @@ cur_data: str = ""
 SAVE_STATUS: bool = True
 keys_to_go: int = 0
 
-import os, sys, json, random, datetime
+import os, sys, json, random, datetime, platform, importlib
 
 # [*] Get the absolute path of the script
 script_path = os.path.abspath(__file__)
@@ -108,6 +108,22 @@ _LOG = open(os.path.join(user_data, "log.wclassic"), mode="a", encoding="utf-8")
 _LOG.write("\n")
 _LOG.write(f"{str(now())} - WriterClassic was executed: OK\n")
 
+WCLASSIC_VARS: dict[str, str] = {
+    "$APPDATA": os.environ.get('APPDATA') if sys.platform == 'win32' else "$APPDATA",
+    "$LOCALAPPDATA": os.environ.get('LOCALAPPDATA') if sys.platform == 'win32' else "$LOCALAPPDATA",
+    "$USER": os.path.expanduser('~'),
+    "$COMMONROOT": "C:\\" if sys.platform == 'win32' else "/",
+    "$BITNESS": platform.architecture()[0],
+    "$PYTHON": sys.executable,
+    "$WRITERCLASSIC": script_path,
+    "$LOGGER": os.path.join(user_data, "log.wclassic"),
+    "$REPO": "https://github.com/MF366-Coding/WriterClassic",
+    "$WEBSITE": "https://mf366-coding.github.io/writerclassic.html",
+    "$OSVERSION": platform.version(),
+    "$PLATFORM": sys.platform,
+    "$OS": os.name
+}
+
 try:
     # [*] Imports down here
     # [*] Time to organize this tho
@@ -171,7 +187,7 @@ except (ModuleNotFoundError, ImportError) as e:
     else:
         _LOG.write(f"{str(now())} - Installation completed: LOADING GUI\n")
 
-finally:
+
     # [*] reapeating the imports, Goddamn it!
     
     from typing import Literal # [i] Making things nicer, I guess
@@ -211,8 +227,9 @@ finally:
 
     from plugin_system import initializer, run_a_plugin # [i] WriterClassic's Plugin "API"
 
-    from simple_webbrowser import simple_webbrowser # [i] My own Python module (used for the Search with... options)
     from requests import get, exceptions # [i] Used for regular interactions with the Internet
+    
+    import simple_webbrowser # [i] My own Python module (used for the Search with... options)
     
     tracemalloc.start()
 
@@ -370,7 +387,7 @@ ic(latest_version)
 
 # [!] Very Important: Keeping track of versions and commits
 appV = "v10.2.0"
-advV ="v10.2.0.261"
+advV ="v10.2.0.269"
 # [i] the fourth number up here, is the commit where this changes have been made
 
 # [i] Config files
@@ -1076,8 +1093,9 @@ def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
         file_path: The filepath to open with extension
         (optional, defaults to the main window) root_win (Tk): WriterClassic's main window
     """
+    
     global NOW_FILE, cur_data, SAVE_STATUS
-
+    
     file_path = os.path.abspath(file_path)
 
     _basepath = os.path.join(os.path.dirname(file_path), os.path.basename(file_path) + ".wscript")
@@ -1135,14 +1153,14 @@ def OpenFile(root_win: Tk = desktop_win):
         if selected_extension and not file_path.lower().endswith(selected_extension):
             file_path += selected_extension
 
-        _basepath = os.path.join(str(os.path.dirname(file_path)), str(os.path.basename(file_path)) + ".wscript")
-        ic(_basepath)
+    _basepath = os.path.join(str(os.path.dirname(file_path)), str(os.path.basename(file_path)) + ".wscript")
+    ic(_basepath)
 
-        if os.path.exists(_basepath) and file_path.lower().endswith(".wclassic"):
-            run_auto = mb.askyesno(lang[1], f"{lang[285]}\n{lang[286]}\n{lang[287]}")
+    if os.path.exists(_basepath) and file_path.lower().endswith(".wclassic"):
+        run_auto = mb.askyesno(lang[1], f"{lang[285]}\n{lang[286]}\n{lang[287]}")
 
-            if run_auto == True:
-                exec(open(_basepath, "r", encoding="utf-8").read())
+        if run_auto == True:
+            exec(open(_basepath, "r", encoding="utf-8").read())
 
     try:
         file_input = open(file_path, "rt", encoding="utf-8")
@@ -1180,7 +1198,7 @@ def SaveFile(root_win: Tk = desktop_win):
     """
     global NOW_FILE, cur_data, SAVE_STATUS
 
-    dados = TextWidget.get(0.0, END)
+    data = TextWidget.get(0.0, END)
     SAVE_STATUS = True
     file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=file_types, defaultextension="*.*", initialfile="New File To Save")
 
@@ -1195,10 +1213,15 @@ def SaveFile(root_win: Tk = desktop_win):
         # [*] Append the selected extension if not already included
         if selected_extension and not file_path.lower().endswith(selected_extension):
             file_path += selected_extension
+            
+    if file_path.lower().endswith(".wclassic") and "$VARS" in data:
+        for __var in WCLASSIC_VARS:
+            for _ in range(data.count(__var)):
+                data = data.replace(__var, WCLASSIC_VARS[__var])
 
     file = open(file_path, "wt", encoding='utf-8')
-    file.write(str(dados))
-    cur_data = dados
+    file.write(str(data))
+    cur_data = data
     file.close()
     mb.showinfo(lang[1], lang[101])
     root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
@@ -1207,6 +1230,8 @@ def SaveFile(root_win: Tk = desktop_win):
 
     NOW_FILE = str(file_path)
     ic(NOW_FILE)
+    
+    OpenFileManually(NOW_FILE)
 
 def Save(root_win: Tk = desktop_win):
     """
@@ -1222,26 +1247,33 @@ def Save(root_win: Tk = desktop_win):
     
     global NOW_FILE, cur_data, SAVE_STATUS
 
-    if NOW_FILE == False:
-        SaveFile(root_win=root_win)
+    if NOW_FILE is False:
+        return SaveFile(root_win=root_win)
 
-    elif NOW_FILE != False:
-        data: str = TextWidget.get(0.0, END)
-        
-        SAVE_STATUS = True
+    data: str = TextWidget.get(0.0, END)
+    
+    SAVE_STATUS = True
 
-        file_path = NOW_FILE
-        file = open(file_path, "wt", encoding='utf-8')
-        file.write(str(data))
-        cur_data = data
-        file.close()
-        mb.showinfo(lang[1], lang[101])
-        root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
+    file_path = NOW_FILE
+    
+    if file_path.lower().endswith(".wclassic") and "$VARS" in data:
+            for __var in WCLASSIC_VARS:
+                for _ in range(data.count(__var)):
+                    data = data.replace(__var, WCLASSIC_VARS[__var])
+    
+    file = open(file_path, "wt", encoding='utf-8')
+    file.write(str(data))
+    cur_data = data
+    file.close()
+    mb.showinfo(lang[1], lang[101])
+    root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
 
-        _LOG.write(f"{str(now())} - An existing file has been saved over ({str(file_path)}): OK\n")
+    OpenFileManually(NOW_FILE)
 
-        NOW_FILE = str(file_path)
-        ic(NOW_FILE)
+    _LOG.write(f"{str(now())} - An existing file has been saved over ({str(file_path)}): OK\n")
+
+    NOW_FILE = str(file_path)
+    ic(NOW_FILE)
 
 # [*] Whatever... (File Eraser)
 def WipeFile(root_win: Tk = desktop_win):
@@ -1388,7 +1420,7 @@ def rmb_popup(event, root: Tk | Toplevel = desktop_win):
 TextWidget.bind("<Button-3>", rmb_popup)
 
 # [!] Use this instead of the class DevOption!!!!
-def dev_option(prog_lang: str, mode: str = "build") -> None:
+def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
     """
     dev_option is the actual responsible for the developer options
 
@@ -1405,39 +1437,51 @@ def dev_option(prog_lang: str, mode: str = "build") -> None:
     mode = mode.replace(" ", "_").lower()
     prog_lang = prog_lang.strip()
 
-    if not NOW_FILE:
+    if NOW_FILE is False:
         mb.showerror(lang[1], lang[239])
         return
 
-    if mode == "build":
-        if prog_lang.upper() == "C#":
-            if not NOW_FILE.strip().endswith(("cs", "csproj")):
-                mb.showerror(lang[1], lang[284])
-                return
+    match mode:
+        case "build":
+            match prog_lang.lower():
+                case "c#":
+                    if not NOW_FILE.strip().endswith(("cs", "csproj")):
+                        mb.showerror(lang[1], lang[284])
+                        return
 
-            os.system(f"dotnet build \"{os.path.dirname(NOW_FILE)}\"")
+                    os.system(f"dotnet build \"{os.path.dirname(NOW_FILE)}\"")
+                    return
+                
+                case _:
+                    return
+
+        case "run":
+            match prog_lang.lower():
+                case "c#":
+                    if not NOW_FILE.strip().endswith((".cs", ".csproj")):
+                        mb.showerror(lang[1], lang[284])
+                        return
+
+                    os.system(f"dotnet run --project \"{os.path.dirname(NOW_FILE)}\"")
+                    return
+
+                case "python":
+                    if not NOW_FILE.strip().endswith('.py'):
+                        mb.showerror(lang[1], lang[284])
+                        return
+
+                    if sys.platform == "win32":
+                        os.system(f"python \"{NOW_FILE}\"")
+                        return
+
+                    os.system(f"python3 \"{NOW_FILE}\"")
+                    return
+                    
+                case _:
+                    return
+                
+        case _:
             return
-
-    elif mode == "run":
-        if prog_lang.upper() == "C#":
-            if not NOW_FILE.strip().endswith((".cs", ".csproj")):
-                mb.showerror(lang[1], lang[284])
-                return
-
-            os.system(f"dotnet run --project \"{os.path.dirname(NOW_FILE)}\"")
-            return
-
-        if prog_lang.title() == "Python":
-            if not NOW_FILE.strip().endswith('.py'):
-                mb.showerror(lang[1], lang[284])
-                return
-
-            if sys.platform == "win32":
-                os.system(f"python \"{NOW_FILE}\"")
-                return
-
-            os.system(f"python3 \"{NOW_FILE}\"")
-
 
 # [!] Over all... a deprecated class lol
 class DevOption:
@@ -2258,10 +2302,10 @@ desktop_win.bind('<F1>', lambda a:
     APP_HELP())
 
 desktop_win.bind('<Control-d>', lambda a:
-    ThemeSet('#010110', '#fcfcfc', 'white', 'black', '#f4f8f8'))
+    ThemeSet('#020202', '#fcfcfc', 'white', 'black', '#f4f8f8'))
 
 desktop_win.bind('<Control-l>', lambda a:
-    ThemeSet('#fcfcfc', '#010110', 'black', '#f4f8f8', 'black'))
+    ThemeSet('#fcfcfc', '#020202', 'black', '#f4f8f8', 'black'))
 
 desktop_win.bind('<Control-G>', lambda a:
     SetWinSize())
@@ -2585,9 +2629,9 @@ menu_17.add_command(label="Python", command=lambda:
 
 
 menu_5.add_command(label=lang[16], command=lambda:
-    ThemeSet('white', 'black', 'black', 'black', 'white'), accelerator="Ctrl + L")
+    ThemeSet('#fcfcfc', '#020202', 'black', '#f4f8f8', 'black'), accelerator="Ctrl + L")
 menu_5.add_command(label=lang[17], command=lambda:
-    ThemeSet('#010110', '#fcfcfc', 'white', 'black', '#f4f8f8'), accelerator="Ctrl + D")
+    ThemeSet('#020202', '#fcfcfc', 'white', 'black', '#f4f8f8'), accelerator="Ctrl + D")
 menu_5.add_separator()
 menu_5.add_command(label=lang[18], command=lambda:
     ThemeSet('grey', 'black', 'black', 'black', 'white'))
