@@ -386,8 +386,8 @@ ic(IGNORE_CHECKING)
 ic(latest_version)
 
 # [!] Very Important: Keeping track of versions and commits
-appV = "v10.2.0"
-advV ="v10.2.0.269"
+appV = "v10.3.0"
+advV ="v10.3.0.270"
 # [i] the fourth number up here, is the commit where this changes have been made
 
 # [i] Config files
