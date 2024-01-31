@@ -45,6 +45,35 @@ keys_to_go: int = 0
 
 import os, sys, json, random, datetime, platform, importlib
 
+from typing import Literal, SupportsFloat # [i] Making things nicer, I guess
+
+from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
+
+import zipfile # [i] Used to extract the zip files used by plugins
+
+import asyncio # /-/ [i] Used for an attempt at making an autosave feature
+import tracemalloc # /-/ [i] Also used for an attempt at making an autosave feature
+
+from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
+
+from tkinter import Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT, OptionMenu # [i] Used for the UI
+from tkinter.scrolledtext import ScrolledText # [i] Used instead of the regular Text widget, since this one has a scroll bar
+from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu # [i] Used because of the auto syling in tkinter.ttk
+import tkinter.messagebox as mb # [i] Used for the message boxes
+import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
+from tkinter import simpledialog as sdg # [i] Used for dialogues that ask you for an input
+from tkinter.font import Font # [i] Used for controlling the fonts in the Text widget
+
+import smtplib # [i] Used for the Send E-mail option - server management
+
+# [i] The next 4 are all used for the Send E-mail option - encodings and e-mail parts
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email import encoders
+
+from plugin_system import initializer, run_a_plugin # [i] WriterClassic's Plugin "API"
+
 # [*] Get the absolute path of the script
 script_path = os.path.abspath(__file__)
 
@@ -63,7 +92,7 @@ scripts_dir = os.path.join(script_dir, "scripts")
 def now() -> str:
     """
     now returns the current time and date in the form of a string
-    
+
     This is simply an easier way to call `datetime.datetime.now()`
 
     Returns:
@@ -83,7 +112,7 @@ def check_paths(var) -> str:
     Returns:
         str: either 'Created' or 'Was there', depending on if it existed before or not
     """
-    
+
     if not os.path.exists(var):
         os.mkdir(var)
         return "Created."
@@ -128,42 +157,13 @@ try:
     # [*] Imports down here
     # [*] Time to organize this tho
 
-    from typing import Literal # [i] Making things nicer, I guess
-
-    from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
-
     from icecream import ic # [i] Used for debugging
 
     from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
 
-    import zipfile # [i] Used to extract the zip files used by plugins
-
-    import asyncio # /-/ [i] Used for an attempt at making an autosave feature
-    import tracemalloc # /-/ [i] Also used for an attempt at making an autosave feature
-
-    from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
-
-    from tkinter import Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT # [i] Used for the UI
-    from tkinter.scrolledtext import ScrolledText # [i] Used instead of the regular Text widget, since this one has a scroll bar
-    from tkinter.ttk import Button, Checkbutton, Label, Entry # [i] Used because of the auto syling in tkinter.ttk
-    import tkinter.messagebox as mb # [i] Used for the message boxes
-    import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
-    from tkinter import simpledialog as sdg # [i] Used for dialogues that ask you for an input
-    from tkinter.font import Font # [i] Used for controlling the fonts in the Text widget
-
     import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
 
-    import smtplib # [i] Used for the Send E-mail option - server management
-
-    # [i] The next 4 are all used for the Send E-mail option - encodings and e-mail parts
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.base import MIMEBase
-    from email.mime.text import MIMEText
-    from email import encoders
-
     import markdown2 # [i] Used to make HTML files from Markdown
-
-    from plugin_system import initializer, run_a_plugin # [i] WriterClassic's Plugin "API"
 
     import simple_webbrowser # [i] My own Python module (used for the Search with... options)
     from requests import get, exceptions # [i] Used for regular interactions with the Internet
@@ -189,53 +189,23 @@ except (ModuleNotFoundError, ImportError) as e:
 
 
     # [*] reapeating the imports, Goddamn it!
-    
-    from typing import Literal # [i] Making things nicer, I guess
-
-    from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
 
     from icecream import ic # [i] Used for debugging
 
     from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
 
-    import zipfile # [i] Used to extract the zip files used by plugins
-
-    import asyncio # /-/ [i] Used for an attempt at making an autosave feature
-    import tracemalloc # /-/ [i] Also used for an attempt at making an autosave feature
-
-    from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
-
-    from tkinter import Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT # [i] Used for the UI
-    from tkinter.scrolledtext import ScrolledText # [i] Used instead of the regular Text widget, since this one has a scroll bar
-    from tkinter.ttk import Button, Checkbutton, Label, Entry # [i] Used because of the auto syling in tkinter.ttk
-    import tkinter.messagebox as mb # [i] Used for the message boxes
-    import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
-    from tkinter import simpledialog as sdg # [i] Used for dialogues that ask you for an input
-    from tkinter.font import Font # [i] Used for controlling the fonts in the Text widget
-    
     import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
-
-    import smtplib # [i] Used for the Send E-mail option - server management
-
-    # [i] The next 4 are all used for the Send E-mail option - encodings and e-mail parts
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.base import MIMEBase
-    from email.mime.text import MIMEText
-    from email import encoders
 
     import markdown2 # [i] Used to make HTML files from Markdown
 
-    from plugin_system import initializer, run_a_plugin # [i] WriterClassic's Plugin "API"
-
-    from requests import get, exceptions # [i] Used for regular interactions with the Internet
-    
     import simple_webbrowser # [i] My own Python module (used for the Search with... options)
-    
-    tracemalloc.start()
+    from requests import get, exceptions # [i] Used for regular interactions with the Internet
+
+tracemalloc.start()
 
 ic.configureOutput(prefix="ic debug statement | -> ")
 
-def clamp(val, _min, _max):
+def clamp(val: SupportsFloat, _min: SupportsFloat, _max: SupportsFloat):
     """
     clamp clamps and returns a value
 
@@ -249,7 +219,7 @@ def clamp(val, _min, _max):
     Returns:
         type(val): the clamped value of val
     """
-    
+
     if val < _min:
         return _min
 
@@ -408,7 +378,7 @@ def fast_dump():
     """
     fast_dump allows to quickly dump the app's settings
     """
-    
+
     dump_settings(f"{config}/settings.json", settings)
 
 temp_files = os.listdir(temp_dir)
@@ -545,7 +515,7 @@ def writeStartup(text: bool):
     Args:
         text (bool): the new startup value
     """
-    
+
     settings["startup"] = text
     fast_dump()
     _LOG.write(f"{str(now())} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
@@ -607,7 +577,7 @@ def SetWinSize():
     """
     SetWinSize creates a GUI in order to change the dimensions of the window
     """
-    
+
     widthSet = sdg.askinteger(lang[1], lang[57])
     _LOG.write(f"{str(now())} - Got a width value: AWAITING FOR ANTI-BUG CHECK\n")
     if widthSet in NOT_ALLOWED:
@@ -646,9 +616,9 @@ def ThemeSet(*colors):
         - the background of the menus (LINUX ONLY; menu background)
         - the color of the text in the menus (LINUX ONLY; menu foreground)
     """
-    
+
     global theme
-    
+
     theme = {
         "color": str(colors[0]),
         "ct": str(colors[2]),
@@ -687,7 +657,7 @@ def ThemeSet(*colors):
             menu_16.configure(background=colors[3], foreground=colors[4])
             menu_17.configure(background=colors[3], foreground=colors[4])
             _LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
-    
+
     except (TypeError, ValueError, TclError):
         if sys.platform == "linux":
             # [i] Themed menus only on Linux Python3
@@ -734,7 +704,7 @@ def ThemeSet(*colors):
 def quickway():
     """
     quickway instantly quits the app without any confirmation
-    
+
     Not recommended at all!
     """
     _LOG.write(f"{str(now())} - End of session: QUIT\n")
@@ -770,7 +740,7 @@ def new_window():
 
     In the early days, this function was supposed to launch a new WriterClassic window.
     """
-    
+
     newWindow = Toplevel(desktop_win)
     _LOG.write(f"{str(now())} - A new window has been called: AWAITING CONFIGURATION\n")
 
@@ -794,7 +764,7 @@ def DOC_STATS():
     Stats:
     - No of lines
     """
-    
+
     global lines
 
     _data = TextWidget.get(0.0, END)
@@ -818,7 +788,7 @@ def repo():
     """
     repo sends the user to the official repository
     """
-    
+
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/")
     _LOG.write(f"{str(now())} - Opened the repository: AWAITING FOR FUNCTION OR ERROR\n")
 
@@ -827,9 +797,9 @@ def bool_swap(value: bool | None, default_for_none: bool = True):
     bool_swap swaps the value of a boolean and returns it
 
     When a value, either a bool or None, is given, if it's True, the function will return False. If False, return True.
-    
+
     If the `default_for_none` is specified (defaults to True), when the given value is None, the fucntion returns `default_for_none`'s value.
-    
+
     Example:
         `bool_swap(True)` will return False
         `bool_swap(True, False)` will also return False
@@ -845,7 +815,7 @@ def bool_swap(value: bool | None, default_for_none: bool = True):
     Returns:
         bool: the swapped value
     """
-    
+
     if value:
         value = False
 
@@ -868,7 +838,7 @@ class BackupSystem:
             config_path (str, optional): the path where the settings are saved. Defaults to config.
             main_dir (str, optional): the dir where WriterClassic is stored. Defaults to script_dir.
         """
-        
+
         self._folder_paths = [plugin_path, autoscr_path, config_path]
         self.__orig_folder_paths = (plugin_path, autoscr_path, config_path)
         self._main_dir = main_dir
@@ -880,7 +850,7 @@ class BackupSystem:
         Args:
             root_path (str): directory where the zip file will be saved
         """
-        
+
         with zipfile.ZipFile(os.path.join(root_path, f"Backup_WriterClassic_{datetime.datetime.now().day}-{datetime.datetime.now().month}-{datetime.datetime.now().year}.zip"), 'w') as zip_file:
             for folder_path in self._folder_paths:
                 if "plugin_" in folder_path:
@@ -905,7 +875,7 @@ class BackupSystem:
         Args:
             file_path (str): the path where the zip backup is
         """
-        
+
         with zipfile.ZipFile(file_path, 'r') as zip_file:
             for path_to_remove in self.__orig_folder_paths:
                 try:
@@ -960,7 +930,7 @@ async def clockPlugin():
 
     XXX Deprecated feature because of its lack of purpose
     """
-    
+
     clockWindow = Toplevel(desktop_win)
     clockWindow.geometry('275x65')
     clockWindow.resizable(False, False)
@@ -990,7 +960,7 @@ def fontEdit(winType: int | bool):
     fontEdit allows the user to easily change their font settings
 
     If `winType` is 1 or True, the size will be changed.
-    
+
     Otherwise, the font setting itself will be modified.
 
     Args:
@@ -1026,13 +996,13 @@ def NewFile():
     """
 
     global NOW_FILE, cur_data, SAVE_STATUS
-    
+
     SAVE_STATUS = True
 
     desktop_win.title(lang[1])
     TextWidget.delete(index1=0.0, index2=END)
     cur_data = TextWidget.get(0.0, END)
-    
+
     NOW_FILE = False
 
     _LOG.write(f"{str(now())} - A new file has been created: OK\n")
@@ -1093,9 +1063,9 @@ def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
         file_path: The filepath to open with extension
         (optional, defaults to the main window) root_win (Tk): WriterClassic's main window
     """
-    
+
     global NOW_FILE, cur_data, SAVE_STATUS
-    
+
     file_path = os.path.abspath(file_path)
 
     _basepath = os.path.join(os.path.dirname(file_path), os.path.basename(file_path) + ".wscript")
@@ -1213,7 +1183,7 @@ def SaveFile(root_win: Tk = desktop_win):
         # [*] Append the selected extension if not already included
         if selected_extension and not file_path.lower().endswith(selected_extension):
             file_path += selected_extension
-            
+
     if file_path.lower().endswith(".wclassic") and "$VARS" in data:
         for __var in WCLASSIC_VARS:
             for _ in range(data.count(__var)):
@@ -1230,7 +1200,7 @@ def SaveFile(root_win: Tk = desktop_win):
 
     NOW_FILE = str(file_path)
     ic(NOW_FILE)
-    
+
     OpenFileManually(NOW_FILE)
 
 def Save(root_win: Tk = desktop_win):
@@ -1238,29 +1208,29 @@ def Save(root_win: Tk = desktop_win):
     Save saves the current file
 
     If the file exists, then it will be saved over without asking questions.
-    
+
     If the file doesn't exist though, the `SaveFile` feature gets called (Save As)
 
     Args:
         root_win (Tk, optional): the window where changes take place. Defaults to desktop_win.
     """
-    
+
     global NOW_FILE, cur_data, SAVE_STATUS
 
     if NOW_FILE is False:
         return SaveFile(root_win=root_win)
 
     data: str = TextWidget.get(0.0, END)
-    
+
     SAVE_STATUS = True
 
     file_path = NOW_FILE
-    
+
     if file_path.lower().endswith(".wclassic") and "$VARS" in data:
             for __var in WCLASSIC_VARS:
                 for _ in range(data.count(__var)):
                     data = data.replace(__var, WCLASSIC_VARS[__var])
-    
+
     file = open(file_path, "wt", encoding='utf-8')
     file.write(str(data))
     cur_data = data
@@ -1330,7 +1300,7 @@ def search_for(replace: bool = False, index_a = INSERT, line_limit: int = 100):
 
                     try:
                         TextWidget.insert(f"{b[0]}.{str(c-1)}", replaced_text[i])
-                        
+
                     except IndexError:
                         pass
 
@@ -1362,22 +1332,22 @@ def readme_writer_classic():
 
 def ModifiedStatus(text_widget: ScrolledText = TextWidget, main_win: Tk | Toplevel = desktop_win) -> bool | None:
     global SAVE_STATUS, keys_to_go
-    
+
     if keys_to_go > 0:
         keys_to_go -= 1
         keys_to_go = clamp(keys_to_go, 0, 10)
         return None
-    
+
     if cur_data == text_widget.get(0.0, END):
         if " (*)" in main_win.title():
             main_win.title(main_win.title().removesuffix(" (*)"))
-            
+
         SAVE_STATUS = True
         return SAVE_STATUS
-        
+
     if " (*)" not in main_win.title():
         main_win.title(f"{main_win.title()} (*)")
-        
+
     SAVE_STATUS = False
     return SAVE_STATUS
 
@@ -1451,7 +1421,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
 
                     os.system(f"dotnet build \"{os.path.dirname(NOW_FILE)}\"")
                     return
-                
+
                 case _:
                     return
 
@@ -1476,10 +1446,10 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
 
                     os.system(f"python3 \"{NOW_FILE}\"")
                     return
-                    
+
                 case _:
                     return
-                
+
         case _:
             return
 
@@ -2215,64 +2185,99 @@ class SignaturePlugin:
 
         _LOG.write(f"{str(now())} - The Auto signature has been inserted: OK\n")
 
+
 def commandPrompt() -> None | bool:
-    askNow = sdg.askstring(lang[68], lang[69]).title().replace(" ", "")
+    new = Toplevel(desktop_win)
 
-    commands: dict[str] = {
-        "Editor:Undo": TextWidget.edit_undo,
-        "Editor:Redo": TextWidget.edit_redo,
-        "Editor:Reset": NewFile,
-        "File:Open": OpenFile,
-        "File:SaveAs": SaveFile,
-        "Status:Save": Save,
-        "Status:Refresh": ModifiedStatus,
-        "Plugins:Install": install_plugin,
-        "Plugins:Run": run_plugin,
-        "Plugins:Remove": remove_plugin,
-        "History:Reset": TextWidget.edit_reset,
-        "Software:Quit": QUIT_WRITER,
-        "Software:ForceQuit": quickway,
-        "Software:About": aboutApp,
-        "Software:Help": APP_HELP,
-        "Software:Repo": repo,
-        "Software:Credits": appCredits,
-        "Log:Clear": clear_log_file,
-        "Log:Preview": show_log,
-        "Advanced:Send": adv_login,
-        "Debug:Swap": show_debug,
-        "Tools:ReadmeGen": readme_gen_win,
-        "Tools:D3Ncryp7": dencrypt,
-        "Advanced:Dencrypt": dencrypt,
-        "Software:Version": UpdateCheck.check,
-        "Advanced:Version": show_advV,
-        "File:OpenWith": open_with_adv,
-        "Advanced:Open": open_with_adv,
-        "Settings:Dump": fast_dump,
-        "Settings:Save": fast_dump,
-        "Settings:Size": SetWinSize,
-        "Tools:Notepad": new_window,
-        "Editor:Stats": DOC_STATS,
-        "Tools:WipeFile": WipeFile,
-        "Editor:Select": select_all,
-        "Editor:SelectAll": select_all,
-        "Editor:Lorem": lorem_ipsum,
-        "Editor:Readme": readme_writer_classic,
-        "Advanced:DesktopFile": desktop_create_win,
-        "Tools:Markdown": markdown_preview,
-        "Software:Tips": Tips_Tricks,
-        "Settings:Reset": resetWriter,
-        "Tools:Terminal": Terminal,
-        "Internet:Website": InternetOnWriter.Website
-    }
+    def reload_file():
+        if NOW_FILE != False:
+            OpenFileManually(NOW_FILE)
 
-    if askNow in commands.keys():
-        commands[askNow]()
+        else:
+            return
 
-    elif askNow == None:
+    def action_logic(_scope: str, _action: str):
+        commands: dict[str] = {
+            "Editor:Undo": TextWidget.edit_undo,
+            "Editor:Redo": TextWidget.edit_redo,
+            "Editor:Reset": NewFile,
+            "File:Open": OpenFile,
+            "File:SaveAs": SaveFile,
+            "Status:Save": Save,
+            "Status:Refresh": ModifiedStatus,
+            "Plugins:Install": install_plugin,
+            "Plugins:Run": run_plugin,
+            "Plugins:Remove": remove_plugin,
+            "History:Reset": TextWidget.edit_reset,
+            "Software:Quit": QUIT_WRITER,
+            "Software:ForceQuit": quickway,
+            "Software:About": aboutApp,
+            "Software:Help": APP_HELP,
+            "Software:Repo": repo,
+            "Software:Credits": appCredits,
+            "Log:Clear": clear_log_file,
+            "Log:Preview": show_log,
+            "Advanced:Send": adv_login,
+            "Debug:Swap": show_debug,
+            "Tools:ReadmeGen": readme_gen_win,
+            "Tools:D3Ncryp7": dencrypt,
+            "Advanced:Dencrypt": dencrypt,
+            "Software:Version": UpdateCheck.check,
+            "Advanced:Version": show_advV,
+            "File:OpenWith": open_with_adv,
+            "Advanced:Open": open_with_adv,
+            "Settings:Dump": fast_dump,
+            "Settings:Save": fast_dump,
+            "Settings:Size": SetWinSize,
+            "Tools:Notepad": new_window,
+            "Editor:Stats": DOC_STATS,
+            "Tools:WipeFile": WipeFile,
+            "Editor:Select": select_all,
+            "Editor:SelectAll": select_all,
+            "Editor:Lorem": lorem_ipsum,
+            "Editor:Readme": readme_writer_classic,
+            "Advanced:DesktopFile": desktop_create_win,
+            "Tools:Markdown": markdown_preview,
+            "Software:Tips": Tips_Tricks,
+            "Settings:Reset": resetWriter,
+            "Tools:Terminal": Terminal,
+            "Internet:Website": InternetOnWriter.Website,
+            "File:Reload": reload_file
+        }
+
+        a = f"{_scope}:{_action}"
+
+        if a in commands.keys():
+            commands[a]()
+            return
+
+        if a.strip() in (None, ''):
+            return
+
+        mb.showerror(lang[68], lang[70])
         return
-    
-    mb.showerror(lang[68], lang[70])
-    return
+
+    if sys.platform == "win32":
+        new.iconbitmap(f"{data_dir}/app_icon.ico")
+
+    new.title(lang[68])
+    new.resizable(False, False)
+
+    action_picker = Entry(new, justify='left', width=65)
+
+    scope = StringVar(new)
+    scope_picker = OptionMenu(new, scope, None, "Editor", "File", "Status", "Plugins", "History", "Software", "Log", "Debug", "Advanced", "Tools", "Internet", "Settings", direction='below')
+
+    go_butt = Button(new, text="Ok", command=lambda:
+        action_logic(scope.get(), action_picker.get()))
+
+    scope_picker.grid(column=0, row=0)
+    action_picker.grid(column=1, row=0)
+    go_butt.grid(column=2, row=0)
+
+    action_picker.insert(0, 'Action name goes here!')
+
+    new.mainloop()
 
 backup_system = BackupSystem()
 
@@ -2377,7 +2382,7 @@ def autosave_apply():
 
 def close_confirm() -> None:
     ic()
-    
+
     if not ModifiedStatus():
         choice = mb.askyesnocancel(lang[53], f"{lang[199]}\n{lang[200]}")
 
@@ -2403,7 +2408,7 @@ def on_closing():
 
     XXX This function is deprecated because `close_confirm` offers a better way to handle this situation
     """
-    
+
     ic()
 
     result = mb.askyesno(lang[53], lang[54])
@@ -2421,7 +2426,7 @@ def on_closing():
 def QUIT_WRITER():
     """
     QUIT_WRITER quits the software using close_confirm
-    
+
     It serves as a connection bridge.
     """
 
