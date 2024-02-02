@@ -42,8 +42,9 @@ lines = 0
 cur_data: str = ""
 SAVE_STATUS: bool = True
 keys_to_go: int = 0
+TOOLBAR_LEN: int = 11
 
-import os, sys, json, random, datetime, platform, importlib
+import os, sys, json, random, datetime, platform
 
 from typing import Literal, SupportsFloat # [i] Making things nicer, I guess
 
@@ -56,9 +57,10 @@ import tracemalloc # /-/ [i] Also used for an attempt at making an autosave feat
 
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
-from tkinter import Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT, OptionMenu # [i] Used for the UI
+# [i] Used for the UI
+from tkinter import SEL_LAST, Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT, OptionMenu, Frame, SEL_FIRST
 from tkinter.scrolledtext import ScrolledText # [i] Used instead of the regular Text widget, since this one has a scroll bar
-from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu # [i] Used because of the auto syling in tkinter.ttk
+from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu, Style # [i] Used because of the auto syling in tkinter.ttk
 import tkinter.messagebox as mb # [i] Used for the message boxes
 import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
 from tkinter import simpledialog as sdg # [i] Used for dialogues that ask you for an input
@@ -161,6 +163,8 @@ try:
 
     from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
 
+    import pyperclip as pyclip
+
     import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
 
     import markdown2 # [i] Used to make HTML files from Markdown
@@ -195,6 +199,8 @@ except (ModuleNotFoundError, ImportError) as e:
     from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
 
     import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
+
+    import pyperclip as pyclip # [i] Used to copy and paste
 
     import markdown2 # [i] Used to make HTML files from Markdown
 
@@ -244,9 +250,38 @@ if os.path.exists(os.path.join(scripts_dir, "quick_acess.wscript")):
 
 desktop_win = Tk()
 TextWidget = ScrolledText(desktop_win, font=("Calibri", 13), borderwidth=5, undo=True)
-TextWidget.pack()
-cur_data = TextWidget.get(0.0, END)
+
 # /-/ TextWidget.insert(END, "WriterClassic is a free and open-source project made by MF366.\n\nYour support is appreciated: https://www.buymeacoffee.com/mf366\n\nThank you <3")
+
+class WrongClipboardAction(Exception): ...
+
+def clip_actions(__id: Literal['copy', 'paste'], __s: str = '') -> str:
+    """
+    clip_actions sends an instruction to the clipboard
+    
+    It could be either a copy or a paste instruction.
+
+    Args:
+        __id ('copy' or 'paste'): the action to run
+        __s (str): the text to copy (when using the 'copy' action). Defaults to ''.
+
+    Returns:
+        str: the value of __s when copying; the last item to be copied when pasting.
+        
+    Raises:
+        WrongClipboardAction: if a an action different from 'copy' or 'paste' is given.
+    """
+    
+    match __id:
+        case 'copy':
+            pyclip.copy(__s)
+            return __s
+        
+        case 'paste':
+            return pyclip.paste()
+        
+        case _:
+            raise WrongClipboardAction('Can only copy or paste.')
 
 UNIX_OSES = [
             "darwin",
@@ -359,6 +394,37 @@ ic(latest_version)
 appV = "v10.3.0"
 advV ="v10.3.0.270"
 # [i] the fourth number up here, is the commit where this changes have been made
+
+def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: ScrolledText = TextWidget) -> str:
+    selection: str = ''
+    
+    try:
+        # [*] Get the current selection
+        selection = text_widget.get(SEL_FIRST, SEL_LAST)
+        
+    except Exception:
+        selection = INSERT
+        __action = 'paste'
+    
+    if __action == 'copy' or __action == 'cut':
+        clip_actions('copy', selection)
+        
+        if __action == 'cut':
+            text_widget.replace(SEL_FIRST, SEL_LAST, '')
+            
+        return selection
+
+    __s: str = clip_actions('paste')
+    
+    if selection == INSERT:
+        text_widget.insert(INSERT, __s)
+        
+    else:
+        text_widget.replace(SEL_FIRST, SEL_LAST, __s)
+    
+    return __s
+
+copy, paste, cut = lambda: advanced_clipping('copy'), lambda: advanced_clipping('paste'), lambda: advanced_clipping('cut')
 
 # [i] Config files
 ic(appV)
@@ -1352,13 +1418,6 @@ def ModifiedStatus(text_widget: ScrolledText = TextWidget, main_win: Tk | Toplev
     return SAVE_STATUS
 
 rmb_menu = Menu(desktop_win, tearoff = 0)
-rmb_menu.add_command(label=lang[295], command=lambda:
-    keyboard.send("Control+x"), accelerator="Ctrl + X")
-rmb_menu.add_command(label=lang[296], command=lambda:
-    keyboard.send("Control+c"), accelerator="Ctrl + C")
-rmb_menu.add_command(label=lang[297], command=lambda:
-    keyboard.send("Control+v"), accelerator="Ctrl + V")
-rmb_menu.add_separator()
 rmb_menu.add_command(label=lang[293], command=TextWidget.edit_undo, accelerator="Ctrl + Z")
 rmb_menu.add_command(label=lang[294], command=TextWidget.edit_redo, accelerator="Ctrl + Y")
 rmb_menu.add_separator()
@@ -2185,6 +2244,7 @@ class SignaturePlugin:
 
         _LOG.write(f"{str(now())} - The Auto signature has been inserted: OK\n")
 
+backup_system = BackupSystem()
 
 def commandPrompt() -> None | bool:
     new = Toplevel(desktop_win)
@@ -2209,7 +2269,7 @@ def commandPrompt() -> None | bool:
             "Plugins:Run": run_plugin,
             "Plugins:Remove": remove_plugin,
             "History:Reset": TextWidget.edit_reset,
-            "Software:Quit": QUIT_WRITER,
+            "Software:Quit": close_confirm,
             "Software:ForceQuit": quickway,
             "Software:About": aboutApp,
             "Software:Help": APP_HELP,
@@ -2242,7 +2302,9 @@ def commandPrompt() -> None | bool:
             "Settings:Reset": resetWriter,
             "Tools:Terminal": Terminal,
             "Internet:Website": InternetOnWriter.Website,
-            "File:Reload": reload_file
+            "File:Reload": reload_file,
+            "Settings:Backup": lambda: backup_system.run_action("zip"),
+            "Settings:Load": lambda: backup_system.run_action('unzip')
         }
 
         a = f"{_scope}:{_action}"
@@ -2278,8 +2340,6 @@ def commandPrompt() -> None | bool:
     action_picker.insert(0, 'Action name goes here!')
 
     new.mainloop()
-
-backup_system = BackupSystem()
 
 # [i] Key bindings
 desktop_win.bind('<Control-o>', lambda a:
@@ -2423,17 +2483,6 @@ def on_closing():
     _LOG.close()
     sys.exit()
 
-def QUIT_WRITER():
-    """
-    QUIT_WRITER quits the software using close_confirm
-
-    It serves as a connection bridge.
-    """
-
-    ic()
-
-    close_confirm()
-
 # [i] Creating the menu dropdowns and buttons
 menu_10.add_command(label=lang[94], command=NewFile, accelerator="Ctrl + N")
 menu_10.add_command(label=lang[7], command=lambda:
@@ -2459,7 +2508,7 @@ menu_10.add_command(label=lang[330], command=lambda:
 menu_10.add_separator()
 menu_10.add_command(label=lang[163], command=DOC_STATS)
 menu_10.add_separator()
-menu_10.add_command(label=lang[11], command=QUIT_WRITER, accelerator="Alt + F4")
+menu_10.add_command(label=lang[11], command=close_confirm, accelerator="Alt + F4")
 
 '''
 for i in range(len(QUICK_ACESS_DATA)):
@@ -3079,6 +3128,40 @@ ic(ADVANCED)
 # [i] Yes, menu_bar is desktop_win's menu bar lmfao
 desktop_win.configure(menu=menu_bar)
 _LOG.write(f"{str(now())} - The Menu bar has been configured correctly: OK\n")
+
+toolbar = Frame(desktop_win, height=14, borderwidth=2, width=14)
+toolbar.pack()
+
+redo_img = None
+
+toolbar_commands = [NewFile,
+                    OpenFile,
+                    Save,
+                    # --
+                    TextWidget.edit_undo,
+                    TextWidget.edit_redo,
+                    # --
+                    copy,
+                    paste,
+                    cut,
+                    # --
+                    aboutApp,
+                    APP_HELP,
+                    # --
+                    close_confirm]
+
+__ico_paths = [os.path.join(data_dir, 'toolbar', f"{i + 1}.png") for i in range(TOOLBAR_LEN)]
+
+icon_images = [Image.open(__ico_paths[i]) for i in range(TOOLBAR_LEN)]
+tk_icon_images = [ImageTk.PhotoImage(icon_images[i]) for i in range(TOOLBAR_LEN)]
+
+buttons: list[Button] = [Button(toolbar, image=tk_icon_images[i], command=toolbar_commands[i], width=10) for i in range(TOOLBAR_LEN)]
+
+for j in range(TOOLBAR_LEN):
+    buttons[j].grid(column=j, row=0)
+
+TextWidget.pack(expand=True)
+cur_data = TextWidget.get(0.0, END)
 
 if len(sys.argv) > 1:
     # [i] The first command-line argument is the file path
