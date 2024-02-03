@@ -14,10 +14,7 @@
 '''
 WriterClassic
 
-Powered by: Python 3.10.11 (in my Windows computer)
-
-The colored menu seems to only work on Linux.
-But the app works on Windows and Mac, without the colored menu thought.
+Powered by: Python 3.10+
 
 Official Repo:
     https://github.com/MF366-Coding/WriterClassic
@@ -27,8 +24,7 @@ Find me in this spots:
     https://www.youtube.com/@mf_366
     https://www.buymeacoffee.com/mf366 (Support me please!)
 
-Original idea by: MF366
-Fully developed by: MF366
+Original idea and development by: MF366
 
 Small but lovely contributions by:
     Norb (norbcodes at GitHub)
@@ -44,6 +40,17 @@ SAVE_STATUS: bool = True
 keys_to_go: int = 0
 TOOLBAR_LEN: int = 11
 
+CREDITS = """WriterClassic by: MF366
+Powered by: Python 3.10+
+
+- Thank you, Norb and Zeca70, best GitHub contributors (and friends) ever! :)
+
+- Thank you, j4321 for your tkFontChooser module, which really helped me a LOT when implementing the improved version of the Font Picker.
+
+- And thank you, dear user, for using WriterClassic! <3"""
+
+
+# [*] Importing some of the builtin goodies
 import os, sys, json, random, datetime, platform
 
 from typing import Literal, SupportsFloat # [i] Making things nicer, I guess
@@ -52,15 +59,14 @@ from getpass import getuser # [i] Used in order to obtain the username of the cu
 
 import zipfile # [i] Used to extract the zip files used by plugins
 
-import asyncio # /-/ [i] Used for an attempt at making an autosave feature
-import tracemalloc # /-/ [i] Also used for an attempt at making an autosave feature
+import tracemalloc
 
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
-# [i] Used for the UI
+# [i] tkinter is used for the UI, duh?!
 from tkinter import SEL_LAST, Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT, OptionMenu, Frame, SEL_FIRST
 from tkinter.scrolledtext import ScrolledText # [i] Used instead of the regular Text widget, since this one has a scroll bar
-from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu, Style # [i] Used because of the auto syling in tkinter.ttk
+from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu # [i] Used because of the auto syling in tkinter.ttk
 import tkinter.messagebox as mb # [i] Used for the message boxes
 import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
 from tkinter import simpledialog as sdg # [i] Used for dialogues that ask you for an input
@@ -139,22 +145,6 @@ _LOG = open(os.path.join(user_data, "log.wclassic"), mode="a", encoding="utf-8")
 _LOG.write("\n")
 _LOG.write(f"{str(now())} - WriterClassic was executed: OK\n")
 
-WCLASSIC_VARS: dict[str, str] = {
-    "$APPDATA": os.environ.get('APPDATA') if sys.platform == 'win32' else "$APPDATA",
-    "$LOCALAPPDATA": os.environ.get('LOCALAPPDATA') if sys.platform == 'win32' else "$LOCALAPPDATA",
-    "$USER": os.path.expanduser('~'),
-    "$COMMONROOT": "C:\\" if sys.platform == 'win32' else "/",
-    "$BITNESS": platform.architecture()[0],
-    "$PYTHON": sys.executable,
-    "$WRITERCLASSIC": script_path,
-    "$LOGGER": os.path.join(user_data, "log.wclassic"),
-    "$REPO": "https://github.com/MF366-Coding/WriterClassic",
-    "$WEBSITE": "https://mf366-coding.github.io/writerclassic.html",
-    "$OSVERSION": platform.version(),
-    "$PLATFORM": sys.platform,
-    "$OS": os.name
-}
-
 try:
     # [*] Imports down here
     # [*] Time to organize this tho
@@ -163,7 +153,9 @@ try:
 
     from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
 
-    import pyperclip as pyclip
+    import tkfontchooser # [i] used for the new Font picker
+
+    import pyperclip as pyclip # [i] used for the clipboard options
 
     import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
 
@@ -199,6 +191,8 @@ except (ModuleNotFoundError, ImportError) as e:
     from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
 
     import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
+
+    import tkfontchooser # [i] used for the new Font picker
 
     import pyperclip as pyclip # [i] Used to copy and paste
 
@@ -249,6 +243,7 @@ if os.path.exists(os.path.join(scripts_dir, "quick_acess.wscript")):
 '''
 
 desktop_win = Tk()
+
 TextWidget = ScrolledText(desktop_win, font=("Calibri", 13), borderwidth=5, undo=True)
 
 # /-/ TextWidget.insert(END, "WriterClassic is a free and open-source project made by MF366.\n\nYour support is appreciated: https://www.buymeacoffee.com/mf366\n\nThank you <3")
@@ -258,7 +253,7 @@ class WrongClipboardAction(Exception): ...
 def clip_actions(__id: Literal['copy', 'paste'], __s: str = '') -> str:
     """
     clip_actions sends an instruction to the clipboard
-    
+
     It could be either a copy or a paste instruction.
 
     Args:
@@ -267,19 +262,19 @@ def clip_actions(__id: Literal['copy', 'paste'], __s: str = '') -> str:
 
     Returns:
         str: the value of __s when copying; the last item to be copied when pasting.
-        
+
     Raises:
         WrongClipboardAction: if a an action different from 'copy' or 'paste' is given.
     """
-    
+
     match __id:
         case 'copy':
             pyclip.copy(__s)
             return __s
-        
+
         case 'paste':
             return pyclip.paste()
-        
+
         case _:
             raise WrongClipboardAction('Can only copy or paste.')
 
@@ -318,7 +313,6 @@ else:
     _LOG.write(f"{str(now())} - Check for updates on startup: ENABLED\n")
 
 ic(startApp)
-autosave_cooldown = None
 update_check_button = IntVar(desktop_win, 1)
 update_check_button.set(int(startApp))
 
@@ -350,8 +344,6 @@ _LOG.write(f"{str(now())} - Imported Font from tkinter.font: OK\n")
 ic(now())
 
 setLang = settings["language"]
-autosave_cooldown = 60.0
-can_autosave = IntVar(desktop_win, 0)
 
 ic(setLang)
 
@@ -391,37 +383,38 @@ ic(IGNORE_CHECKING)
 ic(latest_version)
 
 # [!] Very Important: Keeping track of versions and commits
-appV = "v10.3.0"
-advV ="v10.3.0.270"
+appV = "v10.4.0"
+advV ="v10.4.0.278"
 # [i] the fourth number up here, is the commit where this changes have been made
+
 
 def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: ScrolledText = TextWidget) -> str:
     selection: str = ''
-    
+
     try:
         # [*] Get the current selection
         selection = text_widget.get(SEL_FIRST, SEL_LAST)
-        
+
     except Exception:
         selection = INSERT
         __action = 'paste'
-    
+
     if __action == 'copy' or __action == 'cut':
         clip_actions('copy', selection)
-        
+
         if __action == 'cut':
             text_widget.replace(SEL_FIRST, SEL_LAST, '')
-            
+
         return selection
 
     __s: str = clip_actions('paste')
-    
+
     if selection == INSERT:
         text_widget.insert(INSERT, __s)
-        
+
     else:
         text_widget.replace(SEL_FIRST, SEL_LAST, __s)
-    
+
     return __s
 
 copy, paste, cut = lambda: advanced_clipping('copy'), lambda: advanced_clipping('paste'), lambda: advanced_clipping('cut')
@@ -436,16 +429,10 @@ ic(theme)
 
 _LOG.write(f"{str(now())} - Got the current theme: OK\n")
 
-font_use = settings["font"]
 _LOG.write(f"{str(now())} - Got the current font family/type: OK\n")
 _LOG.write(f"{str(now())} - Got the current font size: OK\n")
 
-def fast_dump():
-    """
-    fast_dump allows to quickly dump the app's settings
-    """
-
-    dump_settings(f"{config}/settings.json", settings)
+fast_dump = lambda: dump_settings(f"{config}/settings.json", settings)
 
 temp_files = os.listdir(temp_dir)
 
@@ -454,35 +441,33 @@ for temp_file in temp_files:
     if os.path.isfile(file_to_delete):
         os.remove(file_to_delete)
 
-if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
-    auto_content = open(os.path.join(scripts_dir, "auto.wscript"), "r", encoding="utf-8").read()
-
-    _run_auto = mb.askyesno(lang[1], f"{lang[289]}\n{lang[290]}\n{lang[291]}")
-
-    if _run_auto == True:
-        exec(auto_content)
-
 # [i] Windowing... again
 if NOW_FILE == False:
     desktop_win.title(lang[1])
 
 _LOG.write(f"{str(now())} - Window's title was set to WriterClassic: OK\n")
 
+FontSet = Font(family="Segoe UI", size=12, slant='roman', weight='normal', underline=0, overstrike=0)
+
 try:
-    FontSet = Font(family=font_use["type"], size=font_use["size"])
-    __font_type = font_use["type"]
-    __font_size = font_use["size"]
-    _LOG.write(f"{str(now())} - Font size is {str(__font_size)}: OK\n")
-    _LOG.write(f"{str(now())} - Font family/type is {str(__font_type)}: OK\n")
+    FontSet = Font(family=settings["font"]["family"], size=settings['font']["size"], slant=settings['font']['slant'], weight=settings['font']['weight'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike'])
+    _LOG.write(f"{str(now())} - Font size is {str(settings['font']['family'])}: OK\n")
+    _LOG.write(f"{str(now())} - Font family/type is {str(settings['font']['size'])}: OK\n")
 
 except TclError:
     mb.showerror(lang[149], f"{lang[144]}\n{lang[145]}\n{lang[146]}")
     _LOG.write(f"{str(now())} - Font size is set to 14 because of a font error: OK\n")
-    FontSet = Font(family="Segoe UI", size=14)
+
+    FontSet = Font(family="Segoe UI", size=12, slant='roman', weight='normal', underline=0, overstrike=0)
     _LOG.write(f"{str(now())} - Font type is set to Segoe UI because of a font error: OK\n")
+
     settings["font"] = {
-        "type": "Segoe UI",
-        "size": 14
+        "family": "Segoe UI",
+        "size": 12,
+        "weight": "normal",
+        "slant": "roman",
+        "underline": 0,
+        "overstrike": 0
     }
 
     fast_dump()
@@ -551,12 +536,9 @@ ic(ADVANCED)
 advanced_mode_status.set(int(ADVANCED))
 
 menu_1 = Menu(menu_bar)
-menu_2 = Menu(menu_1)
-menu_3 = Menu(menu_2)
 menu_4 = Menu(menu_1)
 menu_5 = Menu(menu_4)
 menu_6 = Menu(menu_4)
-menu_7 = Menu(menu_1)
 menu_8 = Menu(menu_bar)
 menu_9 = Menu(menu_8)
 menu_10 = Menu(menu_bar)
@@ -574,6 +556,32 @@ menu_17 = Menu(menu_15)
 
 _LOG.write(f"{str(now())} - Created all the menus: OK\n")
 
+if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
+    auto_content = open(os.path.join(scripts_dir, "auto.wscript"), "r", encoding="utf-8").read()
+
+    _run_auto = mb.askyesno(lang[1], f"{lang[289]}\n{lang[290]}\n{lang[291]}")
+
+    if _run_auto == True:
+        exec(auto_content)
+
+WCLASSIC_VARS: dict[str, str] = {
+    "$APPDATA": os.environ.get('APPDATA') if sys.platform == 'win32' else "$APPDATA",
+    "$LOCALAPPDATA": os.environ.get('LOCALAPPDATA') if sys.platform == 'win32' else "$LOCALAPPDATA",
+    "$USER": os.path.expanduser('~'),
+    "$ROOT": "$ROOT" if sys.platform == 'win32' else "/",
+    "$BITNESS": platform.architecture()[0],
+    "$BITS": platform.architecture()[0],
+    "$PYTHON": sys.executable,
+    "$WRITERCLASSIC": script_path,
+    "$LOGGER": os.path.join(user_data, "log.wclassic"),
+    "$REPO": "https://github.com/MF366-Coding/WriterClassic",
+    "$WEBSITE": "https://mf366-coding.github.io/writerclassic.html",
+    "$OSVERSION": platform.version(),
+    "$PLATFORM": sys.platform,
+    "$OS": os.name
+}
+
+
 def writeStartup(text: bool):
     """
     writeStartup changes the startup value on the settings and then saves it
@@ -589,6 +597,7 @@ def writeStartup(text: bool):
 # [i] Check for Updates
 class UpdateCheck:
     @staticmethod
+    
     def check_other():
         """
         check_other checks for updates on startup only
@@ -606,6 +615,7 @@ class UpdateCheck:
             return
 
     @staticmethod
+    
     def check():
         """
         check checks for updates whenever the user clicks Check for Updates
@@ -626,6 +636,7 @@ class UpdateCheck:
             _LOG.write(f"{str(now())} - Couldn't check for updates (Bad Internet, Connection Timeout, Restricted Internet): WARNING\n")
 
     @staticmethod
+    
     def change():
         """
         change swaps the current value of the startup setting
@@ -639,6 +650,7 @@ if startApp == '1':
     _LOG.write(f"{str(now())} - Checked for updates on startup: AWAITING REPLY\n")
 
 # [i] Windowing... one more time...
+
 def SetWinSize():
     """
     SetWinSize creates a GUI in order to change the dimensions of the window
@@ -671,6 +683,7 @@ def SetWinSize():
             fast_dump()
 
 # [i] Theme Picker
+
 def ThemeSet(*colors):
     """
     ThemeSet sets a new theme
@@ -707,12 +720,9 @@ def ThemeSet(*colors):
             menu_10.configure(background=colors[3], foreground=colors[4])
             menu_11.configure(background=colors[3], foreground=colors[4])
             menu_1.configure(background=colors[3], foreground=colors[4])
-            menu_2.configure(background=colors[3], foreground=colors[4])
-            menu_3.configure(background=colors[3], foreground=colors[4])
             menu_5.configure(background=colors[3], foreground=colors[4])
             menu_4.configure(background=colors[3], foreground=colors[4])
             menu_6.configure(background=colors[3], foreground=colors[4])
-            menu_7.configure(background=colors[3], foreground=colors[4])
             menu_12.configure(background=colors[3], foreground=colors[4])
             menu_8.configure(background=colors[3], foreground=colors[4])
             menu_9.configure(background=colors[3], foreground=colors[4])
@@ -732,12 +742,9 @@ def ThemeSet(*colors):
             menu_10.configure(background="white", foreground="black")
             menu_11.configure(background="white", foreground="black")
             menu_1.configure(background="white", foreground="black")
-            menu_2.configure(background="white", foreground="black")
-            menu_3.configure(background="white", foreground="black")
             menu_5.configure(background="white", foreground="black")
             menu_4.configure(background="white", foreground="black")
             menu_6.configure(background="white", foreground="black")
-            menu_7.configure(background="white", foreground="black")
             menu_12.configure(background="white", foreground="black")
             menu_8.configure(background="white", foreground="black")
             menu_9.configure(background="white", foreground="black")
@@ -767,6 +774,7 @@ def ThemeSet(*colors):
 # [!?] Which means it might break stuff that was being saved when the function was called
 # [i] Can only be called from the Command Menu
 # [i] Ctrl + Shift + P and type 'ragequit'
+
 def quickway():
     """
     quickway instantly quits the app without any confirmation
@@ -779,6 +787,7 @@ def quickway():
     sys.exit()
 
 # [i] Setup (Lang files)
+
 def LanguageSet(language_set, root_win):
     """
     LanguageSet sets a new language as the setting
@@ -800,6 +809,7 @@ def LanguageSet(language_set, root_win):
         _LOG.write(f"{str(now())} - Cancel/No as response: OK\n")
 
 # [i] Notepad
+
 def new_window():
     """
     new_window loads the GUI for the Notepad plugin/tool
@@ -823,9 +833,10 @@ def new_window():
 
     newWindow.mainloop()
 
-def DOC_STATS():
+
+def document_status():
     """
-    DOC_STATS presents the stats of the current editor to the user
+    document_status presents the stats of the current editor to the user
 
     Stats:
     - No of lines
@@ -849,7 +860,10 @@ def DOC_STATS():
 
     mb.showinfo(lang[164], f"{lang[165]}: {str(lines)}")
 
+DOC_STATS = document_status
+
 # [i] Repo
+
 def repo():
     """
     repo sends the user to the official repository
@@ -909,6 +923,7 @@ class BackupSystem:
         self.__orig_folder_paths = (plugin_path, autoscr_path, config_path)
         self._main_dir = main_dir
 
+    
     def _zip_files(self, root_path: str):
         """
         _zip_files is responsible for creating the Backup file
@@ -934,6 +949,7 @@ class BackupSystem:
                         if "plugin_" in file_path:
                             self._folder_paths.append(f"plugins/{filename}")
 
+    
     def _extract_files(self, file_path: str):
         """
         _extract_files extracts the backup to the location where WriterClassic is stored
@@ -957,6 +973,7 @@ class BackupSystem:
 
             zip_file.extractall(self._main_dir)
 
+    
     def run_action(self, _type: Literal["zip", "extract", "make", "load", "create", "restore", "unzip"], root_win: Tk | Toplevel = desktop_win):
         """
         run_action runs an action related to either extracting or creating a backup
@@ -988,70 +1005,22 @@ class BackupSystem:
         else:
             mb.showerror(lang[1], lang[319])
 
-# [i] Clock
-# [!] Deprecated feature
-async def clockPlugin():
-    """
-    clockPlugin shows the current time on the screen
+# [i] Font Picker :)
 
-    XXX Deprecated feature because of its lack of purpose
-    """
+def PickFont(root: Tk | Toplevel = desktop_win, editor: ScrolledText = TextWidget, __dump_func = fast_dump, __sample: str = 'Lorem ipsum dolor sit amet, ...') -> Font | dict[bytes, bytes]:
+    global settings
 
-    clockWindow = Toplevel(desktop_win)
-    clockWindow.geometry('275x65')
-    clockWindow.resizable(False, False)
-    running = True
-    clockWindow.protocol("WM_DELETE_WINDOW", lambda: bool_swap(running))
-    _LOG.write(f"{str(now())} - A new window has been called: AWAITING CONFIGURATION\n")
+    font_details = dict(tkfontchooser.askfont(root, __sample, f"{lang[1]} - {lang[332]}", family=settings['font']['family'], size=settings['font']['size'], weight=settings['font']['weight'], slant=settings['font']['slant'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike']))
+    FontSet.configure(family=font_details['family'], size=font_details['size'], weight=font_details['weight'], slant=font_details['slant'], underline=font_details['underline'], overstrike=font_details['overstrike'])
 
-    # [i] Windowing
-    clockWindow.title(lang[23])
+    settings['font'] = font_details
+    __dump_func()
 
-    TextWidget2 = Label(clockWindow)
-    TextWidget2.configure(
-        font=(100)
-        )
+    editor.configure(font=FontSet)
 
-    while running:
-        await asyncio.sleep(0.01)
-        TextWidget2.configure(text=now())
-        TextWidget.pack()
+    return FontSet or font_details
 
-    _LOG.write(f"{str(now())} - Clock Plugin's window has been configured: OK\n")
-
-
-# [i] Text font
-def fontEdit(winType: int | bool):
-    """
-    fontEdit allows the user to easily change their font settings
-
-    If `winType` is 1 or True, the size will be changed.
-
-    Otherwise, the font setting itself will be modified.
-
-    Args:
-        winType (int | bool): controls whether the size or the font should be changed
-    """
-    if winType == 1:
-        fontSize = sdg.askinteger(lang[59], lang[60], minvalue=1)
-        if fontSize in NOT_ALLOWED:
-            mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
-        elif fontSize not in NOT_ALLOWED:
-            font_use["size"] = fontSize
-            settings["font"]["size"] = fontSize
-            fast_dump()
-            _LOG.write(f"{str(now())} - Font size has been changed to {str(fontSize)}: OK\n")
-            mb.showinfo(lang[1], lang[63])
-    else:
-        fontType = sdg.askstring(lang[61], lang[62])
-        if fontType in NOT_ALLOWED:
-            mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
-        elif fontType not in NOT_ALLOWED:
-            font_use["type"] = fontType
-            settings["font"]["type"] = fontType
-            fast_dump()
-            _LOG.write(f"{str(now())} - Font type has been changed to {str(fontType)}: OK\n")
-            mb.showinfo(lang[1], lang[63])
+# [!] fontEdit has been deprecated and removed in favor of PickFont
 
 # [i] clears the screen
 def NewFile():
@@ -1121,6 +1090,7 @@ file_types = [(lang[32], '*.txt'),
 _LOG.write(f"{str(now())} - Filetypes have been configured correctly: OK\n")
 
 # [i] functions to open a file
+
 def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
     """
     OpenFile opens a file selected from the following interface
@@ -1165,6 +1135,7 @@ def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
 
     finally:
         ic(NOW_FILE)
+
 
 def OpenFile(root_win: Tk = desktop_win):
     """
@@ -1223,6 +1194,7 @@ def OpenFile(root_win: Tk = desktop_win):
         ic(NOW_FILE)
 
 # [i] Saving as
+
 def SaveFile(root_win: Tk = desktop_win):
     """
     SaveFile saves the current file as
@@ -1269,6 +1241,7 @@ def SaveFile(root_win: Tk = desktop_win):
 
     OpenFileManually(NOW_FILE)
 
+
 def Save(root_win: Tk = desktop_win):
     """
     Save saves the current file
@@ -1312,6 +1285,7 @@ def Save(root_win: Tk = desktop_win):
     ic(NOW_FILE)
 
 # [*] Whatever... (File Eraser)
+
 def WipeFile(root_win: Tk = desktop_win):
     sureConfirm = mb.askyesno(title=lang[55], message=lang[56])
     if sureConfirm:
@@ -1338,8 +1312,10 @@ def WipeFile(root_win: Tk = desktop_win):
 
 desktop_entry = None
 
+
 def select_all(text_widget: ScrolledText = TextWidget):
     text_widget.tag_add("sel", 0.0, END)
+
 
 def search_for(replace: bool = False, index_a = INSERT, line_limit: int = 100):
     text = sdg.askstring(lang[1], lang[323])
@@ -1380,6 +1356,7 @@ def search_for(replace: bool = False, index_a = INSERT, line_limit: int = 100):
     else:
         mb.showwarning(lang[1], lang[328])
 
+
 def lorem_ipsum():
     TextWidget.insert(TextWidget.index(INSERT), """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque lobortis lacus nibh, ut mattis nisi cursus nec. In aliquam scelerisque eleifend. Suspendisse tempor sem ut ipsum imperdiet, a iaculis dui congue. In in ex massa. Aliquam in dignissim ligula. Mauris pretium mi at molestie feugiat. Cras quam ipsum, congue tempus erat id, rhoncus facilisis mauris. Nam augue nunc, porta ac vestibulum nec, euismod ac est. Duis consectetur risus eu justo pretium volutpat. Vestibulum fringilla purus velit, sed sagittis augue porta a. Vivamus vestibulum turpis ac quam eleifend, ut luctus eros placerat. Praesent pellentesque faucibus ligula, nec varius mi viverra ut. Mauris blandit vitae purus auctor imperdiet. Nullam non sem nisi.
 
@@ -1391,10 +1368,12 @@ In pulvinar gravida condimentum. Proin nec sem vitae urna egestas mollis nec vel
 
 Nam gravida nibh leo, eget tincidunt neque facilisis sed. Integer malesuada dui sit amet nulla cursus, eget porttitor nulla fringilla. Proin condimentum mattis posuere. Vivamus sit amet sem non felis aliquet vehicula vel a lorem. Nam accumsan tortor a mattis lacinia. Curabitur ultricies eros lacus, tempor pretium nibh laoreet vel. Curabitur a orci sit amet massa iaculis imperdiet. Phasellus porta aliquet nunc vitae vulputate. Ut non elementum nibh. Sed bibendum ultricies sapien eget dapibus. Pellentesque at lacus sed elit gravida dignissim. Phasellus eu tempus nisl. Suspendisse feugiat risus in laoreet fringilla. Nam sit amet purus laoreet, aliquam augue a, fringilla diam. """)
 
+
 def readme_writer_classic():
     with open(os.path.join(script_dir, "README.md"), "r", encoding='utf-8') as readme_wrcl_f:
         TextWidget.insert(TextWidget.index(INSERT), f"README.md (WriterClassic at GitHub; Markdown)\n{readme_wrcl_f.read()}")
         readme_wrcl_f.close()
+
 
 def ModifiedStatus(text_widget: ScrolledText = TextWidget, main_win: Tk | Toplevel = desktop_win) -> bool | None:
     global SAVE_STATUS, keys_to_go
@@ -1426,6 +1405,7 @@ rmb_menu.add_separator()
 rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
 rmb_menu.add_command(label="README.md", command=readme_writer_classic)
 
+
 def rmb_popup(event, root: Tk | Toplevel = desktop_win):
     x, y = 0, 0
     if event == None:
@@ -1449,6 +1429,7 @@ def rmb_popup(event, root: Tk | Toplevel = desktop_win):
 TextWidget.bind("<Button-3>", rmb_popup)
 
 # [!] Use this instead of the class DevOption!!!!
+
 def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
     """
     dev_option is the actual responsible for the developer options
@@ -1515,6 +1496,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
 # [!] Over all... a deprecated class lol
 class DevOption:
     # [!!] Deprecated function - only here for hmmmm... compatibility reasons?
+    
     def old_init(self, filetypes: str | tuple , programming_language: str, run_cmd: str, build_cmd: str, can_build: bool = False, can_run: bool = True) -> None:
         """
         old_init initializes the DevOption class
@@ -1537,6 +1519,7 @@ class DevOption:
         self.CAN_RUN = can_run
 
     # [!!] Another deprecated function
+    
     def _build(self) -> None:
         if not self.CAN_BUILD:
             return
@@ -1552,6 +1535,7 @@ class DevOption:
             os.system(self.build_cmd)
 
     # [!!] Ugh... one more yay!
+    
     def _run_code(self) -> None:
         if not self.CAN_RUN:
             return
@@ -1638,12 +1622,14 @@ def desktop_create_win():
     ButtB.pack()
 
 # [i] Credits
+
 def appCredits():
-    mb.showinfo(title=lang[28], message=lang[65])
+    mb.showinfo(title=lang[28], message=CREDITS)
     _LOG.write(f"{str(now())} - The Credits have been shown: OK\n")
 
 # /-/ Super Secret Easter Eggs
 # [!?] you saw nothin'
+
 def surprise_egg():
     askNow = sdg.askstring(lang[29], lang[66])
 
@@ -1656,12 +1642,16 @@ def surprise_egg():
         ic()
 
 # [i] The Help section
-def APP_HELP():
+
+def _help():
     simple_webbrowser.Website("https://mf366-coding.github.io/writerclassic.html#docs")
     _LOG.write(f"{str(now())} - Requested online help: AWAITING FOR CONNECTION\n")
     ic()
 
+APP_HELP = _help
+
 # [i] This is... well the About section
+
 def aboutApp():
     with open(f"{data_dir}/about.wclassic", mode="r", encoding='utf-8') as about_d:
         about_data = about_d.read()
@@ -1763,6 +1753,7 @@ def Tips_Tricks():
 
     ic()
 
+
 def resetWriter():
     global settings
 
@@ -1772,8 +1763,12 @@ def resetWriter():
     if askSOS:
         settings = {
             "font": {
-                "type": "Segoe UI",
-                "size": 12
+                "family":"Segoe UI",
+                "size": 12,
+                "weight": "normal",
+                "slant": "roman",
+                "underline": 0,
+                "overstrike": 0
             },
             "theme": {
                 "color": "black",
@@ -1809,6 +1804,7 @@ def resetWriter():
 
     ic(settings)
 
+
 def _terminal_get(entry_selection):
     _data = entry_selection.get()
 
@@ -1818,6 +1814,7 @@ def _terminal_get(entry_selection):
 
     ic(_data)
 
+
 def _trick_terminal(func, window):
     window.destroy()
 
@@ -1825,6 +1822,7 @@ def _trick_terminal(func, window):
     ic()
 
     _LOG.write(f"{str(now())} - Refreshed the Terminal Inputs: OK\n")
+
 
 def Terminal():
     terminal = Toplevel(desktop_win)
@@ -1847,6 +1845,7 @@ def Terminal():
 
 class InternetOnWriter:
     @staticmethod
+    
     def Website():
         askForLink = sdg.askstring(lang[80], lang[91])
         if askForLink != ' ' or askForLink != '':
@@ -1855,6 +1854,7 @@ class InternetOnWriter:
         ic()
 
     @staticmethod
+    
     def Search(engine):
         if engine == 'google':
             askForTyping = sdg.askstring(lang[83], lang[90])
@@ -1948,12 +1948,15 @@ class InternetOnWriter:
                 simple_webbrowser.GitLab(askForTyping)
                 _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on GitLab: OK\n")
 
+
 def lock_a_win(window: Tk = desktop_win):
     window.resizable(bool(window_lock_status.get()), bool(window_lock_status.get()))
+
 
 def plugin_help():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/wiki/Plugin-Setup")
     _LOG.write(f"{str(now())} - Requested help with the Plugin Central: OK\n")
+
 
 def article_md():
     simple_webbrowser.Website(url='https://github.com/MF366-Coding/WriterClassic/wiki/Manual-Configuration-Setup')
@@ -1961,6 +1964,7 @@ def article_md():
 
 
 class _Plugin:
+    
     def __init__(self, folder_name: str) -> None:
         """
         __init__ intializes the class _Plugin
@@ -1977,6 +1981,7 @@ class _Plugin:
         self.ICON_FILE = None
         self.ICON = None
 
+    
     def _get_files(self) -> None:
         try:
             versioning_file = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Versions.txt", timeout=3.5)
@@ -2047,6 +2052,7 @@ def install_plugin(**options):
         plugin = _Plugin(folder_name=str(questiony))
         plugin._get_files()
 
+
 def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: int = 1):
     """
     remove_action removes a directory related to WriterClassic
@@ -2111,6 +2117,7 @@ def execute(datay: int | str):
 
     run_a_plugin(datay)
 
+
 def remove_plugin():
     c = mb.askyesno(lang[311], lang[314])
 
@@ -2129,6 +2136,7 @@ def remove_plugin():
     except Exception as e:
         mb.showerror(lang[311], f"{lang[309]} '{os.path.join(plugin_dir, f'plugin_{datax}')}':\n{e}")
 
+
 def run_plugin():
     questionx = mb.askyesnocancel(title=lang[1], message=lang[218])
 
@@ -2142,6 +2150,7 @@ def run_plugin():
 
     execute(datay=datax)
 
+
 def clear_log_file():
     with open(os.path.join(user_data, "log.wclassic"), "w", encoding="utf-8") as f:
         f.write("""--
@@ -2149,6 +2158,7 @@ Log File
 --
 """)
         f.close()
+
 
 def clear_log_screen(text_interface):
     text_interface.delete(0.0, END)
@@ -2160,14 +2170,16 @@ def clear_log_screen(text_interface):
 
     _LOG.write(f"{str(now())} - Log File has been refreshed: OK\n")
 
+
 def do_nothing(event):
     event = 'break'
     return event
 
+
 def show_log():
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
-    _new_editor = ScrolledText(_new_window, background=theme["color"], foreground=theme["fg"], insertbackground=theme["ct"], font=("Calibri", 14), borderwidth=5)
+    _new_editor = ScrolledText(_new_window, background=theme["color"], foreground=theme["fg"], insertbackground=theme["ct"], font=FontSet, borderwidth=5)
     _new_editor.bind("<Key>", do_nothing)
     _new_window.title(lang[180])
     _new_editor.pack()
@@ -2184,38 +2196,9 @@ def show_log():
 
 ic(settings["dencrypt"])
 
-async def autosave():
-    return
-
-    if NOW_FILE == False or can_autosave.get() != 1:
-        ic('autosave() return None')
-        await asyncio.sleep(0.01)
-        return
-
-    can_autosave.set(0)
-    ic('Cannot autosave.')
-    await asyncio.sleep(autosave_cooldown)
-    ic('Can autosave.')
-    can_autosave.set(1)
-
-def autosave_config():
-    return
-
-    global autosave_cooldown
-
-    y = sdg.askfloat(lang[309], f"{lang[310]}\n{lang[311]}", initialvalue=60.0, minvalue=10.0, maxvalue=3600.0)
-
-    ic(y)
-
-    if y != None:
-        ic()
-        settings['autosave']['cooldown'] = y
-        autosave_cooldown = y
-        fast_dump()
-        return
-
 class SignaturePlugin:
     @staticmethod
+    
     def custom():
         with open(f"{config}/signature.wclassic", "r", encoding="utf-8") as SIGNATURE_FILE:
             signature = SIGNATURE_FILE.read()
@@ -2226,6 +2209,7 @@ class SignaturePlugin:
         _LOG.write(f"{str(now())} - The Custom signature has been inserted: OK\n")
 
     @staticmethod
+    
     def getx() -> str:
         with open(f"{config}/signature.wclassic", "r", encoding="utf-8") as SIGNATURE_FILE:
             signature = SIGNATURE_FILE.read()
@@ -2234,6 +2218,7 @@ class SignaturePlugin:
         return signature
 
     @staticmethod
+    
     def auto():
         username = getuser()
         transformed_username = username.title()
@@ -2245,6 +2230,7 @@ class SignaturePlugin:
         _LOG.write(f"{str(now())} - The Auto signature has been inserted: OK\n")
 
 backup_system = BackupSystem()
+
 
 def commandPrompt() -> None | bool:
     new = Toplevel(desktop_win)
@@ -2431,14 +2417,6 @@ desktop_win.bind('<KeyRelease>', lambda a:
 keyboard.on_press_key(93, lambda a:
     rmb_popup(None))
 
-def autosave_apply():
-    ic()
-    return
-
-    settings['autosave']['status'] = bool(can_autosave.get())
-    ic(settings['autosave'])
-    ic(bool(can_autosave.get()))
-    fast_dump()
 
 def close_confirm() -> None:
     ic()
@@ -2462,6 +2440,7 @@ def close_confirm() -> None:
 
 # [!] Deprecated way to call the closing of a window
 # [!?] Please use to close_confirm instead
+
 def on_closing():
     """
     on_closing asks for the user's confirmation before closing
@@ -2536,11 +2515,7 @@ menu_11.add_command(label=lang[29], command=surprise_egg, state='disabled')
 
 menu_1.add_command(label=lang[12], command=SetWinSize, accelerator="Ctrl + Shift + G")
 
-
-menu_7.add_command(label=lang[20], command=lambda:
-                        fontEdit(1))
-menu_7.add_command(label=lang[21], command=lambda:
-                        fontEdit(2))
+menu_1.add_command(label=lang[332], command=PickFont)
 
 menu_8.add_command(label=lang[22], command=new_window)
 '''
@@ -2641,11 +2616,6 @@ menu_13.add_command(label="Українська (Україна)", command=lambd
 '''
 
 menu_12.add_cascade(label=lang[198], menu=menu_13)
-'''
-menu_12.add_separator()
-menu_12.add_checkbutton(label=lang[307], variable=can_autosave, command=autosave_apply)
-menu_12.add_command(label=lang[308], command=autosave_config)
-'''
 menu_12.add_separator()
 menu_12.add_checkbutton(label=lang[298], variable=update_check_button, command=UpdateCheck.change)
 menu_12.add_separator()
@@ -2726,6 +2696,7 @@ if sys.platform == "win32":
 ic(settings["advanced-mode"])
 ic(settings["debugging"])
 
+
 def adv_change():
     settings["advanced-mode"] = bool(advanced_mode_status.get())
 
@@ -2736,6 +2707,7 @@ def adv_change():
 
 menu_12.add_separator()
 menu_12.add_checkbutton(label=lang[306], variable=advanced_mode_status, command=adv_change)
+
 
 def show_debug():
     if settings["debugging"]:
@@ -2748,6 +2720,7 @@ def show_debug():
     fast_dump()
 
     mb.showinfo(message=lang[63], title=lang[1])
+
 
 def dencrypt():
     def runx(pathx: str, parameters: str):
@@ -2789,6 +2762,7 @@ def dencrypt():
 
     new.mainloop()
 
+
 def readme_gen(*entries):
     _title = entries[0]
     _describe = entries[1]
@@ -2825,6 +2799,7 @@ def readme_gen(*entries):
     TextWidget.insert(chars=readme_generated, index=0.0)
 
     ic(readme_generated)
+
 
 def readme_gen_win():
     # [i] Window Creation
@@ -2876,6 +2851,7 @@ def readme_gen_win():
 
     window.mainloop()
 
+
 def open_with_adv():
     window = Toplevel(desktop_win)
     window.title(f"{lang[1]} - {lang[254]}")
@@ -2917,6 +2893,7 @@ def open_with_adv():
 
     window.mainloop()
 
+
 def send_email_with_attachment(win, signa: bool, sender_email: str, sender_password: str, recipient_email: str, subject: str, body: str):
     win.destroy()
 
@@ -2951,6 +2928,7 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
 
     server.quit()
 
+
 def message_write(mail: str, pwd: str, _variable, win):
     win.destroy()
 
@@ -2977,7 +2955,7 @@ def message_write(mail: str, pwd: str, _variable, win):
     entry_1 = Entry(window, font=("Noto Sans", 13))
     entry_2 = Entry(window, font=("Noto Sans", 13))
 
-    text_1 = ScrolledText(window, borderwidth=5, font=(font_use["type"], font_use["size"]), insertbackground=theme["ct"], foreground=theme["fg"], background=theme["color"], height=10)
+    text_1 = ScrolledText(window, borderwidth=5, font=FontSet, insertbackground=theme["ct"], foreground=theme["fg"], background=theme["color"], height=10)
 
     butt_1 = Button(window, text=lang[241], command=lambda:
         send_email_with_attachment(window, False, mail, pwd, entry_2.get(), entry_1.get(), text_1.get(0.0, END)))
@@ -3043,6 +3021,7 @@ def adv_login():
 
     window.mainloop()
 
+
 def show_advV():
     mb.showinfo(lang[1], f"{lang[230]} {advV}.")
     ic(advV)
@@ -3063,12 +3042,9 @@ try:
         menu_10.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_11.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_1.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_2.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_3.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_5.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_4.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_6.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_7.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_12.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
@@ -3087,12 +3063,9 @@ except TclError:
         menu_10.configure(background="white", foreground="black")
         menu_11.configure(background="white", foreground="black")
         menu_1.configure(background="white", foreground="black")
-        menu_2.configure(background="white", foreground="black")
-        menu_3.configure(background="white", foreground="black")
         menu_5.configure(background="white", foreground="black")
         menu_4.configure(background="white", foreground="black")
         menu_6.configure(background="white", foreground="black")
-        menu_7.configure(background="white", foreground="black")
         menu_12.configure(background="white", foreground="black")
         menu_8.configure(background="white", foreground="black")
         menu_9.configure(background="white", foreground="black")
@@ -3113,7 +3086,6 @@ menu_4.add_cascade(label=lang[19], menu=menu_6)
 menu_4.add_separator()
 menu_4.add_command(label=lang[153], command=lambda:
     simple_webbrowser.Website(url="https://github.com/MF366-Coding/WriterClassic-ExtraThemes"))
-menu_1.add_cascade(label=lang[14], menu=menu_7)
 menu_bar.add_cascade(label=lang[4], menu=menu_8)
 menu_bar.add_cascade(label=lang[79], menu=menu_9)
 menu_bar.add_cascade(label=lang[5], menu=menu_12)
