@@ -1,7 +1,11 @@
 {
     "font": {
-        "type": "Segoe UI",
-        "size": 12
+        "family": "Segoe UI",
+        "size": 12,
+        "weight": "normal",
+        "slant": "roman",
+        "underline": 0,
+        "overstrike": 0
     },
     "theme": {
         "color": "#020202",

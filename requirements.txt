@@ -5,3 +5,4 @@ Pillow==10.2.0
 pyperclip==1.8.2
 Requests==2.31.0
 simple_webbrowser==0.1.4
+tkfontchooser==2.0.2
