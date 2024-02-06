@@ -193,7 +193,7 @@ except (ModuleNotFoundError, ImportError) as e:
     import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
 
     import tkfontchooser # [i] used for the new Font picker
-
+    
     import pyperclip as pyclip # [i] Used to copy and paste
 
     import markdown2 # [i] Used to make HTML files from Markdown
@@ -277,12 +277,6 @@ def clip_actions(__id: Literal['copy', 'paste'], __s: str = '') -> str:
 
         case _:
             raise WrongClipboardAction('Can only copy or paste.')
-
-UNIX_OSES = [
-            "darwin",
-            "linux",
-            "linux2"
-        ]
 
 NOT_ALLOWED = [
     "",
@@ -397,9 +391,13 @@ def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: Sc
 
     except Exception:
         selection = INSERT
+        
+        if __action in ('copy', 'cut'):
+            return ''
+        
         __action = 'paste'
 
-    if __action == 'copy' or __action == 'cut':
+    if __action in ('copy', 'cut'):
         clip_actions('copy', selection)
 
         if __action == 'cut':
@@ -556,14 +554,6 @@ menu_17 = Menu(menu_15)
 
 _LOG.write(f"{str(now())} - Created all the menus: OK\n")
 
-if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
-    auto_content = open(os.path.join(scripts_dir, "auto.wscript"), "r", encoding="utf-8").read()
-
-    _run_auto = mb.askyesno(lang[1], f"{lang[289]}\n{lang[290]}\n{lang[291]}")
-
-    if _run_auto == True:
-        exec(auto_content)
-
 WCLASSIC_VARS: dict[str, str] = {
     "$APPDATA": os.environ.get('APPDATA') if sys.platform == 'win32' else "$APPDATA",
     "$LOCALAPPDATA": os.environ.get('LOCALAPPDATA') if sys.platform == 'win32' else "$LOCALAPPDATA",
@@ -597,7 +587,6 @@ def writeStartup(text: bool):
 # [i] Check for Updates
 class UpdateCheck:
     @staticmethod
-    
     def check_other():
         """
         check_other checks for updates on startup only
@@ -615,7 +604,6 @@ class UpdateCheck:
             return
 
     @staticmethod
-    
     def check():
         """
         check checks for updates whenever the user clicks Check for Updates
@@ -636,7 +624,6 @@ class UpdateCheck:
             _LOG.write(f"{str(now())} - Couldn't check for updates (Bad Internet, Connection Timeout, Restricted Internet): WARNING\n")
 
     @staticmethod
-    
     def change():
         """
         change swaps the current value of the startup setting
@@ -647,9 +634,18 @@ class UpdateCheck:
 
 if startApp == '1':
     UpdateCheck.check_other()
-    _LOG.write(f"{str(now())} - Checked for updates on startup: AWAITING REPLY\n")
+    _LOG.write(f"{str(now())} - Checked for updates on startup: AWAITING REPLY\n") 
 
-# [i] Windowing... one more time...
+# [*] Auto WSCRIPTs
+if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
+    with open(os.path.join(scripts_dir, "auto.wscript"), "r", encoding="utf-8") as f:
+        auto_content = f.read()
+        f.close()
+
+    _run_auto = mb.askyesno(lang[1], f"{lang[289]}\n{lang[290]}\n{lang[291]}")
+    
+    if _run_auto == True:
+        exec(auto_content)
 
 def SetWinSize():
     """
@@ -908,48 +904,39 @@ def bool_swap(value: bool | None, default_for_none: bool = True):
     return value
 
 class BackupSystem:
-    def __init__(self, plugin_path: str = plugin_dir, autoscr_path: str = scripts_dir, config_path: str = config, main_dir: str = script_dir) -> None:
+    def __init__(self, autoscr_path: str = scripts_dir, config_path: str = config, main_dir: str = script_dir) -> None:
         """
         __init__ is the initializer for the BackupSystem
 
         Args:
-            plugin_path (str, optional): the path where plugins are stored. Defaults to plugin_dir.
             autoscr_path (str, optional): the path where auto scripts are stored. Defaults to scripts_dir.
             config_path (str, optional): the path where the settings are saved. Defaults to config.
             main_dir (str, optional): the dir where WriterClassic is stored. Defaults to script_dir.
         """
 
-        self._folder_paths = [plugin_path, autoscr_path, config_path]
-        self.__orig_folder_paths = (plugin_path, autoscr_path, config_path)
+        self._folder_paths = (autoscr_path, config_path)
         self._main_dir = main_dir
 
     
     def _zip_files(self, root_path: str):
         """
-        _zip_files is responsible for creating the Backup file
-
-        Args:
-            root_path (str): directory where the zip file will be saved
+        Internal function.
         """
-
+        
         with zipfile.ZipFile(os.path.join(root_path, f"Backup_WriterClassic_{datetime.datetime.now().day}-{datetime.datetime.now().month}-{datetime.datetime.now().year}.zip"), 'w') as zip_file:
             for folder_path in self._folder_paths:
-                if "plugin_" in folder_path:
-                    arcname = folder_path
-                else:
-                    arcname = os.path.basename(folder_path)
+                arcname = os.path.basename(folder_path)
+                
                 zip_file.write(folder_path, arcname=arcname)
+                
                 for filename in os.listdir(folder_path):
                     file_path = os.path.join(folder_path, filename)
+                    
                     if os.path.isfile(file_path):
                         zip_file.write(file_path, arcname=os.path.join(arcname, filename))
 
-                    elif os.path.isdir(file_path) and '__pycache__' not in file_path:
-                        zip_file.write(file_path, arcname=os.path.join(arcname, filename))
-                        if "plugin_" in file_path:
-                            self._folder_paths.append(f"plugins/{filename}")
+            zip_file.close()
 
-    
     def _extract_files(self, file_path: str):
         """
         _extract_files extracts the backup to the location where WriterClassic is stored
@@ -959,7 +946,7 @@ class BackupSystem:
         """
 
         with zipfile.ZipFile(file_path, 'r') as zip_file:
-            for path_to_remove in self.__orig_folder_paths:
+            for path_to_remove in self._folder_paths:
                 try:
                     if sys.platform == "win32":
                         os.system(f'rmdir /s /q {path_to_remove}')
