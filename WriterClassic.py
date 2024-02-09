@@ -53,7 +53,7 @@ Powered by: Python 3.10+
 # [*] Importing some of the builtin goodies
 import os, sys, json, random, datetime, platform
 
-from typing import Literal, SupportsFloat # [i] Making things nicer, I guess
+from typing import Literal, SupportsFloat, Any # [i] Making things nicer, I guess
 
 from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
 
@@ -97,18 +97,9 @@ locale = os.path.join(script_dir, 'locale')
 temp_dir = os.path.join(script_dir, 'temp')
 scripts_dir = os.path.join(script_dir, "scripts")
 
-def now() -> str:
-    """
-    now returns the current time and date in the form of a string
+now = datetime.datetime.now
 
-    This is simply an easier way to call `datetime.datetime.now()`
-
-    Returns:
-        str: the current date and time
-    """
-    return datetime.datetime.now()
-
-def check_paths(var) -> str:
+def check_paths(var: str) -> str:
     """
     check_paths checks if the directories exist
 
@@ -157,8 +148,6 @@ try:
 
     import pyperclip as pyclip # [i] used for the clipboard options
 
-    import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
-
     import markdown2 # [i] Used to make HTML files from Markdown
 
     import simple_webbrowser # [i] My own Python module (used for the Search with... options)
@@ -205,7 +194,7 @@ tracemalloc.start()
 
 ic.configureOutput(prefix="ic debug statement | -> ")
 
-def clamp(val: SupportsFloat, _min: SupportsFloat, _max: SupportsFloat):
+def clamp(val: SupportsFloat, _min: SupportsFloat, _max: SupportsFloat) -> SupportsFloat:
     """
     clamp clamps and returns a value
 
@@ -383,6 +372,17 @@ advV ="v10.4.0.278"
 
 
 def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: ScrolledText = TextWidget) -> str:
+    """
+    advanced_clipping sends something to the clipboard based on the GUI
+
+    Args:
+        __action ('copy', 'paste', 'cut'): the clipboard action to perform
+        text_widget (ScrolledText, optional): the ScrolledText widget that gets affected by the 'paste' and 'cut' operations. Defaults to TextWidget.
+
+    Returns:
+        str: either the value of a copy/paste operation or an empty string
+    """
+    
     selection: str = ''
 
     try:
@@ -571,7 +571,6 @@ WCLASSIC_VARS: dict[str, str] = {
     "$OS": os.name
 }
 
-
 def writeStartup(text: bool):
     """
     writeStartup changes the startup value on the settings and then saves it
@@ -586,36 +585,39 @@ def writeStartup(text: bool):
 
 # [i] Check for Updates
 class UpdateCheck:
-    @staticmethod
-    def check_other():
+    def __init__(self, app_version: str = appV, ignore_checks: bool = IGNORE_CHECKING, latest_v: Any = latest_version):
+        self.app_version = app_version
+        self.ignore_checks = ignore_checks
+        self.latest = latest_v
+    
+    def check_startup(self):
         """
-        check_other checks for updates on startup only
+        check_startup checks for updates on startup only
         """
 
-        if appV != latest_version and IGNORE_CHECKING == False:
+        if self.app_version != self.latest and self.ignore_checks == False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             _LOG.write(f"{str(now())} - Versions don't match: WARNING\n")
             if askForUpdate:
                 simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
                 _LOG.write(f"{str(now())} - Went to the latest release at GitHub: OK\n")
 
-        elif IGNORE_CHECKING == True:
+        elif self.ignore_checks == True:
             _LOG.write(f"{str(now())} - Couldn't check for updates on startup: WARNING\n")
             return
 
-    @staticmethod
-    def check():
+    def manual_check(self):
         """
-        check checks for updates whenever the user clicks Check for Updates
+        manual_check checks for updates when the user clicks 'Check for Updates'
         """
 
-        if appV != latest_version and IGNORE_CHECKING == False:
+        if self.app_version != self.latest and self.ignore_checks == False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             if askForUpdate:
                 _LOG.write(f"{str(now())} - Went to the latest release at GitHub: OK\n")
                 simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
 
-        elif appV == latest_version and IGNORE_CHECKING == False:
+        elif self.app_version == self.latest and self.ignore_checks == False:
             mb.showinfo(title=lang[93], message=lang[92])
             _LOG.write(f"{str(now())} - Versions match | WriterClassic is up to date: OK\n")
 
@@ -623,17 +625,18 @@ class UpdateCheck:
             mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
             _LOG.write(f"{str(now())} - Couldn't check for updates (Bad Internet, Connection Timeout, Restricted Internet): WARNING\n")
 
-    @staticmethod
-    def change():
+    def change_setting():
         """
-        change swaps the current value of the startup setting
+        change_setting swaps the current value of the startup setting
         """
         writeStartup(bool(update_check_button.get()))
         mb.showinfo(title=lang[1], message=lang[101])
         _LOG.write(f"{str(now())} - Check for updates on startup setting has been changed: OK\n")
 
+update_check = UpdateCheck()
+
 if startApp == '1':
-    UpdateCheck.check_other()
+    update_check.check_startup()
     _LOG.write(f"{str(now())} - Checked for updates on startup: AWAITING REPLY\n") 
 
 # [*] Auto WSCRIPTs
@@ -775,8 +778,9 @@ def quickway():
     """
     quickway instantly quits the app without any confirmation
 
-    Not recommended at all!
+    XXX Not recommended at all!
     """
+    
     _LOG.write(f"{str(now())} - End of session: QUIT\n")
     _LOG.close()
     desktop_win.destroy()
@@ -1392,20 +1396,16 @@ rmb_menu.add_separator()
 rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
 rmb_menu.add_command(label="README.md", command=readme_writer_classic)
 
+class XYEvent:
+    def __init__(self, x: SupportsFloat, y: SupportsFloat):
+        self.x_root = x
+        self.y_root = y
+        
+    def update(self, params: tuple[int]):
+        self.x_root, self.y_root = params
 
 def rmb_popup(event, root: Tk | Toplevel = desktop_win):
-    x, y = 0, 0
-    if event == None:
-        x, y = root.winfo_pointerxy()
-
-        window_x = root.winfo_rootx()
-        window_y = root.winfo_rooty()
-
-        x = clamp(x, window_x, root.winfo_width() - 50)
-        y = clamp(y, window_y, root.winfo_height() - 5)
-
-    else:
-        x, y = event.x_root, event.y_root
+    x, y = event.x_root, event.y_root
 
     try:
         rmb_menu.tk_popup(x, y)
@@ -1415,13 +1415,9 @@ def rmb_popup(event, root: Tk | Toplevel = desktop_win):
 
 TextWidget.bind("<Button-3>", rmb_popup)
 
-# [!] Use this instead of the class DevOption!!!!
-
 def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
     """
     dev_option is the actual responsible for the developer options
-
-    Not to be confused with DevOption, the deprecated module, also in this file!
 
     Args:
         prog_lang (str): The programming language to use
@@ -1480,63 +1476,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
         case _:
             return
 
-# [!] Over all... a deprecated class lol
-class DevOption:
-    # [!!] Deprecated function - only here for hmmmm... compatibility reasons?
-    
-    def old_init(self, filetypes: str | tuple , programming_language: str, run_cmd: str, build_cmd: str, can_build: bool = False, can_run: bool = True) -> None:
-        """
-        old_init initializes the DevOption class
-
-        Args:
-            filetypes (str | tuple): Filetype(s) that is/are assigned to that programming language
-            programming_language (str): The actual programming language
-            run_cmd (str): The command you use to run the code
-            build_cmd (str): The command you use to build the code without running
-            can_build (bool, optional): Can the code be built? Defaults to False.
-            can_run (bool, optional): Can the code run without building it? Defaults to True.
-        """
-
-        self.filetypes = filetypes
-        self.programming_lang = programming_language
-        self.build_cmd = build_cmd
-        self.run_cmd = run_cmd
-
-        self.CAN_BUILD = can_build
-        self.CAN_RUN = can_run
-
-    # [!!] Another deprecated function
-    
-    def _build(self) -> None:
-        if not self.CAN_BUILD:
-            return
-
-        if not NOW_FILE:
-            mb.showerror(lang[1], lang[239])
-
-        if type(self.filetypes) == str:
-            self.filetypes = (self.filetypes)
-
-        if NOW_FILE.strip().endswith(self.filetypes):
-            os.system(f'cd "{os.path.dirname(NOW_FILE)}"')
-            os.system(self.build_cmd)
-
-    # [!!] Ugh... one more yay!
-    
-    def _run_code(self) -> None:
-        if not self.CAN_RUN:
-            return
-
-        if not NOW_FILE:
-            mb.showerror(lang[1], lang[239])
-
-        if type(self.filetypes) == str:
-            self.filetypes = (self.filetypes)
-
-        if NOW_FILE.strip().endswith(self.filetypes):
-            os.system(f'cd "{os.path.dirname(NOW_FILE)}"')
-            os.system(self.run_cmd)
-
+# [!] DevOption has been removed since it was deprecated
 
 def desktop_create(pycommand: str):
     """
@@ -1758,11 +1698,11 @@ def resetWriter():
                 "overstrike": 0
             },
             "theme": {
-                "color": "black",
+                "color": "#020202",
                 "ct": "white",
-                "fg": "white",
-                "mfg": "black",
-                "menu": "dark grey"
+                "fg": "#fcfcfc",
+                "mfg": "#f4f8f8",
+                "menu": "black"
             },
             "advanced-mode": False,
             "startup": True,
@@ -1830,115 +1770,122 @@ def Terminal():
 
     terminal.mainloop()
 
+class InvalidEngine(Exception): ...
+
 class InternetOnWriter:
-    @staticmethod
+    def __init__(self, autoraise: bool = True):
+        self.AUTORAISE = autoraise
     
-    def Website():
+    def Website(self, new: Literal[0, 1, 2] = 0):
         askForLink = sdg.askstring(lang[80], lang[91])
+        
         if askForLink != ' ' or askForLink != '':
-            simple_webbrowser.Website(askForLink)
+            simple_webbrowser.Website(askForLink, new, self.AUTORAISE)
             _LOG.write(f"{str(now())} - Went to {str(askForLink)} via WriterClassic: OK\n")
+        
         ic()
 
-    @staticmethod
-    
-    def Search(engine):
-        if engine == 'google':
-            askForTyping = sdg.askstring(lang[83], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.Google(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Google: OK\n")
+    def Search(self, engine: Literal['google', 'bing', 'ysearch', 'ddgo', 'yt', 'ecosia', 'stack', 'soundcloud', 'archive', 'qwant', 'spotify', 'brave', 'github', 'gitlab']):
+        match engine:
+            case 'google':
+                askForTyping = sdg.askstring(lang[83], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.Google(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Google: OK\n")
 
-        elif engine == 'bing':
-            askForTyping = sdg.askstring(lang[82], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.Bing(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Bing: OK\n")
+            case 'bing':
+                askForTyping = sdg.askstring(lang[82], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.Bing(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Bing: OK\n")
 
-        elif engine == 'ysearch':
-            # [i] stands for Yahoo!
-            askForTyping = sdg.askstring(lang[85], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.Yahoo(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Yahoo!: OK\n")
+            case 'ysearch':
+                # [i] stands for Yahoo!
+                askForTyping = sdg.askstring(lang[85], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.Yahoo(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Yahoo!: OK\n")
 
-        elif engine == 'ddgo':
-            # [i] stands for DuckDuckGo
-            askForTyping = sdg.askstring(lang[84], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.DuckDuckGo(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on DuckDuckGo: OK\n")
+            case 'ddgo':
+                # [i] stands for DuckDuckGo
+                askForTyping = sdg.askstring(lang[84], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.DuckDuckGo(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on DuckDuckGo: OK\n")
 
-        elif engine == "yt":
-            # [i] stands for YouTube
-            askForTyping = sdg.askstring(lang[99], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.YouTube(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on YouTube: OK\n")
+            case "yt":
+                # [i] stands for YouTube
+                askForTyping = sdg.askstring(lang[99], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.YouTube(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on YouTube: OK\n")
 
-        elif engine == "ecosia":
-            askForTyping = sdg.askstring(lang[98], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.Ecosia(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Ecosia: OK\n")
+            case "ecosia":
+                askForTyping = sdg.askstring(lang[98], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.Ecosia(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Ecosia: OK\n")
 
-        elif engine == "stack":
-            # [i] stands for Stack Overflow
-            askForTyping = sdg.askstring(lang[100], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.StackOverflow(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on StackOverflow: OK\n")
+            case "stack":
+                # [i] stands for Stack Overflow
+                askForTyping = sdg.askstring(lang[100], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.StackOverflow(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on StackOverflow: OK\n")
 
-        elif engine == "soundcloud":
-            askForTyping = sdg.askstring(lang[104], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.SoundCloud(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on SoundCloud: OK\n")
+            case "soundcloud":
+                askForTyping = sdg.askstring(lang[104], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.SoundCloud(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on SoundCloud: OK\n")
 
-        elif engine == "archive":
-            # [i] stands for The Internet Archive
-            askForTyping = sdg.askstring(lang[109], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.Archive(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on The Internet Archive: OK\n")
+            case "archive":
+                # [i] stands for The Internet Archive
+                askForTyping = sdg.askstring(lang[109], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.Archive(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on The Internet Archive: OK\n")
 
-        elif engine == "qwant":
-            # [i] stands for Qwant.com
-            askForTyping = sdg.askstring(lang[108], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.Qwant(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Qwant: OK\n")
+            case "qwant":
+                # [i] stands for Qwant.com
+                askForTyping = sdg.askstring(lang[108], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.Qwant(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Qwant: OK\n")
 
-        elif engine == "spotify":
-            # [i] stands for Spotify Online
-            askForTyping = sdg.askstring(lang[126], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.SpotifyOnline(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Spotify Online: OK\n")
+            case "spotify":
+                # [i] stands for Spotify Online
+                askForTyping = sdg.askstring(lang[126], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.SpotifyOnline(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Spotify Online: OK\n")
 
-        elif engine == 'brave':
-            # [i] stands for Brave Search
-            askForTyping = sdg.askstring(lang[139], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.Brave(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Brave Search: OK\n")
+            case 'brave':
+                # [i] stands for Brave Search
+                askForTyping = sdg.askstring(lang[139], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.Brave(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Brave Search: OK\n")
 
-        elif engine == "github":
-            askForTyping = sdg.askstring(lang[170], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.GitHub(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on GitHub: OK\n")
+            case "github":
+                askForTyping = sdg.askstring(lang[170], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.GitHub(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on GitHub: OK\n")
 
-        elif engine == "gitlab":
-            askForTyping = sdg.askstring(lang[172], lang[90])
-            if askForTyping != '':
-                simple_webbrowser.GitLab(askForTyping)
-                _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on GitLab: OK\n")
+            case "gitlab":
+                askForTyping = sdg.askstring(lang[172], lang[90])
+                if askForTyping != '':
+                    simple_webbrowser.GitLab(askForTyping)
+                    _LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on GitLab: OK\n")
 
+            case _:
+                raise InvalidEngine('Invalid search engine for InternetOnWriter.')
+
+internet_plugin = InternetOnWriter()
 
 def lock_a_win(window: Tk = desktop_win):
     window.resizable(bool(window_lock_status.get()), bool(window_lock_status.get()))
-
 
 def plugin_help():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/wiki/Plugin-Setup")
@@ -1950,14 +1897,13 @@ def article_md():
     _LOG.write(f"{str(now())} - Requested help with the Manual Configuration: OK\n")
 
 
-class _Plugin:
-    
+class Plugin:
     def __init__(self, folder_name: str) -> None:
         """
-        __init__ intializes the class _Plugin
+        __init__ intializes the class Plugin
 
         Args:
-            folder_name (str): the name of the folder, to be honest
+            folder_name (str): the name of the folder
         """
         self.FOLDER_URL = folder_name
         # --
@@ -1970,6 +1916,10 @@ class _Plugin:
 
     
     def _get_files(self) -> None:
+        """
+        Internal function.
+        """
+        
         try:
             versioning_file = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Versions.txt", timeout=3.5)
 
@@ -2021,11 +1971,11 @@ class _Plugin:
                 # [!?] Delete the downloaded zip file
                 os.remove(zip_filepath)
 
-
 def install_plugin(**options):
     """
-    install_plugin installs a plugin using _Plugin
+    install_plugin installs a plugin using Plugin
     """
+    
     questiony = None
 
     try:
@@ -2036,7 +1986,7 @@ def install_plugin(**options):
         questiony = sdg.askstring(lang[1], f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
 
     finally:
-        plugin = _Plugin(folder_name=str(questiony))
+        plugin = Plugin(folder_name=str(questiony))
         plugin._get_files()
 
 
@@ -2184,40 +2134,107 @@ def show_log():
 ic(settings["dencrypt"])
 
 class SignaturePlugin:
-    @staticmethod
+    def __init__(self, path_to_sig: str = os.path.join(config, 'signature.wclassic')):
+        """
+        __init__ initializes an instance of the signature plugin
+
+        Args:
+            path_to_sig (str, optional): the path to the signature file. Defaults to os.path.join(config, 'signature.wclassic').
+        """
+        
+        self.SIGNATURE: str = ''
+        self.USERNAME: str = ''
+        self._gather_data(path_to_sig)
+        
+    def _gather_data(self, path) -> tuple[str, str]:
+        """
+        Internal function.
+
+        Returns:
+            tuple[str, str]: custom signature, current username
+        """
+        
+        with open(path, "r", encoding="utf-8") as sig_file:
+            self.SIGNATURE = sig_file.read()
+            sig_file.close()
+
+        self.USERNAME = getuser().title()
+        
+        return self.SIGNATURE, self.USERNAME
     
-    def custom():
-        with open(f"{config}/signature.wclassic", "r", encoding="utf-8") as SIGNATURE_FILE:
-            signature = SIGNATURE_FILE.read()
-            SIGNATURE_FILE.close()
+    def _insert_custom(self, pos = END, widget: ScrolledText = TextWidget):
+        """
+        Internal function.
+        """
+        
+        widget.insert(pos, f"\n\n{self.SIGNATURE}")
+    
+    def custom(self, **params: str | ScrolledText):
+        """
+        custom inserts a custom signature
 
-        TextWidget.insert(END, f"\n\n{str(signature)}")
-
+        Optional key args:
+            - pos: the position to insert the signature, defaults to `tkinter.END` a.k.a. `Literal['end']` or `'end'`
+            - widget: the Text-like widget where the signature should be inserted, defaults to `TextWidget`
+        """
+        
+        if 'pos' not in params:
+            params['pos'] = END
+            
+        if 'widget' not in params:
+            params['widget'] = TextWidget
+        
+        self._insert_custom(pos=params['pos'], widget=params['widget'])
+        
         _LOG.write(f"{str(now())} - The Custom signature has been inserted: OK\n")
 
-    @staticmethod
+    def _get_details(self) -> tuple[str, str]:
+        """
+        Internal function.
+        """
+        
+        return self.SIGNATURE, self.USERNAME
     
-    def getx() -> str:
-        with open(f"{config}/signature.wclassic", "r", encoding="utf-8") as SIGNATURE_FILE:
-            signature = SIGNATURE_FILE.read()
-            SIGNATURE_FILE.close()
+    def get_custom_sig(self) -> str:
+        """
+        get_custom_sig returns the custom signature
 
-        return signature
+        Returns:
+            str: custom signature via `SignaturePlugin._get_details()` (internal function)
+        """
+        
+        return self._get_details()[0]
 
-    @staticmethod
+    def _insert_auto(self, pos = END, widget: ScrolledText = TextWidget):
+        """
+        Internal function.
+        """
+        
+        _signature = f"--\n{lang[132]}\n{self.USERNAME}"
+
+        widget.insert(pos, f"\n\n{_signature}")
     
-    def auto():
-        username = getuser()
-        transformed_username = username.title()
+    def auto(self, **params: str | ScrolledText):
+        """
+        auto inserts an auto signature
 
-        signature = f"--\n{lang[132]}\n{transformed_username}"
-
-        TextWidget.insert(END, f"\n\n{str(signature)}")
-
-        _LOG.write(f"{str(now())} - The Auto signature has been inserted: OK\n")
-
+        Optional key args:
+            - pos: the position to insert the signature, defaults to `tkinter.END` a.k.a. `Literal['end']` or `'end'`
+            - widget: the Text-like widget where the signature should be inserted, defaults to `TextWidget`
+        """
+        
+        if 'pos' not in params:
+            params['pos'] = END
+            
+        if 'widget' not in params:
+            params['widget'] = TextWidget
+        
+        self._insert_auto(pos=params['pos'], widget=params['widget'])
+        
+        _LOG.write(f"{str(now())} - The Custom signature has been inserted: OK\n")
+        
 backup_system = BackupSystem()
-
+signature_plugin = SignaturePlugin()
 
 def commandPrompt() -> None | bool:
     new = Toplevel(desktop_win)
@@ -2255,7 +2272,7 @@ def commandPrompt() -> None | bool:
             "Tools:ReadmeGen": readme_gen_win,
             "Tools:D3Ncryp7": dencrypt,
             "Advanced:Dencrypt": dencrypt,
-            "Software:Version": UpdateCheck.check,
+            "Software:Version": update_check.manual_check,
             "Advanced:Version": show_advV,
             "File:OpenWith": open_with_adv,
             "Advanced:Open": open_with_adv,
@@ -2274,7 +2291,7 @@ def commandPrompt() -> None | bool:
             "Software:Tips": Tips_Tricks,
             "Settings:Reset": resetWriter,
             "Tools:Terminal": Terminal,
-            "Internet:Website": InternetOnWriter.Website,
+            "Internet:Website": internet_plugin.Website,
             "File:Reload": reload_file,
             "Settings:Backup": lambda: backup_system.run_action("zip"),
             "Settings:Load": lambda: backup_system.run_action('unzip')
@@ -2339,6 +2356,12 @@ desktop_win.bind('<Control-i>', lambda a:
 desktop_win.bind('<F1>', lambda a:
     APP_HELP())
 
+desktop_win.bind('<F4>', lambda a:
+    Terminal())
+
+desktop_win.bind('<F5>', lambda a:
+    OpenFileManually('' if NOW_FILE is False else NOW_FILE))
+
 desktop_win.bind('<Control-d>', lambda a:
     ThemeSet('#020202', '#fcfcfc', 'white', 'black', '#f4f8f8'))
 
@@ -2349,6 +2372,9 @@ desktop_win.bind('<Control-G>', lambda a:
     SetWinSize())
 
 desktop_win.bind('<Control-P>', lambda a:
+    commandPrompt())
+
+desktop_win.bind('<Control-greater>', lambda a:
     commandPrompt())
 
 '''
@@ -2398,12 +2424,16 @@ desktop_win.bind('<Control-F12>', lambda a:
 desktop_win.bind('<Control-a>', lambda a:
     select_all())
 
-desktop_win.bind('<KeyRelease>', lambda a:
+event_main = XYEvent(TextWidget.winfo_rootx(), TextWidget.winfo_rooty())
+
+TextWidget.bind('<KeyRelease>', lambda a:
     ModifiedStatus())
 
-keyboard.on_press_key(93, lambda a:
-    rmb_popup(None))
+desktop_win.bind('<Key>', lambda a:
+    event_main.update((TextWidget.winfo_rootx(), TextWidget.winfo_rooty())))
 
+TextWidget.bind('<App>', lambda a:
+    rmb_popup(event_main))
 
 def close_confirm() -> None:
     ic()
@@ -2483,7 +2513,7 @@ for i in range(len(QUICK_ACESS_DATA)):
 '''
 
 if startApp == "1":
-    menu_11.add_command(label=lang[75], command=UpdateCheck.check)
+    menu_11.add_command(label=lang[75], command=update_check.manual_check)
     menu_11.add_separator()
 menu_11.add_command(label=lang[25], command=aboutApp, accelerator="Ctrl + I")
 menu_11.add_command(label=lang[186], command=lambda:
@@ -2510,8 +2540,8 @@ menu_8.add_command(label=lang[23], command=clockPlugin, state="disabled")
 '''
 menu_8.add_command(label=lang[182], command=Terminal)
 menu_8.add_separator()
-menu_8.add_command(label=lang[131], command=SignaturePlugin.custom)
-menu_8.add_command(label=lang[130], command=SignaturePlugin.auto)
+menu_8.add_command(label=lang[131], command=signature_plugin.custom)
+menu_8.add_command(label=lang[130], command=signature_plugin.auto)
 menu_8.add_separator()
 menu_8.add_command(label=lang[10], command=lambda:
     WipeFile(desktop_win))
@@ -2521,40 +2551,40 @@ menu_8.add_command(label=lang[217], command=install_plugin)
 menu_8.add_command(label=lang[216], command=run_plugin)
 menu_8.add_command(label=lang[310], command=remove_plugin)
 
-menu_9.add_command(label=lang[81], command=InternetOnWriter.Website)
+menu_9.add_command(label=lang[81], command=internet_plugin.Website)
 menu_9.add_separator()
 menu_9.add_command(label=lang[87], command=lambda:
-    InternetOnWriter.Search('google'))
+    internet_plugin.Search('google'))
 menu_9.add_command(label=lang[86], command=lambda:
-    InternetOnWriter.Search('bing'))
+    internet_plugin.Search('bing'))
 menu_9.add_command(label=lang[89], command=lambda:
-    InternetOnWriter.Search('ysearch'))
+    internet_plugin.Search('ysearch'))
 menu_9.add_command(label=lang[88], command=lambda:
-    InternetOnWriter.Search('ddgo'))
+    internet_plugin.Search('ddgo'))
 menu_9.add_command(label=lang[138], command=lambda:
-    InternetOnWriter.Search("brave"))
+    internet_plugin.Search("brave"))
 menu_9.add_command(label=lang[95], command=lambda:
-    InternetOnWriter.Search("ecosia"))
+    internet_plugin.Search("ecosia"))
 menu_9.add_command(label=lang[106], command=lambda:
-    InternetOnWriter.Search("qwant"))
+    internet_plugin.Search("qwant"))
 menu_9.add_separator()
 menu_9.add_command(label=lang[97], command=lambda:
-    InternetOnWriter.Search("stack"))
+    internet_plugin.Search("stack"))
 menu_9.add_separator()
 menu_9.add_command(label=lang[96], command=lambda:
-    InternetOnWriter.Search("yt"))
+    internet_plugin.Search("yt"))
 menu_9.add_command(label=lang[103], command=lambda:
-    InternetOnWriter.Search("soundcloud"))
+    internet_plugin.Search("soundcloud"))
 menu_9.add_command(label=lang[125], command=lambda:
-    InternetOnWriter.Search("spotify"))
+    internet_plugin.Search("spotify"))
 menu_9.add_separator()
 menu_9.add_command(label=lang[107], command=lambda:
-    InternetOnWriter.Search("archive"))
+    internet_plugin.Search("archive"))
 menu_9.add_separator()
 menu_9.add_command(label=lang[169], command=lambda:
-    InternetOnWriter.Search("github"))
+    internet_plugin.Search("github"))
 menu_9.add_command(label=lang[171], command=lambda:
-    InternetOnWriter.Search("gitlab"))
+    internet_plugin.Search("gitlab"))
 
 # [!!] Languages need to be fixed
 # [!!] Some languages are in a verification state
@@ -2604,7 +2634,7 @@ menu_13.add_command(label="Українська (Україна)", command=lambd
 
 menu_12.add_cascade(label=lang[198], menu=menu_13)
 menu_12.add_separator()
-menu_12.add_checkbutton(label=lang[298], variable=update_check_button, command=UpdateCheck.change)
+menu_12.add_checkbutton(label=lang[298], variable=update_check_button, command=update_check.change_setting)
 menu_12.add_separator()
 
 if sys.platform == "linux":
@@ -2888,7 +2918,7 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
         body += f"\n\n{lang[249]} (https://mf366-coding.github.io/writerclassic.html)"
 
     elif signa:
-        body += f"\n\n{SignaturePlugin.getx()}"
+        body += f"\n\n{signature_plugin.get_custom_sig()}"
 
     # [!?] Certain parts of this function belongs to:
     # [*] https://medium.com/@hannanmentor/20-python-scripts-with-code-to-automate-your-work-68662a8dcbc1
