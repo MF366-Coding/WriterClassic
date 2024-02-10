@@ -10,6 +10,7 @@
 # pylint: disable=W0404
 # pylint: disable=W0201
 # pylint: disable=W0105
+# pylint: disable=W0311
 
 '''
 WriterClassic
@@ -623,7 +624,7 @@ class UpdateCheck:
             mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
             _LOG.write(f"{str(now())} - Couldn't check for updates (Bad Internet, Connection Timeout, Restricted Internet): WARNING\n")
 
-    def change_setting():
+    def change_setting(self):
         """
         change_setting swaps the current value of the startup setting
         """
@@ -997,8 +998,6 @@ class BackupSystem:
 # [i] Font Picker :)
 
 def PickFont(root: Tk | Toplevel = desktop_win, editor: ScrolledText = TextWidget, __dump_func = fast_dump, __sample: str = 'Lorem ipsum dolor sit amet, ...') -> Font | dict[bytes, bytes]:
-    global settings
-
     font_details = dict(tkfontchooser.askfont(root, __sample, f"{lang[1]} - {lang[332]}", family=settings['font']['family'], size=settings['font']['size'], weight=settings['font']['weight'], slant=settings['font']['slant'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike']))
     FontSet.configure(family=font_details['family'], size=font_details['size'], weight=font_details['weight'], slant=font_details['slant'], underline=font_details['underline'], overstrike=font_details['overstrike'])
 
@@ -1253,9 +1252,9 @@ def Save(root_win: Tk = desktop_win):
     SAVE_STATUS = True
 
     file_path = NOW_FILE
-
+    
     if file_path.lower().endswith(".wclassic") and "$VARS" in data:
-            for __var in WCLASSIC_VARS:
+        for __var in WCLASSIC_VARS:
                 for _ in range(data.count(__var)):
                     data = data.replace(__var, WCLASSIC_VARS[__var])
 
@@ -1402,7 +1401,7 @@ class XYEvent:
     def update(self, params: tuple[int]):
         self.x_root, self.y_root = params
 
-def rmb_popup(event, root: Tk | Toplevel = desktop_win):
+def rmb_popup(event):
     x, y = event.x_root, event.y_root
 
     try:
@@ -2167,7 +2166,7 @@ class SignaturePlugin:
         
         widget.insert(pos, f"\n\n{self.SIGNATURE}")
     
-    def custom(self, **params: str | ScrolledText):
+    def custom(self, **params):
         """
         custom inserts a custom signature
 

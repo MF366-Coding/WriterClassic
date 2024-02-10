@@ -6,5 +6,5 @@ WriterClassic_SETUP_FILE.iss
 WriterClassic_configs.json
 .idea
 test.*
-plugin_system_backup.py
+deprecated
 CANARY
