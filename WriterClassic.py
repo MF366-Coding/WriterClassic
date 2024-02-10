@@ -179,8 +179,6 @@ except (ModuleNotFoundError, ImportError) as e:
 
     from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
 
-    import keyboard # [i] Used to send the Copy, Paste and Cut commands to the OS
-
     import tkfontchooser # [i] used for the new Font picker
     
     import pyperclip as pyclip # [i] Used to copy and paste
