@@ -54,7 +54,7 @@ Powered by: Python 3.10+
 # [*] Importing some of the builtin goodies
 import os, sys, json, random, datetime, platform
 
-from typing import Literal, SupportsFloat, Any # [i] Making things nicer, I guess
+from typing import Literal, SupportsFloat, Any, Iterable # [i] Making things nicer, I guess
 
 from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
 
@@ -155,7 +155,7 @@ try:
     from requests import get, exceptions # [i] Used for regular interactions with the Internet
 
 except (ModuleNotFoundError, ImportError) as e:
-    _LOG.write(f"{str(now())} - A required module has not been found in the device: ERROR\n")
+    _LOG.write(f"{str(now())} - A required module has not been found in the device: ERROR - {e}\n")
     _LOG.write(f"{str(now())} - Proceeding with the installation of the dependencies: AWAITING\n")
 
     _command: str = f"pip install --upgrade -r \"{os.path.join(script_dir, 'requirements.txt')}\""
@@ -995,6 +995,169 @@ class BackupSystem:
         else:
             mb.showerror(lang[1], lang[319])
 
+def do_nothing(*args):
+    return args
+
+class InvalidSnippet(Exception): ...
+
+class Snippets:
+    def __init__(self, name) -> None:
+        self.name = name
+        self._snippets = {}
+        self.__taken_names = []
+        
+    def register(self, name: str, value: str, lang: str, desc: str | None = None):
+        """
+        register adds a new snippet to the snippet table
+
+        Args:
+            name (str): the name of the snippet
+            value (str): its value in the form of a string
+            lang (str): the markup/programming language the snippet refers to (e.g: Python, Markdown)
+            desc (str | None, optional): a valid description. Defaults to None.
+
+        Raises:
+            InvalidSnippet: in case the name is already taken
+        """
+        
+        if name in self.__taken_names:
+            raise InvalidSnippet(f'{name} is already taken')
+        
+        if desc is None:
+            desc = 'No description provided.'
+            
+        self.__taken_names.append(name)
+        
+        self._new_snippet(name, (value, lang, desc))
+        
+    def _new_snippet(self, _name: str, _snippet_data: tuple[str, str, str | None]):
+        """
+        Internal function.
+        """
+        self._snippets[_name] = _snippet_data
+
+    def _return_snippet(self, _name: str) -> tuple[str, str, str]:
+        """
+        Internal function.
+        """
+        return self._snippets[_name]
+
+    def get_snippet(self, name: str) -> tuple[str, str, str, str]:
+        """
+        get_snippet returns the wanted snippet's data
+
+        Args:
+            name (str): the name of the snippet to return
+
+        Raises:
+            InvalidSnippet: in case the snippet with name `name` doesn't exist
+
+        Returns:
+            tuple[str, str, str, str]: name, value, language, description
+        """
+        
+        if name not in self._snippets:
+            raise InvalidSnippet(f"snippet {name} doesn't exist")
+        
+        __snippet_data = self._return_snippet(name)
+        
+        return (name, __snippet_data[0], __snippet_data[1], __snippet_data[2])
+    
+    def remove_snippet(self, name: str):
+        if name not in self._snippets:
+            raise InvalidSnippet(f"snippet {name} doesn't exist")
+        
+        return self._snippets.pop(name)
+    
+    def __str__(self) -> str:
+        return self.name
+    
+    def get_taken_names(self) -> list[str]:
+        return self.__taken_names[:]
+
+def SnippetPicker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = desktop_win, widget: ScrolledText = TextWidget):
+    def update_info_view(*labels):
+        n: str = labels[1].get()
+        s: tuple = labels[0].get_snippet(n)
+        
+        labels[2].configure(text=f"{s[0]} ({s[2]})")
+        
+        labels[3].delete(0.0, END)
+        labels[3].insert(0.0, f"Value:\n---\n{s[1]}\n---\n{s[3]}")
+        
+    def insert_val(*args):
+        n: str = args[1].get()
+        s: tuple = args[0].get_snippet(n)
+        
+        args[3].insert(args[2], s[1])
+        
+        args[4].destroy()
+        
+    w = Toplevel(root)
+    w.title(f"{lang[1]} - Snippets")
+    w.resizable(False, False)
+    
+    if sys.platform == "win32":
+        desktop_win.iconbitmap(f"{data_dir}/app_icon.ico")
+    
+    f = FontSet.actual()
+    
+    h1 = Font(w, family=f['family'], size=18, weight='bold', slant='roman', overstrike=False, underline=False)
+    h2 = Font(w, family=f['family'], size=16, weight='bold', slant='roman', overstrike=False, underline=True)
+    body1 = Font(w, family=f['family'], size=13, weight='normal', slant='roman', overstrike=False, underline=False)
+    body2 = Font(w, family=f['family'], size=11, weight='normal', slant='roman', overstrike=False, underline=False)
+    
+    title_label = Label(w, font=h1, text=snippets.name)
+    adjust_frame = Frame(w)
+    
+    snippet_label = Label(adjust_frame, font=body1, text='Name: ')
+    
+    snippet_name = StringVar(w)
+    
+    g = ()
+    
+    for i in snippets.get_taken_names():
+        g = (*g, i)
+    
+    name_label = Label(w, font=h2, text='No snippet selected')
+    desc_label = ScrolledText(w, font=body2)
+    desc_label.configure(borderwidth=0)
+    
+    desc_label.insert(0.0, 'Select a snippet name to see its details.')
+    
+    desc_label.bind('<Key>', lambda a:
+        do_nothing())
+    
+    z = (snippets, snippet_name, name_label, desc_label)
+    
+    name_picker = OptionMenu(adjust_frame, snippet_name, None, *g, direction='below')
+    
+    ok_butt = Button(adjust_frame, text='Select', command=lambda:
+        update_info_view(*z))
+    
+    insert_butt = Button(w, text='Insert', command=lambda:
+        insert_val(snippets, snippet_name, pos, widget, w))
+    
+    title_label.pack()
+    
+    snippet_label.grid(column=0, row=0)
+    name_picker.grid(column=1, row=0)
+    ok_butt.grid(column=2, row=0)
+    
+    adjust_frame.pack()
+    name_label.pack()
+    desc_label.pack()
+    insert_butt.pack()
+    
+    w.mainloop()
+
+default_snippets = Snippets('Default Snippets')
+
+default_snippets.register('if-elif-else', 'if !!!:\n\t!!!\nelif !!!:\n\t!!!\nelse:\n\t!!!', 'Python', "Python's if-elif-else statement, where the '!!!' mark the things you might want to change.")
+default_snippets.register('try-except-else-finally', 'try:\n\t!!!\nexcept !!!:\n\t!!!\nelse:\n\t!!!\nfinally:\n\t!!!', 'Python', "Python's try-except clause but with additional else and finally for a better error handling.")
+default_snippets.register('ifmain', 'if __name__ == "__main__":\n\tmain()', 'Python', "Execution clause made easy. Just click 'Insert' and boom!")
+# [!] Will add some more snippets tomorrow
+
 # [i] Font Picker :)
 
 def PickFont(root: Tk | Toplevel = desktop_win, editor: ScrolledText = TextWidget, __dump_func = fast_dump, __sample: str = 'Lorem ipsum dolor sit amet, ...') -> Font | dict[bytes, bytes]:
@@ -1387,6 +1550,9 @@ def ModifiedStatus(text_widget: ScrolledText = TextWidget, main_win: Tk | Toplev
 rmb_menu = Menu(desktop_win, tearoff = 0)
 rmb_menu.add_command(label=lang[293], command=TextWidget.edit_undo, accelerator="Ctrl + Z")
 rmb_menu.add_command(label=lang[294], command=TextWidget.edit_redo, accelerator="Ctrl + Y")
+rmb_menu.add_separator()
+rmb_menu.add_command(label='Snippets', command=lambda:
+    SnippetPicker(default_snippets))
 rmb_menu.add_separator()
 rmb_menu.add_command(label=lang[331], command=select_all, accelerator="Ctrl + A")
 rmb_menu.add_separator()
@@ -2104,12 +2270,6 @@ def clear_log_screen(text_interface):
 
     _LOG.write(f"{str(now())} - Log File has been refreshed: OK\n")
 
-
-def do_nothing(event):
-    event = 'break'
-    return event
-
-
 def show_log():
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
@@ -2653,6 +2813,9 @@ menu_12.add_command(label=lang[105], command=article_md, state='disabled')
 
 
 menu_15.add_command(label=lang[279], command=markdown_preview)
+menu_15.add_separator()
+menu_15.add_command(label='Snippets', command=lambda:
+    SnippetPicker(default_snippets))
 menu_15.add_separator()
 menu_15.add_cascade(menu=menu_16, label=lang[282])
 menu_15.add_cascade(menu=menu_17, label=lang[283])
