@@ -54,7 +54,7 @@ Powered by: Python 3.10+
 # [*] Importing some of the builtin goodies
 import os, sys, json, random, datetime, platform
 
-from typing import Literal, SupportsFloat, Any # [i] Making things nicer, I guess
+from typing import Literal, SupportsFloat, Any, Iterable # [i] Making things nicer, I guess
 
 from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
 
@@ -65,7 +65,7 @@ import tracemalloc
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
 # [i] tkinter is used for the UI, duh?!
-from tkinter import SEL_LAST, Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT, OptionMenu, Frame, SEL_FIRST
+from tkinter import SEL_LAST, DISABLED, NORMAL, Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT, OptionMenu, Frame, SEL_FIRST
 from tkinter.scrolledtext import ScrolledText # [i] Used instead of the regular Text widget, since this one has a scroll bar
 from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu # [i] Used because of the auto syling in tkinter.ttk
 import tkinter.messagebox as mb # [i] Used for the message boxes
@@ -155,7 +155,7 @@ try:
     from requests import get, exceptions # [i] Used for regular interactions with the Internet
 
 except (ModuleNotFoundError, ImportError) as e:
-    _LOG.write(f"{str(now())} - A required module has not been found in the device: ERROR\n")
+    _LOG.write(f"{str(now())} - A required module has not been found in the device: ERROR - {e}\n")
     _LOG.write(f"{str(now())} - Proceeding with the installation of the dependencies: AWAITING\n")
 
     _command: str = f"pip install --upgrade -r \"{os.path.join(script_dir, 'requirements.txt')}\""
@@ -181,7 +181,7 @@ except (ModuleNotFoundError, ImportError) as e:
     from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
 
     import tkfontchooser # [i] used for the new Font picker
-    
+
     import pyperclip as pyclip # [i] Used to copy and paste
 
     import markdown2 # [i] Used to make HTML files from Markdown
@@ -381,7 +381,7 @@ def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: Sc
     Returns:
         str: either the value of a copy/paste operation or an empty string
     """
-    
+
     selection: str = ''
 
     try:
@@ -390,10 +390,10 @@ def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: Sc
 
     except Exception:
         selection = INSERT
-        
+
         if __action in ('copy', 'cut'):
             return ''
-        
+
         __action = 'paste'
 
     if __action in ('copy', 'cut'):
@@ -588,7 +588,7 @@ class UpdateCheck:
         self.app_version = app_version
         self.ignore_checks = ignore_checks
         self.latest = latest_v
-    
+
     def check_startup(self):
         """
         check_startup checks for updates on startup only
@@ -636,7 +636,7 @@ update_check = UpdateCheck()
 
 if startApp == '1':
     update_check.check_startup()
-    _LOG.write(f"{str(now())} - Checked for updates on startup: AWAITING REPLY\n") 
+    _LOG.write(f"{str(now())} - Checked for updates on startup: AWAITING REPLY\n")
 
 # [*] Auto WSCRIPTs
 if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
@@ -645,7 +645,7 @@ if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
         f.close()
 
     _run_auto = mb.askyesno(lang[1], f"{lang[289]}\n{lang[290]}\n{lang[291]}")
-    
+
     if _run_auto == True:
         exec(auto_content)
 
@@ -779,7 +779,7 @@ def quickway():
 
     XXX Not recommended at all!
     """
-    
+
     _LOG.write(f"{str(now())} - End of session: QUIT\n")
     _LOG.close()
     desktop_win.destroy()
@@ -920,21 +920,21 @@ class BackupSystem:
         self._folder_paths = (autoscr_path, config_path)
         self._main_dir = main_dir
 
-    
+
     def _zip_files(self, root_path: str):
         """
         Internal function.
         """
-        
+
         with zipfile.ZipFile(os.path.join(root_path, f"Backup_WriterClassic_{datetime.datetime.now().day}-{datetime.datetime.now().month}-{datetime.datetime.now().year}.zip"), 'w') as zip_file:
             for folder_path in self._folder_paths:
                 arcname = os.path.basename(folder_path)
-                
+
                 zip_file.write(folder_path, arcname=arcname)
-                
+
                 for filename in os.listdir(folder_path):
                     file_path = os.path.join(folder_path, filename)
-                    
+
                     if os.path.isfile(file_path):
                         zip_file.write(file_path, arcname=os.path.join(arcname, filename))
 
@@ -963,7 +963,7 @@ class BackupSystem:
 
             zip_file.extractall(self._main_dir)
 
-    
+
     def run_action(self, _type: Literal["zip", "extract", "make", "load", "create", "restore", "unzip"], root_win: Tk | Toplevel = desktop_win):
         """
         run_action runs an action related to either extracting or creating a backup
@@ -994,6 +994,209 @@ class BackupSystem:
 
         else:
             mb.showerror(lang[1], lang[319])
+
+def do_nothing(*args):
+    return None
+
+class InvalidSnippet(Exception): ...
+
+class Snippets:
+    def __init__(self, name) -> None:
+        self.name = name
+        self._snippets = {}
+        self.__taken_names = []
+
+    def register(self, name: str, value: str, _lang: str, desc: str | None = None):
+        """
+        register adds a new snippet to the snippet table
+
+        Args:
+            name (str): the name of the snippet
+            value (str): its value in the form of a string
+            _lang (str): the markup/programming language the snippet refers to (e.g: Python, Markdown)
+            desc (str | None, optional): a valid description. Defaults to None.
+
+        Raises:
+            InvalidSnippet: in case the name is already taken
+        """
+
+        if name in self.__taken_names:
+            raise InvalidSnippet(f'{name} is already taken')
+
+        if desc is None:
+            desc = lang[337]
+
+        self.__taken_names.append(name)
+
+        self._new_snippet(name, (value, _lang, desc))
+
+    def _new_snippet(self, _name: str, _snippet_data: tuple[str, str, str | None]):
+        """
+        Internal function.
+        """
+        self._snippets[_name] = _snippet_data
+
+    def _return_snippet(self, _name: str) -> tuple[str, str, str]:
+        """
+        Internal function.
+        """
+        return self._snippets[_name]
+
+    def get_index(self, name: str) -> int:
+        """
+        get_index returns the index of the snippet
+
+        Actually, it's no index. It is instead the order of adding snippet names.
+        
+        If you get 3, it isn't an index since snippets are stored as dictionaries.
+        
+        It instead means that the snippet you asked for was the third to be added.
+        
+        Please note that this also doesn't reflect a Python index, as it starts on 1.        
+
+        Args:
+            name (str): the name of the snippet
+
+        Raises:
+            InvalidSnippet: snippet doesn't exist
+
+        Returns:
+            int: the snippet's "index"
+        """
+        
+        if name not in self._snippets:
+            raise InvalidSnippet(f"snippet {name} doesn't exist")
+        
+        return self.__taken_names.index(name) + 1
+        
+
+    def get_snippet(self, name: str) -> tuple[str, str, str, str]:
+        """
+        get_snippet returns the wanted snippet's data
+
+        Args:
+            name (str): the name of the snippet to return
+
+        Raises:
+            InvalidSnippet: in case the snippet with name `name` doesn't exist
+
+        Returns:
+            tuple[str, str, str, str]: name, value, language, description
+        """
+
+        if name not in self._snippets:
+            raise InvalidSnippet(f"snippet {name} doesn't exist")
+
+        __snippet_data = self._return_snippet(name)
+
+        return (name, __snippet_data[0], __snippet_data[1], __snippet_data[2])
+
+
+    def remove_snippet(self, name: str):
+        if name not in self._snippets:
+            raise InvalidSnippet(f"snippet {name} doesn't exist")
+
+        return self._snippets.pop(name)
+
+
+    def __str__(self) -> str:
+        return self.name
+
+
+    def get_taken_names(self) -> list[str]:
+        return self.__taken_names[:]
+
+
+def SnippetPicker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = desktop_win, widget: ScrolledText = TextWidget):
+    def update_info_view(*labels):
+        n: str = labels[1].get()
+        s: tuple = labels[0].get_snippet(n)
+        m: int = labels[0].get_index(n)
+
+        labels[2].configure(text=f"{s[0]} ({s[2]} - #{m})")
+
+        labels[3].configure(state=NORMAL)
+
+        labels[3].delete(0.0, END)
+        labels[3].insert(0.0, f"{lang[334]}:\n---\n{s[1]}\n---\n{s[3]}")
+
+        labels[3].configure(state=DISABLED)
+
+    def insert_val(*args):
+        n: str = args[1].get()
+        s: tuple = args[0].get_snippet(n)
+
+        args[3].insert(args[2], s[1])
+
+        args[4].destroy()
+
+    w = Toplevel(root)
+    w.title(f"{lang[1]} - {lang[341]}")
+    w.resizable(False, False)
+
+    if sys.platform == "win32":
+        desktop_win.iconbitmap(f"{data_dir}/app_icon.ico")
+
+    f = FontSet.actual()
+
+    h1 = Font(w, family=f['family'], size=18, weight='bold', slant='roman', overstrike=False, underline=False)
+    h2 = Font(w, family=f['family'], size=16, weight='bold', slant='roman', overstrike=False, underline=True)
+    body1 = Font(w, family=f['family'], size=13, weight='normal', slant='roman', overstrike=False, underline=False)
+    body2 = Font(w, family=f['family'], size=11, weight='normal', slant='roman', overstrike=False, underline=False)
+
+    title_label = Label(w, font=h1, text=snippets.name)
+    adjust_frame = Frame(w)
+
+    snippet_label = Label(adjust_frame, font=body1, text=f'{lang[338]}: ')
+
+    snippet_name = StringVar(w)
+
+    g = ()
+
+    for i in snippets.get_taken_names():
+        g = (*g, i)
+
+    name_label = Label(w, font=h2, text=lang[339])
+    desc_label = ScrolledText(w, font=body2)
+    desc_label.configure(borderwidth=0, insertbackground='white')
+
+    desc_label.insert(0.0, lang[340])
+
+    desc_label.configure(state=DISABLED)
+
+    z = (snippets, snippet_name, name_label, desc_label)
+
+    name_picker = OptionMenu(adjust_frame, snippet_name, None, *g, direction='below')
+
+    ok_butt = Button(adjust_frame, text=lang[335], command=lambda:
+        update_info_view(*z))
+
+    insert_butt = Button(w, text=lang[336], command=lambda:
+        insert_val(snippets, snippet_name, pos, widget, w))
+
+    title_label.pack()
+
+    snippet_label.grid(column=0, row=0)
+    name_picker.grid(column=1, row=0)
+    ok_butt.grid(column=2, row=0)
+
+    adjust_frame.pack()
+    name_label.pack()
+    desc_label.pack()
+    insert_butt.pack()
+
+    w.mainloop()
+
+default_snippets = Snippets(lang[333])
+
+default_snippets.register('if-elif-else', 'if !!!:\n\t!!!\nelif !!!:\n\t!!!\nelse:\n\t!!!', 'Python 3', "Python's if-elif-else statement, where the '!!!' marks the things you might want to change.")
+default_snippets.register('try-except-else-finally', 'try:\n\t!!!\nexcept !!!:\n\t!!!\nelse:\n\t!!!\nfinally:\n\t!!!', 'Python 3', "Python's try-except clause but with additional else and finally for a better error handling.")
+default_snippets.register('ifmain', 'if __name__ == "__main__":\n\tmain()', 'Python 3', "Execution clause made easy. Just click 'Insert' and boom!")
+default_snippets.register('general-except', 'try:\n\t!!!\nexcept Exception:\n\t!!!', 'Python 3', "Catch a general exception in Python with this clause. 'Exception' inherits from the 'BaseException' class and behaves like a general exception.")
+default_snippets.register('class', 'class !!!:\n\tdef __init__(self) -> None:\n\t\tpass\n\n\tdef __str__(self) -> str:\n\t\treturn !!!\n\n\tdef __len__(self) -> int:\n\t\treturn !!!', 'Python 3', "Need a class and need it quick? With this snippet, you can have a class with a constructor, a __str__ method (gets called when converting the class to a str object) and a __len__ method (gets called when using the len function with the class instance as its argument).")
+default_snippets.register('function', 'def !!!(!!!):\n\treturn', 'Python 3', "Just a small function, defined with the def keyword in Python.")
+default_snippets.register('bold', '**!!!**', 'Markdown', 'Need to be **bold**? You can be **bold** in Markdown!')
+# [!?] If you want more snippets, they are extendable by plugins :D
 
 # [i] Font Picker :)
 
@@ -1252,7 +1455,7 @@ def Save(root_win: Tk = desktop_win):
     SAVE_STATUS = True
 
     file_path = NOW_FILE
-    
+
     if file_path.lower().endswith(".wclassic") and "$VARS" in data:
         for __var in WCLASSIC_VARS:
                 for _ in range(data.count(__var)):
@@ -1388,6 +1591,9 @@ rmb_menu = Menu(desktop_win, tearoff = 0)
 rmb_menu.add_command(label=lang[293], command=TextWidget.edit_undo, accelerator="Ctrl + Z")
 rmb_menu.add_command(label=lang[294], command=TextWidget.edit_redo, accelerator="Ctrl + Y")
 rmb_menu.add_separator()
+rmb_menu.add_command(label=lang[341], command=lambda:
+    SnippetPicker(default_snippets))
+rmb_menu.add_separator()
 rmb_menu.add_command(label=lang[331], command=select_all, accelerator="Ctrl + A")
 rmb_menu.add_separator()
 rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
@@ -1397,7 +1603,7 @@ class XYEvent:
     def __init__(self, x: SupportsFloat, y: SupportsFloat):
         self.x_root = x
         self.y_root = y
-        
+
     def update(self, params: tuple[int]):
         self.x_root, self.y_root = params
 
@@ -1772,14 +1978,14 @@ class InvalidEngine(Exception): ...
 class InternetOnWriter:
     def __init__(self, autoraise: bool = True):
         self.AUTORAISE = autoraise
-    
+
     def Website(self, new: Literal[0, 1, 2] = 0):
         askForLink = sdg.askstring(lang[80], lang[91])
-        
+
         if askForLink != ' ' or askForLink != '':
             simple_webbrowser.Website(askForLink, new, self.AUTORAISE)
             _LOG.write(f"{str(now())} - Went to {str(askForLink)} via WriterClassic: OK\n")
-        
+
         ic()
 
     def Search(self, engine: Literal['google', 'bing', 'ysearch', 'ddgo', 'yt', 'ecosia', 'stack', 'soundcloud', 'archive', 'qwant', 'spotify', 'brave', 'github', 'gitlab']):
@@ -1911,12 +2117,12 @@ class Plugin:
         self.ICON_FILE = None
         self.ICON = None
 
-    
+
     def _get_files(self) -> None:
         """
         Internal function.
         """
-        
+
         try:
             versioning_file = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Versions.txt", timeout=3.5)
 
@@ -1972,7 +2178,7 @@ def install_plugin(**options):
     """
     install_plugin installs a plugin using Plugin
     """
-    
+
     questiony = None
 
     try:
@@ -2093,23 +2299,6 @@ Log File
 """)
         f.close()
 
-
-def clear_log_screen(text_interface):
-    text_interface.delete(0.0, END)
-
-    with open(f"{user_data}/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
-        temp_log = _TEMP_LOG.read()
-        text_interface.insert(0.0, str(temp_log))
-        _TEMP_LOG.close()
-
-    _LOG.write(f"{str(now())} - Log File has been refreshed: OK\n")
-
-
-def do_nothing(event):
-    event = 'break'
-    return event
-
-
 def show_log():
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
@@ -2117,14 +2306,13 @@ def show_log():
     _new_editor.bind("<Key>", do_nothing)
     _new_window.title(lang[180])
     _new_editor.pack()
-    _new_button = Button(_new_window, text=lang[181], command=lambda:
-        clear_log_screen(_new_editor))
-    _new_button.pack()
 
     with open(f"{user_data}/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
         temp_log = _TEMP_LOG.read()
         _new_editor.insert(0.0, str(temp_log))
         _TEMP_LOG.close()
+        
+    _new_editor.configure(state=DISABLED)
 
     _LOG.write(f"{str(now())} - The Log File has been shown: OK\n")
 
@@ -2138,11 +2326,11 @@ class SignaturePlugin:
         Args:
             path_to_sig (str, optional): the path to the signature file. Defaults to os.path.join(config, 'signature.wclassic').
         """
-        
+
         self.SIGNATURE: str = ''
         self.USERNAME: str = ''
         self._gather_data(path_to_sig)
-        
+
     def _gather_data(self, path) -> tuple[str, str]:
         """
         Internal function.
@@ -2150,22 +2338,22 @@ class SignaturePlugin:
         Returns:
             tuple[str, str]: custom signature, current username
         """
-        
+
         with open(path, "r", encoding="utf-8") as sig_file:
             self.SIGNATURE = sig_file.read()
             sig_file.close()
 
         self.USERNAME = getuser().title()
-        
+
         return self.SIGNATURE, self.USERNAME
-    
+
     def _insert_custom(self, pos = END, widget: ScrolledText = TextWidget):
         """
         Internal function.
         """
-        
+
         widget.insert(pos, f"\n\n{self.SIGNATURE}")
-    
+
     def custom(self, **params):
         """
         custom inserts a custom signature
@@ -2174,24 +2362,24 @@ class SignaturePlugin:
             - pos: the position to insert the signature, defaults to `tkinter.END` a.k.a. `Literal['end']` or `'end'`
             - widget: the Text-like widget where the signature should be inserted, defaults to `TextWidget`
         """
-        
+
         if 'pos' not in params:
             params['pos'] = END
-            
+
         if 'widget' not in params:
             params['widget'] = TextWidget
-        
+
         self._insert_custom(pos=params['pos'], widget=params['widget'])
-        
+
         _LOG.write(f"{str(now())} - The Custom signature has been inserted: OK\n")
 
     def _get_details(self) -> tuple[str, str]:
         """
         Internal function.
         """
-        
+
         return self.SIGNATURE, self.USERNAME
-    
+
     def get_custom_sig(self) -> str:
         """
         get_custom_sig returns the custom signature
@@ -2199,18 +2387,18 @@ class SignaturePlugin:
         Returns:
             str: custom signature via `SignaturePlugin._get_details()` (internal function)
         """
-        
+
         return self._get_details()[0]
 
     def _insert_auto(self, pos = END, widget: ScrolledText = TextWidget):
         """
         Internal function.
         """
-        
+
         _signature = f"--\n{lang[132]}\n{self.USERNAME}"
 
         widget.insert(pos, f"\n\n{_signature}")
-    
+
     def auto(self, **params: str | ScrolledText):
         """
         auto inserts an auto signature
@@ -2219,17 +2407,17 @@ class SignaturePlugin:
             - pos: the position to insert the signature, defaults to `tkinter.END` a.k.a. `Literal['end']` or `'end'`
             - widget: the Text-like widget where the signature should be inserted, defaults to `TextWidget`
         """
-        
+
         if 'pos' not in params:
             params['pos'] = END
-            
+
         if 'widget' not in params:
             params['widget'] = TextWidget
-        
+
         self._insert_auto(pos=params['pos'], widget=params['widget'])
-        
+
         _LOG.write(f"{str(now())} - The Custom signature has been inserted: OK\n")
-        
+
 backup_system = BackupSystem()
 signature_plugin = SignaturePlugin()
 
@@ -2653,6 +2841,9 @@ menu_12.add_command(label=lang[105], command=article_md, state='disabled')
 
 
 menu_15.add_command(label=lang[279], command=markdown_preview)
+menu_15.add_separator()
+menu_15.add_command(label=lang[341], command=lambda:
+    SnippetPicker(default_snippets))
 menu_15.add_separator()
 menu_15.add_cascade(menu=menu_16, label=lang[282])
 menu_15.add_cascade(menu=menu_17, label=lang[283])
