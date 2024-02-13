@@ -54,7 +54,7 @@ Powered by: Python 3.10+
 # [*] Importing some of the builtin goodies
 import os, sys, json, random, datetime, platform
 
-from typing import Literal, SupportsFloat, Any, Iterable # [i] Making things nicer, I guess
+from typing import Literal, SupportsFloat, Any # [i] Making things nicer, I guess
 
 from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
 
@@ -100,6 +100,7 @@ scripts_dir = os.path.join(script_dir, "scripts")
 
 now = datetime.datetime.now
 
+
 def check_paths(var: str) -> str:
     """
     check_paths checks if the directories exist
@@ -119,15 +120,8 @@ def check_paths(var: str) -> str:
 
     return "Was there."
 
-debug_a = []
-debug_a.append(config)
-debug_a.append(user_data)
-debug_a.append(nix_assets)
-debug_a.append(plugin_dir)
-debug_a.append(data_dir)
-debug_a.append(locale)
-debug_a.append(temp_dir)
-debug_a.append(scripts_dir)
+
+debug_a = [config, user_data, nix_assets, plugin_dir, data_dir, locale, temp_dir, scripts_dir]
 
 for i in debug_a:
     check_paths(i)
@@ -136,6 +130,16 @@ _LOG = open(os.path.join(user_data, "log.wclassic"), mode="a", encoding="utf-8")
 
 _LOG.write("\n")
 _LOG.write(f"{str(now())} - WriterClassic was executed: OK\n")
+
+ic = None
+Image = None
+ImageTk = None
+tkfontchooser = None
+pyclip = None
+markdown2 = None
+simple_webbrowser = None
+get = None
+exceptions = None
 
 try:
     # [*] Imports down here
@@ -171,27 +175,35 @@ except (ModuleNotFoundError, ImportError) as e:
         sys.exit()
 
     else:
-        _LOG.write(f"{str(now())} - Installation completed: LOADING GUI\n")
+        _LOG.write(f"{str(now())} - Installation completed: LOADING THE GUI\n")
 
+    # [*] repeating the imports, Goddamn it!
 
-    # [*] reapeating the imports, Goddamn it!
+    if ic is None:
+        from icecream import ic # [i] Used for debugging
 
-    from icecream import ic # [i] Used for debugging
+    if Image is None or ImageTk is None:
+        from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
 
-    from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
+    if tkfontchooser is None:
+        import tkfontchooser # [i] used for the new Font picker
 
-    import tkfontchooser # [i] used for the new Font picker
+    if pyclip is None:
+        import pyperclip as pyclip # [i] used for the clipboard options
 
-    import pyperclip as pyclip # [i] Used to copy and paste
+    if markdown2 is None:
+        import markdown2 # [i] Used to make HTML files from Markdown
 
-    import markdown2 # [i] Used to make HTML files from Markdown
-
-    import simple_webbrowser # [i] My own Python module (used for the Search with... options)
-    from requests import get, exceptions # [i] Used for regular interactions with the Internet
+    if simple_webbrowser is None:
+        import simple_webbrowser # [i] My own Python module (used for the Search with... options)
+    
+    if get is None or exceptions is None:
+        from requests import get, exceptions # [i] Used for regular interactions with the Internet   
 
 tracemalloc.start()
 
 ic.configureOutput(prefix="ic debug statement | -> ")
+
 
 def clamp(val: SupportsFloat, _min: SupportsFloat, _max: SupportsFloat) -> SupportsFloat:
     """
@@ -216,27 +228,16 @@ def clamp(val: SupportsFloat, _min: SupportsFloat, _max: SupportsFloat) -> Suppo
 
     return val
 
-'''
-if os.path.exists(os.path.join(scripts_dir, "quick_acess.wscript")):
-    quick_acess_content = open(os.path.join(scripts_dir, "quick_acess.wscript"), "r", encoding="utf-8").read().split("\n")
-
-    for i in range(len(quick_acess_content)):
-        if i != 10:
-            QUICK_ACESS_DATA.append(quick_acess_content[i])
-
-        else:
-            break
-
-    quick_acess_content = None
-'''
 
 desktop_win = Tk()
 
 TextWidget = ScrolledText(desktop_win, font=("Calibri", 13), borderwidth=5, undo=True)
 
-# /-/ TextWidget.insert(END, "WriterClassic is a free and open-source project made by MF366.\n\nYour support is appreciated: https://www.buymeacoffee.com/mf366\n\nThank you <3")
 
 class WrongClipboardAction(Exception): ...
+class InvalidSnippet(Exception): ...
+class InvalidEngine(Exception): ...
+
 
 def clip_actions(__id: Literal['copy', 'paste'], __s: str = '') -> str:
     """
@@ -252,7 +253,7 @@ def clip_actions(__id: Literal['copy', 'paste'], __s: str = '') -> str:
         str: the value of __s when copying; the last item to be copied when pasting.
 
     Raises:
-        WrongClipboardAction: if a an action different from 'copy' or 'paste' is given.
+        WrongClipboardAction: if an action different from 'copy' or 'paste' is given.
     """
 
     match __id:
@@ -444,7 +445,7 @@ if NOW_FILE == False:
 
 _LOG.write(f"{str(now())} - Window's title was set to WriterClassic: OK\n")
 
-FontSet = Font(family="Segoe UI", size=12, slant='roman', weight='normal', underline=0, overstrike=0)
+FontSet = Font(family="Segoe UI", size=12, slant='roman', weight='normal', underline=False, overstrike=False)
 
 try:
     FontSet = Font(family=settings["font"]["family"], size=settings['font']["size"], slant=settings['font']['slant'], weight=settings['font']['weight'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike'])
@@ -455,7 +456,7 @@ except TclError:
     mb.showerror(lang[149], f"{lang[144]}\n{lang[145]}\n{lang[146]}")
     _LOG.write(f"{str(now())} - Font size is set to 14 because of a font error: OK\n")
 
-    FontSet = Font(family="Segoe UI", size=12, slant='roman', weight='normal', underline=0, overstrike=0)
+    FontSet = Font(family="Segoe UI", size=12, slant='roman', weight='normal', underline=False, overstrike=False)
     _LOG.write(f"{str(now())} - Font type is set to Segoe UI because of a font error: OK\n")
 
     settings["font"] = {
@@ -901,7 +902,7 @@ def bool_swap(value: bool | None, default_for_none: bool = True):
     elif not value:
         value = True
 
-    elif value == None:
+    elif value is None:
         value = default_for_none
 
     return value
@@ -995,10 +996,6 @@ class BackupSystem:
         else:
             mb.showerror(lang[1], lang[319])
 
-def do_nothing(*args):
-    return None
-
-class InvalidSnippet(Exception): ...
 
 class Snippets:
     def __init__(self, name) -> None:
@@ -1068,7 +1065,6 @@ class Snippets:
             raise InvalidSnippet(f"snippet {name} doesn't exist")
         
         return self.__taken_names.index(name) + 1
-        
 
     def get_snippet(self, name: str) -> tuple[str, str, str, str]:
         """
@@ -1091,20 +1087,20 @@ class Snippets:
 
         return (name, __snippet_data[0], __snippet_data[1], __snippet_data[2])
 
-
     def remove_snippet(self, name: str):
         if name not in self._snippets:
             raise InvalidSnippet(f"snippet {name} doesn't exist")
 
         return self._snippets.pop(name)
 
-
     def __str__(self) -> str:
         return self.name
 
-
     def get_taken_names(self) -> list[str]:
         return self.__taken_names[:]
+
+    def __len__(self) -> int:
+        return len(self.__taken_names)
 
 
 def SnippetPicker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = desktop_win, widget: ScrolledText = TextWidget):
@@ -1973,7 +1969,6 @@ def Terminal():
 
     terminal.mainloop()
 
-class InvalidEngine(Exception): ...
 
 class InternetOnWriter:
     def __init__(self, autoraise: bool = True):
@@ -2280,7 +2275,7 @@ def remove_plugin():
 def run_plugin():
     questionx = mb.askyesnocancel(title=lang[1], message=lang[218])
 
-    if not questionx or questionx == None:
+    if not questionx or questionx is None:
         return
 
     datax: str = sdg.askstring(lang[1], lang[315], initialvalue=1)
@@ -2303,7 +2298,6 @@ def show_log():
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
     _new_editor = ScrolledText(_new_window, background=theme["color"], foreground=theme["fg"], insertbackground=theme["ct"], font=FontSet, borderwidth=5)
-    _new_editor.bind("<Key>", do_nothing)
     _new_window.title(lang[180])
     _new_editor.pack()
 
