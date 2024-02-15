@@ -9,7 +9,6 @@
 
 import os, datetime
 from tkinter import messagebox as mb
-from pygame import mixer
 import importlib.machinery
 
 wclassic_vars = {}
@@ -41,6 +40,8 @@ def initializer(wclassic_globals):
     _LOG.write(f"{str(now())} - Initializing Plugin System: OK\n")
 
 def run_a_plugin(number_or_name: int | str) -> bool:
+    mixer = wclassic_vars['mixer']
+    
     try:
         if type(number_or_name) == int:
             new_folder = os.path.join(plugin_dir, f"plugin_{number_or_name}")

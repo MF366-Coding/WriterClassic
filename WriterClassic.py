@@ -171,6 +171,7 @@ _LOG = Logger(os.path.join(user_data, "log.wclassic"))
 
 _LOG.action("WriterClassic was executed")
 
+mixer = None
 ic = None
 Image = None
 ImageTk = None
@@ -184,6 +185,8 @@ exceptions = None
 try:
     # [*] Imports down here
     # [*] Time to organize this tho
+    
+    from pygame import mixer # [i] Playing the sucessful sound
 
     from icecream import ic # [i] Used for debugging
 
@@ -219,6 +222,9 @@ except (ModuleNotFoundError, ImportError) as e:
 
     # [*] repeating the imports, Goddamn it!
 
+    if mixer is None:
+        from pygame import mixer # [i] Playing the sucessful sound
+    
     if ic is None:
         from icecream import ic # [i] Used for debugging
 
@@ -387,7 +393,7 @@ ic(latest_version)
 
 # [!] Very Important: Keeping track of versions and commits
 appV = "v10.5.0"
-advV ="v10.5.0.289"
+advV ="v10.5.0.290"
 
 # [i] the fourth number up here, is the commit where this changes have been made
 
