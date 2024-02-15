@@ -126,10 +126,50 @@ debug_a = [config, user_data, nix_assets, plugin_dir, data_dir, locale, temp_dir
 for i in debug_a:
     check_paths(i)
 
-_LOG = open(os.path.join(user_data, "log.wclassic"), mode="a", encoding="utf-8")
+class Logger:
+    def __init__(self, logger_path: str, encoding: str = 'utf-8'):
+        if logger_path.strip() == '':
+            raise ValueError('emptry string as a path value')
+        
+        if not os.path.exists(logger_path) or not os.path.isfile(logger_path):
+            raise ValueError('invalid path - must be existing file')
 
-_LOG.write("\n")
-_LOG.write(f"{str(now())} - WriterClassic was executed: OK\n")
+        self.logger = open(logger_path, 'a', encoding=encoding)
+        self.__newline()
+        
+    def write(self, text: str):
+        self.logger.write(text)
+        
+    def error(self, text: str, error_details: str | None = None):
+        if error_details is None:
+            error_details = 'ERROR'
+        
+        self.logger.write(f"{str(now())} - {text}: {error_details}\n")
+        
+    def warning(self, text: str, details: str | None = None):
+        if details is None:
+            details = 'WARNING'
+            
+        self.logger.write(f"{str(now())} - {text}: {details}\n")
+        
+    def action(self, text: str, extra: str | None = None):
+        if extra is None:
+            extra = ''
+            
+        self.logger.write(f"{str(now())} - {text}: OK {extra}\n")
+    
+    def close(self):
+        self.logger.close()
+    
+    def __newline(self):
+        self.logger.write('\n')
+        
+    def __str__(self) -> str:
+        return self.logger
+
+_LOG = Logger(os.path.join(user_data, "log.wclassic"))
+
+_LOG.action("WriterClassic was executed")
 
 ic = None
 Image = None
@@ -237,6 +277,7 @@ TextWidget = ScrolledText(desktop_win, font=("Calibri", 13), borderwidth=5, undo
 class WrongClipboardAction(Exception): ...
 class InvalidSnippet(Exception): ...
 class InvalidEngine(Exception): ...
+class ScriptError(Exception): ...
 
 
 def clip_actions(__id: Literal['copy', 'paste'], __s: str = '') -> str:
@@ -303,27 +344,6 @@ ic(script_dir)
 ic(script_path)
 ic(f"{data_dir}/logo.png")
 
-# [!] py_compile is not needed anymore
-'''
-from py_compile import compile as _compile
-_LOG.write(f"{str(now())} - Imported compile from py_compile: OK\n")
-'''
-
-
-_LOG.write(f"{str(now())} - Imported getuser from getpass: OK\n")
-
-
-_LOG.write(f"{str(now())} - Imported simpledialog from tkinter: OK\n")
-
-
-_LOG.write(f"{str(now())} - Imported filedialog from tkinter: OK\n")
-
-
-_LOG.write(f"{str(now())} - Imported messagebox from tkinter: OK\n")
-
-
-_LOG.write(f"{str(now())} - Imported Font from tkinter.font: OK\n")
-
 ic(now())
 
 setLang = settings["language"]
@@ -366,9 +386,22 @@ ic(IGNORE_CHECKING)
 ic(latest_version)
 
 # [!] Very Important: Keeping track of versions and commits
-appV = "v10.4.0"
-advV ="v10.4.0.278"
+appV = "v10.5.0"
+advV ="v10.5.0.289"
+
 # [i] the fourth number up here, is the commit where this changes have been made
+
+ABOUT_WRITER = f"""App name: WriterClassic
+Developer: MF366 (at GitHub: MF366-Coding)
+Version number: {appV[1:]}
+Powered by: Python 3.10.11 (x64)
+Tested on: Windows, Linux
+
+https://mf366-coding.github.io/writerclassic.html
+https://github.com/MF366-Coding/WriterClassic
+
+Thank you for using Writer Classic! <3
+"""
 
 
 def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: ScrolledText = TextWidget) -> str:
@@ -583,6 +616,54 @@ def writeStartup(text: bool):
     fast_dump()
     _LOG.write(f"{str(now())} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
 
+class WScript:
+    def __init__(self):
+        self.script: str | None = None
+        
+    def loadpath(self, location: str, encoding: str = 'utf-8'):
+        location = location.strip()
+        
+        if location == '':
+            raise ValueError('empty string as path value')
+        
+        if not os.path.exists(location) or not os.path.isfile(location):
+            raise ValueError('invalid path')
+        
+        if not location.lower().endswith('.wscript'):
+            raise ValueError('must be WSCRIPT file')
+        
+        with open(location, 'r', encoding=encoding) as f:
+            self.script = f.read()
+            f.close()
+            
+    def loadstr(self, script: str):
+        self.script = script
+            
+    def run(self, scope: Literal['read', 'write'] = 'read'):
+        """
+        run runs the current WScript
+
+        Args:
+            scope (wither 'read' or 'write', optional): defines if the script can write to globals or not. Either ways, it will be able to read them. Defaults to 'read' (readonly).
+        """
+        
+        _globs: dict[str, Any] | None = None
+        
+        if scope == 'write':
+            _globs = globals()
+            
+        else:
+            _globs = globals().copy()
+            
+        exec(self.script, _globs)
+        
+    def __len__(self) -> int | None:
+        return len(self.script) if self.script is not None else None
+    
+    def __str__(self) -> str | None:
+        return self.script
+
+
 # [i] Check for Updates
 class UpdateCheck:
     def __init__(self, app_version: str = appV, ignore_checks: bool = IGNORE_CHECKING, latest_v: Any = latest_version):
@@ -641,14 +722,18 @@ if startApp == '1':
 
 # [*] Auto WSCRIPTs
 if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
-    with open(os.path.join(scripts_dir, "auto.wscript"), "r", encoding="utf-8") as f:
-        auto_content = f.read()
-        f.close()
+    auto_script = WScript()
+    auto_script.loadpath(os.path.join(scripts_dir, "auto.wscript"))
 
     _run_auto = mb.askyesno(lang[1], f"{lang[289]}\n{lang[290]}\n{lang[291]}")
 
     if _run_auto == True:
-        exec(auto_content)
+        try:
+            auto_script.run()
+
+        except Exception as e:
+            mb.showerror(lang[133], f"{lang[134]}\n{e}")
+
 
 def SetWinSize():
     """
@@ -1278,6 +1363,26 @@ _LOG.write(f"{str(now())} - Filetypes have been configured correctly: OK\n")
 
 # [i] functions to open a file
 
+def stem_only(__s: str) -> str:
+    """
+    stem_only returns the stem part of a filename
+
+    Args:
+        __s (str): filename
+
+    Returns:
+        str: the stem part of the filename
+    """
+    
+    l = __s.split('.')
+    
+    j = [l[i] for i in range(len(l) - 2)]
+    
+    a = '.'.join(j)
+    
+    return a
+
+
 def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
     """
     OpenFile opens a file selected from the following interface
@@ -1290,14 +1395,6 @@ def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
     global NOW_FILE, cur_data, SAVE_STATUS
 
     file_path = os.path.abspath(file_path)
-
-    _basepath = os.path.join(os.path.dirname(file_path), os.path.basename(file_path) + ".wscript")
-
-    if os.path.exists(_basepath) and file_path.lower().endswith(".wclassic"):
-        run_auto = mb.askyesno(lang[1], f"{lang[285]}\n{lang[286]}\n{lang[287]}")
-
-        if run_auto == True:
-            exec(open(_basepath, "r", encoding="utf-8").read())
 
     try:
         file_input = open(file_path, "rt", encoding="utf-8")
@@ -1331,6 +1428,7 @@ def OpenFile(root_win: Tk = desktop_win):
     Args:
         root_win (Tk): WriterClassic's main window
     """
+    
     global NOW_FILE, cur_data, SAVE_STATUS
 
     file_path = dlg.asksaveasfilename(parent=root_win, filetypes=file_types, defaultextension="*.*", initialfile="Open a File", confirmoverwrite=False, title=lang[7])
@@ -1347,38 +1445,7 @@ def OpenFile(root_win: Tk = desktop_win):
         if selected_extension and not file_path.lower().endswith(selected_extension):
             file_path += selected_extension
 
-    _basepath = os.path.join(str(os.path.dirname(file_path)), str(os.path.basename(file_path)) + ".wscript")
-    ic(_basepath)
-
-    if os.path.exists(_basepath) and file_path.lower().endswith(".wclassic"):
-        run_auto = mb.askyesno(lang[1], f"{lang[285]}\n{lang[286]}\n{lang[287]}")
-
-        if run_auto == True:
-            exec(open(_basepath, "r", encoding="utf-8").read())
-
-    try:
-        file_input = open(file_path, "rt", encoding="utf-8")
-        file_data = file_input.read()
-
-        root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
-        TextWidget.delete(index1=0.0, index2=END)
-        TextWidget.insert(chars=file_data, index=END)
-        cur_data = TextWidget.get(0.0, END)
-        SAVE_STATUS = True
-
-        _LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
-
-        NOW_FILE = str(file_path)
-        file_input.close()
-
-    except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
-        mb.showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
-        run_default = mb.askyesno(title=lang[187], message=lang[189])
-        if run_default:
-            os.system(str(file_path))
-
-    finally:
-        ic(NOW_FILE)
+    OpenFileManually(file_path)
 
 # [i] Saving as
 
@@ -1391,6 +1458,7 @@ def SaveFile(root_win: Tk = desktop_win):
     Args:
         root_win (Tk, optional): the window where changes take place. Defaults to desktop_win.
     """
+    
     global NOW_FILE, cur_data, SAVE_STATUS
 
     data = TextWidget.get(0.0, END)
@@ -1779,8 +1847,7 @@ APP_HELP = _help
 # [i] This is... well the About section
 
 def aboutApp():
-    with open(f"{data_dir}/about.wclassic", mode="r", encoding='utf-8') as about_d:
-        about_data = about_d.read()
+    about_data = ABOUT_WRITER
 
     about_dialogue = Toplevel(desktop_win)
     about_dialogue.geometry("600x275")
@@ -1835,8 +1902,7 @@ def aboutApp():
 
     about_dialogue.mainloop()
 
-    _LOG.write(f"{str(now())} - The About dialogue has been shown\n")
-    about_d.close()
+    _LOG.action('The About dialogue has been shown')
 
     ic()
 
