@@ -126,6 +126,7 @@ debug_a = [config, user_data, nix_assets, plugin_dir, data_dir, locale, temp_dir
 for i in debug_a:
     check_paths(i)
 
+
 class Logger:
     def __init__(self, logger_path: str, encoding: str = 'utf-8'):
         if logger_path.strip() == '':
@@ -166,6 +167,7 @@ class Logger:
         
     def __str__(self) -> str:
         return self.logger
+
 
 _LOG = Logger(os.path.join(user_data, "log.wclassic"))
 
@@ -277,7 +279,11 @@ def clamp(val: SupportsFloat, _min: SupportsFloat, _max: SupportsFloat) -> Suppo
 
 desktop_win = Tk()
 
+_LOG.action("The window has been created")
+
 TextWidget = ScrolledText(desktop_win, font=("Calibri", 13), borderwidth=5, undo=True)
+
+_LOG.action("The editor has been created sucessfully")
 
 
 class WrongClipboardAction(Exception): ...
@@ -305,29 +311,26 @@ def clip_actions(__id: Literal['copy', 'paste'], __s: str = '') -> str:
 
     match __id:
         case 'copy':
+            _LOG.action(f"Copied '{__s}' to the clipboard")
             pyclip.copy(__s)
             return __s
 
         case 'paste':
+            _LOG.action("Pasted the contents")
             return pyclip.paste()
 
         case _:
+            _LOG.error('Wrong clipboard action', 'ONLY COPY & PASTE ALLOWED')
             raise WrongClipboardAction('Can only copy or paste.')
 
-NOT_ALLOWED = [
-    "",
-    " ",
-    "  ",
-    "\n",
-    "   ",
-    "    ",
-    "     "
-]
 
 settings = get_settings(f"{config}/settings.json")
 
+_LOG.action("Got the settings")
+
 if not settings["debugging"]:
     ic.disable()
+    _LOG.action("Debugging is disabled")
 
 ic(settings)
 for debug_b in debug_a:
@@ -356,7 +359,7 @@ setLang = settings["language"]
 
 ic(setLang)
 
-with open(f'{locale}/'+str(setLang[0:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
+with open(f'{locale}/'+str(setLang[:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
     lang = usedLang.split('\n')
     _LOG.write(f"{str(now())} - Language has been configured correctly: OK\n")
@@ -741,36 +744,72 @@ if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
             mb.showerror(lang[133], f"{lang[134]}\n{e}")
 
 
-def SetWinSize():
+def SetWinSize(root: Tk = desktop_win, editor: ScrolledText = TextWidget):
     """
     SetWinSize creates a GUI in order to change the dimensions of the window
     """
 
-    widthSet = sdg.askinteger(lang[1], lang[57])
-    _LOG.write(f"{str(now())} - Got a width value: AWAITING FOR ANTI-BUG CHECK\n")
-    if widthSet in NOT_ALLOWED:
-        mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
-        _LOG.write(f"{str(now())} - Got a width value: ERROR (ILLEGAL VALUE)\n")
-
-    elif widthSet not in NOT_ALLOWED:
-        _LOG.write(f"{str(now())} - Got a width value: OK\n")
-        heightSet = sdg.askinteger(lang[1], lang[58])
-        _LOG.write(f"{str(now())} - Got a height value: AWAITING FOR ANTI-BUG CHECK\n")
-
-        if heightSet in NOT_ALLOWED:
-            mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}")
-            _LOG.write(f"{str(now())} - Got a width value: ERROR (ILLEGAL VALUE)\n")
-
-        elif heightSet not in NOT_ALLOWED:
-            _LOG.write(f"{str(now())} - Got a width value: OK\n")
-            TextWidget.configure(width=widthSet, height=heightSet)
-            _LOG.write(f"{str(now())} - Editing interface has been reconfigured: OK\n")
-            desktop_win.geometry(str(widthSet)+'x'+str(heightSet))
-            _LOG.write(f"{str(now())} - Window's dimensions were set: OK\n")
-
-            _LOG.write(f"{str(now())} - Configured default window's dimensions: OK\n")
-            settings["geometry"] = str(widthSet)+'x'+str(heightSet)
+    def _change_window_size(*params) -> bool:
+        e1: int | None = None
+        e2: int | None = None
+        
+        try:
+            e1 = int(params[0].get())
+            e2 = int(params[1].get())
+            
+        except TypeError as e:
+            mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}\n{e}")
+            params[2].destroy()
+            return False
+            
+        else:
+            params[3].geometry(f"{e1}x{e2}")
+            params[4].configure(width=e1, height=e2)
+            settings["geometry"] = f"{e1}x{e2}"
+            
+        finally:
             fast_dump()
+            
+        return True
+
+    geometry_set = Toplevel()
+    geometry_set.title(f"{lang[1]} - {lang[12]}")
+    geometry_set.resizable(False, False)
+    
+    if sys.platform == 'win32':
+        geometry_set.iconbitmap(os.path.join(data_dir, 'app_icon.ico'))
+    
+    frame0 = Frame(geometry_set)
+    frame1 = Frame(frame0)
+    frame2 = Frame(frame0)
+
+    width_label = Label(frame1, text=lang[57])
+    height_label = Label(frame2, text=lang[58])
+
+    width_set = Entry(frame1)
+    height_set = Entry(frame2)
+    
+    confirm_butt = Button(geometry_set, text='Ok', command=lambda:
+        _change_window_size(width_set, height_set, geometry_set, root, editor))
+        
+    width_set.insert(0, settings["geometry"].lower().split('x')[0])
+    height_set.insert(0, settings["geometry"].lower().split('x')[1])
+    
+    width_label.grid(column=0, row=0)
+    width_set.grid(column=0, row=1)
+    
+    height_label.grid(column=0, row=0)
+    height_set.grid(column=0, row=1)
+    
+    frame1.grid(column=0, row=0)
+    frame2.grid(column=1, row=0)
+    
+    frame0.pack()
+    
+    confirm_butt.pack()
+    
+    geometry_set.mainloop()
+    
 
 # [i] Theme Picker
 
@@ -938,7 +977,7 @@ def document_status():
     _data = TextWidget.get(0.0, END)
     _LOG.write(f"{str(now())} - Extracted text from the editing interface: OK\n")
 
-    if _data in NOT_ALLOWED:
+    if _data.strip() in ('', '\n'):
         lines = 0
         _LOG.write(f"{str(now())} - There were {str(lines)} lines: INFO (EMPTY FILE)\n")
 
@@ -3044,10 +3083,10 @@ def readme_gen(*entries):
 
     TextWidget.delete(0.0, END)
 
-    if _title in NOT_ALLOWED:
+    if _title.strip() == '':
         _title = lang[270]
 
-    if _describe in NOT_ALLOWED:
+    if _describe.strip() == '':
         _describe = f"{lang[269]} {_title}"
 
     readme_generated = f"""{_title}
@@ -3055,16 +3094,16 @@ def readme_gen(*entries):
 
 """
 
-    if _author_email not in NOT_ALLOWED:
+    if _author_email.strip() != '':
         readme_generated += f"""[{lang[268]}]({_author_email})\n"""
 
-    if _author_website not in NOT_ALLOWED:
+    if _author_website.strip() != '':
         readme_generated += f"""[{lang[267]}: {_author_website}]({_author_website})\n"""
 
-    if _project_website not in NOT_ALLOWED:
+    if _project_website.strip() != '':
         readme_generated += f"""[{lang[266]}: {_project_website}]({_project_website})\n"""
 
-    if _sponsor_site not in NOT_ALLOWED:
+    if _sponsor_site.strip() != '':
         readme_generated += f"""[{lang[265]}]({_sponsor_site})\n"""
 
     TextWidget.insert(chars=readme_generated, index=0.0)
