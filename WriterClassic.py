@@ -97,9 +97,6 @@ data_dir = os.path.join(script_dir, 'data')
 locale = os.path.join(script_dir, 'locale')
 temp_dir = os.path.join(script_dir, 'temp')
 scripts_dir = os.path.join(script_dir, "scripts")
-syntax_dir = os.path.join(script_dir, "syntax")
-
-langmap = os.path.join(syntax_dir, "_langmap.json")
 
 now = datetime.datetime.now
 
