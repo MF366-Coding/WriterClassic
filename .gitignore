@@ -7,4 +7,5 @@ WriterClassic_configs.json
 .idea
 test.*
 deprecated
-CANARY
+canary
+syntax

@@ -97,6 +97,9 @@ data_dir = os.path.join(script_dir, 'data')
 locale = os.path.join(script_dir, 'locale')
 temp_dir = os.path.join(script_dir, 'temp')
 scripts_dir = os.path.join(script_dir, "scripts")
+syntax_dir = os.path.join(script_dir, "syntax")
+
+langmap = os.path.join(syntax_dir, "_langmap.json")
 
 now = datetime.datetime.now
 
@@ -131,40 +134,40 @@ class Logger:
     def __init__(self, logger_path: str, encoding: str = 'utf-8'):
         if logger_path.strip() == '':
             raise ValueError('emptry string as a path value')
-        
+
         if not os.path.exists(logger_path) or not os.path.isfile(logger_path):
             raise ValueError('invalid path - must be existing file')
 
         self.logger = open(logger_path, 'a', encoding=encoding)
         self.__newline()
-        
+
     def write(self, text: str):
         self.logger.write(text)
-        
+
     def error(self, text: str, error_details: str | None = None):
         if error_details is None:
             error_details = 'ERROR'
-        
+
         self.logger.write(f"{str(now())} - {text}: {error_details}\n")
-        
+
     def warning(self, text: str, details: str | None = None):
         if details is None:
             details = 'WARNING'
-            
+
         self.logger.write(f"{str(now())} - {text}: {details}\n")
-        
+
     def action(self, text: str, extra: str | None = None):
         if extra is None:
             extra = ''
-            
+
         self.logger.write(f"{str(now())} - {text}: OK {extra}\n")
-    
+
     def close(self):
         self.logger.close()
-    
+
     def __newline(self):
         self.logger.write('\n')
-        
+
     def __str__(self) -> str:
         return self.logger
 
@@ -187,7 +190,7 @@ exceptions = None
 try:
     # [*] Imports down here
     # [*] Time to organize this tho
-    
+
     from pygame import mixer # [i] Playing the sucessful sound
 
     from icecream import ic # [i] Used for debugging
@@ -226,7 +229,7 @@ except (ModuleNotFoundError, ImportError) as e:
 
     if mixer is None:
         from pygame import mixer # [i] Playing the sucessful sound
-    
+
     if ic is None:
         from icecream import ic # [i] Used for debugging
 
@@ -244,9 +247,9 @@ except (ModuleNotFoundError, ImportError) as e:
 
     if simple_webbrowser is None:
         import simple_webbrowser # [i] My own Python module (used for the Search with... options)
-    
+
     if get is None or exceptions is None:
-        from requests import get, exceptions # [i] Used for regular interactions with the Internet   
+        from requests import get, exceptions # [i] Used for regular interactions with the Internet
 
 tracemalloc.start()
 
@@ -628,26 +631,26 @@ def writeStartup(text: bool):
 class WScript:
     def __init__(self):
         self.script: str | None = None
-        
+
     def loadpath(self, location: str, encoding: str = 'utf-8'):
         location = location.strip()
-        
+
         if location == '':
             raise ValueError('empty string as path value')
-        
+
         if not os.path.exists(location) or not os.path.isfile(location):
             raise ValueError('invalid path')
-        
+
         if not location.lower().endswith('.wscript'):
             raise ValueError('must be WSCRIPT file')
-        
+
         with open(location, 'r', encoding=encoding) as f:
             self.script = f.read()
             f.close()
-            
+
     def loadstr(self, script: str):
         self.script = script
-            
+
     def run(self, scope: Literal['read', 'write'] = 'read'):
         """
         run runs the current WScript
@@ -655,20 +658,20 @@ class WScript:
         Args:
             scope (wither 'read' or 'write', optional): defines if the script can write to globals or not. Either ways, it will be able to read them. Defaults to 'read' (readonly).
         """
-        
+
         _globs: dict[str, Any] | None = None
-        
+
         if scope == 'write':
             _globs = globals()
-            
+
         else:
             _globs = globals().copy()
-            
+
         exec(self.script, _globs)
-        
+
     def __len__(self) -> int | None:
         return len(self.script) if self.script is not None else None
-    
+
     def __str__(self) -> str | None:
         return self.script
 
@@ -752,33 +755,33 @@ def SetWinSize(root: Tk = desktop_win, editor: ScrolledText = TextWidget):
     def _change_window_size(*params) -> bool:
         e1: int | None = None
         e2: int | None = None
-        
+
         try:
             e1 = int(params[0].get())
             e2 = int(params[1].get())
-            
+
         except TypeError as e:
             mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}\n{e}")
             params[2].destroy()
             return False
-            
+
         else:
             params[3].geometry(f"{e1}x{e2}")
             params[4].configure(width=e1, height=e2)
             settings["geometry"] = f"{e1}x{e2}"
-            
+
         finally:
             fast_dump()
-            
+
         return True
 
     geometry_set = Toplevel()
     geometry_set.title(f"{lang[1]} - {lang[12]}")
     geometry_set.resizable(False, False)
-    
+
     if sys.platform == 'win32':
         geometry_set.iconbitmap(os.path.join(data_dir, 'app_icon.ico'))
-    
+
     frame0 = Frame(geometry_set)
     frame1 = Frame(frame0)
     frame2 = Frame(frame0)
@@ -788,28 +791,28 @@ def SetWinSize(root: Tk = desktop_win, editor: ScrolledText = TextWidget):
 
     width_set = Entry(frame1)
     height_set = Entry(frame2)
-    
+
     confirm_butt = Button(geometry_set, text='Ok', command=lambda:
         _change_window_size(width_set, height_set, geometry_set, root, editor))
-        
+
     width_set.insert(0, settings["geometry"].lower().split('x')[0])
     height_set.insert(0, settings["geometry"].lower().split('x')[1])
-    
+
     width_label.grid(column=0, row=0)
     width_set.grid(column=0, row=1)
-    
+
     height_label.grid(column=0, row=0)
     height_set.grid(column=0, row=1)
-    
+
     frame1.grid(column=0, row=0)
     frame2.grid(column=1, row=0)
-    
+
     frame0.pack()
-    
+
     confirm_butt.pack()
-    
+
     geometry_set.mainloop()
-    
+
 
 # [i] Theme Picker
 
@@ -1174,12 +1177,12 @@ class Snippets:
         get_index returns the index of the snippet
 
         Actually, it's no index. It is instead the order of adding snippet names.
-        
+
         If you get 3, it isn't an index since snippets are stored as dictionaries.
-        
+
         It instead means that the snippet you asked for was the third to be added.
-        
-        Please note that this also doesn't reflect a Python index, as it starts on 1.        
+
+        Please note that this also doesn't reflect a Python index, as it starts on 1.
 
         Args:
             name (str): the name of the snippet
@@ -1190,10 +1193,10 @@ class Snippets:
         Returns:
             int: the snippet's "index"
         """
-        
+
         if name not in self._snippets:
             raise InvalidSnippet(f"snippet {name} doesn't exist")
-        
+
         return self.__taken_names.index(name) + 1
 
     def get_snippet(self, name: str) -> tuple[str, str, str, str]:
@@ -1418,13 +1421,13 @@ def stem_only(__s: str) -> str:
     Returns:
         str: the stem part of the filename
     """
-    
+
     l = __s.split('.')
-    
+
     j = [l[i] for i in range(len(l) - 2)]
-    
+
     a = '.'.join(j)
-    
+
     return a
 
 
@@ -1473,8 +1476,6 @@ def OpenFile(root_win: Tk = desktop_win):
     Args:
         root_win (Tk): WriterClassic's main window
     """
-    
-    global NOW_FILE, cur_data, SAVE_STATUS
 
     file_path = dlg.asksaveasfilename(parent=root_win, filetypes=file_types, defaultextension="*.*", initialfile="Open a File", confirmoverwrite=False, title=lang[7])
 
@@ -1503,7 +1504,7 @@ def SaveFile(root_win: Tk = desktop_win):
     Args:
         root_win (Tk, optional): the window where changes take place. Defaults to desktop_win.
     """
-    
+
     global NOW_FILE, cur_data, SAVE_STATUS
 
     data = TextWidget.get(0.0, END)
@@ -1614,47 +1615,7 @@ desktop_entry = None
 
 
 def select_all(text_widget: ScrolledText = TextWidget):
-    text_widget.tag_add("sel", 0.0, END)
-
-
-def search_for(replace: bool = False, index_a = INSERT, line_limit: int = 100):
-    text = sdg.askstring(lang[1], lang[323])
-
-    if replace:
-        replaced_text = sdg.askstring(lang[1], lang[324] + "\n" + lang[325])
-
-    search_backwards = mb.askyesno(lang[1], lang[326])
-    case_sensitive = mb.askyesno(lang[1], lang[327])
-
-    x = TextWidget.search(text, index_a, END, forwards=True, backwards=search_backwards, nocase=bool_swap(case_sensitive))
-
-    if x != "":
-        b: list[str] = x.split(".")
-        c: int = b[1] + 1
-
-        for i in range(len(text)):
-            if c >= line_limit:
-                break
-
-            if text[i] == TextWidget.get(f"{b[0]}.{str(c)}"):
-                if replace:
-                    TextWidget.delete(f"{b[0]}.{str(c)}")
-
-                    try:
-                        TextWidget.insert(f"{b[0]}.{str(c-1)}", replaced_text[i])
-
-                    except IndexError:
-                        pass
-
-                c += 1
-                continue
-
-            break
-
-        TextWidget.tag_add("search", x, f"{b[0]}.{str(c)}")
-
-    else:
-        mb.showwarning(lang[1], lang[328])
+    raise NotImplementedError('This feature is planned for development!!!')
 
 
 def lorem_ipsum():
@@ -2416,7 +2377,7 @@ def show_log():
         temp_log = _TEMP_LOG.read()
         _new_editor.insert(0.0, str(temp_log))
         _TEMP_LOG.close()
-        
+
     _new_editor.configure(state=DISABLED)
 
     _LOG.write(f"{str(now())} - The Log File has been shown: OK\n")
