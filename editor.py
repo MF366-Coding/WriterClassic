@@ -1,5 +1,8 @@
 # editor.py
 
+# [*] Catching too general exception
+# pylint: disable=W0718
+
 # [i] General imports
 from typing import Any, Literal
 
