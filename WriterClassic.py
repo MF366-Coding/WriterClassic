@@ -54,7 +54,7 @@ Powered by: Python 3.10+
 # [*] Importing some of the builtin goodies
 import os, sys, json, random, datetime, platform
 
-from typing import Literal, SupportsFloat, Any # [i] Making things nicer, I guess
+from typing import Literal, SupportsFloat, Any, Callable # [i] Making things nicer, I guess
 
 from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
 
@@ -65,9 +65,8 @@ import tracemalloc
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
 # [i] tkinter is used for the UI, duh?!
-from tkinter import SEL_LAST, DISABLED, NORMAL, Tk, Toplevel, TclError, Label, Button, StringVar, Entry, END, Menu, Checkbutton, IntVar, INSERT, OptionMenu, Frame, SEL_FIRST
-from tkinter.scrolledtext import ScrolledText # [i] Used instead of the regular Text widget, since this one has a scroll bar
-from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu # [i] Used because of the auto syling in tkinter.ttk
+from tkinter import SEL_LAST, DISABLED, NORMAL, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, OptionMenu, Frame, SEL_FIRST, WORD, CHAR, NONE
+from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu, Radiobutton # [i] Used because of the auto syling in tkinter.ttk
 import tkinter.messagebox as mb # [i] Used for the message boxes
 import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
 from tkinter import simpledialog as sdg # [i] Used for dialogues that ask you for an input
@@ -81,6 +80,7 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
 
+from editor import WriterClassicEditor # [i] Custom scrolledtext widget
 from plugin_system import initializer, run_a_plugin # [i] WriterClassic's Plugin "API"
 
 # [*] Get the absolute path of the script
@@ -281,7 +281,7 @@ desktop_win = Tk()
 
 _LOG.action("The window has been created")
 
-TextWidget = ScrolledText(desktop_win, font=("Calibri", 13), borderwidth=5, undo=True)
+TextWidget = WriterClassicEditor(desktop_win, font=("Calibri", 13), borderwidth=5, undo=True)
 
 _LOG.action("The editor has been created sucessfully")
 
@@ -413,13 +413,13 @@ Thank you for using Writer Classic! <3
 """
 
 
-def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: ScrolledText = TextWidget) -> str:
+def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: WriterClassicEditor = TextWidget) -> str:
     """
     advanced_clipping sends something to the clipboard based on the GUI
 
     Args:
         __action ('copy', 'paste', 'cut'): the clipboard action to perform
-        text_widget (ScrolledText, optional): the ScrolledText widget that gets affected by the 'paste' and 'cut' operations. Defaults to TextWidget.
+        text_widget (WriterClassicEditor, optional): the WriterClassicEditor widget that gets affected by the 'paste' and 'cut' operations. Defaults to TextWidget.
 
     Returns:
         str: either the value of a copy/paste operation or an empty string
@@ -592,7 +592,6 @@ if ADVANCED:
 menu_15 = Menu(menu_bar)
 menu_16 = Menu(menu_15)
 menu_17 = Menu(menu_15)
-# /-/ menu_18 = Menu(menu_10)
 
 _LOG.write(f"{str(now())} - Created all the menus: OK\n")
 
@@ -742,9 +741,9 @@ if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
 
         except Exception as e:
             mb.showerror(lang[133], f"{lang[134]}\n{e}")
+    
 
-
-def SetWinSize(root: Tk = desktop_win, editor: ScrolledText = TextWidget):
+def SetWinSize(root: Tk = desktop_win, editor: WriterClassicEditor = TextWidget):
     """
     SetWinSize creates a GUI in order to change the dimensions of the window
     """
@@ -813,102 +812,80 @@ def SetWinSize(root: Tk = desktop_win, editor: ScrolledText = TextWidget):
 
 # [i] Theme Picker
 
-def ThemeSet(*colors):
+def ThemeSet(**kw):
     """
     ThemeSet sets a new theme
 
-    Args in the following order:
-        - the background color
-        - the foreground color (text color)
-        - the color of the cursor, usually the same as the foreground color
-        - the background of the menus (LINUX ONLY; menu background)
-        - the color of the text in the menus (LINUX ONLY; menu foreground)
+    XXX Pretty complex function, requires a lot of attention when using. XXX
+
+    Possible args:
+        bg: the background color
+        fg: the foreground color (text color)
+        ct: the color of the cursor, usually the same as the foreground color
+        mbg: the background of the menus (LINUX ONLY; menu background)
+        mfg: the color of the text in the menus (LINUX ONLY; menu foreground)
+        widget: the widget where changes take place
+        settings_: mapping that contains the settings
+        dump: function that allows to dump/save the changed settings
+        menus: list containing existing menus
+        logger: logger class
+        special_menu: special menu that is only trigerred by `special_cond`
+        special_cond: boolean condition that decides whether to trigger `special_menu` or not
     """
+    
+    logger: Logger = kw.get('logger', _LOG)
+    widget: WriterClassicEditor = kw.get('widget', TextWidget)
+    menus: list[Menu] = kw.get('menus', [menu_1, menu_4, menu_5, menu_6, menu_8, menu_9, menu_10, menu_11, menu_12, menu_13, menu_15, menu_16, menu_17])
+    special_menu: Menu = kw.get('special_menu', menu_14)
+    special_cond: bool = kw.get('special_cond', ADVANCED)
+    _configs: dict = kw.get('settings_', settings)
+    dump: Callable = kw.get('dump', fast_dump)
+    bg: str = kw.get('bg', _configs['theme']['color'])
+    fg: str = kw.get('fg', settings['theme']['fg'])
+    ct: str = kw.get('ct', settings['theme']['ct'])
+    mbg: str = kw.get('mbg', settings['theme']['menu'])
+    mfg: str = kw.get('mfg', settings['theme']['mfg'])
+    
+    colors = {'color': bg, 'fg': fg, 'ct': ct, 'menu': mbg, 'mfg': mfg}
+    
+    for i, j in colors.items():
+        _configs['theme'][i] = j
 
-    global theme
+    dump()
 
-    theme = {
-        "color": str(colors[0]),
-        "ct": str(colors[2]),
-        "fg": str(colors[1]),
-        "mfg": str(colors[4]),
-        "menu": str(colors[3])
-    }
+    widget.configure(background=colors[0], foreground=colors[1], insertbackground=colors[2])
+    logger.write(f"{str(now())} - Editing interface has been reconfigured: OK\n")
 
-    settings["theme"] = theme
+    if special_cond and sys.platform == 'linux':
+        menus.append(special_menu)
 
-    fast_dump()
+    if sys.platform == 'linux':
+        # [i] Themed menus only on Linux Python3        
+        try:
+            for menu in menus:
+                menu.configure(background=mbg, foreground=mfg)
 
-    TextWidget.configure(background=colors[0], foreground=colors[1], insertbackground=colors[2])
-    _LOG.write(f"{str(now())} - Editing interface has been reconfigured: OK\n")
+            logger.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
-    try:
-        if sys.platform == "linux":
-            # [i] Themed menus only on Linux Python3
-            # /-/ Themed menus are also compatible with Windows and Mac, tho
-            menu_10.configure(background=colors[3], foreground=colors[4])
-            menu_11.configure(background=colors[3], foreground=colors[4])
-            menu_1.configure(background=colors[3], foreground=colors[4])
-            menu_5.configure(background=colors[3], foreground=colors[4])
-            menu_4.configure(background=colors[3], foreground=colors[4])
-            menu_6.configure(background=colors[3], foreground=colors[4])
-            menu_12.configure(background=colors[3], foreground=colors[4])
-            menu_8.configure(background=colors[3], foreground=colors[4])
-            menu_9.configure(background=colors[3], foreground=colors[4])
-            menu_13.configure(background=colors[3], foreground=colors[4])
-            if ADVANCED:
-                menu_14.configure(background=colors[3], foreground=colors[4])
-            menu_15.configure(background=colors[3], foreground=colors[4])
-            menu_16.configure(background=colors[3], foreground=colors[4])
-            menu_17.configure(background=colors[3], foreground=colors[4])
-            _LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
-
-    except (TypeError, ValueError, TclError):
-        if sys.platform == "linux":
-            # [i] Themed menus only on Linux Python3
-            # /-/ Themed menus are also compatible with Windows and Mac, tho
+        except (TypeError, ValueError, TclError):
             mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
-            menu_10.configure(background="white", foreground="black")
-            menu_11.configure(background="white", foreground="black")
-            menu_1.configure(background="white", foreground="black")
-            menu_5.configure(background="white", foreground="black")
-            menu_4.configure(background="white", foreground="black")
-            menu_6.configure(background="white", foreground="black")
-            menu_12.configure(background="white", foreground="black")
-            menu_8.configure(background="white", foreground="black")
-            menu_9.configure(background="white", foreground="black")
-            menu_13.configure(background="white", foreground="black")
-            if ADVANCED:
-                menu_14.configure(background="white", foreground="black")
-            menu_15.configure(background="white", foreground="black")
-            menu_17.configure(background="white", foreground="black")
-            menu_16.configure(background="white", foreground="black")
-            _LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
+            
+            for menu in menus:
+                menu.configure(background=mbg, foreground=mfg)
 
-    # [i] Themes now update in real time
-    '''
-    waitResponse = mb.askyesno(parent=desktop_win, title=lang[30], message=lang[31])
-    _LOG.write(f"{str(now())} - Asked for app restart: AWAITING RESPONSE\n")
+            logger.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
-    if waitResponse:
-        desktop_win.destroy()
-        _LOG.write(f"{str(now())} - End of session: QUIT\n")
-
-    else:
-        _LOG.write(f"{str(now())} - Cancel/No as response: OK\n")
-    '''
 
 # [!] Althrought not deprecated at all, must not be used.
 # [i] quickway() quits the app without asking for confirmation
 # [!?] Which means it might break stuff that was being saved when the function was called
-# [i] Can only be called from the Command Menu
+# [i] Can only be called from the Command Menu, plugins or scripts
 # [i] Ctrl + Shift + P and type 'ragequit'
-
 def quickway():
     """
     quickway instantly quits the app without any confirmation
 
-    XXX Not recommended at all!
+    XXX Not recommended at all! XXX
     """
 
     _LOG.write(f"{str(now())} - End of session: QUIT\n")
@@ -954,7 +931,7 @@ def new_window():
     newWindow.title(lang[22])
     newWindow.geometry("600x400")
 
-    TextWidget2 = ScrolledText(newWindow, borderwidth=5)
+    TextWidget2 = WriterClassicEditor(newWindow, borderwidth=5)
 
     TextWidget2.configure(background=theme["color"], foreground=theme["fg"], width=GeomValues[0], height=GeomValues[1], insertbackground=theme["ct"], font=FontSet)
     TextWidget2.pack()
@@ -974,7 +951,7 @@ def document_status():
 
     global lines
 
-    _data = TextWidget.get(0.0, END)
+    _data = TextWidget.content
     _LOG.write(f"{str(now())} - Extracted text from the editing interface: OK\n")
 
     if _data.strip() in ('', '\n'):
@@ -1233,7 +1210,7 @@ class Snippets:
         return len(self.__taken_names)
 
 
-def SnippetPicker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = desktop_win, widget: ScrolledText = TextWidget):
+def SnippetPicker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = desktop_win, widget: WriterClassicEditor = TextWidget):
     def update_info_view(*labels):
         n: str = labels[1].get()
         s: tuple = labels[0].get_snippet(n)
@@ -1283,7 +1260,7 @@ def SnippetPicker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskto
         g = (*g, i)
 
     name_label = Label(w, font=h2, text=lang[339])
-    desc_label = ScrolledText(w, font=body2)
+    desc_label = WriterClassicEditor(w, font=body2)
     desc_label.configure(borderwidth=0, insertbackground='white')
 
     desc_label.insert(0.0, lang[340])
@@ -1326,7 +1303,7 @@ default_snippets.register('bold', '**!!!**', 'Markdown', 'Need to be **bold**? Y
 
 # [i] Font Picker :)
 
-def PickFont(root: Tk | Toplevel = desktop_win, editor: ScrolledText = TextWidget, __dump_func = fast_dump, __sample: str = 'Lorem ipsum dolor sit amet, ...') -> Font | dict[bytes, bytes]:
+def PickFont(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = TextWidget, __dump_func = fast_dump, __sample: str = 'Lorem ipsum dolor sit amet, ...') -> Font | dict[bytes, bytes]:
     font_details = dict(tkfontchooser.askfont(root, __sample, f"{lang[1]} - {lang[332]}", family=settings['font']['family'], size=settings['font']['size'], weight=settings['font']['weight'], slant=settings['font']['slant'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike']))
     FontSet.configure(family=font_details['family'], size=font_details['size'], weight=font_details['weight'], slant=font_details['slant'], underline=font_details['underline'], overstrike=font_details['overstrike'])
 
@@ -1353,7 +1330,7 @@ def NewFile():
 
     desktop_win.title(lang[1])
     TextWidget.delete(index1=0.0, index2=END)
-    cur_data = TextWidget.get(0.0, END)
+    cur_data = TextWidget.content
 
     NOW_FILE = False
 
@@ -1448,7 +1425,7 @@ def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
         root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
         TextWidget.delete(index1=0.0, index2=END)
         TextWidget.insert(chars=file_data, index=END)
-        cur_data = TextWidget.get(0.0, END)
+        cur_data = TextWidget.content
         SAVE_STATUS = True
 
         _LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
@@ -1504,7 +1481,7 @@ def SaveFile(root_win: Tk = desktop_win):
 
     global NOW_FILE, cur_data, SAVE_STATUS
 
-    data = TextWidget.get(0.0, END)
+    data = TextWidget.content
     SAVE_STATUS = True
     file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=file_types, defaultextension="*.*", initialfile="New File To Save")
 
@@ -1557,7 +1534,7 @@ def Save(root_win: Tk = desktop_win):
     if NOW_FILE is False:
         return SaveFile(root_win=root_win)
 
-    data: str = TextWidget.get(0.0, END)
+    data: str = TextWidget.content
 
     SAVE_STATUS = True
 
@@ -1575,15 +1552,15 @@ def Save(root_win: Tk = desktop_win):
     mb.showinfo(lang[1], lang[101])
     root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
 
+    NOW_FILE = str(file_path)
+    ic(NOW_FILE)
+
     OpenFileManually(NOW_FILE)
 
     _LOG.write(f"{str(now())} - An existing file has been saved over ({str(file_path)}): OK\n")
 
-    NOW_FILE = str(file_path)
-    ic(NOW_FILE)
 
 # [*] Whatever... (File Eraser)
-
 def WipeFile(root_win: Tk = desktop_win):
     sureConfirm = mb.askyesno(title=lang[55], message=lang[56])
     if sureConfirm:
@@ -1611,8 +1588,12 @@ def WipeFile(root_win: Tk = desktop_win):
 desktop_entry = None
 
 
-def select_all(text_widget: ScrolledText = TextWidget):
-    raise NotImplementedError('This feature is planned for development!!!')
+def select_all(**kw):
+    widget: WriterClassicEditor = kw.get('widget', TextWidget)
+    mark: bool = kw.get('mark', True)
+    see: float | str = kw.get('see', END)
+    
+    widget.select_text(start=0.0, end=END, see=see, mark=mark)
 
 
 def lorem_ipsum():
@@ -1633,7 +1614,7 @@ def readme_writer_classic():
         readme_wrcl_f.close()
 
 
-def ModifiedStatus(text_widget: ScrolledText = TextWidget, main_win: Tk | Toplevel = desktop_win) -> bool | None:
+def ModifiedStatus(text_widget: WriterClassicEditor = TextWidget, main_win: Tk | Toplevel = desktop_win) -> bool | None:
     global SAVE_STATUS, keys_to_go
 
     if keys_to_go > 0:
@@ -1641,7 +1622,7 @@ def ModifiedStatus(text_widget: ScrolledText = TextWidget, main_win: Tk | Toplev
         keys_to_go = clamp(keys_to_go, 0, 10)
         return None
 
-    if cur_data == text_widget.get(0.0, END):
+    if cur_data == text_widget.content:
         if " (*)" in main_win.title():
             main_win.title(main_win.title().removesuffix(" (*)"))
 
@@ -1920,7 +1901,7 @@ def markdown_preview() -> None:
         return
 
     temp_html_path = os.path.join(temp_dir, f"{random.randint(1, 1000)}_{os.path.basename(NOW_FILE).replace(' ', '_')}.html")
-    html_content = markdown2.markdown(TextWidget.get(0.0, END))
+    html_content = markdown2.markdown(TextWidget.content)
 
     with open(temp_html_path, "w", encoding="utf-8")as temp_html_f:
         temp_html_f.write(html_content)
@@ -2366,7 +2347,7 @@ Log File
 def show_log():
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
-    _new_editor = ScrolledText(_new_window, background=theme["color"], foreground=theme["fg"], insertbackground=theme["ct"], font=FontSet, borderwidth=5)
+    _new_editor = WriterClassicEditor(_new_window, background=theme["color"], foreground=theme["fg"], insertbackground=theme["ct"], font=FontSet, borderwidth=5)
     _new_window.title(lang[180])
     _new_editor.pack()
 
@@ -2410,7 +2391,7 @@ class SignaturePlugin:
 
         return self.SIGNATURE, self.USERNAME
 
-    def _insert_custom(self, pos = END, widget: ScrolledText = TextWidget):
+    def _insert_custom(self, pos = END, widget: WriterClassicEditor = TextWidget):
         """
         Internal function.
         """
@@ -2453,7 +2434,7 @@ class SignaturePlugin:
 
         return self._get_details()[0]
 
-    def _insert_auto(self, pos = END, widget: ScrolledText = TextWidget):
+    def _insert_auto(self, pos = END, widget: WriterClassicEditor = TextWidget):
         """
         Internal function.
         """
@@ -2462,7 +2443,7 @@ class SignaturePlugin:
 
         widget.insert(pos, f"\n\n{_signature}")
 
-    def auto(self, **params: str | ScrolledText):
+    def auto(self, **params: str | WriterClassicEditor):
         """
         auto inserts an auto signature
 
@@ -2484,11 +2465,40 @@ class SignaturePlugin:
 backup_system = BackupSystem()
 signature_plugin = SignaturePlugin()
 
+
+def change_wrap(**kw):
+    def inner(win, val: StringVar, editor: WriterClassicEditor):
+        editor.change_wrapping(val.get())
+        win.destroy()
+
+    
+    widget: WriterClassicEditor = kw.get('widget', TextWidget)
+    root: Tk = kw.get('root', desktop_win)
+    
+    w = Toplevel(root)
+    
+    s = StringVar(w, value=widget.get_wrapping())
+    
+    r1 = Radiobutton(w, variable=s, value=NONE, text=lang[342])
+    r2 = Radiobutton(w, variable=s, value=CHAR, text=lang[344])
+    r3 = Radiobutton(w, variable=s, value=WORD, text=lang[343])
+    
+    b = Button(w, text='Ok', command=lambda:
+        inner(w, s, widget))
+    
+    r1.pack()
+    r2.pack()
+    r3.pack()
+    b.pack()
+    
+    w.mainloop()
+
+
 def commandPrompt() -> None | bool:
     new = Toplevel(desktop_win)
 
     def reload_file():
-        if NOW_FILE != False:
+        if NOW_FILE is not False:
             OpenFileManually(NOW_FILE)
 
         else:
@@ -2610,11 +2620,14 @@ desktop_win.bind('<F4>', lambda a:
 desktop_win.bind('<F5>', lambda a:
     OpenFileManually('' if NOW_FILE is False else NOW_FILE))
 
+desktop_win.bind('<F7>', lambda a:
+    change_wrap())
+
 desktop_win.bind('<Control-d>', lambda a:
-    ThemeSet('#020202', '#fcfcfc', 'white', 'black', '#f4f8f8'))
+    ThemeSet(bg='#020202', fg='#fcfcfc', ct='white', mbg='black', mfg='#f4f8f8'))
 
 desktop_win.bind('<Control-l>', lambda a:
-    ThemeSet('#fcfcfc', '#020202', 'black', '#f4f8f8', 'black'))
+    ThemeSet(bg='#fcfcfc', fg='#020202', ct='black', mbg='#f4f8f8', mfg='black'))
 
 desktop_win.bind('<Control-G>', lambda a:
     SetWinSize())
@@ -2624,14 +2637,6 @@ desktop_win.bind('<Control-P>', lambda a:
 
 desktop_win.bind('<Control-greater>', lambda a:
     commandPrompt())
-
-'''
-desktop_win.bind('<Control-h>', lambda a:
-    search_for(True, line_limit=120))
-
-desktop_win.bind('<Control-f>', lambda a:
-    search_for(line_limit=120))
-'''
 
 desktop_win.bind('<Control-F1>', lambda a:
     execute(1))
@@ -2921,45 +2926,39 @@ menu_17.add_command(label="Python", command=lambda:
 
 
 menu_5.add_command(label=lang[16], command=lambda:
-    ThemeSet('#fcfcfc', '#020202', 'black', '#f4f8f8', 'black'), accelerator="Ctrl + L")
+    ThemeSet(bg='#fcfcfc', fg='#020202', ct='black', mbg='#f4f8f8', mfg='black'), accelerator="Ctrl + L")
 menu_5.add_command(label=lang[17], command=lambda:
-    ThemeSet('#020202', '#fcfcfc', 'white', 'black', '#f4f8f8'), accelerator="Ctrl + D")
-menu_5.add_separator()
-menu_5.add_command(label=lang[18], command=lambda:
-    ThemeSet('grey', 'black', 'black', 'black', 'white'))
+    ThemeSet(bg='#020202', fg='#fcfcfc', ct='white', mbg='black', mfg='#f4f8f8'), accelerator="Ctrl + D")
 
 
-menu_6.add_command(label="WriterClassic v8.1.1 (Norb)", command=lambda:
-    ThemeSet("#0055FF", "#B3BFFF", "#fcfff7", "#fcfff7", "#0055FF"))
+menu_6.add_command(label='WriterClassic Codetime', command=lambda:
+    ThemeSet(bg='#0f0e0e', fg='#3fdc24', ct='#33e814', mbg='black', mfg='#2af48e'))
 
 menu_6.add_separator()
 
 menu_6.add_command(label='WriterClassic Aqua', command=lambda:
-    ThemeSet('#12aace', '#040426', '#040426', '#070755', '#bcf6f1'))
+    ThemeSet(bg='#12aace', fg='#040426', ct='#040426', mbg='#070755', mfg='#bcf6f1'))
 
 menu_6.add_command(label='WriterClassic Earth', command=lambda:
-    ThemeSet('#4a0d0d', '#eccccc', '#e8bebe', '#2b0808', '#e8bebe'))
-
-menu_6.add_command(label='Codetime', command=lambda:
-    ThemeSet('#0f0e0e', '#3fdc24', '#33e814', 'black', '#2af48e'))
+    ThemeSet(bg='#4a0d0d', fg='#eccccc', ct='#e8bebe', mbg='#2b0808', mfg='#e8bebe'))
 
 menu_6.add_separator()
 
 menu_6.add_command(label='Darkest Night Ever', command=lambda:
-    ThemeSet('#040114', '#e8a78e', '#e8a78e', 'black', '#e8a78e'))
+    ThemeSet(bg='#040114', fg='#e8a78e', ct='#e8a78e', mbg='black', mfg='#e8a78e'))
 
 menu_6.add_command(label='Dark Forest', command=lambda:
-    ThemeSet('#0e2414', '#c0db7b', '#c0db7b', '#040d07', '#ccf0c5'))
+    ThemeSet(bg='#0e2414', fg='#c0db7b', ct='#c0db7b', mbg='#040d07', mfg='#ccf0c5'))
 
 menu_6.add_command(label='Christmas Night', command=lambda:
-    ThemeSet('#020421', '#a5a9e8', '#a5a9e8', '#020312', '#cbcef2'))
+    ThemeSet(bg='#020421', fg='#a5a9e8', ct='#a5a9e8', mbg='#020312', mfg='#cbcef2'))
 
 menu_6.add_command(label='Silent Night', command=lambda:
-    ThemeSet('#020421','pink', 'pink', '#020312', '#ebd1ed'))
+    ThemeSet(bg='#020421', fg='pink', ct='pink', mbg='#020312', mfg='#ebd1ed'))
 
-if sys.platform == "win32":
-    menu_6.add_command(label='PowerShell Theme', command=lambda:
-        ThemeSet("#012456", "#eeedf0", "#fedba9", "#eeedf0", "#012456"))
+# [*] The PowerShell adapted theme has become builtin
+menu_6.add_command(label='PowerShell Theme', command=lambda:
+    ThemeSet(bg="#012456", fg="#eeedf0", ct="#fedba9", mbg="#eeedf0", mfg="#012456"))
 
 ic(settings["advanced-mode"])
 ic(settings["debugging"])
@@ -3223,13 +3222,13 @@ def message_write(mail: str, pwd: str, _variable, win):
     entry_1 = Entry(window, font=("Noto Sans", 13))
     entry_2 = Entry(window, font=("Noto Sans", 13))
 
-    text_1 = ScrolledText(window, borderwidth=5, font=FontSet, insertbackground=theme["ct"], foreground=theme["fg"], background=theme["color"], height=10)
+    text_1 = WriterClassicEditor(window, borderwidth=5, font=FontSet, insertbackground=theme["ct"], foreground=theme["fg"], background=theme["color"], height=10)
 
     butt_1 = Button(window, text=lang[241], command=lambda:
-        send_email_with_attachment(window, False, mail, pwd, entry_2.get(), entry_1.get(), text_1.get(0.0, END)))
+        send_email_with_attachment(window, False, mail, pwd, entry_2.get(), entry_1.get(), text_1.content))
 
     butt_2 = Button(window, text=lang[240], command=lambda:
-        send_email_with_attachment(window, True, mail, pwd, entry_2.get(), entry_1.get(), text_1.get(0.0, END)))
+        send_email_with_attachment(window, True, mail, pwd, entry_2.get(), entry_1.get(), text_1.content))
 
     label_1.pack()
     label_2.pack()
@@ -3401,7 +3400,7 @@ for j in range(TOOLBAR_LEN):
     buttons[j].grid(column=j, row=0)
 
 TextWidget.pack(expand=True)
-cur_data = TextWidget.get(0.0, END)
+cur_data = TextWidget.content
 
 if len(sys.argv) > 1:
     # [i] The first command-line argument is the file path
