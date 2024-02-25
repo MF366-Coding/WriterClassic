@@ -32,6 +32,9 @@ Small but lovely contributions by:
     Zeca70 (Zeca70 at GitHub)
 '''
 
+# [!!] I urgently need to organize this damn code
+# [!] specially the window bindings which are spread thru this code like crazy
+
 # [i] NOW_FILE is the currently opened file
 # [i] if none is open, then it's False
 NOW_FILE = False
@@ -80,8 +83,10 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
 
-from editor import WriterClassicEditor # [i] Custom scrolledtext widget
-from plugin_system import initializer, run_a_plugin # [i] WriterClassic's Plugin "API"
+# [i] Custom widgets for WriterClassic specifically (a custom ScrolledText widget and a custom Toplevel for Search & Replace)
+from editor import WriterClassicEditor # /-/, SearchReplace
+
+from plugin_system import initializer, run_a_plugin # [i] For WriterClassic's Plugin "API"
 
 # [*] Get the absolute path of the script
 script_path = os.path.abspath(__file__)
@@ -639,6 +644,13 @@ class WScript:
 
         if not location.lower().endswith('.wscript'):
             raise ValueError('must be WSCRIPT file')
+        
+        if os.path.basename(location) == "EightBall.wscript":
+            self.script = """_prompts = ['Yes!', "Don't think so...", "Doubtly.", "Absolutely.", "Nope.", "Not happening.", "WriterClassic is a good text editor!", "MF366 is cool.", "Of course!"]
+
+mb.showinfo(f"{lang[1]} - Eight Ball", random.choice(_prompts))
+"""
+            return
 
         with open(location, 'r', encoding=encoding) as f:
             self.script = f.read()
@@ -1891,6 +1903,17 @@ def aboutApp():
     ic()
 
 
+'''
+[!] I'll atempt this again someday
+
+def search_replace():
+    s = SearchReplace(desktop_win, TextWidget, False, lang)
+    s.initiate_setup(s)
+    s.resizable(False, False)
+    s.mainloop()
+'''
+
+
 def markdown_preview() -> None:
     if not NOW_FILE:
         mb.showerror(lang[1], lang[221])
@@ -2610,6 +2633,14 @@ desktop_win.bind('<Control-y>', lambda a:
 
 desktop_win.bind('<Control-i>', lambda a:
     aboutApp())
+
+'''
+desktop_win.bind('<Control-f>', lambda a:
+    search_replace())
+
+desktop_win.bind('<Control-h>', lambda a:
+    search_replace())
+'''
 
 desktop_win.bind('<F1>', lambda a:
     APP_HELP())
