@@ -84,7 +84,7 @@ from email.mime.text import MIMEText
 from email import encoders
 
 # [i] Custom widgets for WriterClassic specifically (a custom ScrolledText widget and a custom Toplevel for Search & Replace)
-from editor import WriterClassicEditor # /-/, SearchReplace
+from editor import WriterClassicEditor, SearchReplace
 
 from plugin_system import initializer, run_a_plugin # [i] For WriterClassic's Plugin "API"
 
@@ -1903,15 +1903,11 @@ def aboutApp():
     ic()
 
 
-'''
-[!] I'll atempt this again someday
-
 def search_replace():
-    s = SearchReplace(desktop_win, TextWidget, False, lang)
+    s = SearchReplace(desktop_win, TextWidget, False, lang, os.path.join(data_dir, 'app_icon.ico'))
     s.initiate_setup(s)
     s.resizable(False, False)
     s.mainloop()
-'''
 
 
 def markdown_preview() -> None:
@@ -2634,10 +2630,10 @@ desktop_win.bind('<Control-y>', lambda a:
 desktop_win.bind('<Control-i>', lambda a:
     aboutApp())
 
-'''
 desktop_win.bind('<Control-f>', lambda a:
     search_replace())
 
+'''
 desktop_win.bind('<Control-h>', lambda a:
     search_replace())
 '''
