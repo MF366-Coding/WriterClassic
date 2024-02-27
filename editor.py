@@ -121,7 +121,7 @@ class SearchReplace(Toplevel):
         self.master = master
 
         super().__init__(master, **kwargs)
-        super().title(f"{self.lang[1]} - Search and Replace")
+        super().title(f"{self.lang[1]} - {self.lang[345]}")
         
         if sys.platform == 'win32':
             super().iconbitmap(ico)
@@ -137,7 +137,7 @@ class SearchReplace(Toplevel):
         # /-/ self._F4 = Frame(widget)
         # /-/ self._B3 = Button(widget, text='Mark all matches', command=self._mark_matches)
 
-        self._L1 = Label(self._F1, text='Find: ')
+        self._L1 = Label(self._F1, text=self.lang[346].strip() + ' ')
         self._E1 = Entry(self._F1)
         self._PREVBUTT = Button(self._F1, text=chr(9650), command=lambda:
             self._find('prev'))
@@ -148,7 +148,7 @@ class SearchReplace(Toplevel):
         self._CASING = IntVar(widget, value=0)
 
         # /-/ self._C1 = Checkbutton(self._F2, text="Exact matches only", variable=self._EXACT)
-        self._C2 = Checkbutton(self._F2, text='Case dependent', variable=self._CASING)
+        self._C2 = Checkbutton(self._F2, text=self.lang[347], variable=self._CASING)
 
         self._REPLACE = IntVar(widget, value=0)
 
@@ -290,7 +290,7 @@ class SearchReplace(Toplevel):
         self.editor.tag_remove(SEL, 0.0, END)
         
         if not self.pattern:
-            mb.showwarning(self.lang[1], "Cannot find an empty pattern in the editor!")
+            mb.showwarning(self.lang[1], self.lang[348])
             return
         
         match direction:
@@ -310,7 +310,7 @@ class SearchReplace(Toplevel):
         first_index = self.editor.search(self.pattern, ind, END, True, False, self.isexact, self.regexp, self.nocasing)
         
         if not first_index:
-            mb.showwarning(self.lang[1], 'Reached the end of the editor.')
+            mb.showwarning(self.lang[1], self.lang[349])
             return True
         
         first_index = self.editor.index(first_index)
@@ -332,7 +332,7 @@ class SearchReplace(Toplevel):
         first_index = self.editor.search(self.pattern, INSERT, 0.0, False, True, self.isexact, self.regexp, self.nocasing)
         
         if not first_index:
-            mb.showwarning(self.lang[1], 'Reached the start of the editor.')
+            mb.showwarning(self.lang[1], self.lang[350])
             return
         
         first_index = self.editor.index(first_index)

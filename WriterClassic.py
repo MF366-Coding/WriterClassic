@@ -15,7 +15,7 @@
 '''
 WriterClassic
 
-Powered by: Python 3.10+
+Powered by: Python 3.11.8
 
 Official Repo:
     https://github.com/MF366-Coding/WriterClassic
@@ -41,7 +41,6 @@ NOW_FILE = False
 lines = 0
 cur_data: str = ""
 SAVE_STATUS: bool = True
-keys_to_go: int = 0
 TOOLBAR_LEN: int = 11
 
 CREDITS = """WriterClassic by: MF366
@@ -215,7 +214,7 @@ except (ModuleNotFoundError, ImportError) as e:
     _command: str = f"pip install --upgrade -r \"{os.path.join(script_dir, 'requirements.txt')}\""
 
     if sys.platform == "win32":
-        _command: str = f"python -m pip install --upgrade -r \"{os.path.join(script_dir, 'requirements.txt')}\""
+        _command: str = f"{sys.executable} -m pip install --upgrade -r \"{os.path.join(script_dir, 'requirements.txt')}\""
 
     try:
         os.system(_command)
@@ -408,7 +407,7 @@ advV ="v10.5.0.290"
 ABOUT_WRITER = f"""App name: WriterClassic
 Developer: MF366 (at GitHub: MF366-Coding)
 Version number: {appV[1:]}
-Powered by: Python 3.10.11 (x64)
+Powered by: Python 3.11.8 (x64)
 Tested on: Windows, Linux
 
 https://mf366-coding.github.io/writerclassic.html
@@ -431,7 +430,8 @@ def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: Wr
     """
 
     selection: str = ''
-
+    
+    
     try:
         # [*] Get the current selection
         selection = text_widget.get(SEL_FIRST, SEL_LAST)
@@ -1328,15 +1328,36 @@ def PickFont(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = Te
 
 # [!] fontEdit has been deprecated and removed in favor of PickFont
 
-# [i] clears the screen
-def NewFile():
+# [i] New File with confirmation (NEW!)
+def NewFile(skip_confirmation: bool = False):
     """
     NewFile clears the editor and purges current cached data on the last file to be opened/saved
 
     It also resets the modified status (check `ModifiedStatus` - function and `SAVE_STATUS` - global variable, bool type)
+    
+    However, it first checks if the contents of the editor have been modified (unless confirmation ahs been skipped via the only argument).
     """
 
     global NOW_FILE, cur_data, SAVE_STATUS
+
+    if not skip_confirmation:
+        ic()
+        
+        a = ModifiedStatus()
+        
+        if not a:
+            b = mb.askyesnocancel(lang[1], f"{lang[352]}\n{lang[353]}")
+            
+            if b is None:
+                ic()
+                return
+            
+            if b:
+                ic()
+                Save()
+                
+            else:
+                ic()            
 
     SAVE_STATUS = True
 
@@ -1627,12 +1648,7 @@ def readme_writer_classic():
 
 
 def ModifiedStatus(text_widget: WriterClassicEditor = TextWidget, main_win: Tk | Toplevel = desktop_win) -> bool | None:
-    global SAVE_STATUS, keys_to_go
-
-    if keys_to_go > 0:
-        keys_to_go -= 1
-        keys_to_go = clamp(keys_to_go, 0, 10)
-        return None
+    global SAVE_STATUS
 
     if cur_data == text_widget.content:
         if " (*)" in main_win.title():
@@ -1667,6 +1683,7 @@ class XYEvent:
     def update(self, params: tuple[int]):
         self.x_root, self.y_root = params
 
+
 def rmb_popup(event):
     x, y = event.x_root, event.y_root
 
@@ -1676,7 +1693,6 @@ def rmb_popup(event):
     finally:
         rmb_menu.grab_release()
 
-TextWidget.bind("<Button-3>", rmb_popup)
 
 def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
     """
@@ -1727,10 +1743,10 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
                         return
 
                     if sys.platform == "win32":
-                        os.system(f"python \"{NOW_FILE}\"")
+                        os.system(f"{sys.executable} \"{NOW_FILE}\"")
                         return
 
-                    os.system(f"python3 \"{NOW_FILE}\"")
+                    os.system(f"{sys.executable} \"{NOW_FILE}\"")
                     return
 
                 case _:
@@ -1741,7 +1757,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
 
 # [!] DevOption has been removed since it was deprecated
 
-def desktop_create(pycommand: str):
+def desktop_create(pycommand: str = sys.executable):
     """
     desktop_create creates a Desktop File for Linux
 
@@ -1796,20 +1812,15 @@ def desktop_create_win():
     desktop_created_win.title(lang[197])
     if sys.platform == "win32":
         desktop_created_win.iconbitmap(f"{data_dir}/app_icon.ico")
-    desktop_created_win.geometry("600x150")
     desktop_created_win.resizable(False, False)
 
     LabA = Label(desktop_created_win, text=lang[193], font=("Segoe UI", 15))
     LabB = Label(desktop_created_win, text=lang[194], font=("Segoe UI", 12))
-    ButtA = Button(desktop_created_win, text=lang[196], command=lambda:
-        desktop_create(pycommand='python3'))
-    ButtB = Button(desktop_created_win, text=lang[195], command=lambda:
-        desktop_create(pycommand='python'))
+    Butt = Button(desktop_created_win, text='Ok', command=desktop_create)
 
     LabA.pack()
     LabB.pack()
-    ButtA.pack()
-    ButtB.pack()
+    Butt.pack()
 
 # [i] Credits
 
@@ -1817,8 +1828,6 @@ def appCredits():
     mb.showinfo(title=lang[28], message=CREDITS)
     _LOG.write(f"{str(now())} - The Credits have been shown: OK\n")
 
-# /-/ Super Secret Easter Eggs
-# [!?] you saw nothin'
 
 def surprise_egg():
     askNow = sdg.askstring(lang[29], lang[66])
@@ -2608,112 +2617,134 @@ def commandPrompt() -> None | bool:
 
     new.mainloop()
 
-# [i] Key bindings
-desktop_win.bind('<Control-o>', lambda a:
-    OpenFile(desktop_win))
-
-desktop_win.bind('<Control-n>', lambda a:
-    NewFile())
-
-desktop_win.bind('<Control-s>', lambda a:
-    Save(desktop_win))
-
-desktop_win.bind('<Control-S>', lambda a:
-    SaveFile(desktop_win))
-
-desktop_win.bind('<Control-z>', lambda a:
-    TextWidget.edit_undo())
-
-desktop_win.bind('<Control-y>', lambda a:
-    TextWidget.edit_redo())
-
-desktop_win.bind('<Control-i>', lambda a:
-    aboutApp())
-
-desktop_win.bind('<Control-f>', lambda a:
-    search_replace())
-
-'''
-desktop_win.bind('<Control-h>', lambda a:
-    search_replace())
-'''
-
-desktop_win.bind('<F1>', lambda a:
-    APP_HELP())
-
-desktop_win.bind('<F4>', lambda a:
-    Terminal())
-
-desktop_win.bind('<F5>', lambda a:
-    OpenFileManually('' if NOW_FILE is False else NOW_FILE))
-
-desktop_win.bind('<F7>', lambda a:
-    change_wrap())
-
-desktop_win.bind('<Control-d>', lambda a:
-    ThemeSet(bg='#020202', fg='#fcfcfc', ct='white', mbg='black', mfg='#f4f8f8'))
-
-desktop_win.bind('<Control-l>', lambda a:
-    ThemeSet(bg='#fcfcfc', fg='#020202', ct='black', mbg='#f4f8f8', mfg='black'))
-
-desktop_win.bind('<Control-G>', lambda a:
-    SetWinSize())
-
-desktop_win.bind('<Control-P>', lambda a:
-    commandPrompt())
-
-desktop_win.bind('<Control-greater>', lambda a:
-    commandPrompt())
-
-desktop_win.bind('<Control-F1>', lambda a:
-    execute(1))
-
-desktop_win.bind('<Control-F2>', lambda a:
-    execute(2))
-
-desktop_win.bind('<Control-F3>', lambda a:
-    execute(3))
-
-desktop_win.bind('<Control-F4>', lambda a:
-    execute(4))
-
-desktop_win.bind('<Control-F5>', lambda a:
-    execute(5))
-
-desktop_win.bind('<Control-F6>', lambda a:
-    execute(6))
-
-desktop_win.bind('<Control-F7>', lambda a:
-    execute(7))
-
-desktop_win.bind('<Control-F8>', lambda a:
-    execute(8))
-
-desktop_win.bind('<Control-F9>', lambda a:
-    execute(9))
-
-desktop_win.bind('<Control-F10>', lambda a:
-    execute(10))
-
-desktop_win.bind('<Control-F11>', lambda a:
-    execute(11))
-
-desktop_win.bind('<Control-F12>', lambda a:
-    execute(12))
-
-desktop_win.bind('<Control-a>', lambda a:
-    select_all())
 
 event_main = XYEvent(TextWidget.winfo_rootx(), TextWidget.winfo_rooty())
 
-TextWidget.bind('<KeyRelease>', lambda a:
-    ModifiedStatus())
+# [i] Key bindings
+# [*] RMB Menu
+TextWidget.bind("<Button-3>", rmb_popup)
 
-desktop_win.bind('<Key>', lambda a:
+# [*] Updating the x, y coordinates
+desktop_win.bind('<Key>', lambda _:
     event_main.update((TextWidget.winfo_rootx(), TextWidget.winfo_rooty())))
 
-TextWidget.bind('<App>', lambda a:
+# [*] Same as RMB Menu but via keyboard
+TextWidget.bind('<App>', lambda _:
     rmb_popup(event_main))
+
+# [*] Opening a file
+TextWidget.bind('<Control-o>', lambda _:
+    OpenFile(desktop_win))
+
+# [*] Creating a new file
+TextWidget.bind('<Control-n>', lambda _:
+    NewFile())
+
+# [*] Saving the current file
+TextWidget.bind('<Control-s>', lambda _:
+    Save(desktop_win))
+
+# [*] Saving current file as
+TextWidget.bind('<Control-S>', lambda _:
+    SaveFile(desktop_win))
+
+# [*] Undo
+TextWidget.bind('<Control-z>', lambda _:
+    TextWidget.edit_undo())
+
+# [*] Redo
+TextWidget.bind('<Control-y>', lambda _:
+    TextWidget.edit_redo())
+
+# [*] About WriterClassic
+desktop_win.bind('<Control-i>', lambda _:
+    aboutApp())
+
+# [*] Search on the editor
+TextWidget.bind('<Control-f>', lambda _:
+    search_replace())
+
+# [*] Help Online
+TextWidget.bind('<F1>', lambda _:
+    APP_HELP())
+
+# [*] Open the Terminal inputs plugin
+TextWidget.bind('<F4>', lambda _:
+    Terminal())
+
+# [*] Reload current file
+TextWidget.bind('<F5>', lambda _:
+    OpenFileManually('' if NOW_FILE is False else NOW_FILE))
+
+# [*] Change line wrapping
+TextWidget.bind('<F7>', lambda _:
+    change_wrap())
+
+# [*] Dark theme
+TextWidget.bind('<Control-d>', lambda _:
+    ThemeSet(bg='#020202', fg='#fcfcfc', ct='white', mbg='black', mfg='#f4f8f8'))
+
+# [*] Light theme
+TextWidget.bind('<Control-l>', lambda _:
+    ThemeSet(bg='#fcfcfc', fg='#020202', ct='black', mbg='#f4f8f8', mfg='black'))
+
+# [*] Change window size
+TextWidget.bind('<Control-G>', lambda _:
+    SetWinSize())
+
+# [*] Command Menu
+TextWidget.bind('<Control-P>', lambda _:
+    commandPrompt())
+
+# [*] Command Menu
+TextWidget.bind('<Control-greater>', lambda _:
+    commandPrompt())
+
+# [*] Execute plugins 1 - 12
+desktop_win.bind('<Control-F1>', lambda _:
+    execute(1))
+
+desktop_win.bind('<Control-F2>', lambda _:
+    execute(2))
+
+desktop_win.bind('<Control-F3>', lambda _:
+    execute(3))
+
+desktop_win.bind('<Control-F4>', lambda _:
+    execute(4))
+
+desktop_win.bind('<Control-F5>', lambda _:
+    execute(5))
+
+desktop_win.bind('<Control-F6>', lambda _:
+    execute(6))
+
+desktop_win.bind('<Control-F7>', lambda _:
+    execute(7))
+
+desktop_win.bind('<Control-F8>', lambda _:
+    execute(8))
+
+desktop_win.bind('<Control-F9>', lambda _:
+    execute(9))
+
+desktop_win.bind('<Control-F10>', lambda _:
+    execute(10))
+
+desktop_win.bind('<Control-F11>', lambda _:
+    execute(11))
+
+desktop_win.bind('<Control-F12>', lambda _:
+    execute(12))
+
+# [*] Select all text in the editor
+TextWidget.bind('<Control-a>', lambda _:
+    select_all())
+
+# [*] Update the modified status
+TextWidget.bind('<KeyRelease>', lambda _:
+    ModifiedStatus())
+
 
 def close_confirm() -> None:
     ic()
@@ -2775,12 +2806,8 @@ menu_10.add_command(label = lang[9], command=lambda:
 menu_10.add_separator()
 menu_10.add_command(label=lang[293], command=TextWidget.edit_undo, accelerator="Ctrl + Z")
 menu_10.add_command(label=lang[294], command=TextWidget.edit_redo, accelerator="Ctrl + Y")
-'''
 menu_10.add_separator()
-menu_10.add_command(label=lang[329], command=search_for, accelerator="Ctrl + F")
-menu_10.add_command(label=lang[330], command=lambda:
-    search_for(True), accelerator="Ctrl + H")
-'''
+menu_10.add_command(label=lang[329], command=search_replace, accelerator="Ctrl + F")
 menu_10.add_separator()
 menu_10.add_command(label=lang[163], command=DOC_STATS)
 menu_10.add_separator()
@@ -2811,13 +2838,11 @@ menu_11.add_command(label=lang[29], command=surprise_egg, state='disabled')
 '''
 
 menu_1.add_command(label=lang[12], command=SetWinSize, accelerator="Ctrl + Shift + G")
-
 menu_1.add_command(label=lang[332], command=PickFont)
+menu_1.add_command(label=lang[351], command=change_wrap)
+
 
 menu_8.add_command(label=lang[22], command=new_window)
-'''
-menu_8.add_command(label=lang[23], command=clockPlugin, state="disabled")
-'''
 menu_8.add_command(label=lang[182], command=Terminal)
 menu_8.add_separator()
 menu_8.add_command(label=lang[131], command=signature_plugin.custom)
