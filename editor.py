@@ -14,7 +14,7 @@ from typing import Any, Literal, Iterable
 import sys
 
 # [i] Tkinter imports
-from tkinter import Misc, END, WORD, INSERT, SEL, SEL_FIRST, SEL_LAST, Toplevel, IntVar
+from tkinter import Misc, END, WORD, INSERT, SEL, SEL_FIRST, SEL_LAST, Toplevel, IntVar, TclError
 from tkinter.ttk import Checkbutton, Button, Frame, Label, Entry
 from tkinter.scrolledtext import ScrolledText as _ScrolledText
 from tkinter.font import Font
@@ -80,7 +80,7 @@ class WriterClassicEditor(_ScrolledText):
         try:
             return self.get(SEL_FIRST, SEL_LAST)
 
-        except Exception:
+        except TclError:
             return False
 
 

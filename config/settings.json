@@ -8,10 +8,10 @@
         "overstrike": 0
     },
     "theme": {
-        "color": "#12aace",
+        "color": "#020202",
         "ct": "white",
-        "fg": "white",
-        "mfg": "white",
+        "fg": "#fcfcfc",
+        "mfg": "#f4f8f8",
         "menu": "black"
     },
     "advanced-mode": false,

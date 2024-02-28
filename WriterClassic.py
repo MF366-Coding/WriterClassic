@@ -1,15 +1,29 @@
 # WriterClassic.py
 
 # [i] Just disabling some annoying Pylint stuff, don't mind me :D
-# pylint: disable=W0122
+
+# [!?] Use of eval (funny number code lol)
+# pylint: disable=W0123
+
+# [!?] Module PIL.Image has no LANCZOS member (hint: it has)
 # pylint: disable=E1101
-# pylint: disable=W0621
-# pylint: disable=W0212
+
+# [*] Catching too general exception (Exception)
 # pylint: disable=W0718
+
+# [*] Redefining from outer scape (dang, I hate these ones)
+# pylint: disable=W0621
+
+# [!?] Use of exec (this one is classic lmao)
+# pylint: disable=W0122
+
+# [*] Using the global statement (I mean, it is supposed to be used, right, Pylint?)
 # pylint: disable=W0603
-# pylint: disable=W0404
-# pylint: disable=W0201
+
+# [*] String statement has no effect - I use big strings as comments since Python doesn't have block comments
 # pylint: disable=W0105
+
+# [*] F*ck you, Pylint with your "bad indentation"
 # pylint: disable=W0311
 
 '''
@@ -17,12 +31,14 @@ WriterClassic
 
 Powered by: Python 3.11.8
 
+Official Website:
+    https://mf366-coding.github.io/writerclassic.html
+
 Official Repo:
     https://github.com/MF366-Coding/WriterClassic
 
 Find me in this spots:
     https://github.com/MF366-Coding
-    https://www.youtube.com/@mf_366
     https://www.buymeacoffee.com/mf366 (Support me please!)
 
 Original idea and development by: MF366
@@ -33,12 +49,8 @@ Small but lovely contributions by:
 '''
 
 # [!!] I urgently need to organize this damn code
-# [!] specially the window bindings which are spread thru this code like crazy
 
-# [i] NOW_FILE is the currently opened file
-# [i] if none is open, then it's False
-NOW_FILE = False
-lines = 0
+NOW_FILE = False # [*] current file, otherwise False
 cur_data: str = ""
 SAVE_STATUS: bool = True
 TOOLBAR_LEN: int = 11
@@ -67,7 +79,7 @@ import tracemalloc
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
 # [i] tkinter is used for the UI, duh?!
-from tkinter import SEL_LAST, DISABLED, NORMAL, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, OptionMenu, Frame, SEL_FIRST, WORD, CHAR, NONE
+from tkinter import SEL_LAST, DISABLED, NORMAL, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, SEL_FIRST, WORD, CHAR, NONE
 from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu, Radiobutton # [i] Used because of the auto syling in tkinter.ttk
 import tkinter.messagebox as mb # [i] Used for the message boxes
 import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
@@ -436,7 +448,7 @@ def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: Wr
         # [*] Get the current selection
         selection = text_widget.get(SEL_FIRST, SEL_LAST)
 
-    except Exception:
+    except TclError:
         selection = INSERT
 
         if __action in ('copy', 'cut'):
@@ -617,6 +629,7 @@ WCLASSIC_VARS: dict[str, str] = {
     "$OS": os.name
 }
 
+
 def writeStartup(text: bool):
     """
     writeStartup changes the startup value on the settings and then saves it
@@ -628,6 +641,7 @@ def writeStartup(text: bool):
     settings["startup"] = text
     fast_dump()
     _LOG.write(f"{str(now())} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
+
 
 class WScript:
     def __init__(self):
@@ -822,8 +836,69 @@ def SetWinSize(root: Tk = desktop_win, editor: WriterClassicEditor = TextWidget)
     geometry_set.mainloop()
 
 
-# [i] Theme Picker
+def EvaluateExpression(start: str | float | None = None, end: str | float | None = None, **kwargs) -> tuple[str | None, str | int | float | complex | None]:
+    """
+    EvaluateExpression evaluates an expression inside a text widget
 
+    Args:
+        start (str | float | None, optional): index1. Defaults to SEL_FIRST.
+        end (str | float | None, optional): index2. Defaults to SEL_LAST.
+        widget (WriterClassicEditor, optional): the widget where changes take place. Defaults to TextWidget.
+
+    Returns:
+        tuple[str | None, str | int | float | bool | None]: expression, evaluated expression. (If both are None, then SEL_FIRST and SEL_LAST are not marked.)
+    """
+    
+    widget: WriterClassicEditor = kwargs.get('widget', TextWidget)
+    
+    if start is None:
+        try:
+            start = SEL_FIRST
+            
+        except TclError:
+            return None, None
+        
+    if end is None:
+        try:
+            end = SEL_LAST
+            
+        except TclError:
+            return None, None
+        
+    exp: str = widget.get(start, end)
+    EVALUATED_EXP = eval(exp, globals().copy())
+    evaluations: list[int, float, bool | None] = [int(EVALUATED_EXP), float(EVALUATED_EXP), None]
+    
+    if evaluations[0] in (0, 1):
+        if '=' in exp or '>' in exp or '<' in exp or ' is ' in exp:
+            evaluations[2] = bool(EVALUATED_EXP)
+    
+    type_obtained: bool = False
+    eval_exp: int | float | bool | None = None
+    
+    # [*] 1st Priority: result is boolean
+    if evaluations[2] is True or evaluations[2] is False:
+        eval_exp: bool = evaluations[2]
+        type_obtained = True
+    
+    # [*] 2nd Priority: result is an integer
+    # [i] If the float equals the integer, the result should be displayed as int ofc
+    if evaluations[0] == evaluations[1] and not type_obtained:
+        eval_exp: int = evaluations[0]
+        type_obtained = True
+            
+    # [*] 3rd Priority: result is not integer or boolean
+    # [i] It's kind of a joke calling this a priority
+    if not type_obtained:
+        eval_exp: float = evaluations[1]
+        type_obtained = True
+    
+    if isinstance(eval_exp, (int, bool, float)):
+        widget.replace(start, end, str(eval_exp))
+        return exp, eval_exp
+
+
+# [i] Theme Picker
 def ThemeSet(**kw):
     """
     ThemeSet sets a new theme
@@ -908,11 +983,11 @@ def quickway():
     desktop_win.destroy()
     sys.exit()
 
-# [i] Setup (Lang files)
 
+# [i] Setup (Lang files)
 def LanguageSet(language_set, root_win):
     """
-    LanguageSet sets a new language as the setting
+    LanguageSet sets a new language as the app language
 
     Args:
         language_set (str): the string that represents the locale file. Examples: `pt`, `sk` and `en`
@@ -956,7 +1031,7 @@ def new_window():
     newWindow.mainloop()
 
 
-def document_status():
+def document_status(widget: WriterClassicEditor = TextWidget):
     """
     document_status presents the stats of the current editor to the user
 
@@ -964,23 +1039,8 @@ def document_status():
     - No of lines
     """
 
-    global lines
+    mb.showinfo(lang[164], f"{lang[165]}: {widget.num_lines - 1}")
 
-    _data = TextWidget.content
-    _LOG.write(f"{str(now())} - Extracted text from the editing interface: OK\n")
-
-    if _data.strip() in ('', '\n'):
-        lines = 0
-        _LOG.write(f"{str(now())} - There were {str(lines)} lines: INFO (EMPTY FILE)\n")
-
-    else:
-        _lines = _data.split("\n")
-        y_lines = list(filter(("").__ne__, _lines))
-        x_lines = int(len(y_lines))
-        lines = x_lines
-        _LOG.write(f"{str(now())} - There were {str(lines)} lines: OK\n")
-
-    mb.showinfo(lang[164], f"{lang[165]}: {str(lines)}")
 
 DOC_STATS = document_status
 
@@ -994,40 +1054,6 @@ def repo():
     simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/")
     _LOG.write(f"{str(now())} - Opened the repository: AWAITING FOR FUNCTION OR ERROR\n")
 
-def bool_swap(value: bool | None, default_for_none: bool = True):
-    """
-    bool_swap swaps the value of a boolean and returns it
-
-    When a value, either a bool or None, is given, if it's True, the function will return False. If False, return True.
-
-    If the `default_for_none` is specified (defaults to True), when the given value is None, the fucntion returns `default_for_none`'s value.
-
-    Example:
-        `bool_swap(True)` will return False
-        `bool_swap(True, False)` will also return False
-        `bool_swap(False)` will return True
-        `bool_swap(False, True)` will also return True
-        `bool_swap(None)` will return True (because that's the default for `default_for_none`)
-        `bool_swap(None, False)` will return False (because `default_for_none` was set to False)
-
-    Args:
-        value (bool | None): the value to swap
-        default_for_none (bool, optional): in case None is given as `value`, this argument will be returned. Defaults to True.
-
-    Returns:
-        bool: the swapped value
-    """
-
-    if value:
-        value = False
-
-    elif not value:
-        value = True
-
-    elif value is None:
-        value = default_for_none
-
-    return value
 
 class BackupSystem:
     def __init__(self, autoscr_path: str = scripts_dir, config_path: str = config, main_dir: str = script_dir) -> None:
@@ -1503,8 +1529,8 @@ def OpenFile(root_win: Tk = desktop_win):
 
     OpenFileManually(file_path)
 
-# [i] Saving as
 
+# [i] Saving as
 def SaveFile(root_win: Tk = desktop_win):
     """
     SaveFile saves the current file as
@@ -1539,7 +1565,7 @@ def SaveFile(root_win: Tk = desktop_win):
                 data = data.replace(__var, WCLASSIC_VARS[__var])
 
     file = open(file_path, "wt", encoding='utf-8')
-    file.write(str(data))
+    file.write(str(data.rstrip('\n')) + '\n')
     cur_data = data
     file.close()
     mb.showinfo(lang[1], lang[101])
@@ -1582,7 +1608,7 @@ def Save(root_win: Tk = desktop_win):
                     data = data.replace(__var, WCLASSIC_VARS[__var])
 
     file = open(file_path, "wt", encoding='utf-8')
-    file.write(str(data))
+    file.write(str(data.rstrip('\n')) + '\n') # [i] save the document with 1 newline in the end
     cur_data = data
     file.close()
     mb.showinfo(lang[1], lang[101])
@@ -1674,6 +1700,8 @@ rmb_menu.add_command(label=lang[341], command=lambda:
     SnippetPicker(default_snippets))
 rmb_menu.add_separator()
 rmb_menu.add_command(label=lang[331], command=select_all, accelerator="Ctrl + A")
+rmb_menu.add_separator()
+rmb_menu.add_command(label=lang[354], command=EvaluateExpression, accelerator="Ctrl + R")
 rmb_menu.add_separator()
 rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
 rmb_menu.add_command(label="README.md", command=readme_writer_classic)
@@ -2194,6 +2222,14 @@ class Plugin:
         self.ICON = None
 
 
+    def obtain_files(self):
+        """
+        obtain_files calls the protected member _get_files
+        """
+        
+        self._get_files()
+
+
     def _get_files(self) -> None:
         """
         Internal function.
@@ -2250,6 +2286,7 @@ class Plugin:
                 # [!?] Delete the downloaded zip file
                 os.remove(zip_filepath)
 
+
 def install_plugin(**options):
     """
     install_plugin installs a plugin using Plugin
@@ -2266,7 +2303,7 @@ def install_plugin(**options):
 
     finally:
         plugin = Plugin(folder_name=str(questiony))
-        plugin._get_files()
+        plugin.obtain_files()
 
 
 def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: int = 1):
@@ -2493,6 +2530,7 @@ class SignaturePlugin:
 
         _LOG.write(f"{str(now())} - The Custom signature has been inserted: OK\n")
 
+
 backup_system = BackupSystem()
 signature_plugin = SignaturePlugin()
 
@@ -2634,6 +2672,10 @@ desktop_win.bind('<Key>', lambda _:
 # [*] Same as RMB Menu but via keyboard
 TextWidget.bind('<App>', lambda _:
     rmb_popup(event_main))
+
+# [*] Evaluate expression via keyboard
+TextWidget.bind('<Control-r>', lambda _:
+    EvaluateExpression())
 
 # [*] Opening a file
 TextWidget.bind('<Control-o>', lambda _:
