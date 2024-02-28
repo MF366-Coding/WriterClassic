@@ -1,12 +1,2 @@
-backup
-create-build.py
 __pycache__
-.vscode
-WriterClassic_SETUP_FILE.iss
-WriterClassic_configs.json
-.idea
-test.*
-deprecated
 canary
-syntax
-themes

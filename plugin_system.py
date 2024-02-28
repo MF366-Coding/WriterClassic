@@ -16,6 +16,7 @@ _LOG = None
 plugin_dir = ""
 lang = []
 
+
 # [i] Alternative to using deprecated imp module
 def load_module_from_source(module_name, source_path):
     loader = importlib.machinery.SourceFileLoader(module_name, source_path)
@@ -23,6 +24,7 @@ def load_module_from_source(module_name, source_path):
     module = importlib.util.module_from_spec(spec)
     loader.exec_module(module)
     return module
+
 
 # [!?] the 'load_module_from_source' function is used like this:
 # [*] loaded_module = load_module_from_source("something", "C:\\Users\\user\\johndoe.py")
