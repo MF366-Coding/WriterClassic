@@ -848,8 +848,11 @@ def ThemeSet(**kw):
     logger: Logger = kw.get('logger', _LOG)
     widget: WriterClassicEditor = kw.get('widget', TextWidget)
     menus: list[Menu] = kw.get('menus', [menu_1, menu_4, menu_5, menu_6, menu_8, menu_9, menu_10, menu_11, menu_12, menu_13, menu_15, menu_16, menu_17])
-    special_menu: Menu = kw.get('special_menu', menu_14)
     special_cond: bool = kw.get('special_cond', ADVANCED)
+    
+    if special_cond:
+        special_menu: Menu = kw.get('special_menu', menu_14)    
+        
     _configs: dict = kw.get('settings_', settings)
     dump: Callable = kw.get('dump', fast_dump)
     bg: str = kw.get('bg', _configs['theme']['color'])
@@ -865,7 +868,7 @@ def ThemeSet(**kw):
 
     dump()
 
-    widget.configure(background=colors[0], foreground=colors[1], insertbackground=colors[2])
+    widget.configure(background=bg, foreground=fg, insertbackground=ct)
     logger.write(f"{str(now())} - Editing interface has been reconfigured: OK\n")
 
     if special_cond and sys.platform == 'linux':
@@ -2505,7 +2508,7 @@ def change_wrap(**kw):
     
     w = Toplevel(root)
     
-    s = StringVar(w, value=widget.get_wrapping())
+    s = StringVar(w, value=widget.wrapping)
     
     r1 = Radiobutton(w, variable=s, value=NONE, text=lang[342])
     r2 = Radiobutton(w, variable=s, value=CHAR, text=lang[344])

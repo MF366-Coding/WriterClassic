@@ -7,6 +7,8 @@ Writer Classic is a rather small Python project that brings to the user a whole 
 [![Documentation](https://img.shields.io/badge/online-now?label=docs%20status&color=%23000085)](https://mf366-coding.github.io/writerclassic.html#docs)
 [![License](https://img.shields.io/github/license/MF366-Coding/WriterClassic)](https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/LICENSE)
 
+> **NOTE:** `main` is the most stable branch, unless I prefix a commit with UNSTABLE.
+
 > Special thanks to [j4321](https://github.com/j4321) for the [tkFontChooser](https://github.com/j4321/tkFontChooser).
 
 ## Known Issues

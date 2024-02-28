@@ -35,10 +35,6 @@ class WriterClassicEditor(_ScrolledText):
         super().__init__(master, **kwargs)
 
 
-    def get_wrapping(self) -> Literal['none', 'char', 'word']:
-        return self._wrapline
-
-
     def change_wrapping(self, char_level: Literal['none', 'char', 'word'] = 'char'):
         self._wrapline = char_level
         super().configure(wrap=self._wrapline)
@@ -68,6 +64,11 @@ class WriterClassicEditor(_ScrolledText):
         super().see(INSERT)
 
 
+    @property
+    def wrapping(self) -> str:
+        return self._wrapline
+    
+    
     @property
     def selection(self) -> str | Literal[False]:
         """
