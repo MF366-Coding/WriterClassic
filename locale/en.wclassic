@@ -340,3 +340,15 @@ Name
 No snippet selected
 Select a snippet to see its details.
 Snippets
+Disable
+Word level (Default)
+Character level
+Search and Replace
+Find:
+Case dependent
+Cannot find an empty pattern in the editor!
+Reached the end of the editor.
+Reached the start of the editor.
+Change line wrapping
+The contents of the editor are not saved.
+Do you wish to save them before creating a new file?
