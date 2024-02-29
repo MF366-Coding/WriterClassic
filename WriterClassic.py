@@ -79,7 +79,7 @@ import tracemalloc
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
 # [i] tkinter is used for the UI, duh?!
-from tkinter import SEL_LAST, DISABLED, NORMAL, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, SEL_FIRST, WORD, CHAR, NONE
+from tkinter import Event, SEL_LAST, DISABLED, NORMAL, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, SEL_FIRST, WORD, CHAR, NONE
 from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu, Radiobutton # [i] Used because of the auto syling in tkinter.ttk
 import tkinter.messagebox as mb # [i] Used for the message boxes
 import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
@@ -1706,7 +1706,8 @@ rmb_menu.add_separator()
 rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
 rmb_menu.add_command(label="README.md", command=readme_writer_classic)
 
-class XYEvent:
+
+class _XYEvent:
     def __init__(self, x: SupportsFloat, y: SupportsFloat):
         self.x_root = x
         self.y_root = y
@@ -1715,7 +1716,7 @@ class XYEvent:
         self.x_root, self.y_root = params
 
 
-def rmb_popup(event):
+def rmb_popup(event: _XYEvent | Event):
     x, y = event.x_root, event.y_root
 
     try:
@@ -2659,7 +2660,7 @@ def commandPrompt() -> None | bool:
     new.mainloop()
 
 
-event_main = XYEvent(TextWidget.winfo_rootx(), TextWidget.winfo_rooty())
+event_main = _XYEvent(TextWidget.winfo_rootx(), TextWidget.winfo_rooty())
 
 # [i] Key bindings
 # [*] RMB Menu
