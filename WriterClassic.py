@@ -79,7 +79,7 @@ import tracemalloc
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
 # [i] tkinter is used for the UI, duh?!
-from tkinter import Event, SEL_LAST, DISABLED, NORMAL, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, SEL_FIRST, WORD, CHAR, NONE
+from tkinter import Listbox, Event, SEL_LAST, DISABLED, NORMAL, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, SEL_FIRST, WORD, CHAR, NONE
 from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu, Radiobutton # [i] Used because of the auto syling in tkinter.ttk
 import tkinter.messagebox as mb # [i] Used for the message boxes
 import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
@@ -442,8 +442,8 @@ def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: Wr
     """
 
     selection: str = ''
-    
-    
+
+
     try:
         # [*] Get the current selection
         selection = text_widget.get(SEL_FIRST, SEL_LAST)
@@ -489,7 +489,6 @@ _LOG.write(f"{str(now())} - Got the current theme: OK\n")
 _LOG.write(f"{str(now())} - Got the current font family/type: OK\n")
 _LOG.write(f"{str(now())} - Got the current font size: OK\n")
 
-fast_dump = lambda: dump_settings(f"{config}/settings.json", settings)
 
 temp_files = os.listdir(temp_dir)
 
@@ -497,6 +496,119 @@ for temp_file in temp_files:
     file_to_delete = os.path.join(temp_dir, temp_file)
     if os.path.isfile(file_to_delete):
         os.remove(file_to_delete)
+
+
+class Stack:
+    def __init__(self):
+        """
+        NOTE: Not a regular Stack data type!!!
+        
+        This is a Stack that doesn't allow repeated values.
+        
+        When a repeated value appears it instead of repeating gets moved to the last index.
+        
+        The stack is initialized with an empty list.
+        """
+        
+        self.items = []
+
+    def fromlist(self, seq: list):
+        """
+        Load all elements from a list (`seq`).
+        """
+        
+        if isinstance(seq, list):
+            old_items = self.content
+            self.items = []
+
+            for i in seq:
+                if i not in self.items:
+                    self.push(i)
+                    
+                else:
+                    self.items.remove(i)
+                    self.push(i)
+
+            return old_items
+
+        raise TypeError('cannot use anything other than a list')
+        # [i] VSCode marks this code as unreachable but it can actually be reached since type annotations are not strict in Python
+
+    def copy(self):
+        """
+        Return a shallow copy of the whole stack
+        """
+        
+        s = Stack()
+        s.fromlist(self.content)
+        
+        return s        
+
+    def __len__(self) -> int:
+        """
+        Lenght of the list
+        """
+        
+        return len(self.items)
+
+    def push(self, data) -> Any:
+        if data not in self.items:
+            self.items.append(data)
+            return data
+        
+        self.items.remove(data)
+        self.items.append(data)
+        return data
+
+    append = push
+
+    def pop(self) -> Any:
+        return self.items.pop()
+
+    remove = pop
+
+    def peek(self):
+        return self.items[-1]
+
+    top = peek
+
+    @property
+    def is_empty(self) -> bool:
+        """
+        Is the lenght 0?
+        """
+        
+        return len(self) == 0
+
+    @property
+    def content(self) -> list:
+        """
+        Shallow copy of the items only
+        """
+        
+        return self.items.copy()
+
+
+last_file: str | None = None
+recent_stack = Stack()
+
+recent_files: list[str] = settings.copy()['recent']
+
+if len(recent_files) > 0:
+    recent_stack.fromlist(recent_files)
+
+    last_file = recent_stack.top()
+
+
+def fast_dump(*_):   
+    if len(recent_stack) > 10:
+        settings['recent'] = recent_stack.content[-10:]
+        
+    else:
+        settings['recent'] = recent_stack.content
+        
+    dump_settings(os.path.join(config, 'settings.json'), settings)
+
 
 # [i] Windowing... again
 if NOW_FILE == False:
@@ -658,7 +770,7 @@ class WScript:
 
         if not location.lower().endswith('.wscript'):
             raise ValueError('must be WSCRIPT file')
-        
+
         if os.path.basename(location) == "EightBall.wscript":
             self.script = """_prompts = ['Yes!', "Don't think so...", "Doubtly.", "Absolutely.", "Nope.", "Not happening.", "WriterClassic is a good text editor!", "MF366 is cool.", "Of course!"]
 
@@ -767,7 +879,7 @@ if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
 
         except Exception as e:
             mb.showerror(lang[133], f"{lang[134]}\n{e}")
-    
+
 
 def SetWinSize(root: Tk = desktop_win, editor: WriterClassicEditor = TextWidget):
     """
@@ -848,51 +960,51 @@ def EvaluateExpression(start: str | float | None = None, end: str | float | None
     Returns:
         tuple[str | None, str | int | float | bool | None]: expression, evaluated expression. (If both are None, then SEL_FIRST and SEL_LAST are not marked.)
     """
-    
+
     widget: WriterClassicEditor = kwargs.get('widget', TextWidget)
-    
+
     if start is None:
         try:
             start = SEL_FIRST
-            
+
         except TclError:
             return None, None
-        
+
     if end is None:
         try:
             end = SEL_LAST
-            
+
         except TclError:
             return None, None
-        
+
     exp: str = widget.get(start, end)
     EVALUATED_EXP = eval(exp, globals().copy())
     evaluations: list[int, float, bool | None] = [int(EVALUATED_EXP), float(EVALUATED_EXP), None]
-    
+
     if evaluations[0] in (0, 1):
         if '=' in exp or '>' in exp or '<' in exp or ' is ' in exp:
             evaluations[2] = bool(EVALUATED_EXP)
-    
+
     type_obtained: bool = False
     eval_exp: int | float | bool | None = None
-    
+
     # [*] 1st Priority: result is boolean
     if evaluations[2] is True or evaluations[2] is False:
         eval_exp: bool = evaluations[2]
         type_obtained = True
-    
+
     # [*] 2nd Priority: result is an integer
     # [i] If the float equals the integer, the result should be displayed as int ofc
     if evaluations[0] == evaluations[1] and not type_obtained:
         eval_exp: int = evaluations[0]
         type_obtained = True
-            
+
     # [*] 3rd Priority: result is not integer or boolean
     # [i] It's kind of a joke calling this a priority
     if not type_obtained:
         eval_exp: float = evaluations[1]
         type_obtained = True
-    
+
     if isinstance(eval_exp, (int, bool, float)):
         widget.replace(start, end, str(eval_exp))
         return exp, eval_exp
@@ -919,15 +1031,15 @@ def ThemeSet(**kw):
         special_menu: special menu that is only trigerred by `special_cond`
         special_cond: boolean condition that decides whether to trigger `special_menu` or not
     """
-    
+
     logger: Logger = kw.get('logger', _LOG)
     widget: WriterClassicEditor = kw.get('widget', TextWidget)
     menus: list[Menu] = kw.get('menus', [menu_1, menu_4, menu_5, menu_6, menu_8, menu_9, menu_10, menu_11, menu_12, menu_13, menu_15, menu_16, menu_17])
     special_cond: bool = kw.get('special_cond', ADVANCED)
-    
+
     if special_cond:
-        special_menu: Menu = kw.get('special_menu', menu_14)    
-        
+        special_menu: Menu = kw.get('special_menu', menu_14)
+
     _configs: dict = kw.get('settings_', settings)
     dump: Callable = kw.get('dump', fast_dump)
     bg: str = kw.get('bg', _configs['theme']['color'])
@@ -935,9 +1047,9 @@ def ThemeSet(**kw):
     ct: str = kw.get('ct', settings['theme']['ct'])
     mbg: str = kw.get('mbg', settings['theme']['menu'])
     mfg: str = kw.get('mfg', settings['theme']['mfg'])
-    
+
     colors = {'color': bg, 'fg': fg, 'ct': ct, 'menu': mbg, 'mfg': mfg}
-    
+
     for i, j in colors.items():
         _configs['theme'][i] = j
 
@@ -950,7 +1062,7 @@ def ThemeSet(**kw):
         menus.append(special_menu)
 
     if sys.platform == 'linux':
-        # [i] Themed menus only on Linux Python3        
+        # [i] Themed menus only on Linux Python3
         try:
             for menu in menus:
                 menu.configure(background=mbg, foreground=mfg)
@@ -959,7 +1071,7 @@ def ThemeSet(**kw):
 
         except (TypeError, ValueError, TclError):
             mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
-            
+
             for menu in menus:
                 menu.configure(background=mbg, foreground=mfg)
 
@@ -1143,6 +1255,78 @@ class BackupSystem:
 
         else:
             mb.showerror(lang[1], lang[319])
+
+
+def RecentPicker(**kw):
+    """
+    RecentPicker opens a selection window for recently open files
+
+    After this description, follows a list of the possible arguments in 'name = default value' syntax.
+
+    --
+
+    GENERAL WRITERCLASSIC ARGUMENTS
+    
+    root (Tk | Toplevel) = desktop_win
+    
+    --
+    
+    WINDOW ARGUMENTS
+    
+    iconbitmap (str | PathLike) = WriterClassic icon
+    
+    --
+    
+    SPECIFIC ARGUMENTS
+    
+    expressions (list[str]) = WriterClassic language list
+    recents (Stack) = stack object containing the recent files
+    """
+    
+    def _open(lb: Listbox, root: Tk | Toplevel, aux: list[str], exps: list[str], win: Toplevel):
+        """Internal function."""
+        
+        try:
+            OpenFileManually(aux[lb.index(lb.curselection())], root)
+            
+        except TclError:
+            mb.showwarning(exps[1], exps[357])
+            
+        else:
+            win.destroy()
+        
+      
+    root: Tk | Toplevel = kw.get('root', desktop_win)
+    icopath: str = kw.get('iconbitmap', os.path.join(data_dir, 'app_icon.ico'))
+    exps: list[str] = kw.get('expressions', lang.copy())
+    recents: Stack = kw.get('recents', recent_stack).copy()
+    
+    if recents.is_empty:
+        mb.showinfo(exps[1], exps[356])
+        return
+    
+    w = Toplevel(root)
+    w.title(exps[355])
+    w.resizable(False, False)
+    
+    if sys.platform == 'win32':
+        w.iconbitmap(icopath)
+    
+    lb = Listbox(w, font=Font(family=settings['font']['family'], size=12, weight='normal', slant='roman', underline=False, overstrike=False), bg=settings['theme']['color'], fg=settings['theme']['fg'], borderwidth=3, width=75)
+    aux = []
+    
+    for _ in range(len(recents)) if len(recents) <= 10 else range(10):
+        lb.insert(END, os.path.basename(recents.top()))
+        aux.append(recents.top())
+        recents.pop()
+    
+    b = Button(w, text=exps[7], command=lambda:
+        _open(lb, root, aux, exps, w))
+    
+    lb.pack()
+    b.pack()
+    
+    w.mainloop()
 
 
 class Snippets:
@@ -1355,7 +1539,6 @@ def PickFont(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = Te
 
     return FontSet or font_details
 
-# [!] fontEdit has been deprecated and removed in favor of PickFont
 
 # [i] New File with confirmation (NEW!)
 def NewFile(skip_confirmation: bool = False):
@@ -1363,7 +1546,7 @@ def NewFile(skip_confirmation: bool = False):
     NewFile clears the editor and purges current cached data on the last file to be opened/saved
 
     It also resets the modified status (check `ModifiedStatus` - function and `SAVE_STATUS` - global variable, bool type)
-    
+
     However, it first checks if the contents of the editor have been modified (unless confirmation ahs been skipped via the only argument).
     """
 
@@ -1371,22 +1554,22 @@ def NewFile(skip_confirmation: bool = False):
 
     if not skip_confirmation:
         ic()
-        
+
         a = ModifiedStatus()
-        
+
         if not a:
             b = mb.askyesnocancel(lang[1], f"{lang[352]}\n{lang[353]}")
-            
+
             if b is None:
                 ic()
                 return
-            
+
             if b:
                 ic()
                 Save()
-                
+
             else:
-                ic()            
+                ic()
 
     SAVE_STATUS = True
 
@@ -1401,7 +1584,7 @@ def NewFile(skip_confirmation: bool = False):
     ic(NOW_FILE)
 
 
-file_types = [(lang[32], '*.txt'),
+FILETYPES = [(lang[32], '*.txt'),
               (lang[33], '*.config'),
               (lang[34], '*.css'),
               (lang[35], '*.csv'),
@@ -1445,8 +1628,8 @@ file_types = [(lang[32], '*.txt'),
 
 _LOG.write(f"{str(now())} - Filetypes have been configured correctly: OK\n")
 
-# [i] functions to open a file
 
+# [i] functions to open a file
 def stem_only(__s: str) -> str:
     """
     stem_only returns the stem part of a filename
@@ -1502,6 +1685,8 @@ def OpenFileManually(file_path: str, root_win: Tk = desktop_win):
             os.system(str(file_path))
 
     finally:
+        recent_stack.append(NOW_FILE)
+        fast_dump()
         ic(NOW_FILE)
 
 
@@ -1513,12 +1698,12 @@ def OpenFile(root_win: Tk = desktop_win):
         root_win (Tk): WriterClassic's main window
     """
 
-    file_path = dlg.asksaveasfilename(parent=root_win, filetypes=file_types, defaultextension="*.*", initialfile="Open a File", confirmoverwrite=False, title=lang[7])
+    file_path = dlg.asksaveasfilename(parent=root_win, filetypes=FILETYPES, defaultextension="*.*", initialfile="Open a File", confirmoverwrite=False, title=lang[7])
 
     if sys.platform != 'linux':
         # [*] Get the selected file extension
         selected_extension = None
-        for ft in file_types:
+        for ft in FILETYPES:
             if file_path.lower().endswith(ft[1]):
                 selected_extension = ft[1]
                 break
@@ -1545,12 +1730,12 @@ def SaveFile(root_win: Tk = desktop_win):
 
     data = TextWidget.content
     SAVE_STATUS = True
-    file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=file_types, defaultextension="*.*", initialfile="New File To Save")
+    file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=FILETYPES, defaultextension="*.*", initialfile="New File To Save")
 
     if sys.platform != 'linux':
         # [*] Get the selected file extension
         selected_extension = None
-        for ft in file_types:
+        for ft in FILETYPES:
             if file_path.lower().endswith(ft[1]):
                 selected_extension = ft[1]
                 break
@@ -1626,12 +1811,12 @@ def Save(root_win: Tk = desktop_win):
 def WipeFile(root_win: Tk = desktop_win):
     sureConfirm = mb.askyesno(title=lang[55], message=lang[56])
     if sureConfirm:
-        file_path = dlg.asksaveasfilename(parent=root_win, confirmoverwrite=False, filetypes=file_types, defaultextension="*.*", initialfile="File to Wipe")
+        file_path = dlg.asksaveasfilename(parent=root_win, confirmoverwrite=False, filetypes=FILETYPES, defaultextension="*.*", initialfile="File to Wipe")
 
         if sys.platform != 'linux':
             # [*] Get the selected file extension
             selected_extension = None
-            for ft in file_types:
+            for ft in FILETYPES:
                 if file_path.lower().endswith(ft[1]):
                     selected_extension = ft[1]
                     break
@@ -1654,7 +1839,7 @@ def select_all(**kw):
     widget: WriterClassicEditor = kw.get('widget', TextWidget)
     mark: bool = kw.get('mark', True)
     see: float | str = kw.get('see', END)
-    
+
     widget.select_text(start=0.0, end=END, see=see, mark=mark)
 
 
@@ -2019,7 +2204,8 @@ def resetWriter():
             "language": "en",
             "dencrypt": "",
             "debugging": False,
-            "email": ""
+            "email": "",
+            "recent": []
         }
 
         ic(settings)
@@ -2227,7 +2413,7 @@ class Plugin:
         """
         obtain_files calls the protected member _get_files
         """
-        
+
         self._get_files()
 
 
@@ -2541,26 +2727,26 @@ def change_wrap(**kw):
         editor.change_wrapping(val.get())
         win.destroy()
 
-    
+
     widget: WriterClassicEditor = kw.get('widget', TextWidget)
     root: Tk = kw.get('root', desktop_win)
-    
+
     w = Toplevel(root)
-    
+
     s = StringVar(w, value=widget.wrapping)
-    
+
     r1 = Radiobutton(w, variable=s, value=NONE, text=lang[342])
     r2 = Radiobutton(w, variable=s, value=CHAR, text=lang[344])
     r3 = Radiobutton(w, variable=s, value=WORD, text=lang[343])
-    
+
     b = Button(w, text='Ok', command=lambda:
         inner(w, s, widget))
-    
+
     r1.pack()
     r2.pack()
     r3.pack()
     b.pack()
-    
+
     w.mainloop()
 
 
@@ -2663,6 +2849,11 @@ def commandPrompt() -> None | bool:
 event_main = _XYEvent(TextWidget.winfo_rootx(), TextWidget.winfo_rooty())
 
 # [i] Key bindings
+
+# [!] Debugging a feature
+desktop_win.bind('<F9>', lambda _:
+    RecentPicker(recents=recent_stack))
+
 # [*] RMB Menu
 TextWidget.bind("<Button-3>", rmb_popup)
 
@@ -3391,6 +3582,7 @@ def show_advV():
     mb.showinfo(lang[1], f"{lang[230]} {advV}.")
     ic(advV)
 
+
 if ADVANCED:
     menu_14.add_command(label=lang[224], command=show_debug)
     if sys.platform == "win32":
@@ -3400,10 +3592,8 @@ if ADVANCED:
     menu_14.add_command(label=lang[228], command=adv_login)
     menu_14.add_command(label=lang[229], command=show_advV)
 
-try:
-    if sys.platform == "linux":
-        # [i] Themed menus only on Linux Python3
-        # /-/ Themed menus are also compatible with Windows and Mac, tho
+if sys.platform == "linux":
+    try:
         menu_10.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_11.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_1.configure(background=theme["menu"], foreground=theme["mfg"])
@@ -3414,16 +3604,16 @@ try:
         menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_13.configure(background=theme["menu"], foreground=theme["mfg"])
+        
         if ADVANCED:
             menu_14.configure(background=theme["menu"], foreground=theme["mfg"])
+        
         menu_15.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_16.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_17.configure(background=theme["menu"], foreground=theme["mfg"])
         _LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
-except TclError:
-    if sys.platform == "linux":
-        # [i] Themed menus only on Linux Python3
-        # /-/ Themed menus are also compatible with Windows and Mac, tho
+
+    except TclError:
         mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
         menu_10.configure(background="white", foreground="black")
         menu_11.configure(background="white", foreground="black")
@@ -3435,8 +3625,10 @@ except TclError:
         menu_8.configure(background="white", foreground="black")
         menu_9.configure(background="white", foreground="black")
         menu_13.configure(background="white", foreground="black")
+        
         if ADVANCED:
             menu_14.configure(background="white", foreground="black")
+        
         menu_15.configure(background="white", foreground="black")
         menu_17.configure(background="white", foreground="black")
         menu_16.configure(background="white", foreground="black")
@@ -3508,21 +3700,18 @@ if len(sys.argv) > 1:
     try:
         OpenFileManually(file_path)
 
-    except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
-        mb.showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
-        run_default = mb.askyesno(title=lang[187], message=lang[189])
-        # [?] What if WriterClassic is the default thought lol?
-        if run_default:
-            os.system(str(file_path))
-
     except FileNotFoundError as e:
         desktop_win.destroy()
         ic(e)
         _LOG.write(f"{str(now())} - Found error {e} while trying to open file at {str(file_path)}: INFO\n")
-        quit()
+        sys.exit() # [*] Using sys.exit() instead of builtin quit()
 
     finally:
         ic(NOW_FILE)
+        
+else:
+    if last_file:
+        OpenFileManually(last_file)
 
 desktop_win.protocol("WM_DELETE_WINDOW", close_confirm)
 
