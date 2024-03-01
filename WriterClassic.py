@@ -66,15 +66,13 @@ Powered by: Python 3.10+
 
 
 # [*] Importing some of the builtin goodies
-import os, sys, json, random, datetime, platform
+import os, sys, json, random, datetime, platform, math, cmath, tracemalloc
 
 from typing import Literal, SupportsFloat, Any, Callable # [i] Making things nicer, I guess
 
 from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
 
 import zipfile # [i] Used to extract the zip files used by plugins
-
-import tracemalloc
 
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
@@ -115,7 +113,7 @@ temp_dir = os.path.join(script_dir, 'temp')
 scripts_dir = os.path.join(script_dir, "scripts")
 
 now = datetime.datetime.now
-
+    
 
 def check_paths(var: str) -> str:
     """
@@ -951,6 +949,13 @@ def SetWinSize(root: Tk = desktop_win, editor: WriterClassicEditor = TextWidget)
 def EvaluateExpression(start: str | float | None = None, end: str | float | None = None, **kwargs) -> tuple[str | None, str | int | float | complex | None]:
     """
     EvaluateExpression evaluates an expression inside a text widget
+    
+    Priorities by order:
+        1. bool(ean)
+        2. complex
+        3. int(eger)
+        4. float
+        5. Any(thing else) converted to str(ing)
 
     Args:
         start (str | float | None, optional): index1. Defaults to SEL_FIRST.
@@ -958,56 +963,60 @@ def EvaluateExpression(start: str | float | None = None, end: str | float | None
         widget (WriterClassicEditor, optional): the widget where changes take place. Defaults to TextWidget.
 
     Returns:
-        tuple[str | None, str | int | float | bool | None]: expression, evaluated expression. (If both are None, then SEL_FIRST and SEL_LAST are not marked.)
+        tuple: expression, value returnes by eval(), evaluated expression. (If all are None, then SEL_FIRST and SEL_LAST are not marked.)
     """
 
     widget: WriterClassicEditor = kwargs.get('widget', TextWidget)
-
+    
     if start is None:
         try:
             start = SEL_FIRST
 
         except TclError:
-            return None, None
+            return None, None, None
 
     if end is None:
         try:
             end = SEL_LAST
 
         except TclError:
-            return None, None
+            return None, None, None
+
+    mathematics: dict[str, Any] = {**math.__dict__.copy(), **cmath.__dict__.copy()}
 
     exp: str = widget.get(start, end)
-    EVALUATED_EXP = eval(exp, globals().copy())
-    evaluations: list[int, float, bool | None] = [int(EVALUATED_EXP), float(EVALUATED_EXP), None]
+    eval_exp: bool | complex | int | float
+    EVALUATED_EXP = eval(exp, mathematics)
+    
+    # [*] 1st Priority
+    if type(EVALUATED_EXP) == bool:
+        eval_exp = EVALUATED_EXP
+        
+    # [*] 2nd Priority
+    elif isinstance(EVALUATED_EXP, complex):
+        eval_exp = EVALUATED_EXP
+        
+    # [*] 3rd Priority
+    elif isinstance(EVALUATED_EXP, int):
+        eval_exp = EVALUATED_EXP
+        
+    # [*] 4th Priority
+    elif isinstance(EVALUATED_EXP, float):
+        if int(EVALUATED_EXP) == EVALUATED_EXP:
+            eval_exp = int(EVALUATED_EXP)
+            
+        else:
+            eval_exp = EVALUATED_EXP
+            
+    # [!?] 5th Priority: kinda dangerous???
+    else:
+        eval_exp = str(EVALUATED_EXP)
+        
+    ic(EVALUATED_EXP)
+    ic(type(EVALUATED_EXP))
 
-    if evaluations[0] in (0, 1):
-        if '=' in exp or '>' in exp or '<' in exp or ' is ' in exp:
-            evaluations[2] = bool(EVALUATED_EXP)
-
-    type_obtained: bool = False
-    eval_exp: int | float | bool | None = None
-
-    # [*] 1st Priority: result is boolean
-    if evaluations[2] is True or evaluations[2] is False:
-        eval_exp: bool = evaluations[2]
-        type_obtained = True
-
-    # [*] 2nd Priority: result is an integer
-    # [i] If the float equals the integer, the result should be displayed as int ofc
-    if evaluations[0] == evaluations[1] and not type_obtained:
-        eval_exp: int = evaluations[0]
-        type_obtained = True
-
-    # [*] 3rd Priority: result is not integer or boolean
-    # [i] It's kind of a joke calling this a priority
-    if not type_obtained:
-        eval_exp: float = evaluations[1]
-        type_obtained = True
-
-    if isinstance(eval_exp, (int, bool, float)):
-        widget.replace(start, end, str(eval_exp))
-        return exp, eval_exp
+    widget.replace(start, end, str(eval_exp))
+    return exp, EVALUATED_EXP, eval_exp
 
 
 # [i] Theme Picker
@@ -2732,6 +2741,11 @@ def change_wrap(**kw):
     root: Tk = kw.get('root', desktop_win)
 
     w = Toplevel(root)
+    w.title(lang[351])
+    w.resizable(False, False)
+    
+    if sys.platform == 'win32':
+        w.iconbitmap(os.path.join(data_dir, 'app_icon.ico'))
 
     s = StringVar(w, value=widget.wrapping)
 
@@ -3712,6 +3726,23 @@ if len(sys.argv) > 1:
 else:
     if last_file:
         OpenFileManually(last_file)
+
+# [!] EXPERIMENTAL FEATURE
+# [*] You can use the following syntax when running WriterClassic:
+# [*] name [filepath] [debugscript]
+# [*] name is the filepath of WriterClassic
+# [*] the other 2 are optional
+# [*] filepath is the filepath to open (duuh??!)
+# [*] but debugscript (which must always come after a filepath)
+# [!?] is the path to a wscript that runs with write perms
+# [*] used mostly for debugging I guess
+if len(sys.argv) > 2:
+    startup_script: WScript = WScript()
+    startup_script.loadpath(os.path.abspath(sys.argv[2]))
+    
+    startup_script.run('write')
+    
+    ic(globals().copy())
 
 desktop_win.protocol("WM_DELETE_WINDOW", close_confirm)
 
