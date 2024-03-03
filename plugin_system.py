@@ -35,7 +35,7 @@ def initializer(wclassic_globals):
     global wclassic_vars, _LOG, plugin_dir, lang
 
     wclassic_vars = wclassic_globals
-    _LOG = wclassic_vars["_LOG"]
+    _LOG = wclassic_vars["LOG"]
     plugin_dir = wclassic_vars["plugin_dir"]
     lang = wclassic_vars["lang"]
 
