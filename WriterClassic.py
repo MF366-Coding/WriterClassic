@@ -57,7 +57,7 @@ save_status: bool = True
 TOOLBAR_LEN: int = 11
 
 CREDITS = """WriterClassic by: MF366
-Powered by: Python 3.10+
+Powered by: Python 3.11+
 
 - Thank you, Norb and Zeca70, best GitHub contributors (and friends) ever! :)
 
@@ -78,7 +78,7 @@ import zipfile # [i] Used to extract the zip files used by plugins
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
 # [i] tkinter is used for the UI, duh?!
-from tkinter import Listbox, Event, SEL_LAST, DISABLED, NORMAL, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, SEL_FIRST, WORD, CHAR, NONE
+from tkinter import Listbox, Event, SEL_LAST, DISABLED, NORMAL, SINGLE, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, SEL_FIRST, WORD, CHAR, NONE
 from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu, Radiobutton # [i] Used because of the auto syling in tkinter.ttk
 import tkinter.messagebox as mb # [i] Used for the message boxes
 import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
@@ -144,6 +144,17 @@ for i in debug_a:
 
 class Logger:
     def __init__(self, logger_path: str, encoding: str = 'utf-8'):
+        """
+        __init__ is the initializer for the Logger class
+
+        Args:
+            logger_path (str): the path to the log file
+            encoding (str, optional): the encoding to use when opening the file. Defaults to 'utf-8'.
+
+        Raises:
+            ValueError: empty string as path or invalid path
+        """
+        
         if logger_path.strip() == '':
             raise ValueError('emptry string as a path value')
 
@@ -154,33 +165,86 @@ class Logger:
         self.__newline()
 
     def write(self, text: str):
+        """
+        write writes text to the log file
+
+        Args:
+            text (str)
+        """
+        
         self.logger.write(text)
 
     def error(self, text: str, error_details: str | None = None):
+        """
+        error writes an error information to the log file
+
+        Syntax is:
+            Current Time - text argument: error_details argument
+
+        Args:
+            text (str)
+            error_details (str | None, optional): extra details such as NO INETERNET CONNECTION. Defaults to ERROR.
+        """
+        
         if error_details is None:
             error_details = 'ERROR'
 
         self.logger.write(f"{str(now())} - {text}: {error_details}\n")
 
     def warning(self, text: str, details: str | None = None):
+        """
+        warning writes a warning to the log file
+        
+        Syntax used:
+            Current Time - text arg - details arg
+
+        Args:
+            text (str)
+            details (str | None, optional): extra details such as AN INSECURE ACTION HAS BEEN EXECUTED. Defaults to WARNING.
+        """
+        
         if details is None:
             details = 'WARNING'
 
         self.logger.write(f"{str(now())} - {text}: {details}\n")
 
     def action(self, text: str, extra: str | None = None):
+        """
+        action writes a simple action in the syntax:
+            Current Time - text arg - extra arg
+
+        Args:
+            text (str)
+            extra (str | None, optional): extra details on what was done. Defaults to nothing.
+        """
+        
         if extra is None:
             extra = ''
 
-        self.logger.write(f"{str(now())} - {text}: OK {extra}\n")
+        self.logger.write(f"{str(now())} - {text}: OK {extra}".rstrip() + "\n")
 
     def close(self):
+        """
+        close closes the log file
+        """
+        
         self.logger.close()
 
     def __newline(self):
+        """
+        Internal function.
+        """
+        
         self.logger.write('\n')
 
     def __str__(self) -> str:
+        """
+        String representation of the logger
+
+        Returns:
+            str: same as str(filelike object)
+        """
+        
         return self.logger
 
 
@@ -392,7 +456,7 @@ ignore_checking = False
 
 if startApp == '1':
     try:
-        response = get('https://api.github.com/repos/MF366-Coding/WriterClassic/releases/latest', timeout=3.5)
+        response = get('https://api.github.com/repos/MF366-Coding/WriterClassic/releases/latest', timeout=2)
         LOG.write(f"{str(now())} - Connected to GitHub: OK\n")
         data = json.loads(response.text)
         LOG.write(f"{str(now())} - Got WriterClassic Releases data: OK\n")
@@ -434,7 +498,7 @@ def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: Wr
 
     Args:
         __action ('copy', 'paste', 'cut'): the clipboard action to perform
-        text_widget (WriterClassicEditor, optional): the WriterClassicEditor widget that gets affected by the 'paste' and 'cut' operations. Defaults to TextWidget.
+        text_widget (WriterClassicEditor, optional): the WriterClassicEditor widget that gets affected by the 'paste' and 'cut' operations. Defaults to text_widget.
 
     Returns:
         str: either the value of a copy/paste operation or an empty string
@@ -551,6 +615,21 @@ class Stack:
         return len(self.items)
 
     def push(self, data) -> Any:
+        """
+        push appends `data` to the stack
+
+        As explained above, if the item already exists, it gets moved to the last position.
+
+        Alias:
+            append
+        
+        Args:
+            data (Any): the value to append
+
+        Returns:
+            Any: `data`
+        """
+        
         if data not in self.items:
             self.items.append(data)
             return data
@@ -562,11 +641,31 @@ class Stack:
     append = push
 
     def pop(self) -> Any:
+        """
+        pop removes the last item
+        
+        Alias:
+            remove
+
+        Returns:
+            Any: the last item
+        """
+        
         return self.items.pop()
 
     remove = pop
 
     def peek(self):
+        """
+        peek returns the last item
+
+        Alias:
+            top
+
+        Returns:
+            Any: last item in the stack
+        """
+        
         return self.items[-1]
 
     top = peek
@@ -591,7 +690,16 @@ class Stack:
 last_file: str | None = None
 recent_stack = Stack()
 
-recent_files: list[str] = settings.copy()['recent']
+for _ in range(settings['recent'].count(False)):
+    settings['recent'].remove(False)
+    
+for i in settings['recent']:
+    if os.path.exists(i):
+        continue
+    
+    settings['recent'].remove(i)
+
+recent_files: list[str] = settings['recent'].copy()
 
 if len(recent_files) > 0:
     recent_stack.fromlist(recent_files)
@@ -599,7 +707,15 @@ if len(recent_files) > 0:
     last_file = recent_stack.top()
 
 
-def fast_dump(*_):   
+def fast_dump(*_):
+    """
+    fast_dump dumps the settings of WriterClassic
+
+    Why use this instead of dump_settings from the settings_loader?
+        - This only dumps the 10 most recent files from recent_stack
+        - No arguments needed (hence the use of *_)
+    """
+    
     if len(recent_stack) > 10:
         settings['recent'] = recent_stack.content[-10:]
         
@@ -756,13 +872,36 @@ def writeStartup(text: bool):
 
 class WScript:
     def __init__(self):
+        """
+        __init__ initializes an instance of WScript
+        """
+        
         self.script: str | None = None
         self.__executed: bool = False
 
     def loadpath(self, location: str, encoding: str = 'utf-8'):
+        """
+        loadpath loads a WScript from a filepath
+
+        Must meet the following criteria:
+            - the path value must not be a representation of False (such as 0, an empty string, etc)
+            - the path must exist
+            - the path must be a file
+            - the path must be a *.wscript file
+            
+        If the name is exactly EightBall.wscript **with this particular casing**, a special behavior will be applied.
+
+        Args:
+            location (str): filepath
+            encoding (str, optional): file encoding. Defaults to 'utf-8'.
+            
+        Raises:
+            ValueError: if at least one of the criteria above fails
+        """
+        
         location = location.strip()
 
-        if location == '':
+        if not location:
             raise ValueError('empty string as path value')
 
         if not os.path.exists(location) or not os.path.isfile(location):
@@ -783,6 +922,22 @@ mb.showinfo(f"{lang[1]} - Eight Ball", random.choice(_prompts))
             f.close()
 
     def loadstr(self, script: str):
+        """
+        loadstr loads a WScript from a string
+        
+        There's no special behaviors but there's one criteria that must meet:
+            - script mustn't be a representation of False (0, empty string, etc)
+
+        Args:
+            script (str): the script
+            
+        Raises:
+            ValueError: the criteria failed
+        """
+        
+        if not script:
+            raise ValueError('representation of False as a script')
+        
         self.script = script
 
     def run(self, scope: Literal['read', 'write'] = 'read'):
@@ -806,10 +961,14 @@ mb.showinfo(f"{lang[1]} - Eight Ball", random.choice(_prompts))
         
     @property
     def has_been_executed(self) -> bool:
+        """
+        Has this particular instance of WScript been executed at least once?
+        """
+        
         return self.__executed
 
-    def __len__(self) -> int | None:
-        return len(self.script) if self.script is not None else None
+    def __len__(self) -> int:
+        return len(self.script) if self.script is not None else 0
 
     def __repr__(self) -> str:
         return str(self.script)
@@ -839,15 +998,30 @@ class GlobalRestorePoint:
     
     @property
     def status(self) -> dict[str, Any]:
+        """
+        Shallow copy of the globals() inside this Restore Point
+        """
+        
         return self.__globals.copy()
     
     def restore(self):
+        """
+        restore restores the globals() that were being used before the creation of the instance of a restore point that saved them
+        """
+        
         globals().update(self.__globals)
 
 
 # [i] Check for Updates
 class UpdateCheck:
     def __init__(self, app_version: str = APP_VERSION, ignore_checks: bool = ignore_checking, latest_v: Any = LATEST):
+        """
+        Args:
+            app_version (str, optional): current version. Defaults to APP_VERSION.
+            ignore_checks (bool, optional): should update checks be ignored? Defaults to ignore_checking.
+            latest_v (Any, optional): latest version of WriterClassic. Defaults to LATEST.
+        """
+        
         self.app_version = app_version
         self.ignore_checks = ignore_checks
         self.latest = latest_v
@@ -916,9 +1090,13 @@ if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
             mb.showerror(lang[133], f"{lang[134]}\n{e}")
 
 
-def set_window_size(root: Tk = desktop_win, editor: WriterClassicEditor = text_widget):
+def set_window_size(root: Tk = desktop_win, **_):
     """
-    SetWinSize creates a GUI in order to change the dimensions of the window
+    set_window_size creates a GUI in order to change the dimensions of the window
+    
+    The GUI is created with `root` as master.
+    
+    No other arguments needed.
     """
 
     def _change_window_size(*params) -> bool:
@@ -936,7 +1114,6 @@ def set_window_size(root: Tk = desktop_win, editor: WriterClassicEditor = text_w
 
         else:
             params[3].geometry(f"{e1}x{e2}")
-            params[4].configure(width=e1, height=e2)
             settings["geometry"] = f"{e1}x{e2}"
 
         finally:
@@ -962,7 +1139,7 @@ def set_window_size(root: Tk = desktop_win, editor: WriterClassicEditor = text_w
     height_set = Entry(frame2)
 
     confirm_butt = Button(geometry_set, text='Ok', command=lambda:
-        _change_window_size(width_set, height_set, geometry_set, root, editor))
+        _change_window_size(width_set, height_set, geometry_set, root))
 
     width_set.insert(0, settings["geometry"].lower().split('x')[0])
     height_set.insert(0, settings["geometry"].lower().split('x')[1])
@@ -997,7 +1174,7 @@ def evaluate_expression(start: str | float | None = None, end: str | float | Non
     Args:
         start (str | float | None, optional): index1. Defaults to SEL_FIRST.
         end (str | float | None, optional): index2. Defaults to SEL_LAST.
-        widget (WriterClassicEditor, optional): the widget where changes take place. Defaults to TextWidget.
+        widget (WriterClassicEditor, optional): the widget where changes take place. Defaults to text_widget.
 
     Returns:
         tuple: expression, value returnes by eval(), evaluated expression. (If all are None, then SEL_FIRST and SEL_LAST are not marked.)
@@ -1145,26 +1322,29 @@ def quickway():
 # [i] Setup (Lang files)
 def set_language(language_set, root_win):
     """
-    LanguageSet sets a new language as the app language
+    set_language sets a new language as the app language
 
     Args:
         language_set (str): the string that represents the locale file. Examples: `pt`, `sk` and `en`
         root_win (Tk | Toplevel): the window where this change takes place
     """
+    
     settings["language"] = language_set
     LOG.write(f"{str(now())} - A new language has been set ({str(language_set)}): OK\n")
     fast_dump()
 
     popup_define = mb.askyesno(parent=root_win, title=lang[30], message=lang[31])
     LOG.write(f"{str(now())} - Asked for app restart: AWAITING RESPONSE\n")
+    
     if popup_define:
         root_win.destroy()
         LOG.write(f"{str(now())} - End of session: QUIT\n")
+    
     else:
         LOG.write(f"{str(now())} - Cancel/No as response: OK\n")
 
-# [i] Notepad
 
+# [i] Notepad
 def draft_notepad():
     """
     draf_notepad loads the GUI for the Notepad plugin/tool
@@ -1355,7 +1535,7 @@ def recent_files(**kw):
     if sys.platform == 'win32':
         w.iconbitmap(icopath)
     
-    lb = Listbox(w, font=Font(family=settings['font']['family'], size=12, weight='normal', slant='roman', underline=False, overstrike=False), bg=settings['theme']['color'], fg=settings['theme']['fg'], borderwidth=3, width=75)
+    lb = Listbox(w, selectmode=SINGLE, font=Font(family=settings['font']['family'], size=12, weight='normal', slant='roman', underline=False, overstrike=False), bg=settings['theme']['color'], fg=settings['theme']['fg'], borderwidth=3, width=75)
     aux = []
     
     for _ in range(len(recents)) if len(recents) <= 10 else range(10):
@@ -1373,8 +1553,15 @@ def recent_files(**kw):
 
 
 class Snippets:
-    def __init__(self, name) -> None:
-        self.name = name
+    def __init__(self, name: str) -> None:
+        """
+        __init__ is the initializer for the Snippets
+
+        Args:
+            name (str): general tag for the snippets, such as 'Extra Snippets', 'C++ Snippts'
+        """
+        
+        self.name: str = name
         self._snippets = {}
         self.__taken_names = []
 
@@ -1479,6 +1666,18 @@ class Snippets:
 
 
 def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = desktop_win, widget: WriterClassicEditor = text_widget):
+    """
+    snippet_picker launchs a window to pick a snippet from `snippets` to insert at position `pos`
+
+    The snippet is sent to the `widget` and the picker window has `root` as its master.
+
+    Args:
+        snippets (Snippets): snippets to pick from
+        pos (_type_, optional): position to insert the snippet in. Defaults to INSERT.
+        root (Tk | Toplevel, optional): root window for the picker Toplevel. Defaults to desktop_win.
+        widget (WriterClassicEditor, optional): text editor where the snippet is inserted onto. Defaults to text_widget.
+    """
+    
     def update_info_view(*labels):
         n: str = labels[1].get()
         s: tuple = labels[0].get_snippet(n)
@@ -1569,8 +1768,24 @@ default_snippets.register('function', 'def !!!(!!!):\n\treturn', 'Python 3', "Ju
 default_snippets.register('bold', '**!!!**', 'Markdown', 'Need to be **bold**? You can be **bold** in Markdown!')
 # [!?] If you want more snippets, they are extendable by plugins :D
 
+
 # [i] Font Picker :)
-def set_font(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = text_widget, __dump_func = fast_dump, __sample: str = 'Lorem ipsum dolor sit amet, ...') -> Font | dict[bytes, bytes]:
+def set_font(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = text_widget, __dump_func = fast_dump, __sample: str = 'Lorem ipsum dolor sit amet, ...', **_) -> Font | dict[bytes, bytes]:
+    """
+    set_font launches a font picker that affects `editor` and has `root` as master
+
+    NOTE: the font picker itself was created by **j4321** (tkfontchooser)!!
+
+    Args:
+        root (Tk | Toplevel, optional): explained above. Defaults to desktop_win.
+        editor (WriterClassicEditor, optional): explained above. Defaults to text_widget.
+        __dump_func (_type_, optional): function that dumps the settings. Defaults to fast_dump.
+        __sample (str, optional): text sample used inside the font picker. Defaults to 'Lorem ipsum dolor sit amet, ...'.
+
+    Returns:
+        Font | dict[bytes, bytes]: font configurations
+    """
+    
     font_details = dict(tkfontchooser.askfont(root, __sample, f"{lang[1]} - {lang[332]}", family=settings['font']['family'], size=settings['font']['size'], weight=settings['font']['weight'], slant=settings['font']['slant'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike']))
     config_font.configure(family=font_details['family'], size=font_details['size'], weight=font_details['weight'], slant=font_details['slant'], underline=font_details['underline'], overstrike=font_details['overstrike'])
 
@@ -1582,7 +1797,7 @@ def set_font(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = te
     return config_font or font_details
 
 
-# [i] New File with confirmation (NEW!)
+# [i] New File but with confirmation
 def new_file(skip_confirmation: bool = False):
     """
     new_file clears the editor and purges current cached data on the last file to be opened/saved
@@ -2455,7 +2670,7 @@ class Plugin:
         """
 
         try:
-            versioning_file = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Versions.txt", timeout=3.5)
+            versioning_file = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Versions.txt", timeout=2)
 
             versioning_data = versioning_file.text
 
@@ -2468,7 +2683,7 @@ class Plugin:
             zip_url = f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Version{int(datax)}.zip"
 
             # [i] Send a GET request to download the zip file
-            zip_response = get(zip_url, timeout=4.5)
+            zip_response = get(zip_url, timeout=3)
 
         except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout):
             mb.showerror(lang[148], {lang[135]})
@@ -2692,7 +2907,7 @@ class SignaturePlugin:
 
         Optional key args:
             - pos: the position to insert the signature, defaults to `tkinter.END` a.k.a. `Literal['end']` or `'end'`
-            - widget: the Text-like widget where the signature should be inserted, defaults to `TextWidget`
+            - widget: the Text-like widget where the signature should be inserted, defaults to `text_widget`
         """
 
         if 'pos' not in params:
@@ -2737,7 +2952,7 @@ class SignaturePlugin:
 
         Optional key args:
             - pos: the position to insert the signature, defaults to `tkinter.END` a.k.a. `Literal['end']` or `'end'`
-            - widget: the Text-like widget where the signature should be inserted, defaults to `TextWidget`
+            - widget: the Text-like widget where the signature should be inserted, defaults to `text_widget`
         """
 
         if 'pos' not in params:
