@@ -114,7 +114,7 @@ temp_dir = os.path.join(script_dir, 'temp')
 scripts_dir = os.path.join(script_dir, "scripts")
 
 now = datetime.datetime.now
-    
+
 
 def check_paths(var: str) -> str:
     """
@@ -154,7 +154,7 @@ class Logger:
         Raises:
             ValueError: empty string as path or invalid path
         """
-        
+
         if logger_path.strip() == '':
             raise ValueError('emptry string as a path value')
 
@@ -171,7 +171,7 @@ class Logger:
         Args:
             text (str)
         """
-        
+
         self.logger.write(text)
 
     def error(self, text: str, error_details: str | None = None):
@@ -185,7 +185,7 @@ class Logger:
             text (str)
             error_details (str | None, optional): extra details such as NO INETERNET CONNECTION. Defaults to ERROR.
         """
-        
+
         if error_details is None:
             error_details = 'ERROR'
 
@@ -194,7 +194,7 @@ class Logger:
     def warning(self, text: str, details: str | None = None):
         """
         warning writes a warning to the log file
-        
+
         Syntax used:
             Current Time - text arg - details arg
 
@@ -202,7 +202,7 @@ class Logger:
             text (str)
             details (str | None, optional): extra details such as AN INSECURE ACTION HAS BEEN EXECUTED. Defaults to WARNING.
         """
-        
+
         if details is None:
             details = 'WARNING'
 
@@ -217,7 +217,7 @@ class Logger:
             text (str)
             extra (str | None, optional): extra details on what was done. Defaults to nothing.
         """
-        
+
         if extra is None:
             extra = ''
 
@@ -227,14 +227,14 @@ class Logger:
         """
         close closes the log file
         """
-        
+
         self.logger.close()
 
     def __newline(self):
         """
         Internal function.
         """
-        
+
         self.logger.write('\n')
 
     def __str__(self) -> str:
@@ -244,7 +244,7 @@ class Logger:
         Returns:
             str: same as str(filelike object)
         """
-        
+
         return self.logger
 
 
@@ -369,6 +369,7 @@ class WrongClipboardAction(Exception): ...
 class InvalidSnippet(Exception): ...
 class InvalidEngine(Exception): ...
 class ScriptError(Exception): ...
+class VersionError(Exception): ...
 
 
 def clip_actions(__id: Literal['copy', 'paste'], __s: str = '') -> str:
@@ -565,21 +566,21 @@ class Stack:
     def __init__(self):
         """
         NOTE: Not a regular Stack data type!!!
-        
+
         This is a Stack that doesn't allow repeated values.
-        
+
         When a repeated value appears it instead of repeating gets moved to the last index.
-        
+
         The stack is initialized with an empty list.
         """
-        
+
         self.items = []
 
     def fromlist(self, seq: list):
         """
         Load all elements from a list (`seq`).
         """
-        
+
         if isinstance(seq, list):
             old_items = self.content
             self.items = []
@@ -587,7 +588,7 @@ class Stack:
             for i in seq:
                 if i not in self.items:
                     self.push(i)
-                    
+
                 else:
                     self.items.remove(i)
                     self.push(i)
@@ -601,17 +602,17 @@ class Stack:
         """
         Return a shallow copy of the whole stack
         """
-        
+
         s = Stack()
         s.fromlist(self.content)
-        
-        return s        
+
+        return s
 
     def __len__(self) -> int:
         """
         Lenght of the list
         """
-        
+
         return len(self.items)
 
     def push(self, data) -> Any:
@@ -622,18 +623,18 @@ class Stack:
 
         Alias:
             append
-        
+
         Args:
             data (Any): the value to append
 
         Returns:
             Any: `data`
         """
-        
+
         if data not in self.items:
             self.items.append(data)
             return data
-        
+
         self.items.remove(data)
         self.items.append(data)
         return data
@@ -643,14 +644,14 @@ class Stack:
     def pop(self) -> Any:
         """
         pop removes the last item
-        
+
         Alias:
             remove
 
         Returns:
             Any: the last item
         """
-        
+
         return self.items.pop()
 
     remove = pop
@@ -665,7 +666,7 @@ class Stack:
         Returns:
             Any: last item in the stack
         """
-        
+
         return self.items[-1]
 
     top = peek
@@ -675,7 +676,7 @@ class Stack:
         """
         Is the lenght 0?
         """
-        
+
         return len(self) == 0
 
     @property
@@ -683,7 +684,7 @@ class Stack:
         """
         Shallow copy of the items only
         """
-        
+
         return self.items.copy()
 
 
@@ -692,11 +693,11 @@ recent_stack = Stack()
 
 for _ in range(settings['recent'].count(False)):
     settings['recent'].remove(False)
-    
+
 for i in settings['recent']:
     if os.path.exists(i):
         continue
-    
+
     settings['recent'].remove(i)
 
 recent_files: list[str] = settings['recent'].copy()
@@ -715,13 +716,13 @@ def fast_dump(*_):
         - This only dumps the 10 most recent files from recent_stack
         - No arguments needed (hence the use of *_)
     """
-    
+
     if len(recent_stack) > 10:
         settings['recent'] = recent_stack.content[-10:]
-        
+
     else:
         settings['recent'] = recent_stack.content
-        
+
     dump_settings(os.path.join(config, 'settings.json'), settings)
 
 
@@ -875,7 +876,7 @@ class WScript:
         """
         __init__ initializes an instance of WScript
         """
-        
+
         self.script: str | None = None
         self.__executed: bool = False
 
@@ -888,17 +889,17 @@ class WScript:
             - the path must exist
             - the path must be a file
             - the path must be a *.wscript file
-            
+
         If the name is exactly EightBall.wscript **with this particular casing**, a special behavior will be applied.
 
         Args:
             location (str): filepath
             encoding (str, optional): file encoding. Defaults to 'utf-8'.
-            
+
         Raises:
             ValueError: if at least one of the criteria above fails
         """
-        
+
         location = location.strip()
 
         if not location:
@@ -924,20 +925,20 @@ mb.showinfo(f"{lang[1]} - Eight Ball", random.choice(_prompts))
     def loadstr(self, script: str):
         """
         loadstr loads a WScript from a string
-        
+
         There's no special behaviors but there's one criteria that must meet:
             - script mustn't be a representation of False (0, empty string, etc)
 
         Args:
             script (str): the script
-            
+
         Raises:
             ValueError: the criteria failed
         """
-        
+
         if not script:
             raise ValueError('representation of False as a script')
-        
+
         self.script = script
 
     def run(self, scope: Literal['read', 'write'] = 'read'):
@@ -958,13 +959,13 @@ mb.showinfo(f"{lang[1]} - Eight Ball", random.choice(_prompts))
 
         exec(self.script, _globs)
         self.__executed = True
-        
+
     @property
     def has_been_executed(self) -> bool:
         """
         Has this particular instance of WScript been executed at least once?
         """
-        
+
         return self.__executed
 
     def __len__(self) -> int:
@@ -979,36 +980,36 @@ class GlobalRestorePoint:
         """
         Restore point for WriterClassic's global variables
         """
-        
+
         self.__globals: dict[str, Any] = globals().copy()
-        
+
     def __repr__(self) -> str:
         s: str = f"== {self.__name__} ==\n"
-        
+
         for key, value in self.status.items():
             s += f"{key}: {value}\n"
-            
+
         return s
-    
+
     def __eq__(self, __value: dict) -> bool:
         return self.__globals == __value
-    
+
     def __ne__(self, __value: dict) -> bool:
         return self.__globals != __value
-    
+
     @property
     def status(self) -> dict[str, Any]:
         """
         Shallow copy of the globals() inside this Restore Point
         """
-        
+
         return self.__globals.copy()
-    
+
     def restore(self):
         """
         restore restores the globals() that were being used before the creation of the instance of a restore point that saved them
         """
-        
+
         globals().update(self.__globals)
 
 
@@ -1021,7 +1022,7 @@ class UpdateCheck:
             ignore_checks (bool, optional): should update checks be ignored? Defaults to ignore_checking.
             latest_v (Any, optional): latest version of WriterClassic. Defaults to LATEST.
         """
-        
+
         self.app_version = app_version
         self.ignore_checks = ignore_checks
         self.latest = latest_v
@@ -1093,9 +1094,9 @@ if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
 def set_window_size(root: Tk = desktop_win, **_):
     """
     set_window_size creates a GUI in order to change the dimensions of the window
-    
+
     The GUI is created with `root` as master.
-    
+
     No other arguments needed.
     """
 
@@ -1163,7 +1164,7 @@ def set_window_size(root: Tk = desktop_win, **_):
 def evaluate_expression(start: str | float | None = None, end: str | float | None = None, **kwargs) -> tuple[str | None, str | int | float | complex | None]:
     """
     evaluate_expression evaluates an expression inside a text widget
-    
+
     Priorities by order:
         1. bool(ean)
         2. complex
@@ -1181,7 +1182,7 @@ def evaluate_expression(start: str | float | None = None, end: str | float | Non
     """
 
     widget: WriterClassicEditor = kwargs.get('widget', text_widget)
-    
+
     if start is None:
         try:
             start = SEL_FIRST
@@ -1201,31 +1202,31 @@ def evaluate_expression(start: str | float | None = None, end: str | float | Non
     exp: str = widget.get(start, end)
     eval_exp: bool | complex | int | float
     EVALUATED_EXP = eval(exp, mathematics)
-    
+
     # [*] 1st Priority
     if type(EVALUATED_EXP) == bool:
         eval_exp = EVALUATED_EXP
-        
+
     # [*] 2nd Priority
     elif isinstance(EVALUATED_EXP, complex):
         eval_exp = EVALUATED_EXP
-        
+
     # [*] 3rd Priority
     elif isinstance(EVALUATED_EXP, int):
         eval_exp = EVALUATED_EXP
-        
+
     # [*] 4th Priority
     elif isinstance(EVALUATED_EXP, float):
         if int(EVALUATED_EXP) == EVALUATED_EXP:
             eval_exp = int(EVALUATED_EXP)
-            
+
         else:
             eval_exp = EVALUATED_EXP
-            
+
     # [!?] 5th Priority: kinda dangerous???
     else:
         eval_exp = str(EVALUATED_EXP)
-        
+
     ic(EVALUATED_EXP)
     ic(type(EVALUATED_EXP))
 
@@ -1328,18 +1329,18 @@ def set_language(language_set, root_win):
         language_set (str): the string that represents the locale file. Examples: `pt`, `sk` and `en`
         root_win (Tk | Toplevel): the window where this change takes place
     """
-    
+
     settings["language"] = language_set
     LOG.write(f"{str(now())} - A new language has been set ({str(language_set)}): OK\n")
     fast_dump()
 
     popup_define = mb.askyesno(parent=root_win, title=lang[30], message=lang[31])
     LOG.write(f"{str(now())} - Asked for app restart: AWAITING RESPONSE\n")
-    
+
     if popup_define:
         root_win.destroy()
         LOG.write(f"{str(now())} - End of session: QUIT\n")
-    
+
     else:
         LOG.write(f"{str(now())} - Cancel/No as response: OK\n")
 
@@ -1489,66 +1490,68 @@ def recent_files(**kw):
     --
 
     GENERAL WRITERCLASSIC ARGUMENTS
-    
+
     root (Tk | Toplevel) = desktop_win
-    
+
     --
-    
+
     WINDOW ARGUMENTS
-    
+
     iconbitmap (str | PathLike) = WriterClassic icon
-    
+
     --
-    
+
     SPECIFIC ARGUMENTS
-    
+
     expressions (list[str]) = WriterClassic language list
     recents (Stack) = stack object containing the recent files
     """
-    
+
     def _open(lb: Listbox, root: Tk | Toplevel, aux: list[str], exps: list[str], win: Toplevel):
-        """Internal function."""
-        
+        """
+        Internal function.
+        """
+
         try:
             open_file_manually(aux[lb.index(lb.curselection())], root)
-            
+
         except TclError:
             mb.showwarning(exps[1], exps[357])
-            
+
         else:
             win.destroy()
-        
-      
+
+
     root: Tk | Toplevel = kw.get('root', desktop_win)
     icopath: str = kw.get('iconbitmap', os.path.join(data_dir, 'app_icon.ico'))
     exps: list[str] = kw.get('expressions', lang.copy())
     recents: Stack = kw.get('recents', recent_stack).copy()
-    
+
     if recents.is_empty:
         mb.showinfo(exps[1], exps[356])
         return
-    
+
     w = Toplevel(root)
     w.title(exps[355])
     w.resizable(False, False)
-    
+
     if sys.platform == 'win32':
         w.iconbitmap(icopath)
-    
+
     lb = Listbox(w, selectmode=SINGLE, font=Font(family=settings['font']['family'], size=12, weight='normal', slant='roman', underline=False, overstrike=False), bg=settings['theme']['color'], fg=settings['theme']['fg'], borderwidth=3, width=75)
     aux = []
-    
+
     for _ in range(len(recents)) if len(recents) <= 10 else range(10):
         lb.insert(END, os.path.basename(recents.top()))
         aux.append(recents.top())
         recents.pop()
-    
+
     b = Button(w, text=exps[7], command=lambda:
         _open(lb, root, aux, exps, w))
-    
+
     lb.pack()
     b.pack()
-    
+
     w.mainloop()
 
 
@@ -1560,7 +1563,7 @@ class Snippets:
         Args:
             name (str): general tag for the snippets, such as 'Extra Snippets', 'C++ Snippts'
         """
-        
+
         self.name: str = name
         self._snippets = {}
         self.__taken_names = []
@@ -1677,7 +1680,7 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
         root (Tk | Toplevel, optional): root window for the picker Toplevel. Defaults to desktop_win.
         widget (WriterClassicEditor, optional): text editor where the snippet is inserted onto. Defaults to text_widget.
     """
-    
+
     def update_info_view(*labels):
         n: str = labels[1].get()
         s: tuple = labels[0].get_snippet(n)
@@ -1785,7 +1788,7 @@ def set_font(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = te
     Returns:
         Font | dict[bytes, bytes]: font configurations
     """
-    
+
     font_details = dict(tkfontchooser.askfont(root, __sample, f"{lang[1]} - {lang[332]}", family=settings['font']['family'], size=settings['font']['size'], weight=settings['font']['weight'], slant=settings['font']['slant'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike']))
     config_font.configure(family=font_details['family'], size=font_details['size'], weight=font_details['weight'], slant=font_details['slant'], underline=font_details['underline'], overstrike=font_details['overstrike'])
 
@@ -2438,7 +2441,7 @@ def reset_writerclassic():
     ic(settings)
 
     confirmation = mb.askyesno(lang[77], lang[78])
-    
+
     if confirmation:
         settings = {
             "font": {
@@ -2492,7 +2495,7 @@ def terminal_inputs():
         ic()
 
         LOG.write(f"{str(now())} - Refreshed the Terminal Inputs: OK\n")
-        
+
     def _terminal_get(entry_selection: Entry):
         _data = entry_selection.get()
 
@@ -2501,7 +2504,7 @@ def terminal_inputs():
         LOG.write(f"{str(now())} - Used the following command on the Terminal - {str(_data)}: OK\n")
 
         ic(_data)
-    
+
     terminal = Toplevel(desktop_win)
 
     terminal.title(lang[183])
@@ -2639,13 +2642,16 @@ def lock_a_win(window: Tk = desktop_win):
 
 
 class Plugin:
-    def __init__(self, folder_name: str) -> None:
+    def __init__(self, folder_name: str, **kw) -> None:
         """
         __init__ intializes the class Plugin
 
         Args:
             folder_name (str): the name of the folder
+            root_name (str, keyword arg): defaults to Verified_Plugins
         """
+
+        self.ROOT_DIR = kw.get('root_name', 'Verified_Plugins')
         self.FOLDER_URL = folder_name
         # --
         self.DETAILS_FILE = None
@@ -2656,21 +2662,144 @@ class Plugin:
         self.ICON = None
 
 
-    def obtain_files(self):
+    def obtain_files(self, mode: Literal['manifest', 'versioning'] = 'manifest') -> None:
         """
-        obtain_files calls the protected member _get_files
+        obtain_files gets the files of the plugin
+
+        Args:
+            mode ('manifest' or 'versioning', optional): mode to use. Defaults to 'manifest' (new in v10.6.0+ and recommended!).
         """
+        
+        if mode == 'versioning':
+            self._get_files_by_version()
+            return
+        
+        self._get_files_by_manifest()
 
-        self._get_files()
 
-
-    def _get_files(self) -> None:
+    def _get_files_by_manifest(self) -> None:
         """
         Internal function.
+
+        Uses manifests instead of version files.
         """
 
         try:
-            versioning_file = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/Verified_Plugins/{self.FOLDER_URL}/Versions.txt", timeout=2)
+            manifest: dict = json.loads(get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/{self.ROOT_DIR}/{self.FOLDER_URL}/manifest.json", timeout=1).text)
+            
+            __versions: list = [int(i[1:]) for i in manifest]
+            
+            # [*] Window Creation
+            datax = sdg.askinteger(title=f'{lang[1]} - {lang[203]}', prompt=f'{lang[202]}\n{lang[204]} {max(__versions)}.', initialvalue=max(__versions), minvalue=1, maxvalue=max(__versions))
+            
+            datax = f"v{datax}"
+
+            if datax not in manifest:
+                raise ValueError('no such version')
+
+            params: dict = manifest[datax]
+
+            zipfile: str | None = params.get('zipfile', None)
+            
+            author: str = params.get('author', 'Author')
+            name: str | None = params.get('name', self.FOLDER_URL)
+            exclude: list[str] = params.get('uncompatible', [])
+            description: str | None = params.get('description', 'Description')
+            imagefile: str | None = params.get('imagefile', 'https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/WriterPlugin.png')
+            pyfile: str | None = params.get('pyfile', None)
+            
+            if APP_VERSION in exclude:
+                raise VersionError('uncompatible version')
+            
+            if ADVANCED_VERSION in exclude:
+                raise VersionError('uncompatible version')
+
+            if zipfile:
+                # [i] Send a GET request to download the zip file
+                zip_response = get(zipfile, timeout=3)
+
+                parent_directory = plugin_dir
+                new_folder_base_name = 'plugin'
+                counter = 1
+
+                while True:
+                    new_folder_name = f'{new_folder_base_name}_{counter}'
+                    new_folder_path = os.path.join(parent_directory, new_folder_name)
+
+                    if not os.path.exists(new_folder_path):
+                        os.makedirs(new_folder_path)
+                        break
+
+                    counter += 1
+
+                if zip_response.status_code == 200:
+                    zip_filepath = os.path.join(new_folder_path, "Plugin.zip")
+
+                    # [i] Save the downloaded zip file
+                    with open(zip_filepath, "wb") as f:
+                        f.write(zip_response.content)
+
+                    # [i] Extract the contents of the zip file to the same location
+                    with zipfile.ZipFile(zip_filepath, mode="r") as zip_ref:
+                        zip_ref.extractall(new_folder_path)
+
+                    # [!?] Delete the downloaded zip file
+                    os.remove(zip_filepath)
+
+            else:
+                if not pyfile:
+                    raise ValueError('no Python file was given')
+                
+                parent_directory = plugin_dir
+                new_folder_base_name = 'plugin'
+                counter = 1
+
+                while True:
+                    new_folder_name = f'{new_folder_base_name}_{counter}'
+                    new_folder_path = os.path.join(parent_directory, new_folder_name)
+
+                    if not os.path.exists(new_folder_path):
+                        os.makedirs(new_folder_path)
+                        break
+
+                    counter += 1
+
+                with open(os.path.join(new_folder_path, 'Details.txt'), 'w', encoding='utf-8') as f:
+                    f.write(f"{name.strip()}\n{author.strip()}\n{description.strip()}")
+
+                response = get(pyfile, timeout=1)
+                response.raise_for_status()
+
+                with open(os.path.join(new_folder_path, f"{name.strip()}.py"), 'w', encoding='utf-8') as f:
+                    f.write(response.text)
+
+                response = get(imagefile, stream=True)
+                response.raise_for_status()
+
+                with open(os.path.join(new_folder_path, 'WriterPlugin.png'), 'wb') as file:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        file.write(chunk)
+
+        except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout):
+            mb.showerror(lang[148], lang[135])
+
+        except VersionError:
+            mb.showerror(lang[1], 'This action is uncompatible with the current version of WriterClassic.')
+
+        except (Exception, ValueError):
+            mb.showerror(lang[133], lang[134])
+
+    _get_files = _get_files_by_manifest
+
+    def _get_files_by_version(self) -> None:
+        """
+        Internal function.
+        
+        XXX This might get deprecated sooner than you think!
+        """
+
+        try:
+            versioning_file = get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/{self.ROOT_DIR}/{self.FOLDER_URL}/Versions.txt", timeout=2)
 
             versioning_data = versioning_file.text
 
@@ -2982,7 +3111,7 @@ def change_wrap(**kw):
     w = Toplevel(root)
     w.title(lang[351])
     w.resizable(False, False)
-    
+
     if sys.platform == 'win32':
         w.iconbitmap(os.path.join(data_dir, 'app_icon.ico'))
 
@@ -3850,10 +3979,10 @@ if sys.platform == "linux":
         menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_13.configure(background=theme["menu"], foreground=theme["mfg"])
-        
+
         if ADVANCED:
             menu_14.configure(background=theme["menu"], foreground=theme["mfg"])
-        
+
         menu_15.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_16.configure(background=theme["menu"], foreground=theme["mfg"])
         menu_17.configure(background=theme["menu"], foreground=theme["mfg"])
@@ -3871,10 +4000,10 @@ if sys.platform == "linux":
         menu_8.configure(background="white", foreground="black")
         menu_9.configure(background="white", foreground="black")
         menu_13.configure(background="white", foreground="black")
-        
+
         if ADVANCED:
             menu_14.configure(background="white", foreground="black")
-        
+
         menu_15.configure(background="white", foreground="black")
         menu_17.configure(background="white", foreground="black")
         menu_16.configure(background="white", foreground="black")
@@ -3954,7 +4083,7 @@ if len(sys.argv) > 1:
 
     finally:
         ic(current_file)
-        
+
 else:
     if last_file:
         open_file_manually(last_file)
@@ -3973,9 +4102,9 @@ grp: GlobalRestorePoint = GlobalRestorePoint()
 if len(sys.argv) > 2:
     startup_script: WScript = WScript()
     startup_script.loadpath(os.path.abspath(sys.argv[2]))
-    
+
     startup_script.run('write')
-    
+
     ic(globals().copy())
 
 desktop_win.protocol("WM_DELETE_WINDOW", close_confirm)
