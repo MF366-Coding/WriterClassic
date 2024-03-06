@@ -4,7 +4,7 @@
 Writer Classic is a Python project that keeps growing and brings to the user a whole new text editing experience. 🤔👍
 
 [![Latest Version](https://img.shields.io/github/v/tag/MF366-Coding/WriterClassic?color=%23000184)](https://github.com/MF366-Coding/WriterClassic/releases/latest)
-[![Documentation](https://img.shields.io/badge/online-now?label=docs%20status&color=%23000085)](https://mf366-coding.github.io/writerclassic.html#docs)
+[![Documentation](https://img.shields.io/badge/old-now?label=docs%20status&color=%23000085)](https://mf366-coding.github.io/writerclassic.html#docs)
 [![License](https://img.shields.io/github/license/MF366-Coding/WriterClassic)](https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/LICENSE)
 
 > **NOTE:** `main` is the most stable branch, unless I prefix a commit with UNSTABLE.
