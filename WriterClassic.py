@@ -52,7 +52,7 @@ Small but lovely contributions by:
 
 current_file = False # [*] current file, otherwise False
 cur_data: str = ""
-grp = None # [i] Redefined later on...
+grp: None = None # [i] Redefined later on...
 save_status: bool = True
 TOOLBAR_LEN: int = 11
 
@@ -69,11 +69,11 @@ Powered by: Python 3.11+
 # [*] Importing some of the builtin goodies
 import os, sys, json, random, datetime, platform, math, cmath, tracemalloc
 
-from typing import Literal, SupportsFloat, Any, Callable # [i] Making things nicer, I guess
+from typing import Literal, SupportsFloat, Any, Callable, TextIO  # [i] Making things nicer, I guess
 
 from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
 
-import zipfile # [i] Used to extract the zip files used by plugins
+import zipfile as zipper # [i] Used to extract the zip files used by plugins
 
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
@@ -237,7 +237,7 @@ class Logger:
 
         self.logger.write('\n')
 
-    def __str__(self) -> str:
+    def __repr__(self) -> TextIO:
         """
         String representation of the logger
 
@@ -1048,13 +1048,13 @@ class UpdateCheck:
         manual_check checks for updates when the user clicks 'Check for Updates'
         """
 
-        if self.app_version != self.latest and self.ignore_checks == False:
+        if self.app_version != self.latest and self.ignore_checks is False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             if askForUpdate:
                 LOG.write(f"{str(now())} - Went to the latest release at GitHub: OK\n")
                 simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
 
-        elif self.app_version == self.latest and self.ignore_checks == False:
+        elif self.app_version == self.latest and self.ignore_checks is False:
             mb.showinfo(title=lang[93], message=lang[92])
             LOG.write(f"{str(now())} - Versions match | WriterClassic is up to date: OK\n")
 
@@ -1070,6 +1070,7 @@ class UpdateCheck:
         mb.showinfo(title=lang[1], message=lang[101])
         LOG.write(f"{str(now())} - Check for updates on startup setting has been changed: OK\n")
 
+
 update_check = UpdateCheck()
 
 if startApp == '1':
@@ -1083,7 +1084,7 @@ if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
 
     _run_auto = mb.askyesno(lang[1], f"{lang[289]}\n{lang[290]}\n{lang[291]}")
 
-    if _run_auto == True:
+    if _run_auto:
         try:
             auto_script.run()
 
@@ -1101,9 +1102,6 @@ def set_window_size(root: Tk = desktop_win, **_):
     """
 
     def _change_window_size(*params) -> bool:
-        e1: int | None = None
-        e2: int | None = None
-
         try:
             e1 = int(params[0].get())
             e2 = int(params[1].get())
@@ -1411,7 +1409,7 @@ class BackupSystem:
         Internal function.
         """
 
-        with zipfile.ZipFile(os.path.join(root_path, f"Backup_WriterClassic_{datetime.datetime.now().day}-{datetime.datetime.now().month}-{datetime.datetime.now().year}.zip"), 'w') as zip_file:
+        with zipper.ZipFile(os.path.join(root_path, f"Backup_WriterClassic_{datetime.datetime.now().day}-{datetime.datetime.now().month}-{datetime.datetime.now().year}.zip"), 'w') as zip_file:
             for folder_path in self._folder_paths:
                 arcname = os.path.basename(folder_path)
 
@@ -1433,7 +1431,7 @@ class BackupSystem:
             file_path (str): the path where the zip backup is
         """
 
-        with zipfile.ZipFile(file_path, 'r') as zip_file:
+        with zipper.ZipFile(file_path, 'r') as zip_file:
             for path_to_remove in self._folder_paths:
                 try:
                     if sys.platform == "win32":
@@ -2669,11 +2667,11 @@ class Plugin:
         Args:
             mode ('manifest' or 'versioning', optional): mode to use. Defaults to 'manifest' (new in v10.6.0+ and recommended!).
         """
-        
+
         if mode == 'versioning':
             self._get_files_by_version()
             return
-        
+
         self._get_files_by_manifest()
 
 
@@ -2686,12 +2684,12 @@ class Plugin:
 
         try:
             manifest: dict = json.loads(get(f"https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/{self.ROOT_DIR}/{self.FOLDER_URL}/manifest.json", timeout=1).text)
-            
+
             __versions: list = [int(i[1:]) for i in manifest]
-            
+
             # [*] Window Creation
             datax = sdg.askinteger(title=f'{lang[1]} - {lang[203]}', prompt=f'{lang[202]}\n{lang[204]} {max(__versions)}.', initialvalue=max(__versions), minvalue=1, maxvalue=max(__versions))
-            
+
             datax = f"v{datax}"
 
             if datax not in manifest:
@@ -2700,17 +2698,17 @@ class Plugin:
             params: dict = manifest[datax]
 
             zipfile: str | None = params.get('zipfile', None)
-            
+
             author: str = params.get('author', 'Author')
             name: str | None = params.get('name', self.FOLDER_URL)
             exclude: list[str] = params.get('uncompatible', [])
             description: str | None = params.get('description', 'Description')
             imagefile: str | None = params.get('imagefile', 'https://raw.githubusercontent.com/MF366-Coding/WriterClassic-OfficialPlugins/main/WriterPlugin.png')
             pyfile: str | None = params.get('pyfile', None)
-            
+
             if APP_VERSION in exclude:
                 raise VersionError('uncompatible version')
-            
+
             if ADVANCED_VERSION in exclude:
                 raise VersionError('uncompatible version')
 
@@ -2740,7 +2738,7 @@ class Plugin:
                         f.write(zip_response.content)
 
                     # [i] Extract the contents of the zip file to the same location
-                    with zipfile.ZipFile(zip_filepath, mode="r") as zip_ref:
+                    with zipper.ZipFile(zip_filepath, mode="r") as zip_ref:
                         zip_ref.extractall(new_folder_path)
 
                     # [!?] Delete the downloaded zip file
@@ -2749,7 +2747,7 @@ class Plugin:
             else:
                 if not pyfile:
                     raise ValueError('no Python file was given')
-                
+
                 parent_directory = plugin_dir
                 new_folder_base_name = 'plugin'
                 counter = 1
@@ -2843,7 +2841,7 @@ class Plugin:
                     f.write(zip_response.content)
 
                 # [i] Extract the contents of the zip file to the same location
-                with zipfile.ZipFile(zip_filepath, mode="r") as zip_ref:
+                with zipper.ZipFile(zip_filepath, mode="r") as zip_ref:
                     zip_ref.extractall(new_folder_path)
 
                 # [!?] Delete the downloaded zip file
@@ -3386,9 +3384,9 @@ def close_confirm() -> None:
     LOG.close()
     sys.exit()
 
+
 # [!] Deprecated way to call the closing of a window
 # [!?] Please use to close_confirm instead
-
 def on_closing():
     """
     on_closing asks for the user's confirmation before closing
@@ -3410,15 +3408,16 @@ def on_closing():
     LOG.close()
     sys.exit()
 
+
 # [i] Creating the menu dropdowns and buttons
 menu_10.add_command(label=lang[94], command=new_file, accelerator="Ctrl + N")
 menu_10.add_command(label=lang[7], command=lambda:
     open_file(desktop_win), accelerator="Ctrl + O")
 menu_10.add_command(label=lang[355], command=recent_files, accelerator="Ctrl + Shift + O")
 menu_10.add_separator()
-menu_10.add_command(label = lang[8], command=lambda:
+menu_10.add_command(label=lang[8], command=lambda:
     save_file(desktop_win), accelerator="Ctrl + S")
-menu_10.add_command(label = lang[9], command=lambda:
+menu_10.add_command(label=lang[9], command=lambda:
     save_as_file(desktop_win), accelerator="Ctrl + Shift + S")
 menu_10.add_separator()
 menu_10.add_command(label=lang[293], command=text_widget.edit_undo, accelerator="Ctrl + Z")
@@ -3635,6 +3634,7 @@ def adv_change():
     fast_dump()
 
     mb.showinfo(message=lang[63], title=lang[1])
+
 
 menu_12.add_separator()
 menu_12.add_checkbutton(label=lang[306], variable=advanced_mode_status, command=adv_change)
