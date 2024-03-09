@@ -578,7 +578,7 @@ class Stack:
 
     def fromlist(self, seq: list):
         """
-        Load all elements from a list (`seq`).
+        Load all elements from a list (`seq`), except for items that can't be added such as booleans.
         """
 
         if isinstance(seq, list):
@@ -586,6 +586,12 @@ class Stack:
             self.items = []
 
             for i in seq:
+                if not i:
+                    continue
+                
+                if not isinstance(i, str):
+                    continue
+                
                 if i not in self.items:
                     self.push(i)
 
@@ -628,9 +634,15 @@ class Stack:
             data (Any): the value to append
 
         Returns:
-            Any: `data`
+            Any: `data` or an empty string if the data can't be added
         """
 
+        if not data:
+            return ''
+        
+        if not isinstance(data, str):
+            return ''
+    
         if data not in self.items:
             self.items.append(data)
             return data
@@ -691,14 +703,19 @@ class Stack:
 last_file: str | None = None
 recent_stack = Stack()
 
-for _ in range(settings['recent'].count(False)):
-    settings['recent'].remove(False)
-
 for i in settings['recent']:
+    if not i:
+        settings['recent'].pop(i)
+        continue
+        
+    if not isinstance(i, str):
+        settings['recent'].pop(i)
+        continue
+    
     if os.path.exists(i):
         continue
 
-    settings['recent'].remove(i)
+    settings['recent'].pop(i)
 
 recent_files: list[str] = settings['recent'].copy()
 
@@ -725,6 +742,8 @@ def fast_dump(*_):
 
     dump_settings(os.path.join(config, 'settings.json'), settings)
 
+
+fast_dump()
 
 # [i] Windowing... again
 if current_file == False:
@@ -2792,7 +2811,7 @@ class Plugin:
     def _get_files_by_version(self) -> None:
         """
         Internal function.
-        
+
         XXX This might get deprecated sooner than you think!
         """
 
@@ -3318,42 +3337,36 @@ text_widget.bind('<Control-P>', lambda _:
 text_widget.bind('<Control-greater>', lambda _:
     command_menu())
 
-# [*] Execute plugins 1 - 12
-desktop_win.bind('<Control-F1>', lambda _:
+# [*] Execute plugins 1 - 10
+desktop_win.bind('<Control-Key-0>', lambda _:
+    execute(10)) # [i] 0 for 10 I guess
+
+desktop_win.bind('<Control-Key-1>', lambda _:
     execute(1))
 
-desktop_win.bind('<Control-F2>', lambda _:
+desktop_win.bind('<Control-Key-2>', lambda _:
     execute(2))
 
-desktop_win.bind('<Control-F3>', lambda _:
+desktop_win.bind('<Control-Key-3>', lambda _:
     execute(3))
 
-desktop_win.bind('<Control-F4>', lambda _:
+desktop_win.bind('<Control-Key-4>', lambda _:
     execute(4))
 
-desktop_win.bind('<Control-F5>', lambda _:
+desktop_win.bind('<Control-Key-5>', lambda _:
     execute(5))
 
-desktop_win.bind('<Control-F6>', lambda _:
+desktop_win.bind('<Control-Key-6>', lambda _:
     execute(6))
 
-desktop_win.bind('<Control-F7>', lambda _:
+desktop_win.bind('<Control-Key-7>', lambda _:
     execute(7))
 
-desktop_win.bind('<Control-F8>', lambda _:
+desktop_win.bind('<Control-Key-8>', lambda _:
     execute(8))
 
-desktop_win.bind('<Control-F9>', lambda _:
+desktop_win.bind('<Control-Key-9>', lambda _:
     execute(9))
-
-desktop_win.bind('<Control-F10>', lambda _:
-    execute(10))
-
-desktop_win.bind('<Control-F11>', lambda _:
-    execute(11))
-
-desktop_win.bind('<Control-F12>', lambda _:
-    execute(12))
 
 # [*] Select all text in the editor
 text_widget.bind('<Control-a>', lambda _:
