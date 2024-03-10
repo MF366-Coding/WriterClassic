@@ -475,8 +475,8 @@ ic(ignore_checking)
 ic(LATEST)
 
 # [!] Very Important: Keeping track of versions and commits
-APP_VERSION = "v10.6.0"
-ADVANCED_VERSION ="v10.6.0.###"
+APP_VERSION = "v10.7.0"
+ADVANCED_VERSION ="v10.7.0.323"
 
 # [i] the fourth number up here, is the commit where this changes have been made
 
@@ -604,6 +604,8 @@ class Stack:
         raise TypeError('cannot use anything other than a list')
         # [i] VSCode marks this code as unreachable but it can actually be reached since type annotations are not strict in Python
 
+    loadlist = fromlist
+    
     def copy(self):
         """
         Return a shallow copy of the whole stack
@@ -902,6 +904,10 @@ class WScript:
     def loadpath(self, location: str, encoding: str = 'utf-8'):
         """
         loadpath loads a WScript from a filepath
+        
+        This is the legacy way as a matter of speech
+        
+        NOTE: It's recommended you use `frompath` instead
 
         Must meet the following criteria:
             - the path value must not be a representation of False (such as 0, an empty string, etc)
@@ -2407,7 +2413,7 @@ def about_writerclassic():
 
 
 def search_replace():
-    s = SearchReplace(desktop_win, text_widget, False, lang, os.path.join(data_dir, 'app_icon.ico'))
+    s = SearchReplace(desktop_win, text_widget, True, lang_exps=lang.copy(), ico=os.path.join(data_dir, 'app_icon.ico'))
     s.initiate_setup(s)
     s.resizable(False, False)
     s.mainloop()
@@ -2801,7 +2807,7 @@ class Plugin:
             mb.showerror(lang[148], lang[135])
 
         except VersionError:
-            mb.showerror(lang[1], 'This action is uncompatible with the current version of WriterClassic.')
+            mb.showerror(lang[1], lang[358])
 
         except (Exception, ValueError):
             mb.showerror(lang[133], lang[134])
