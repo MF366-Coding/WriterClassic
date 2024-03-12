@@ -65,7 +65,6 @@ Powered by: Python 3.11+
 
 - And thank you, dear user, for using WriterClassic! <3"""
 
-
 # [*] Importing some of the builtin goodies
 import os, sys, json, random, datetime, platform, math, cmath, tracemalloc
 
@@ -80,10 +79,12 @@ from setting_loader import get_settings, dump_settings # [i] Used to load and du
 # [i] tkinter is used for the UI, duh?!
 from tkinter import Listbox, Event, SEL_LAST, DISABLED, NORMAL, SINGLE, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, SEL_FIRST, WORD, CHAR, NONE
 from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu, Radiobutton # [i] Used because of the auto syling in tkinter.ttk
+from tkinter.scrolledtext import ScrolledText # [!?] Only here so pyinstaller compiles it - not needed and gets removed later on
 import tkinter.messagebox as mb # [i] Used for the message boxes
 import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
 from tkinter import simpledialog as sdg # [i] Used for dialogues that ask you for an input
 from tkinter.font import Font # [i] Used for controlling the fonts in the Text widget
+from tkinter import colorchooser # [!?] Same reason why ScrolledText was imported, see above
 
 import smtplib # [i] Used for the Send E-mail option - server management
 
@@ -94,9 +95,11 @@ from email.mime.text import MIMEText
 from email import encoders
 
 # [i] Custom widgets for WriterClassic specifically (a custom ScrolledText widget and a custom Toplevel for Search & Replace)
-from editor import WriterClassicEditor, SearchReplace
+from editor import WriterClassicEditor, SearchReplace, CustomThemeMaker
 
 from plugin_system import initializer, run_a_plugin # [i] For WriterClassic's Plugin "API"
+
+del ScrolledText, colorchooser
 
 # [*] Get the absolute path of the script
 script_path = os.path.abspath(__file__)
@@ -330,6 +333,20 @@ except (ModuleNotFoundError, ImportError) as e:
 tracemalloc.start()
 
 ic.configureOutput(prefix="ic debug statement | -> ")
+
+
+def asklink(title: str, prompt: str, encoding: str | None = simple_webbrowser.UTF8, require_https: bool = False, initialvalue: str | None = None, show: str | None = None, warning_message: str | None = None):   
+    link: str = sdg.askstring(title, prompt, initialvalue=initialvalue, show=show)
+    
+    if not warning_message:
+        warning_message = f"{lang[133]}\n{lang[359]}"
+    
+    if require_https:
+        while not link.lstrip().startswith('https://'):
+            mb.showwarning(title, warning_message)            
+            link: str = sdg.askstring(title, prompt, initialvalue=initialvalue, show=show)
+    
+    return simple_webbrowser.LinkString(link.rstrip(), encoding)
 
 
 def clamp(val: SupportsFloat, _min: SupportsFloat, _max: SupportsFloat) -> SupportsFloat:
@@ -1060,8 +1077,9 @@ class UpdateCheck:
         if self.app_version != self.latest and self.ignore_checks == False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             LOG.write(f"{str(now())} - Versions don't match: WARNING\n")
+            
             if askForUpdate:
-                simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
+                simple_webbrowser.website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
                 LOG.write(f"{str(now())} - Went to the latest release at GitHub: OK\n")
 
         elif self.ignore_checks == True:
@@ -1075,9 +1093,10 @@ class UpdateCheck:
 
         if self.app_version != self.latest and self.ignore_checks is False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
+            
             if askForUpdate:
                 LOG.write(f"{str(now())} - Went to the latest release at GitHub: OK\n")
-                simple_webbrowser.Website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
+                simple_webbrowser.website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
 
         elif self.app_version == self.latest and self.ignore_checks is False:
             mb.showinfo(title=lang[93], message=lang[92])
@@ -1410,7 +1429,7 @@ def repository():
     repo sends the user to the official repository
     """
 
-    simple_webbrowser.Website("https://github.com/MF366-Coding/WriterClassic/")
+    simple_webbrowser.website("https://github.com/MF366-Coding/WriterClassic/")
     LOG.write(f"{str(now())} - Opened the repository: AWAITING FOR FUNCTION OR ERROR\n")
 
 
@@ -2343,7 +2362,7 @@ def surprise_egg():
 # [i] The Help section
 
 def _help():
-    simple_webbrowser.Website("https://mf366-coding.github.io/writerclassic.html#docs")
+    simple_webbrowser.website("https://mf366-coding.github.io/writerclassic.html#docs")
     LOG.write(f"{str(now())} - Requested online help: AWAITING FOR CONNECTION\n")
     ic()
 
@@ -2395,7 +2414,7 @@ def about_writerclassic():
 
     button_1 = Button(about_dialogue, text="Ok", command=about_dialogue.destroy)
     button_2 = Button(about_dialogue, text=lang[278], command=lambda:
-        simple_webbrowser.webbrowser.open("https://mf366-coding.github.io/writerclassic.html", new=2))
+        simple_webbrowser.website("https://mf366-coding.github.io/writerclassic.html", new=2))
 
     # [*] Create a Label widget to display the image
     image_label = Label(about_dialogue, image=photo)
@@ -2552,107 +2571,121 @@ class InternetOnWriter:
         self.AUTORAISE = autoraise
 
     def goto_website(self, new: Literal[0, 1, 2] = 0):
-        askForLink = sdg.askstring(lang[80], lang[91])
+        website_url = asklink(lang[80], lang[91], require_https=True)
 
-        if askForLink != ' ' or askForLink != '':
-            simple_webbrowser.Website(askForLink, new, self.AUTORAISE)
-            LOG.write(f"{str(now())} - Went to {str(askForLink)} via WriterClassic: OK\n")
+        if website_url:
+            simple_webbrowser.website(website_url.link, new, self.AUTORAISE)
+            LOG.write(f"{str(now())} - Went to {str(website_url)} via WriterClassic: OK\n")
 
         ic()
 
     def search_with_engine(self, engine: Literal['google', 'bing', 'ysearch', 'ddgo', 'yt', 'ecosia', 'stack', 'soundcloud', 'archive', 'qwant', 'spotify', 'brave', 'github', 'gitlab']):
         match engine:
             case 'google':
-                askForTyping = sdg.askstring(lang[83], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.Google(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Google: OK\n")
+                search_query = sdg.askstring(lang[83], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.Google(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on Google: OK\n")
 
             case 'bing':
-                askForTyping = sdg.askstring(lang[82], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.Bing(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Bing: OK\n")
+                search_query = sdg.askstring(lang[82], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.Bing(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on Bing: OK\n")
 
             case 'ysearch':
                 # [i] stands for Yahoo!
-                askForTyping = sdg.askstring(lang[85], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.Yahoo(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Yahoo!: OK\n")
+                search_query = sdg.askstring(lang[85], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.Yahoo(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on Yahoo!: OK\n")
 
             case 'ddgo':
                 # [i] stands for DuckDuckGo
-                askForTyping = sdg.askstring(lang[84], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.DuckDuckGo(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on DuckDuckGo: OK\n")
+                search_query = sdg.askstring(lang[84], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.DuckDuckGo(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on DuckDuckGo: OK\n")
 
             case "yt":
                 # [i] stands for YouTube
-                askForTyping = sdg.askstring(lang[99], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.YouTube(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on YouTube: OK\n")
+                search_query = sdg.askstring(lang[99], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.YouTube(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on YouTube: OK\n")
 
             case "ecosia":
-                askForTyping = sdg.askstring(lang[98], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.Ecosia(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Ecosia: OK\n")
+                search_query = sdg.askstring(lang[98], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.Ecosia(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on Ecosia: OK\n")
 
             case "stack":
                 # [i] stands for Stack Overflow
-                askForTyping = sdg.askstring(lang[100], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.StackOverflow(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on StackOverflow: OK\n")
+                search_query = sdg.askstring(lang[100], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.StackOverflow(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on StackOverflow: OK\n")
 
             case "soundcloud":
-                askForTyping = sdg.askstring(lang[104], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.SoundCloud(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on SoundCloud: OK\n")
+                search_query = sdg.askstring(lang[104], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.SoundCloud(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on SoundCloud: OK\n")
 
             case "archive":
                 # [i] stands for The Internet Archive
-                askForTyping = sdg.askstring(lang[109], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.Archive(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on The Internet Archive: OK\n")
+                search_query = sdg.askstring(lang[109], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.Archive(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on The Internet Archive: OK\n")
 
             case "qwant":
                 # [i] stands for Qwant.com
-                askForTyping = sdg.askstring(lang[108], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.Qwant(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Qwant: OK\n")
+                search_query = sdg.askstring(lang[108], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.Qwant(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on Qwant: OK\n")
 
             case "spotify":
                 # [i] stands for Spotify Online
-                askForTyping = sdg.askstring(lang[126], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.SpotifyOnline(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Spotify Online: OK\n")
+                search_query = sdg.askstring(lang[126], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.SpotifyOnline(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on Spotify Online: OK\n")
 
             case 'brave':
                 # [i] stands for Brave Search
-                askForTyping = sdg.askstring(lang[139], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.Brave(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on Brave Search: OK\n")
+                search_query = sdg.askstring(lang[139], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.Brave(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on Brave Search: OK\n")
 
             case "github":
-                askForTyping = sdg.askstring(lang[170], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.GitHub(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on GitHub: OK\n")
+                search_query = sdg.askstring(lang[170], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.GitHub(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on GitHub: OK\n")
 
             case "gitlab":
-                askForTyping = sdg.askstring(lang[172], lang[90])
-                if askForTyping != '':
-                    simple_webbrowser.GitLab(askForTyping)
-                    LOG.write(f"{str(now())} - Searched for {str(askForTyping)} on GitLab: OK\n")
+                search_query = sdg.askstring(lang[172], lang[90])
+                
+                if search_query:
+                    simple_webbrowser.GitLab(search_query)
+                    LOG.write(f"{str(now())} - Searched for {str(search_query)} on GitLab: OK\n")
 
             case _:
                 raise InvalidEngine('Invalid search engine for InternetOnWriter.')
@@ -3155,6 +3188,19 @@ def change_wrap(**kw):
     w.mainloop()
 
 
+def theme_maker():
+    w = Toplevel()
+    w.title(lang[365])
+    
+    if sys.platform == 'win32':
+        w.iconbitmap(os.path.join(data_dir, 'app_icon.ico'))
+    
+    c = CustomThemeMaker(lang, settings, set_theme, w)
+    c.pack()
+    
+    w.mainloop()
+
+
 def command_menu() -> None | bool:
     new = Toplevel(desktop_win)
 
@@ -3454,7 +3500,7 @@ if startApp == "1":
 
 menu_11.add_command(label=lang[25], command=about_writerclassic, accelerator="Ctrl + I")
 menu_11.add_command(label=lang[186], command=lambda:
-    simple_webbrowser.Website("https://www.buymeacoffee.com/mf366"))
+    simple_webbrowser.website("https://www.buymeacoffee.com/mf366"))
 menu_11.add_command(label=lang[26], command=APP_HELP, accelerator="F1")
 menu_11.add_command(label=lang[27], command=repository)
 menu_11.add_command(label=lang[179], command=show_log)
@@ -3470,6 +3516,7 @@ menu_11.add_command(label=lang[29], command=surprise_egg, state='disabled')
 menu_1.add_command(label=lang[12], command=set_window_size, accelerator="Ctrl + Shift + G")
 menu_1.add_command(label=lang[332], command=set_font)
 menu_1.add_command(label=lang[351], command=change_wrap)
+menu_1.add_command(label=lang[365], command=theme_maker)
 
 
 menu_8.add_command(label=lang[22], command=draft_notepad)
@@ -3701,7 +3748,7 @@ def dencrypt():
     butt_1 = Button(new, text=f"{lang[178]}!", command=lambda:
         runx(entry_1.get(), entry_2.get()))
     butt_2 = Button(new, text=lang[271], command=lambda:
-        simple_webbrowser.Website("https://github.com/MF366-Coding/d3NCRYP7#d3ncryp7---simple-encryption-and-decryption-system"))
+        simple_webbrowser.website("https://github.com/MF366-Coding/d3NCRYP7#d3ncryp7---simple-encryption-and-decryption-system"))
 
     label_1.grid(column=1, row=1)
     entry_1.grid(column=2, row=1)
@@ -4036,7 +4083,7 @@ menu_4.add_cascade(label=lang[15], menu=menu_5)
 menu_4.add_cascade(label=lang[19], menu=menu_6)
 menu_4.add_separator()
 menu_4.add_command(label=lang[153], command=lambda:
-    simple_webbrowser.Website(url="https://github.com/MF366-Coding/WriterClassic-ExtraThemes"))
+    simple_webbrowser.website(url="https://github.com/MF366-Coding/WriterClassic-ExtraThemes"))
 menu_bar.add_cascade(label=lang[4], menu=menu_8)
 menu_bar.add_cascade(label=lang[79], menu=menu_9)
 menu_bar.add_cascade(label=lang[5], menu=menu_12)
