@@ -2573,7 +2573,7 @@ class InternetOnWriter:
     def goto_website(self, new: Literal[0, 1, 2] = 0):
         website_url = asklink(lang[80], lang[91], require_https=True)
 
-        if website_url:
+        if str(website_url.link):
             simple_webbrowser.website(website_url.link, new, self.AUTORAISE)
             LOG.write(f"{str(now())} - Went to {str(website_url)} via WriterClassic: OK\n")
 
