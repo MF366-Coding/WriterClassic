@@ -335,17 +335,17 @@ tracemalloc.start()
 ic.configureOutput(prefix="ic debug statement | -> ")
 
 
-def asklink(title: str, prompt: str, encoding: str | None = simple_webbrowser.UTF8, require_https: bool = False, initialvalue: str | None = None, show: str | None = None, warning_message: str | None = None):   
+def asklink(title: str, prompt: str, encoding: str | None = simple_webbrowser.UTF8, require_https: bool = False, initialvalue: str | None = None, show: str | None = None, warning_message: str | None = None):
     link: str = sdg.askstring(title, prompt, initialvalue=initialvalue, show=show)
-    
+
     if not warning_message:
         warning_message = f"{lang[133]}\n{lang[359]}"
-    
+
     if require_https:
         while not link.lstrip().startswith('https://'):
-            mb.showwarning(title, warning_message)            
-            link: str = sdg.askstring(title, prompt, initialvalue=initialvalue, show=show)
-    
+            mb.showwarning(title, warning_message)
+            link: str = sdg.askstring(title, prompt, initialvalue=link, show=show)
+
     return simple_webbrowser.LinkString(link.rstrip(), encoding)
 
 
@@ -493,7 +493,7 @@ ic(LATEST)
 
 # [!] Very Important: Keeping track of versions and commits
 APP_VERSION = "v10.7.0"
-ADVANCED_VERSION ="v10.7.0.331.PATCH"
+ADVANCED_VERSION ="v10.7.0.332.PATCH"
 
 # [i] the fourth number up here, is the commit where this changes have been made
 
@@ -605,10 +605,10 @@ class Stack:
             for i in seq:
                 if not i:
                     continue
-                
+
                 if not isinstance(i, str):
                     continue
-                
+
                 if i not in self.items:
                     self.push(i)
 
@@ -622,7 +622,7 @@ class Stack:
         # [i] VSCode marks this code as unreachable but it can actually be reached since type annotations are not strict in Python
 
     loadlist = fromlist
-    
+
     def copy(self):
         """
         Return a shallow copy of the whole stack
@@ -658,10 +658,10 @@ class Stack:
 
         if not data:
             return ''
-        
+
         if not isinstance(data, str):
             return ''
-    
+
         if data not in self.items:
             self.items.append(data)
             return data
@@ -726,11 +726,11 @@ for i in settings['recent']:
     if not i:
         settings['recent'].remove(i)
         continue
-        
+
     if not isinstance(i, str):
         settings['recent'].remove(i)
         continue
-    
+
     if os.path.exists(i):
         continue
 
@@ -921,9 +921,9 @@ class WScript:
     def loadpath(self, location: str, encoding: str = 'utf-8'):
         """
         loadpath loads a WScript from a filepath
-        
+
         This is the legacy way as a matter of speech
-        
+
         NOTE: It's recommended you use `frompath` instead
 
         Must meet the following criteria:
@@ -1077,7 +1077,7 @@ class UpdateCheck:
         if self.app_version != self.latest and self.ignore_checks == False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             LOG.write(f"{str(now())} - Versions don't match: WARNING\n")
-            
+
             if askForUpdate:
                 simple_webbrowser.website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
                 LOG.write(f"{str(now())} - Went to the latest release at GitHub: OK\n")
@@ -1093,7 +1093,7 @@ class UpdateCheck:
 
         if self.app_version != self.latest and self.ignore_checks is False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
-            
+
             if askForUpdate:
                 LOG.write(f"{str(now())} - Went to the latest release at GitHub: OK\n")
                 simple_webbrowser.website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
@@ -2583,14 +2583,14 @@ class InternetOnWriter:
         match engine:
             case 'google':
                 search_query = sdg.askstring(lang[83], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.Google(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on Google: OK\n")
 
             case 'bing':
                 search_query = sdg.askstring(lang[82], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.Bing(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on Bing: OK\n")
@@ -2598,7 +2598,7 @@ class InternetOnWriter:
             case 'ysearch':
                 # [i] stands for Yahoo!
                 search_query = sdg.askstring(lang[85], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.Yahoo(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on Yahoo!: OK\n")
@@ -2606,7 +2606,7 @@ class InternetOnWriter:
             case 'ddgo':
                 # [i] stands for DuckDuckGo
                 search_query = sdg.askstring(lang[84], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.DuckDuckGo(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on DuckDuckGo: OK\n")
@@ -2614,14 +2614,14 @@ class InternetOnWriter:
             case "yt":
                 # [i] stands for YouTube
                 search_query = sdg.askstring(lang[99], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.YouTube(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on YouTube: OK\n")
 
             case "ecosia":
                 search_query = sdg.askstring(lang[98], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.Ecosia(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on Ecosia: OK\n")
@@ -2629,14 +2629,14 @@ class InternetOnWriter:
             case "stack":
                 # [i] stands for Stack Overflow
                 search_query = sdg.askstring(lang[100], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.StackOverflow(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on StackOverflow: OK\n")
 
             case "soundcloud":
                 search_query = sdg.askstring(lang[104], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.SoundCloud(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on SoundCloud: OK\n")
@@ -2644,7 +2644,7 @@ class InternetOnWriter:
             case "archive":
                 # [i] stands for The Internet Archive
                 search_query = sdg.askstring(lang[109], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.Archive(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on The Internet Archive: OK\n")
@@ -2652,7 +2652,7 @@ class InternetOnWriter:
             case "qwant":
                 # [i] stands for Qwant.com
                 search_query = sdg.askstring(lang[108], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.Qwant(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on Qwant: OK\n")
@@ -2660,7 +2660,7 @@ class InternetOnWriter:
             case "spotify":
                 # [i] stands for Spotify Online
                 search_query = sdg.askstring(lang[126], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.SpotifyOnline(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on Spotify Online: OK\n")
@@ -2668,21 +2668,21 @@ class InternetOnWriter:
             case 'brave':
                 # [i] stands for Brave Search
                 search_query = sdg.askstring(lang[139], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.Brave(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on Brave Search: OK\n")
 
             case "github":
                 search_query = sdg.askstring(lang[170], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.GitHub(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on GitHub: OK\n")
 
             case "gitlab":
                 search_query = sdg.askstring(lang[172], lang[90])
-                
+
                 if search_query:
                     simple_webbrowser.GitLab(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on GitLab: OK\n")
@@ -3191,13 +3191,13 @@ def change_wrap(**kw):
 def theme_maker():
     w = Toplevel()
     w.title(lang[365])
-    
+
     if sys.platform == 'win32':
         w.iconbitmap(os.path.join(data_dir, 'app_icon.ico'))
-    
+
     c = CustomThemeMaker(lang, settings, set_theme, w)
     c.pack()
-    
+
     w.mainloop()
 
 
