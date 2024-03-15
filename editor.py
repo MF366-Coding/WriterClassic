@@ -37,7 +37,7 @@ class WriterClassicEditor(_ScrolledText):
 
 
     def change_wrapping(self, char_level: Literal['none', 'char', 'word'] = 'char'):
-        self._wrapline = char_level
+        self._wrapline: str = char_level
         super().configure(wrap=self._wrapline)
 
 
@@ -245,7 +245,7 @@ class SearchReplace(Toplevel):
 
 
 class CustomThemeMaker(Frame):
-    def __init__(self, language_data: Iterable[str], settings: dict[str, Any], dump_func: Callable, master: Toplevel | None = None, *kw) -> None:
+    def __init__(self, language_data: list[str], settings: dict[str, Any], dump_func: Callable, master: Toplevel | None = None, **kw) -> None:
         super().__init__(master, *kw)
 
         self._lang = language_data.copy()

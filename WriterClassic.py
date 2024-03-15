@@ -68,7 +68,7 @@ Powered by: Python 3.11+
 # [*] Importing some of the builtin goodies
 import os, sys, json, random, datetime, platform, math, cmath, tracemalloc
 
-from typing import Literal, SupportsFloat, Any, Callable, TextIO  # [i] Making things nicer, I guess
+from typing import Literal, SupportsFloat, Any, Callable  # [i] Making things nicer, I guess
 
 from getpass import getuser # [i] Used in order to obtain the username of the current user, which is used for the Auto Signature
 
@@ -240,7 +240,7 @@ class Logger:
 
         self.logger.write('\n')
 
-    def __repr__(self) -> TextIO:
+    def __repr__(self) -> str:
         """
         String representation of the logger
 
@@ -248,7 +248,7 @@ class Logger:
             str: same as str(filelike object)
         """
 
-        return self.logger
+        return str(self.logger)
 
 
 LOG = Logger(os.path.join(user_data, "log.wclassic"))
@@ -335,7 +335,7 @@ tracemalloc.start()
 ic.configureOutput(prefix="ic debug statement | -> ")
 
 
-def asklink(title: str, prompt: str, encoding: str | None = simple_webbrowser.UTF8, require_https: bool = False, initialvalue: str | None = None, show: str | None = None, warning_message: str | None = None):
+def asklink(title: str, prompt: str, encoding: str | None = 'utf-8', require_https: bool = False, initialvalue: str | None = None, show: str | None = None, warning_message: str | None = None):
     link: str = sdg.askstring(title, prompt, initialvalue=initialvalue, show=show)
 
     if not warning_message:
@@ -349,7 +349,7 @@ def asklink(title: str, prompt: str, encoding: str | None = simple_webbrowser.UT
     return simple_webbrowser.LinkString(link.rstrip(), encoding)
 
 
-def clamp(val: SupportsFloat, _min: SupportsFloat, _max: SupportsFloat) -> SupportsFloat:
+def clamp(val: float | int, _min: float | int, _max: float | int) -> object:
     """
     clamp clamps and returns a value
 
@@ -493,7 +493,7 @@ ic(LATEST)
 
 # [!] Very Important: Keeping track of versions and commits
 APP_VERSION = "v10.7.0"
-ADVANCED_VERSION ="v10.7.0.332.PATCH"
+ADVANCED_VERSION ="v10.7.0.###.PATCH"
 
 # [i] the fourth number up here, is the commit where this changes have been made
 
@@ -1203,7 +1203,7 @@ def set_window_size(root: Tk = desktop_win, **_):
     geometry_set.mainloop()
 
 
-def evaluate_expression(start: str | float | None = None, end: str | float | None = None, **kwargs) -> tuple[str | None, str | int | float | complex | None]:
+def evaluate_expression(start: str | float | None = None, end: str | float | None = None, **kwargs) -> tuple:
     """
     evaluate_expression evaluates an expression inside a text widget
 
@@ -1815,7 +1815,7 @@ default_snippets.register('bold', '**!!!**', 'Markdown', 'Need to be **bold**? Y
 
 
 # [i] Font Picker :)
-def set_font(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = text_widget, __dump_func = fast_dump, __sample: str = 'Lorem ipsum dolor sit amet, ...', **_) -> Font | dict[bytes, bytes]:
+def set_font(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = text_widget, dump_func = fast_dump, sample: str = 'Lorem ipsum dolor sit amet, ...', **kw) -> Font | dict[bytes, bytes]:
     """
     set_font launches a font picker that affects `editor` and has `root` as master
 
@@ -1824,12 +1824,15 @@ def set_font(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = te
     Args:
         root (Tk | Toplevel, optional): explained above. Defaults to desktop_win.
         editor (WriterClassicEditor, optional): explained above. Defaults to text_widget.
-        __dump_func (_type_, optional): function that dumps the settings. Defaults to fast_dump.
-        __sample (str, optional): text sample used inside the font picker. Defaults to 'Lorem ipsum dolor sit amet, ...'.
+        dump_func (_type_, optional): function that dumps the settings. Defaults to fast_dump.
+        sample (str, optional): text sample used inside the font picker. Defaults to 'Lorem ipsum dolor sit amet, ...'.
 
     Returns:
         Font | dict[bytes, bytes]: font configurations
     """
+
+    __dump_func = kw.get('__dump_func', dump_func)
+    __sample = kw.get('__sample', sample)
 
     font_details = dict(tkfontchooser.askfont(root, __sample, f"{lang[1]} - {lang[332]}", family=settings['font']['family'], size=settings['font']['size'], weight=settings['font']['weight'], slant=settings['font']['slant'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike']))
     config_font.configure(family=font_details['family'], size=font_details['size'], weight=font_details['weight'], slant=font_details['slant'], underline=font_details['underline'], overstrike=font_details['overstrike'])
@@ -3212,7 +3215,7 @@ def command_menu() -> None | bool:
             return
 
     def action_logic(_scope: str, _action: str):
-        commands: dict[str] = {
+        commands: dict[str, Any] = {
             "Editor:Undo": text_widget.edit_undo,
             "Editor:Redo": text_widget.edit_redo,
             "Editor:Reset": new_file,
