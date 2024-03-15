@@ -4,5 +4,5 @@ Pillow==10.2.0
 pygame==2.5.2
 pyperclip==1.8.2
 Requests==2.31.0
-simple_webbrowser==0.2.1
+simple_webbrowser==0.2.2
 tkfontchooser==2.0.2
