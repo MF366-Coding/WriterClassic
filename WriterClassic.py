@@ -493,7 +493,7 @@ ic(LATEST)
 
 # [!] Very Important: Keeping track of versions and commits
 APP_VERSION = "v10.7.0"
-ADVANCED_VERSION ="v10.7.0.323"
+ADVANCED_VERSION ="v10.7.0.331.PATCH"
 
 # [i] the fourth number up here, is the commit where this changes have been made
 
@@ -724,17 +724,17 @@ recent_stack = Stack()
 
 for i in settings['recent']:
     if not i:
-        settings['recent'].pop(i)
+        settings['recent'].remove(i)
         continue
         
     if not isinstance(i, str):
-        settings['recent'].pop(i)
+        settings['recent'].remove(i)
         continue
     
     if os.path.exists(i):
         continue
 
-    settings['recent'].pop(i)
+    settings['recent'].remove(i)
 
 recent_files: list[str] = settings['recent'].copy()
 
