@@ -403,7 +403,7 @@ class _SearchReplaceBackup(Toplevel):
 
     def _replace(self):
         """
-        XXX Not working XXX
+        FIXME: This just doesn't work
         """
 
         s1, s2 = None, None
@@ -419,7 +419,7 @@ class _SearchReplaceBackup(Toplevel):
 
     def _replace_all(self):
         """
-        XXX Not working XXX
+        FIXME: Not working, needs to be fixed so it can be added to the main class
         """
 
         while True:
@@ -538,3 +538,25 @@ class _SearchReplaceBackup(Toplevel):
     @property
     def nocasing(self) -> bool:
         return not bool(self._CASING.get())
+
+
+def deprecated(message: str | None = None, dep_version: str | float | int | None = None):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            new_message = message
+            
+            if dep_version is None and not message:
+                new_message = f'{func.__name__} is deprecated'
+                
+            elif dep_version is not None and not message:
+                new_message = f'{func.__name__} has been deprecated since {dep_version}'
+            
+            else:
+                new_message = message
+            
+            print(new_message)
+            return func(*args, **kwargs)
+        
+        return wrapper
+    
+    return decorator

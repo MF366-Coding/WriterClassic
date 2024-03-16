@@ -7,18 +7,35 @@
 
 # [!?] this is MF366's mediocre plugin system
 
-import os, datetime
+import os
+import datetime
+from pygame import mixer # for the exe version, the module should have been already compiled
 from tkinter import messagebox as mb
+from typing import Any
 import importlib.machinery
 
-wclassic_vars = {}
+wclassic_vars: dict[str, Any] = {}
 _LOG = None
-plugin_dir = ""
-lang = []
+plugin_dir: str = ""
+lang: list[str] = []
 
 
 # [i] Alternative to using deprecated imp module
-def load_module_from_source(module_name, source_path):
+def load_module_from_source(module_name: str, source_path: str):
+    """
+    load_module_from_source loads a Python module from an absolute location of a *.py file
+
+    Args:
+        module_name (str): the name of the module
+        source_path (str): the path to the module
+        
+    Used like:
+        loaded_module = load_module_from_source("something", "C:\\Users\\user\\johndoe.py")
+
+    Returns:
+        Any: the module
+    """
+    
     loader = importlib.machinery.SourceFileLoader(module_name, source_path)
     spec = importlib.util.spec_from_loader(module_name, loader)
     module = importlib.util.module_from_spec(spec)
@@ -26,10 +43,8 @@ def load_module_from_source(module_name, source_path):
     return module
 
 
-# [!?] the 'load_module_from_source' function is used like this:
-# [*] loaded_module = load_module_from_source("something", "C:\\Users\\user\\johndoe.py")
-
 now = datetime.datetime.now
+
 
 def initializer(wclassic_globals):
     global wclassic_vars, _LOG, plugin_dir, lang
@@ -41,11 +56,10 @@ def initializer(wclassic_globals):
 
     _LOG.write(f"{str(now())} - Initializing Plugin System: OK\n")
 
-def run_a_plugin(number_or_name: int | str) -> bool:
-    mixer = wclassic_vars['mixer']
-    
+
+def run_a_plugin(number_or_name: int | str) -> bool:    
     try:
-        if type(number_or_name) == int:
+        if isinstance(number_or_name, int):
             new_folder = os.path.join(plugin_dir, f"plugin_{number_or_name}")
 
             if not os.path.exists(path=new_folder):
@@ -121,7 +135,7 @@ def run_a_plugin(number_or_name: int | str) -> bool:
     except Exception as e:
         mb.showerror(lang[133], lang[134] + f"\n{e}")
 
-        if type(number_or_name) == int:
+        if isinstance(number_or_name, int):
             _LOG.write(f"{str(now())} - Running the plugin number {str(number_or_name)}: ERROR - {e}\n")
 
         else:

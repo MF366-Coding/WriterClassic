@@ -1,31 +1,5 @@
 # WriterClassic.py
 
-# [i] Just disabling some annoying Pylint stuff, don't mind me :D
-
-# [!?] Use of eval (funny number code lol)
-# pylint: disable=W0123
-
-# [!?] Module PIL.Image has no LANCZOS member (hint: it has)
-# pylint: disable=E1101
-
-# [*] Catching too general exception (Exception)
-# pylint: disable=W0718
-
-# [*] Redefining from outer scape (dang, I hate these ones)
-# pylint: disable=W0621
-
-# [!?] Use of exec (this one is classic lmao)
-# pylint: disable=W0122
-
-# [*] Using the global statement (I mean, it is supposed to be used, right, Pylint?)
-# pylint: disable=W0603
-
-# [*] String statement has no effect - I use big strings as comments since Python doesn't have block comments
-# pylint: disable=W0105
-
-# [*] F*ck you, Pylint with your "bad indentation"
-# pylint: disable=W0311
-
 '''
 WriterClassic
 
@@ -48,25 +22,16 @@ Small but lovely contributions by:
     Zeca70 (Zeca70 at GitHub)
 '''
 
-# [!!] I urgently need to organize this damn code
-
-current_file = False # [*] current file, otherwise False
-cur_data: str = ""
-grp: None = None # [i] Redefined later on...
-save_status: bool = True
-TOOLBAR_LEN: int = 11
-
-CREDITS = """WriterClassic by: MF366
-Powered by: Python 3.11+
-
-- Thank you, Norb and Zeca70, best GitHub contributors (and friends) ever! :)
-
-- Thank you, j4321 for your tkFontChooser module, which really helped me a LOT when implementing the improved version of the Font Picker.
-
-- And thank you, dear user, for using WriterClassic! <3"""
-
-# [*] Importing some of the builtin goodies
-import os, sys, json, random, datetime, platform, math, cmath, tracemalloc
+# [*] Sorting the imports
+import os
+import sys
+import json
+import random
+import datetime
+import platform
+import math
+import cmath
+import tracemalloc
 
 from typing import Literal, SupportsFloat, Any, Callable  # [i] Making things nicer, I guess
 
@@ -74,11 +39,10 @@ from getpass import getuser # [i] Used in order to obtain the username of the cu
 
 import zipfile as zipper # [i] Used to extract the zip files used by plugins
 
-from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
-
 # [i] tkinter is used for the UI, duh?!
-from tkinter import Listbox, Event, SEL_LAST, DISABLED, NORMAL, SINGLE, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, SEL_FIRST, WORD, CHAR, NONE
+from tkinter import Listbox, Event, DISABLED, NORMAL, SINGLE, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, WORD, CHAR, NONE
 from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu, Radiobutton # [i] Used because of the auto syling in tkinter.ttk
+from tkinter import SEL_FIRST, SEL_LAST
 from tkinter.scrolledtext import ScrolledText # [!?] Only here so pyinstaller compiles it - not needed and gets removed later on
 import tkinter.messagebox as mb # [i] Used for the message boxes
 import tkinter.filedialog as dlg # [i] Used for the "save", "open" dialogues
@@ -95,11 +59,65 @@ from email.mime.text import MIMEText
 from email import encoders
 
 # [i] Custom widgets for WriterClassic specifically (a custom ScrolledText widget and a custom Toplevel for Search & Replace)
-from editor import WriterClassicEditor, SearchReplace, CustomThemeMaker
+from editor import WriterClassicEditor, SearchReplace, CustomThemeMaker, deprecated
 
 from plugin_system import initializer, run_a_plugin # [i] For WriterClassic's Plugin "API"
+from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
-del ScrolledText, colorchooser
+from pygame import mixer # [i] Playing the sucessful sound; Only in this file so it gets compiled
+
+from icecream import ic # [i] Used for debugging
+
+from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
+
+import tkfontchooser # [i] used for the new Font picker
+
+import pyperclip as pyclip # [i] used for the clipboard options
+
+import markdown2 # [i] Used to make HTML files from Markdown
+
+import simple_webbrowser # [i] My own Python module (used for the Search with... options)
+from requests import get, exceptions # [i] Used for regular interactions with the Internet
+
+del ScrolledText, colorchooser, mixer
+
+current_file = False # [*] current file, otherwise False
+cur_data: str = ""
+grp: None = None # [i] Redefined later on...
+save_status: bool = True
+TOOLBAR_LEN: int = 11
+
+CREDITS = """WriterClassic by: MF366
+Powered by: Python 3.11+
+
+- Thank you, Norb and Zeca70, best GitHub contributors (and friends) ever! :)
+
+- Thank you, j4321 for your tkFontChooser module, which really helped me a LOT when implementing the improved version of the Font Picker.
+
+- And thank you, dear user, for using WriterClassic! <3"""
+
+# [!?] Disabling annoying Pylint stuff (specially stupid conventions)
+
+# [*] Everything related to general exceptions (catching them and raising them)
+# pylint: disable=W0718
+# pylint: disable=W0719
+
+# [*] Module 'PIL.Image' has no 'LANCZOS' member (hint: it does)
+# pylint: disable=E1101
+
+# [*] Redefining from outer scope
+# pylint: disable=W0621
+
+# [*] Global statement, exec and eval
+# pylint: disable=W0603
+# pylint: disable=W0122
+# pylint: disable=W0123
+
+# [*] Bad indentation nonsense
+# pylint: disable=W0311
+
+# [*] String statement doesn't have any effect
+# pylint: disable=W0105
 
 # [*] Get the absolute path of the script
 script_path = os.path.abspath(__file__)
@@ -255,84 +273,69 @@ LOG = Logger(os.path.join(user_data, "log.wclassic"))
 
 LOG.action("WriterClassic was executed")
 
-mixer = None
-ic = None
-Image = None
-ImageTk = None
-tkfontchooser = None
-pyclip = None
-markdown2 = None
-simple_webbrowser = None
-get = None
-exceptions = None
-
-try:
-    # [*] Imports down here
-    # [*] Time to organize this tho
-
-    from pygame import mixer # [i] Playing the sucessful sound
-
-    from icecream import ic # [i] Used for debugging
-
-    from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
-
-    import tkfontchooser # [i] used for the new Font picker
-
-    import pyperclip as pyclip # [i] used for the clipboard options
-
-    import markdown2 # [i] Used to make HTML files from Markdown
-
-    import simple_webbrowser # [i] My own Python module (used for the Search with... options)
-    from requests import get, exceptions # [i] Used for regular interactions with the Internet
-
-except (ModuleNotFoundError, ImportError) as e:
-    LOG.write(f"{str(now())} - A required module has not been found in the device: ERROR - {e}\n")
-    LOG.write(f"{str(now())} - Proceeding with the installation of the dependencies: AWAITING\n")
-
-    _command: str = f"pip install --upgrade -r \"{os.path.join(script_dir, 'requirements.txt')}\""
-
-    if sys.platform == "win32":
-        _command: str = f"{sys.executable} -m pip install --upgrade -r \"{os.path.join(script_dir, 'requirements.txt')}\""
-
-    try:
-        os.system(_command)
-
-    except Exception as e:
-        LOG.write(f"{str(now())} - Something went wrong: ABORTING - {e}\n")
-        sys.exit()
-
-    else:
-        LOG.write(f"{str(now())} - Installation completed: LOADING THE GUI\n")
-
-    # [*] repeating the imports, Goddamn it!
-
-    if mixer is None:
-        from pygame import mixer # [i] Playing the sucessful sound
-
-    if ic is None:
-        from icecream import ic # [i] Used for debugging
-
-    if Image is None or ImageTk is None:
-        from PIL import Image, ImageTk # [i] Used for placing the WriterClassic logo on the screen
-
-    if tkfontchooser is None:
-        import tkfontchooser # [i] used for the new Font picker
-
-    if pyclip is None:
-        import pyperclip as pyclip # [i] used for the clipboard options
-
-    if markdown2 is None:
-        import markdown2 # [i] Used to make HTML files from Markdown
-
-    if simple_webbrowser is None:
-        import simple_webbrowser # [i] My own Python module (used for the Search with... options)
-
-    if get is None or exceptions is None:
-        from requests import get, exceptions # [i] Used for regular interactions with the Internet
-
 tracemalloc.start()
 
 ic.configureOutput(prefix="ic debug statement | -> ")
+
+
+def showerror(title: str | None = None, message: str | None = None, **options) -> str:
+    """
+    showerror works just like tkinter.messagebox.showerror() but saves the information to the WriterClassic log file
+
+    Args:
+        title (str | None, optional): the title of the messagebox. Defaults to None.
+        message (str | None, optional): the contents of the messagebox. Defaults to None.
+
+    Returns:
+        str: value returned by `tkinter.messagebox.showerror(title, message, **options)`
+    """
+    
+    s = mb.showerror(title, message, **options)
+    
+    if title is not None and message is not None:
+        LOG.error(message.split('\n')[-1], title.strip())
+        
+    return s
+
+
+def showwarning(title: str | None = None, message: str | None = None, **options) -> str:
+    """
+    showwarning works just like tkinter.messagebox.showwarning() but saves the information to the WriterClassic log file
+
+    Args:
+        title (str | None, optional): the title of the messagebox. Defaults to None.
+        message (str | None, optional): the contents of the messagebox. Defaults to None.
+
+    Returns:
+        str: value returned by `tkinter.messagebox.showwarning(title, message, **options)`
+    """
+    
+    s = mb.showwarning(title, message, **options)
+    
+    if title is not None and message is not None:
+        LOG.warning(message.split('\n')[-1], title.strip())
+        
+    return s
+
+
+def showinfo(title: str | None = None, message: str | None = None, **options) -> str:
+    """
+    showinfo works just like tkinter.messagebox.showinfo() but saves the information to the WriterClassic log file
+
+    Args:
+        title (str | None, optional): the title of the messagebox. Defaults to None.
+        message (str | None, optional): the contents of the messagebox. Defaults to None.
+
+    Returns:
+        str: value returned by `tkinter.messagebox.showinfo(title, message, **options)`
+    """
+    
+    s = mb.showinfo(title, message, **options)
+    
+    if title is not None and message is not None:
+        LOG.action(message.split('\n')[-1], f"- MESSAGEBOX => {title.strip()}")
+        
+    return s
 
 
 def asklink(title: str, prompt: str, encoding: str | None = 'utf-8', require_https: bool = False, initialvalue: str | None = None, show: str | None = None, warning_message: str | None = None):
@@ -343,7 +346,7 @@ def asklink(title: str, prompt: str, encoding: str | None = 'utf-8', require_htt
 
     if require_https:
         while not link.lstrip().startswith('https://'):
-            mb.showwarning(title, warning_message)
+            showwarning(title, warning_message)
             link: str = sdg.askstring(title, prompt, initialvalue=link, show=show)
 
     return simple_webbrowser.LinkString(link.rstrip(), encoding)
@@ -482,7 +485,7 @@ if startApp == '1':
         LOG.write(f"{str(now())} - Got the latest release's tag: OK\n")
 
     except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout):
-        mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
+        showerror(lang[148], f"{lang[135]}\n{lang[136]}")
         LOG.write(f"{str(now())} - Connected to GitHub: ERROR\n")
         LOG.write(f"{str(now())} - Connection has timed out, is restricted or is simply unavailable: INFO\n")
         ignore_checking = True
@@ -765,7 +768,7 @@ def fast_dump(*_):
 fast_dump()
 
 # [i] Windowing... again
-if current_file == False:
+if current_file is False:
     desktop_win.title(lang[1])
 
 LOG.write(f"{str(now())} - Window's title was set to WriterClassic: OK\n")
@@ -778,7 +781,7 @@ try:
     LOG.write(f"{str(now())} - Font family/type is {str(settings['font']['size'])}: OK\n")
 
 except TclError:
-    mb.showerror(lang[149], f"{lang[144]}\n{lang[145]}\n{lang[146]}")
+    showerror(lang[149], f"{lang[144]}\n{lang[145]}\n{lang[146]}")
     LOG.write(f"{str(now())} - Font size is set to 14 because of a font error: OK\n")
 
     config_font = Font(family="Segoe UI", size=12, slant='roman', weight='normal', underline=False, overstrike=False)
@@ -811,7 +814,7 @@ except TclError:
     geom_values = [700, 500]
     LOG.write(f"{str(now())} - Applied the window's dimensions: ERROR\n")
     LOG.write(f"{str(now())} - Reverted to 700x500: OK\n")
-    mb.showerror(lang[166], f"{lang[167]}\n{lang[168]}")
+    showerror(lang[166], f"{lang[167]}\n{lang[168]}")
 
 try:
     text_widget.configure(background=theme["color"], foreground=theme["fg"], width=int(geom_values[0]), height=int(geom_values[1]), insertbackground=theme["ct"], font=config_font)
@@ -819,7 +822,7 @@ try:
 
 except TclError:
     LOG.write(f"{str(now())} - Applied configurations to the editing interface: ERROR\n")
-    mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
+    showerror(lang[150], f"{lang[151]}\n{lang[152]}")
     text_widget.configure(background="black", foreground="white", width=int(geom_values[0]), height=int(geom_values[1]), insertbackground="white", font=config_font)
     LOG.write(f"{str(now())} - Reconfigured the editing interface: OK\n")
 
@@ -837,7 +840,7 @@ try:
 except TclError:
     if sys.platform == "linux":
         LOG.write(f"{str(now())} - Applied the theme to the menu bar: ERROR\n")
-        mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
+        showerror(lang[150], f"{lang[151]}\n{lang[152]}")
         menu_bar.configure(background="white", foreground="black")
         LOG.write(f"{str(now())} - Applied the light theme to the menu bar as last resource: OK\n")
 
@@ -956,7 +959,7 @@ class WScript:
         if os.path.basename(location) == "EightBall.wscript":
             self.script = """_prompts = ['Yes!', "Don't think so...", "Doubtly.", "Absolutely.", "Nope.", "Not happening.", "WriterClassic is a good text editor!", "MF366 is cool.", "Of course!"]
 
-mb.showinfo(f"{lang[1]} - Eight Ball", random.choice(_prompts))
+showinfo(f"{lang[1]} - Eight Ball", random.choice(_prompts))
 """
             return
 
@@ -1026,7 +1029,7 @@ class GlobalRestorePoint:
         self.__globals: dict[str, Any] = globals().copy()
 
     def __repr__(self) -> str:
-        s: str = f"== {self.__name__} ==\n"
+        s: str = "== GlobalRestorePoint ==\n"
 
         for key, value in self.status.items():
             s += f"{key}: {value}\n"
@@ -1074,7 +1077,7 @@ class UpdateCheck:
         check_startup checks for updates on startup only
         """
 
-        if self.app_version != self.latest and self.ignore_checks == False:
+        if self.app_version != self.latest and self.ignore_checks is False:
             askForUpdate = mb.askyesno(lang[72], lang[73])
             LOG.write(f"{str(now())} - Versions don't match: WARNING\n")
 
@@ -1082,7 +1085,7 @@ class UpdateCheck:
                 simple_webbrowser.website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
                 LOG.write(f"{str(now())} - Went to the latest release at GitHub: OK\n")
 
-        elif self.ignore_checks == True:
+        elif self.ignore_checks:
             LOG.write(f"{str(now())} - Couldn't check for updates on startup: WARNING\n")
             return
 
@@ -1099,11 +1102,11 @@ class UpdateCheck:
                 simple_webbrowser.website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
 
         elif self.app_version == self.latest and self.ignore_checks is False:
-            mb.showinfo(title=lang[93], message=lang[92])
+            showinfo(title=lang[93], message=lang[92])
             LOG.write(f"{str(now())} - Versions match | WriterClassic is up to date: OK\n")
 
         else:
-            mb.showerror(lang[148], f"{lang[135]}\n{lang[136]}")
+            showerror(lang[148], f"{lang[135]}\n{lang[136]}")
             LOG.write(f"{str(now())} - Couldn't check for updates (Bad Internet, Connection Timeout, Restricted Internet): WARNING\n")
 
     def change_setting(self):
@@ -1111,7 +1114,7 @@ class UpdateCheck:
         change_setting swaps the current value of the startup setting
         """
         writeStartup(bool(update_check_button.get()))
-        mb.showinfo(title=lang[1], message=lang[101])
+        showinfo(title=lang[1], message=lang[101])
         LOG.write(f"{str(now())} - Check for updates on startup setting has been changed: OK\n")
 
 
@@ -1119,24 +1122,10 @@ update_check = UpdateCheck()
 
 if startApp == '1':
     update_check.check_startup()
-    LOG.write(f"{str(now())} - Checked for updates on startup: AWAITING REPLY\n")
-
-# [*] Auto WSCRIPTs
-if os.path.exists(os.path.join(scripts_dir, "auto.wscript")):
-    auto_script = WScript()
-    auto_script.loadpath(os.path.join(scripts_dir, "auto.wscript"))
-
-    _run_auto = mb.askyesno(lang[1], f"{lang[289]}\n{lang[290]}\n{lang[291]}")
-
-    if _run_auto:
-        try:
-            auto_script.run()
-
-        except Exception as e:
-            mb.showerror(lang[133], f"{lang[134]}\n{e}")
+    LOG.write(text=f"{str(now())} - Checked for updates on startup: AWAITING REPLY\n")
 
 
-def set_window_size(root: Tk = desktop_win, **_):
+def set_window_size(root: Tk = desktop_win, **_) -> None:
     """
     set_window_size creates a GUI in order to change the dimensions of the window
 
@@ -1151,7 +1140,7 @@ def set_window_size(root: Tk = desktop_win, **_):
             e2 = int(params[1].get())
 
         except TypeError as e:
-            mb.showerror(lang[147], f"{lang[133]}\n{lang[134]}\n{e}")
+            showerror(lang[147], f"{lang[133]}\n{lang[134]}\n{e}")
             params[2].destroy()
             return False
 
@@ -1165,13 +1154,13 @@ def set_window_size(root: Tk = desktop_win, **_):
         return True
 
     geometry_set = Toplevel()
-    geometry_set.title(f"{lang[1]} - {lang[12]}")
-    geometry_set.resizable(False, False)
+    geometry_set.title(string=f"{lang[1]} - {lang[12]}")
+    geometry_set.resizable(width=False, height=False)
 
     if sys.platform == 'win32':
-        geometry_set.iconbitmap(os.path.join(data_dir, 'app_icon.ico'))
+        geometry_set.iconbitmap(bitmap=os.path.join(data_dir, 'app_icon.ico'))
 
-    frame0 = Frame(geometry_set)
+    frame0 = Frame(master=geometry_set)
     frame1 = Frame(frame0)
     frame2 = Frame(frame0)
 
@@ -1246,7 +1235,7 @@ def evaluate_expression(start: str | float | None = None, end: str | float | Non
     EVALUATED_EXP = eval(exp, mathematics)
 
     # [*] 1st Priority
-    if type(EVALUATED_EXP) == bool:
+    if isinstance(EVALUATED_EXP, bool):
         eval_exp = EVALUATED_EXP
 
     # [*] 2nd Priority
@@ -1281,7 +1270,7 @@ def set_theme(**kw):
     """
     set_theme sets a new theme
 
-    XXX Pretty complex function, requires a lot of attention when using. XXX
+    NOTE: Pretty complex function, requires a lot of attention when using.
 
     Possible args:
         bg: the background color
@@ -1336,7 +1325,7 @@ def set_theme(**kw):
             logger.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
         except (TypeError, ValueError, TclError):
-            mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
+            showerror(lang[150], f"{lang[151]}\n{lang[152]}")
 
             for menu in menus:
                 menu.configure(background=mbg, foreground=mfg)
@@ -1352,8 +1341,6 @@ def set_theme(**kw):
 def quickway():
     """
     quickway instantly quits the app without any confirmation
-
-    XXX Not recommended at all! XXX
     """
 
     LOG.write(f"{str(now())} - End of session: QUIT\n")
@@ -1420,7 +1407,7 @@ def document_status(widget: WriterClassicEditor = text_widget):
     - No of lines
     """
 
-    mb.showinfo(lang[164], f"{lang[165]}: {widget.num_lines - 1}")
+    showinfo(lang[164], f"{lang[165]}: {widget.num_lines - 1}")
 
 
 # [i] Repo
@@ -1455,19 +1442,19 @@ class BackupSystem:
 
         with zipper.ZipFile(os.path.join(root_path, f"Backup_WriterClassic_{datetime.datetime.now().day}-{datetime.datetime.now().month}-{datetime.datetime.now().year}.zip"), 'w') as zip_file:
             for folder_path in self._folder_paths:
-                arcname = os.path.basename(folder_path)
+                arcname: str = os.path.basename(folder_path)
 
-                zip_file.write(folder_path, arcname=arcname)
+                zip_file.write(filename=folder_path, arcname=arcname)
 
                 for filename in os.listdir(folder_path):
-                    file_path = os.path.join(folder_path, filename)
+                    file_path: str = os.path.join(folder_path, filename)
 
-                    if os.path.isfile(file_path):
-                        zip_file.write(file_path, arcname=os.path.join(arcname, filename))
+                    if os.path.isfile(path=file_path):
+                        zip_file.write(filename=file_path, arcname=os.path.join(arcname, filename))
 
             zip_file.close()
 
-    def _extract_files(self, file_path: str):
+    def _extract_files(self, file_path: str) -> None:
         """
         _extract_files extracts the backup to the location where WriterClassic is stored
 
@@ -1479,16 +1466,20 @@ class BackupSystem:
             for path_to_remove in self._folder_paths:
                 try:
                     if sys.platform == "win32":
-                        os.system(f'rmdir /s /q {path_to_remove}')
+                        os.system(command=f'rmdir /s /q {path_to_remove}')
 
                     else:
                         os.system(f'rm -rf {path_to_remove}')
+                        
+                except FileNotFoundError as e:
+                    LOG.error(text="File/directory missing while trying to extract the backup", error_details=str(object=e))
+                    raise Exception from e # [i] it will be caught by the statement below
 
                 except Exception:
-                    mb.showerror(lang[1], lang[322])
+                    showerror(title=lang[1], message=lang[322])
                     continue
 
-            zip_file.extractall(self._main_dir)
+            zip_file.extractall(path=self._main_dir)
 
 
     def run_action(self, _type: Literal["zip", "extract", "make", "load", "create", "restore", "unzip"], root_win: Tk | Toplevel = desktop_win):
@@ -1514,13 +1505,13 @@ class BackupSystem:
             file_path = dlg.asksaveasfilename(parent=root_win, filetypes=[(lang[318], '*.zip')], defaultextension="*.*", initialfile="Load a Backup", confirmoverwrite=False, title=lang[317])
 
             if not file_path.lower().endswith(".zip") or not os.path.exists(file_path):
-                mb.showerror(lang[1], lang[319])
+                showerror(lang[1], lang[319])
                 return
 
             self._extract_files(file_path)
 
         else:
-            mb.showerror(lang[1], lang[319])
+            showerror(lang[1], lang[319])
 
 
 def recent_files(**kw):
@@ -1558,7 +1549,7 @@ def recent_files(**kw):
             open_file_manually(aux[lb.index(lb.curselection())], root)
 
         except TclError:
-            mb.showwarning(exps[1], exps[357])
+            showwarning(exps[1], exps[357])
 
         else:
             win.destroy()
@@ -1570,7 +1561,7 @@ def recent_files(**kw):
     recents: Stack = kw.get('recents', recent_stack).copy()
 
     if recents.is_empty:
-        mb.showinfo(exps[1], exps[356])
+        showinfo(exps[1], exps[356])
         return
 
     w = Toplevel(root)
@@ -1598,6 +1589,12 @@ def recent_files(**kw):
 
 
 class Snippets:
+    """
+    Work with snippets for WriterClassic.
+
+    Useful methods to make this feature extremely moddable.
+    """
+
     def __init__(self, name: str) -> None:
         """
         __init__ is the initializer for the Snippets
@@ -1607,7 +1604,7 @@ class Snippets:
         """
 
         self.name: str = name
-        self._snippets = {}
+        self._snippets: dict[str, (str, str, str)] = {}
         self.__taken_names = []
 
     def register(self, name: str, value: str, _lang: str, desc: str | None = None):
@@ -1638,12 +1635,14 @@ class Snippets:
         """
         Internal function.
         """
+
         self._snippets[_name] = _snippet_data
 
     def _return_snippet(self, _name: str) -> tuple[str, str, str]:
         """
         Internal function.
         """
+
         return self._snippets[_name]
 
     def get_index(self, name: str) -> int:
@@ -1695,6 +1694,21 @@ class Snippets:
         return (name, __snippet_data[0], __snippet_data[1], __snippet_data[2])
 
     def remove_snippet(self, name: str):
+        """
+        remove_snippet is pretty straight-forward:
+
+        If the given snippet name exists, remove the snippet associated with it.
+
+        Args:
+            name (str): snippet to remove
+
+        Raises:
+            InvalidSnippet: the snippet you wish to remove doesn't exists
+
+        Returns:
+            tuple[str, str, str]: the removed snippet's data
+        """
+
         if name not in self._snippets:
             raise InvalidSnippet(f"snippet {name} doesn't exist")
 
@@ -1704,6 +1718,13 @@ class Snippets:
         return self.name
 
     def get_taken_names(self) -> list[str]:
+        """
+        get_taken_names returns the list of the names that are taken
+
+        Returns:
+            list[str]
+        """
+
         return self.__taken_names[:]
 
     def __len__(self) -> int:
@@ -1946,16 +1967,16 @@ def stem_only(__s: str) -> str:
         str: the stem part of the filename
     """
 
-    l = __s.split('.')
+    generated_list: list[str] = __s.split('.')
 
-    j = [l[i] for i in range(len(l) - 2)]
+    modified_list: list[str] = [generated_list[i] for i in range(len(generated_list) - 2)]
 
-    a = '.'.join(j)
+    stem_part: str = '.'.join(modified_list)
 
-    return a
+    return stem_part
 
 
-def open_file_manually(file_path: str, root_win: Tk = desktop_win):
+def open_file_manually(file_path: str, root_win: Tk = desktop_win) -> None:
     """
     OpenFile opens a file selected from the following interface
 
@@ -1984,7 +2005,7 @@ def open_file_manually(file_path: str, root_win: Tk = desktop_win):
         file_input.close()
 
     except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
-        mb.showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
+        showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
         run_default = mb.askyesno(title=lang[187], message=lang[189])
         if run_default:
             os.system(str(file_path))
@@ -2058,7 +2079,7 @@ def save_as_file(root_win: Tk = desktop_win):
     file.write(str(data.rstrip('\n')) + '\n')
     cur_data = data
     file.close()
-    mb.showinfo(lang[1], lang[101])
+    showinfo(lang[1], lang[101])
     root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
 
     LOG.write(f"{str(now())} - A file has been saved as {str(file_path)}: OK\n")
@@ -2101,7 +2122,7 @@ def save_file(root_win: Tk = desktop_win):
     file.write(str(data.rstrip('\n')) + '\n') # [i] save the document with 1 newline in the end
     cur_data = data
     file.close()
-    mb.showinfo(lang[1], lang[101])
+    showinfo(lang[1], lang[101])
     root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
 
     current_file = str(file_path)
@@ -2132,7 +2153,7 @@ def wipe_file(root_win: Tk = desktop_win):
 
         file_input = open(file_path, "wt", encoding="utf-8")
         file_input.write('')
-        mb.showinfo(title=lang[1], message=lang[101])
+        showinfo(title=lang[1], message=lang[101])
 
         LOG.write(f"{str(now())} - A file has been wiped at {str(file_path)}: OK\n")
         file_input.close()
@@ -2232,7 +2253,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
     prog_lang = prog_lang.strip()
 
     if current_file is False:
-        mb.showerror(lang[1], lang[239])
+        showerror(lang[1], lang[239])
         return
 
     match mode:
@@ -2240,7 +2261,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
             match prog_lang.lower():
                 case "c#":
                     if not current_file.strip().endswith(("cs", "csproj")):
-                        mb.showerror(lang[1], lang[284])
+                        showerror(lang[1], lang[284])
                         return
 
                     os.system(f"dotnet build \"{os.path.dirname(current_file)}\"")
@@ -2253,7 +2274,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
             match prog_lang.lower():
                 case "c#":
                     if not current_file.strip().endswith((".cs", ".csproj")):
-                        mb.showerror(lang[1], lang[284])
+                        showerror(lang[1], lang[284])
                         return
 
                     os.system(f"dotnet run --project \"{os.path.dirname(current_file)}\"")
@@ -2261,7 +2282,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
 
                 case "python":
                     if not current_file.strip().endswith('.py'):
-                        mb.showerror(lang[1], lang[284])
+                        showerror(lang[1], lang[284])
                         return
 
                     if sys.platform == "win32":
@@ -2318,7 +2339,7 @@ X-KDE-Username=
 
     with open(f"{script_dir}/WriterClassic.desktop", mode="w", encoding='utf-8') as desktop_file:
         desktop_file.write(desktop_entry)
-        mb.showinfo(lang[1], lang[101])
+        showinfo(lang[1], lang[101])
         desktop_file.close()
 
     ic(desktop_entry)
@@ -2347,7 +2368,7 @@ def desktop_create_win():
 # [i] Credits
 
 def app_credits():
-    mb.showinfo(title=lang[28], message=CREDITS)
+    showinfo(title=lang[28], message=CREDITS)
     LOG.write(f"{str(now())} - The Credits have been shown: OK\n")
 
 
@@ -2359,7 +2380,7 @@ def surprise_egg():
         return None
 
     else:
-        mb.showerror(lang[29], lang[67])
+        showerror(lang[29], lang[67])
         ic()
 
 # [i] The Help section
@@ -2443,11 +2464,11 @@ def search_replace():
 
 def markdown_preview() -> None:
     if not current_file:
-        mb.showerror(lang[1], lang[221])
+        showerror(lang[1], lang[221])
         return
 
     if not current_file.lower().endswith((".md", ".mdown", ".mkd", ".mkdn")):
-        mb.showerror(lang[1], lang[222])
+        showerror(lang[1], lang[222])
         return
 
     temp_html_path = os.path.join(temp_dir, f"{random.randint(1, 1000)}_{os.path.basename(current_file).replace(' ', '_')}.html")
@@ -2474,7 +2495,7 @@ def tips_tricks():
 
     ic(picked_text)
 
-    mb.showinfo(lang[1], picked_text)
+    showinfo(lang[1], picked_text)
     LOG.write(f"{str(now())} - Requested Tips & Tricks: OK\n")
 
     ic()
@@ -2574,10 +2595,10 @@ class InternetOnWriter:
         self.AUTORAISE = autoraise
 
     def goto_website(self, new: Literal[0, 1, 2] = 0):
-        website_url = asklink(lang[80], lang[91], require_https=True)
+        website_url = asklink(lang[80], lang[91], require_https=True).link
 
-        if str(website_url.link):
-            simple_webbrowser.website(website_url.link, new, self.AUTORAISE)
+        if website_url:
+            simple_webbrowser.website(website_url, new, self.AUTORAISE)
             LOG.write(f"{str(now())} - Went to {str(website_url)} via WriterClassic: OK\n")
 
         ic()
@@ -2712,14 +2733,6 @@ class Plugin:
 
         self.ROOT_DIR = kw.get('root_name', 'Verified_Plugins')
         self.FOLDER_URL = folder_name
-        # --
-        self.DETAILS_FILE = None
-        self.DETAILS_CONTENT = None
-        self.MAIN_CONTENT = None
-        self.MAIN_FILE = None
-        self.ICON_FILE = None
-        self.ICON = None
-
 
     def obtain_files(self, mode: Literal['manifest', 'versioning'] = 'manifest') -> None:
         """
@@ -2832,7 +2845,7 @@ class Plugin:
                 with open(os.path.join(new_folder_path, f"{name.strip()}.py"), 'w', encoding='utf-8') as f:
                     f.write(response.text)
 
-                response = get(imagefile, stream=True)
+                response = get(imagefile, stream=True, timeout=2)
                 response.raise_for_status()
 
                 with open(os.path.join(new_folder_path, 'WriterPlugin.png'), 'wb') as file:
@@ -2840,21 +2853,24 @@ class Plugin:
                         file.write(chunk)
 
         except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout):
-            mb.showerror(lang[148], lang[135])
+            showerror(lang[148], lang[135])
 
         except VersionError:
-            mb.showerror(lang[1], lang[358])
-
-        except (Exception, ValueError):
-            mb.showerror(lang[133], lang[134])
+            showerror(lang[1], lang[358])
+            
+        except ValueError as e:
+            LOG.error("Invalid version or missing Python file while attempting to download a plugin using a MANIFEST", str(e))
+            raise Exception from e
+            
+        except Exception as e:
+            showerror(lang[133], f"{lang[134]}\n{e}")
 
     _get_files = _get_files_by_manifest
-
+    
+    @deprecated('since the addition of manifests, using version files isn\'t recommended and is planned for removal in v10.9.0')
     def _get_files_by_version(self) -> None:
         """
-        Internal function.
-
-        XXX This might get deprecated sooner than you think!
+        Deprecated internal function.
         """
 
         try:
@@ -2873,11 +2889,11 @@ class Plugin:
             # [i] Send a GET request to download the zip file
             zip_response = get(zip_url, timeout=3)
 
-        except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout):
-            mb.showerror(lang[148], {lang[135]})
+        except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout) as e:
+            showerror(lang[148], f"{lang[135]}\n{e}")
 
         except Exception:
-            mb.showerror(lang[133], lang[134])
+            showerror(lang[133], lang[134])
 
         else:
             parent_directory = plugin_dir
@@ -2981,9 +2997,13 @@ def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: i
                 return
 
             os.system(f'rm -rf {path_to_remove}')
-
+        
+        except FileNotFoundError as e:
+            LOG.error(text="File/directory missing while trying to extract the backup", error_details=str(object=e))
+            raise Exception from e # [i] it will be caught by the statement below
+        
         except Exception as e:
-            mb.showerror(lang[308], f"{lang[309]} '{path_to_remove}':\n{e}")
+            showerror(lang[308], f"{lang[309]} '{path_to_remove}':\n{e}")
 
 
 def execute(datay: int | str):
@@ -3007,9 +3027,9 @@ def remove_plugin():
             return
 
         os.system(f'rm -rf {os.path.join(plugin_dir, f"plugin_{datax}")}')
-
+    
     except Exception as e:
-        mb.showerror(lang[311], f"{lang[309]} '{os.path.join(plugin_dir, f'plugin_{datax}')}':\n{e}")
+        showerror(lang[311], f"{lang[309]} '{os.path.join(plugin_dir, f'plugin_{datax}')}':\n{e}")
 
 
 def run_plugin():
@@ -3275,7 +3295,7 @@ def command_menu() -> None | bool:
         if a.strip() in (None, ''):
             return
 
-        mb.showerror(lang[68], lang[70])
+        showerror(lang[68], lang[70])
         return
 
     if sys.platform == "win32":
@@ -3438,7 +3458,7 @@ def close_confirm() -> None:
     if not has_been_modified():
         choice = mb.askyesnocancel(lang[53], f"{lang[199]}\n{lang[200]}")
 
-        if choice == None:
+        if choice is None:
             ic()
             return None
 
@@ -3455,11 +3475,12 @@ def close_confirm() -> None:
 
 # [!] Deprecated way to call the closing of a window
 # [!?] Please use to close_confirm instead
+@deprecated("quickway has been deprecated since v10.2.0 and is planned for removal in v10.8.0")
 def on_closing():
     """
     on_closing asks for the user's confirmation before closing
-
-    XXX This function is deprecated because `close_confirm` offers a better way to handle this situation
+    
+    NOTE: Deprecated in favor of close_confirm
     """
 
     ic()
@@ -3702,7 +3723,7 @@ def adv_change():
     ic(settings["advanced-mode"])
     fast_dump()
 
-    mb.showinfo(message=lang[63], title=lang[1])
+    showinfo(message=lang[63], title=lang[1])
 
 
 menu_12.add_separator()
@@ -3719,7 +3740,7 @@ def show_debug():
     ic(settings["debugging"])
     fast_dump()
 
-    mb.showinfo(message=lang[63], title=lang[1])
+    showinfo(message=lang[63], title=lang[1])
 
 
 def dencrypt():
@@ -3728,11 +3749,11 @@ def dencrypt():
         fast_dump()
 
         if not current_file:
-            mb.showinfo(lang[1], lang[239])
+            showinfo(lang[1], lang[239])
 
         else:
             os.system(f'"{pathx}" "{current_file}" {parameters}')
-            mb.showinfo(lang[1], lang[275])
+            showinfo(lang[1], lang[275])
 
     new = Toplevel(desktop_win)
     if sys.platform == "win32":
@@ -3861,7 +3882,7 @@ def open_with_adv():
 
     def action_1():
         if not current_file:
-            mb.showinfo(lang[1], lang[239])
+            showinfo(lang[1], lang[239])
         else:
             os.system(f'"{str(current_file)}"')
 
@@ -3869,7 +3890,7 @@ def open_with_adv():
 
     def action_2(requested_entry):
         if not current_file:
-            mb.showinfo(lang[1], lang[239])
+            showinfo(lang[1], lang[239])
         else:
             if " " in requested_entry:
                 os.system(f'"{requested_entry}" "{str(current_file)}"')
@@ -3915,16 +3936,21 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
         message['To'] = recipient_email
         message['Subject'] = subject
         message.attach(MIMEText(body, 'plain'))
+        
         with open(current_file, "r", encoding="utf-8") as attachment:
             part = MIMEBase('application', 'octet-stream')
             part.set_payload(attachment.read())
             encoders.encode_base64(part)
             part.add_header('Content-Disposition', f"attachment; filename= {os.path.basename(current_file)}")
             message.attach(part)
+        
         server.sendmail(sender_email, recipient_email, message.as_string())
 
-    except Exception:
-        mb.showerror(lang[1], f"{lang[247]}\n{lang[248]}")
+    except (ConnectionError, TimeoutError) as e:
+        showerror(lang[133], f"{lang[134]}\n{e}")
+    
+    except Exception as e:
+        showerror(lang[1], f"{lang[247]}\n{lang[248]}\n{e}")
 
     server.quit()
 
@@ -3933,11 +3959,8 @@ def message_write(mail: str, pwd: str, _variable, win):
     win.destroy()
 
     if _variable == '1':
-        try:
-            settings["email"] = str(mail)
-            fast_dump()
-        except Exception:
-            pass
+        settings["email"] = mail
+        fast_dump()
 
     # [*] Window Creation
     window = Toplevel(desktop_win)
@@ -3982,7 +4005,7 @@ def message_write(mail: str, pwd: str, _variable, win):
 def adv_login():
     # [*] Window Creation
     if not current_file:
-        mb.showerror(lang[1], lang[239])
+        showerror(lang[1], lang[239])
         return
 
     window = Toplevel(desktop_win)
@@ -4023,7 +4046,7 @@ def adv_login():
 
 
 def show_advanced_version():
-    mb.showinfo(lang[1], f"{lang[230]} {ADVANCED_VERSION}.")
+    showinfo(lang[1], f"{lang[230]} {ADVANCED_VERSION}.")
     ic(ADVANCED_VERSION)
 
 
@@ -4058,7 +4081,7 @@ if sys.platform == "linux":
         LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
     except TclError:
-        mb.showerror(lang[150], f"{lang[151]}\n{lang[152]}")
+        showerror(lang[150], f"{lang[151]}\n{lang[152]}")
         menu_10.configure(background="white", foreground="black")
         menu_11.configure(background="white", foreground="black")
         menu_1.configure(background="white", foreground="black")
@@ -4155,11 +4178,26 @@ if len(sys.argv) > 1:
 
 else:
     if last_file:
-        open_file_manually(last_file)
+        open_file_manually(file_path=last_file)
 
 grp: GlobalRestorePoint = GlobalRestorePoint()
 
-# [!] EXPERIMENTAL FEATURE
+# [*] Auto WSCRIPTs
+if os.path.exists(path=os.path.join(scripts_dir, "auto.wscript")):
+    auto_script = WScript()
+    auto_script.loadpath(location=os.path.join(scripts_dir, "auto.wscript"))
+
+    _run_auto: bool = mb.askyesno(title=lang[1], message=f"{lang[289]}\n{lang[290]}\n{lang[291]}")
+
+    if _run_auto:
+        try:
+            auto_script.run()
+        
+        # [*] in this case, a general Exception is used because any type of error can happen    
+        
+        except Exception as e:
+            showerror(lang[133], f"{lang[134]}\n{e}")
+
 # [*] You can use the following syntax when running WriterClassic:
 # [*] name [filepath] [debugscript]
 # [*] name is the filepath of WriterClassic
@@ -4170,13 +4208,13 @@ grp: GlobalRestorePoint = GlobalRestorePoint()
 # [*] used mostly for debugging I guess
 if len(sys.argv) > 2:
     startup_script: WScript = WScript()
-    startup_script.loadpath(os.path.abspath(sys.argv[2]))
+    startup_script.loadpath(location=os.path.abspath(path=sys.argv[2]))
 
-    startup_script.run('write')
+    startup_script.run(scope='write')
 
     ic(globals().copy())
 
-desktop_win.protocol("WM_DELETE_WINDOW", close_confirm)
+desktop_win.protocol(name="WM_DELETE_WINDOW", func=close_confirm)
 
 # [*] And done!
 # [i] Now, it will continuously mainlooping! Enjoy!
