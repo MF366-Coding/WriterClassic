@@ -136,6 +136,9 @@ class SearchReplace(Toplevel):
     def initiate_setup(self, widget: Toplevel | Misc):
         self._F1 = Frame(widget)
         self._F2 = Frame(widget)
+        self._F3 = Frame(widget)
+        self._F4 = Frame(widget)
+        self._B3 = Button(widget, text='Mark all matches', command=self._mark_matches)
 
         self._L1 = Label(self._F1, text=self.lang[346].strip() + ' ')
         self._E1 = Entry(self._F1)
@@ -143,10 +146,17 @@ class SearchReplace(Toplevel):
             self._find('prev'))
         self._NEXTBUTT = Button(self._F1, text=chr(9660), command=lambda:
             self._find('next'))
-
+        
         self._CASING = IntVar(widget, value=0)
+        
+        self._C1 = Checkbutton(self._F2, text=self.lang[347], variable=self._CASING)
 
-        self._C2 = Checkbutton(self._F2, text=self.lang[347], variable=self._CASING)
+        self._E2 = Entry(self._F3)
+
+        self._B1 = Button(self._F4, text='Replace', command=lambda:
+            self._replace_next(self.replacewith))
+        self._B2 = Button(self._F4, text='Replace All', command=lambda:
+            self._replace_all(self.replacewith))
 
         # [*] Frame 1 content
         self._L1.grid(column=0, row=0)
@@ -155,11 +165,21 @@ class SearchReplace(Toplevel):
         self._NEXTBUTT.grid(column=3, row=0)
 
         # [*] Frame 2 content
-        self._C2.pack()
+        self._C1.pack()
+
+        # [*] Frame 3 content
+        self._E2.grid(column=1, row=0)
+
+        # [*] Frame 4 content
+        self._B1.grid(column=0, row=0)
+        self._B2.grid(column=1, row=0)
 
         # [*] super() / window content
         self._F1.pack()
         self._F2.pack()
+        self._F3.pack()
+        self._F4.pack()
+        self._B3.pack()
 
     def _find(self, direction: Literal['prev', 'next']):
         self.editor.tag_remove(SEL, 0.0, END)
@@ -184,7 +204,15 @@ class SearchReplace(Toplevel):
         self.editor.see(INSERT)
 
     def __n(self, ind: str | float = INSERT) -> tuple[str | None, str | None]:
-        first_index = self.editor.search(self.pattern, ind, END, True, False, False, self.regexp, self.nocasing)
+        if not self.pattern:
+            mb.showwarning(self.lang[1], "Cannot mark occurences of an empty pattern in the editor!")
+            return None, None
+        
+        use_regexp = self.regexp
+        use_exact_sentences = False if self.regexp is True else True
+        pattern = self.pattern  
+        
+        first_index = self.editor.search(pattern, ind, END, True, False, use_exact_sentences, use_regexp, self.nocasing)
 
         if not first_index:
             mb.showwarning(self.lang[1], self.lang[349])
@@ -202,7 +230,15 @@ class SearchReplace(Toplevel):
         return first_index, last_index
 
     def __p(self) -> tuple[str | None, str | None]:
-        first_index = self.editor.search(self.pattern, INSERT, 0.0, False, True, False, self.regexp, self.nocasing)
+        if not self.pattern:
+            mb.showwarning(self.lang[1], "Cannot mark occurences of an empty pattern in the editor!")
+            return None, None
+        
+        use_regexp = self.regexp
+        use_exact_sentences = False if self.regexp is True else True
+        pattern = self.pattern
+        
+        first_index = self.editor.search(pattern, INSERT, 0.0, False, True, use_exact_sentences, use_regexp, self.nocasing)
 
         if not first_index:
             mb.showwarning(self.lang[1], self.lang[350])
@@ -218,6 +254,47 @@ class SearchReplace(Toplevel):
             last_index = '.'.join((index_iter[0], str(line_index)))
 
         return first_index, last_index
+
+    def _replace_next(self, replacement: str):
+        self.__p()
+        first_index, last_index = self.__n()
+
+        if first_index and last_index:
+            self.editor.replace(first_index, last_index, replacement)
+            
+            self.editor.mark_set(INSERT, last_index)
+            self.rf()
+            self.editor.see(INSERT)
+
+    def _replace_all(self, replacement: str):        
+        while True:
+            first_index, last_index = self.__n(0.0)
+
+            if not first_index or not last_index:
+                self.rf()
+                break
+
+            self.editor.delete(first_index, last_index)
+            self.editor.insert(first_index, replacement)
+            
+    def _mark_matches(self):
+        self.editor.tag_configure('found', background='yellow', foreground='black', font=Font(weight='bold', slant='roman', overstrike=False, underline=True))
+        self.editor.tag_remove('found', 0.0, END)
+        
+        last_index = 0.0
+        
+        if not self.pattern:
+            mb.showwarning(self.lang[1], "Cannot mark occurences of an empty pattern in the editor!")
+            return
+        
+        while True:
+            first_index, last_index = self.__n(last_index)
+
+            if not first_index or not last_index:
+                self.rf()
+                break
+
+            self.editor.tag_add('found', first_index, last_index)
 
     def return_focus(self):
         self.editor.focus_set()
@@ -242,6 +319,10 @@ class SearchReplace(Toplevel):
     @property
     def nocasing(self) -> bool:
         return not bool(self._CASING.get())
+    
+    @property
+    def replacewith(self) -> str:
+        return self._E2.get()
 
 
 class CustomThemeMaker(Frame):
@@ -295,18 +376,18 @@ class CustomThemeMaker(Frame):
         self._B3.grid(column=2, row=1, padx=10, pady=10)
         self._B4.grid(column=3, row=1, padx=10, pady=10)
         self._B5.grid(column=4, row=1, padx=10, pady=10)
-        
+
         self._F1.pack(pady=5)
         self._exit_butt.pack(pady=5)
 
-    def askcolor(self, butt_scope: Button):        
+    def askcolor(self, butt_scope: Button):
         color: str = picker.askcolor(self._butt_text_rel[butt_scope], title=self._lang[365])[1]
 
         self.focus_set()
 
         if not color:
             return
-        
+
         self._butt_text_rel[butt_scope] = color
         butt_scope.configure(text=str(color))
 
@@ -321,242 +402,23 @@ class CustomThemeMaker(Frame):
         self._leave()
 
 
-class _SearchReplaceBackup(Toplevel):
-    def __init__(self, master: Misc | None = None, widget: WriterClassicEditor | None = None, regexp: bool = False, lang_exps: Iterable[str] | None = None, **kwargs) -> None:
-        ico = kwargs.pop('ico', None)
-
-        if not isinstance(lang_exps, (list, tuple)):
-            raise ValueError('lang expressions must be tuple or list')
-
-        if not widget:
-            raise TypeError('a widget must be specified and match type WriterClassicEditor')
-
-        self._regexp = regexp
-        self._exps = lang_exps
-
-        self._MARKED: bool = False
-
-        widget.tag_configure('found', background='yellow', foreground='black', font=Font(weight='bold', slant='roman', overstrike=False, underline=True))
-        widget.tag_remove("found", 0.0, END)
-
-        self.editor: WriterClassicEditor = widget
-        self.master = master
-
-        super().__init__(master, **kwargs)
-        super().title(f"{self.lang[1]} - {self.lang[345]}")
-
-        if sys.platform == 'win32':
-            super().iconbitmap(ico)
-
-
-    # [!?] exact is not working for some reason
-    # [i] this is something related to tkinter tho and not this class
-    # [?] I might do a bit more research on this topic ig
-    def initiate_setup(self, widget: Toplevel | Misc):
-        self._F1 = Frame(widget)
-        self._F2 = Frame(widget)
-        self._F3 = Frame(widget)
-        self._F4 = Frame(widget)
-        self._B3 = Button(widget, text='Mark all matches', command=self._mark_matches)
-
-        self._L1 = Label(self._F1, text=self.lang[346].strip() + ' ')
-        self._E1 = Entry(self._F1)
-        self._PREVBUTT = Button(self._F1, text=chr(9650), command=lambda:
-            self._find('prev'))
-        self._NEXTBUTT = Button(self._F1, text=chr(9660), command=lambda:
-            self._find('next'))
-
-        self._EXACT = IntVar(widget, value=0)
-        self._CASING = IntVar(widget, value=0)
-
-        # /-/ self._C1 = Checkbutton(self._F2, text="Exact matches only", variable=self._EXACT)
-        self._C2 = Checkbutton(self._F2, text=self.lang[347], variable=self._CASING)
-
-        self._E2 = Entry(self._F3)
-
-        self._B1 = Button(self._F4, text='Replace')
-        self._B2 = Button(self._F4, text='Replace All')
-
-        # [*] Frame 1 content
-        self._L1.grid(column=0, row=0)
-        self._E1.grid(column=1, row=0)
-        self._PREVBUTT.grid(column=2, row=0)
-        self._NEXTBUTT.grid(column=3, row=0)
-
-        # [*] Frame 2 content
-        # /-/ self._C1.pack()
-        self._C2.pack()
-
-        # [*] Frame 3 content
-        self._E2.grid(column=1, row=0)
-
-        # [*] Frame 4 content
-        self._B1.grid(column=0, row=0)
-        self._B2.grid(column=1, row=0)
-
-        # [*] super() / window content
-        self._F1.pack()
-        self._F2.pack()
-        self._F3.pack()
-        self._F4.pack()
-        self._B3.pack()
-
-    def _replace(self):
-        """
-        FIXME: This just doesn't work
-        """
-
-        s1, s2 = None, None
-
-        try:
-            s1, s2 = SEL_FIRST, SEL_LAST
-
-        except TclError:
-            mb.showerror(self.lang, 'Nothing to replace.\nThe area to replace must be selected, which the find feature already does automatically.')
-
-        else:
-            self.editor.replace(s1, s2, self.replacewith)
-
-    def _replace_all(self):
-        """
-        FIXME: Not working, needs to be fixed so it can be added to the main class
-        """
-
-        while True:
-            first_index, last_index = self.__n(0.0)
-
-            if not first_index or not last_index:
-                break
-
-            self.editor.replace(first_index, last_index, self.replacewith)
-
-    def _mark_matches(self):
-        """
-        Internal function
-        """
-
-        self.editor.tag_remove('found', 0.0, END)
-
-        if not self.pattern:
-            mb.showwarning(self.lang[1], "Cannot mark occurences of an empty pattern in the editor!")
-            return
-
-        while True:
-            first_index, last_index = self.__n(0.0)
-
-            if not first_index or not last_index:
-                break
-
-            self.editor.tag_add('found', first_index, last_index)
-
-    def _find(self, direction: Literal['prev', 'next']):
-        self.editor.tag_remove(SEL, 0.0, END)
-
-        if not self.pattern:
-            mb.showwarning(self.lang[1], self.lang[348])
-            return
-
-        match direction:
-            case 'next':
-                first_index, last_index = self.__n()
-
-            case 'prev':
-                first_index, last_index = self.__p()
-
-            case _:
-                raise ValueError('must be next/prev')
-
-        self.editor.mark_set(INSERT, last_index if direction == 'next' else first_index)
-        self.editor.tag_add(SEL, first_index, last_index)
-        self.rf()
-        self.editor.see(INSERT)
-
-    def __n(self, ind: str | float = INSERT) -> tuple[str | None, str | None]:
-        first_index = self.editor.search(self.pattern, ind, END, True, False, self.isexact, self.regexp, self.nocasing)
-
-        if not first_index:
-            mb.showwarning(self.lang[1], self.lang[349])
-            return None, None
-
-        first_index = self.editor.index(first_index)
-        last_index = first_index
-
-        for _ in range(len(self.pattern)):
-            index_iter = last_index.split('.')
-            line_index = int(index_iter[1]) + 1
-
-            last_index = '.'.join((index_iter[0], str(line_index)))
-
-        return first_index, last_index
-
-    def __p(self) -> tuple[str | None, str | None]:
-        first_index = self.editor.search(self.pattern, INSERT, 0.0, False, True, self.isexact, self.regexp, self.nocasing)
-
-        if not first_index:
-            mb.showwarning(self.lang[1], self.lang[350])
-            return None, None
-
-        first_index = self.editor.index(first_index)
-        last_index = first_index
-
-        for _ in range(len(self.pattern)):
-            index_iter = last_index.split('.')
-            line_index = int(index_iter[1]) + 1
-
-            last_index = '.'.join((index_iter[0], str(line_index)))
-
-        return first_index, last_index
-
-    def return_focus(self):
-        self.editor.focus_set()
-
-    rf = return_focus
-
-    @property
-    def lang(self) -> list | tuple:
-        if isinstance(self._exps, list):
-            return self._exps.copy()
-
-        return self._exps
-
-    @property
-    def regexp(self) -> bool:
-        return self._regexp
-
-    @property
-    def pattern(self) -> str:
-        return self._E1.get()
-
-    @property
-    def replacewith(self) -> str:
-        return self._E2.get()
-
-    @property
-    def isexact(self) -> bool:
-        return bool(self._EXACT.get())
-
-    @property
-    def nocasing(self) -> bool:
-        return not bool(self._CASING.get())
-
-
 def deprecated(message: str | None = None, dep_version: str | float | int | None = None):
     def decorator(func):
         def wrapper(*args, **kwargs):
             new_message = message
-            
+
             if dep_version is None and not message:
                 new_message = f'{func.__name__} is deprecated'
-                
+
             elif dep_version is not None and not message:
                 new_message = f'{func.__name__} has been deprecated since {dep_version}'
-            
+
             else:
                 new_message = message
-            
+
             print(new_message)
             return func(*args, **kwargs)
-        
+
         return wrapper
-    
+
     return decorator
