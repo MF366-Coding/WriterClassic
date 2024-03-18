@@ -167,9 +167,9 @@ Lines
 WriterClassic - Window Error
 Bad window dimensions.
 WriterClassic will use 700x500 for this instance.
-Search GitHub (requires an account)
+Search GitHub
 WriterClassic - Search GitHub
-Search GitLab (requires an account)
+Search GitLab
 WriterClassic - Search GitLab
 Plugin Central
 WriterClassic - Plugin Central
@@ -327,8 +327,8 @@ All occurances of the word will be replaced!
 Search backwards?
 Run a case-sensitive search?
 Not found.
-Search
-Search and Replace
+Find and Replace
+Find and Replace
 Select All
 Font Picker
 Default Snippets
@@ -343,7 +343,7 @@ Snippets
 Disable
 Word level (Default)
 Character level
-Search and Replace
+Find and Replace
 Find:
 Case dependent
 Cannot find an empty pattern in the editor!
@@ -364,3 +364,8 @@ Cursor Color
 Menu Background
 Menu Foreground
 Theme Maker
+Cannot search for an empty pattern!
+Mark all matches
+Replace
+Replace All
+Cannot mark occurences of an empty pattern in the editor!

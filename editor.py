@@ -138,7 +138,7 @@ class SearchReplace(Toplevel):
         self._F2 = Frame(widget)
         self._F3 = Frame(widget)
         self._F4 = Frame(widget)
-        self._B3 = Button(widget, text='Mark all matches', command=self._mark_matches)
+        self._B3 = Button(widget, text=self.lang[367], command=self._mark_matches)
 
         self._L1 = Label(self._F1, text=self.lang[346].strip() + ' ')
         self._E1 = Entry(self._F1)
@@ -153,9 +153,9 @@ class SearchReplace(Toplevel):
 
         self._E2 = Entry(self._F3)
 
-        self._B1 = Button(self._F4, text='Replace', command=lambda:
+        self._B1 = Button(self._F4, text=self.lang[368], command=lambda:
             self._replace_next(self.replacewith))
-        self._B2 = Button(self._F4, text='Replace All', command=lambda:
+        self._B2 = Button(self._F4, text=self.lang[369], command=lambda:
             self._replace_all(self.replacewith))
 
         # [*] Frame 1 content
@@ -205,7 +205,7 @@ class SearchReplace(Toplevel):
 
     def __n(self, ind: str | float = INSERT) -> tuple[str | None, str | None]:
         if not self.pattern:
-            mb.showwarning(self.lang[1], "Cannot mark occurences of an empty pattern in the editor!")
+            mb.showwarning(self.lang[1], self.lang[366])
             return None, None
         
         use_regexp = self.regexp
@@ -231,7 +231,7 @@ class SearchReplace(Toplevel):
 
     def __p(self) -> tuple[str | None, str | None]:
         if not self.pattern:
-            mb.showwarning(self.lang[1], "Cannot mark occurences of an empty pattern in the editor!")
+            mb.showwarning(self.lang[1], self.lang[366])
             return None, None
         
         use_regexp = self.regexp
@@ -284,7 +284,7 @@ class SearchReplace(Toplevel):
         last_index = 0.0
         
         if not self.pattern:
-            mb.showwarning(self.lang[1], "Cannot mark occurences of an empty pattern in the editor!")
+            mb.showwarning(self.lang[1], self.lang[370])
             return
         
         while True:

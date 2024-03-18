@@ -496,7 +496,7 @@ ic(LATEST)
 
 # [!] Very Important: Keeping track of versions and commits
 APP_VERSION = "v10.7.0"
-ADVANCED_VERSION ="v10.7.0.336.PATCH"
+ADVANCED_VERSION ="v10.7.0.337"
 
 # [i] the fourth number up here, is the commit where this changes have been made
 
@@ -3372,8 +3372,11 @@ text_widget.bind('<Control-y>', lambda _:
 desktop_win.bind('<Control-i>', lambda _:
     about_writerclassic())
 
-# [*] Search on the editor
+# [*] Search and replace on the editor
 text_widget.bind('<Control-f>', lambda _:
+    search_replace())
+
+text_widget.bind('<Control-h>', lambda _:
     search_replace())
 
 # [*] Help Online
@@ -3473,31 +3476,6 @@ def close_confirm() -> None:
     sys.exit()
 
 
-# [!] Deprecated way to call the closing of a window
-# [!?] Please use to close_confirm instead
-@deprecated("quickway has been deprecated since v10.2.0 and is planned for removal in v10.8.0")
-def on_closing():
-    """
-    on_closing asks for the user's confirmation before closing
-    
-    NOTE: Deprecated in favor of close_confirm
-    """
-
-    ic()
-
-    result = mb.askyesno(lang[53], lang[54])
-
-    if not result:
-        ic()
-        return
-
-    ic()
-
-    desktop_win.destroy()
-    LOG.close()
-    sys.exit()
-
-
 # [i] Creating the menu dropdowns and buttons
 menu_10.add_command(label=lang[94], command=new_file, accelerator="Ctrl + N")
 menu_10.add_command(label=lang[7], command=lambda:
@@ -3532,16 +3510,11 @@ menu_11.add_separator()
 menu_11.add_command(label=lang[28], command=app_credits)
 menu_11.add_separator()
 menu_11.add_command(label=lang[137], command=tips_tricks)
-'''
-menu_11.add_separator()
-menu_11.add_command(label=lang[29], command=surprise_egg, state='disabled')
-'''
 
 menu_1.add_command(label=lang[12], command=set_window_size, accelerator="Ctrl + Shift + G")
 menu_1.add_command(label=lang[332], command=set_font)
 menu_1.add_command(label=lang[351], command=change_wrap)
 menu_1.add_command(label=lang[365], command=theme_maker)
-
 
 menu_8.add_command(label=lang[22], command=draft_notepad)
 menu_8.add_command(label=lang[182], command=terminal_inputs)
@@ -3552,7 +3525,6 @@ menu_8.add_separator()
 menu_8.add_command(label=lang[10], command=lambda:
     wipe_file(desktop_win))
 menu_8.add_separator()
-
 menu_8.add_command(label=lang[217], command=install_plugin)
 menu_8.add_command(label=lang[216], command=run_plugin)
 menu_8.add_command(label=lang[310], command=remove_plugin)
