@@ -64,7 +64,7 @@ from editor import WriterClassicEditor, SearchReplace, CustomThemeMaker, depreca
 from plugin_system import initializer, run_a_plugin # [i] For WriterClassic's Plugin "API"
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
-from pygame import mixer # [i] Playing the sucessful sound; Only in this file so it gets compiled
+from pygame import mixer # [i] Playing the sucessful sound => Only in this file so it gets compiled
 
 from icecream import ic # [i] Used for debugging
 
@@ -120,19 +120,19 @@ Powered by: Python 3.11+
 # pylint: disable=W0105
 
 # [*] Get the absolute path of the script
-script_path = os.path.abspath(__file__)
+script_path: str = os.path.abspath(__file__)
 
 # [*] Get the directory containing the script
-script_dir = os.path.dirname(script_path)
+script_dir: str = os.path.dirname(script_path)
 
-config = os.path.join(script_dir, 'config')
-user_data = os.path.join(script_dir, 'user_data')
-nix_assets = os.path.join(script_dir, 'nix_assets')
-plugin_dir = os.path.join(script_dir, 'plugins')
-data_dir = os.path.join(script_dir, 'data')
-locale = os.path.join(script_dir, 'locale')
-temp_dir = os.path.join(script_dir, 'temp')
-scripts_dir = os.path.join(script_dir, "scripts")
+config: str = os.path.join(script_dir, 'config')
+user_data: str = os.path.join(script_dir, 'user_data')
+nix_assets: str = os.path.join(script_dir, 'nix_assets')
+plugin_dir: str = os.path.join(script_dir, 'plugins')
+data_dir: str = os.path.join(script_dir, 'data')
+locale: str = os.path.join(script_dir, 'locale')
+temp_dir: str = os.path.join(script_dir, 'temp')
+scripts_dir: str = os.path.join(script_dir, "scripts")
 
 now = datetime.datetime.now
 
@@ -157,14 +157,14 @@ def check_paths(var: str) -> str:
     return "Was there."
 
 
-debug_a = [config, user_data, nix_assets, plugin_dir, data_dir, locale, temp_dir, scripts_dir]
+debug_a: list[str] = [config, user_data, nix_assets, plugin_dir, data_dir, locale, temp_dir, scripts_dir]
 
 for i in debug_a:
     check_paths(i)
 
 
 class Logger:
-    def __init__(self, logger_path: str, encoding: str = 'utf-8'):
+    def __init__(self, logger_path: str, encoding: str = 'utf-8') -> None:
         """
         __init__ is the initializer for the Logger class
 
@@ -185,7 +185,7 @@ class Logger:
         self.logger = open(logger_path, 'a', encoding=encoding)
         self.__newline()
 
-    def write(self, text: str):
+    def write(self, text: str) -> None:
         """
         write writes text to the log file
 
@@ -195,7 +195,7 @@ class Logger:
 
         self.logger.write(text)
 
-    def error(self, text: str, error_details: str | None = None):
+    def error(self, text: str, error_details: str | None = None) -> None:
         """
         error writes an error information to the log file
 
@@ -212,7 +212,7 @@ class Logger:
 
         self.logger.write(f"{str(now())} - {text}: {error_details}\n")
 
-    def warning(self, text: str, details: str | None = None):
+    def warning(self, text: str, details: str | None = None) -> None:
         """
         warning writes a warning to the log file
 
@@ -229,7 +229,7 @@ class Logger:
 
         self.logger.write(f"{str(now())} - {text}: {details}\n")
 
-    def action(self, text: str, extra: str | None = None):
+    def action(self, text: str, extra: str | None = None) -> None:
         """
         action writes a simple action in the syntax:
             Current Time - text arg - extra arg
@@ -244,14 +244,14 @@ class Logger:
 
         self.logger.write(f"{str(now())} - {text}: OK {extra}".rstrip() + "\n")
 
-    def close(self):
+    def close(self) -> None:
         """
         close closes the log file
         """
 
         self.logger.close()
 
-    def __newline(self):
+    def __newline(self) -> None:
         """
         Internal function.
         """
@@ -290,7 +290,7 @@ def showerror(title: str | None = None, message: str | None = None, **options) -
         str: value returned by `tkinter.messagebox.showerror(title, message, **options)`
     """
     
-    s = mb.showerror(title, message, **options)
+    s: str = mb.showerror(title, message, **options)
     
     if title is not None and message is not None:
         LOG.error(message.split('\n')[-1], title.strip())
@@ -899,7 +899,7 @@ WCLASSIC_VARS: dict[str, str] = {
 }
 
 
-def writeStartup(text: bool):
+def writeStartup(text: bool) -> None:
     """
     writeStartup changes the startup value on the settings and then saves it
 
@@ -1977,67 +1977,55 @@ def stem_only(__s: str) -> str:
 
 
 def open_file_manually(file_path: str, root_win: Tk = desktop_win) -> None:
-    """
-    OpenFile opens a file selected from the following interface
-
-    Args:
-        file_path: The filepath to open with extension
-        (optional, defaults to the main window) root_win (Tk): WriterClassic's main window
-    """
-
     global current_file, cur_data, save_status
-
+    
     file_path = os.path.abspath(file_path)
 
     try:
-        file_input = open(file_path, "rt", encoding="utf-8")
-        file_data = file_input.read()
+        with open(file_path, 'rt', encoding='utf-8'):
+            file_input = open(file_path, "rt", encoding="utf-8")
+            file_data = file_input.read()
 
-        root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
-        text_widget.delete(index1=0.0, index2=END)
-        text_widget.insert(chars=file_data, index=END)
-        cur_data = text_widget.content
-        save_status = True
+            root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
+            text_widget.delete(index1=0.0, index2=END)
+            text_widget.insert(chars=file_data, index=END)
+            
+            current_file = file_path
+            cur_data = text_widget.content
+            save_status = True
 
-        LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
-
-        current_file = str(file_path)
-        file_input.close()
+            LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
 
     except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
         showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
         run_default = mb.askyesno(title=lang[187], message=lang[189])
+        
         if run_default:
             os.system(str(file_path))
-
-    finally:
+    
+    else:
         recent_stack.append(current_file)
+        
+    finally:
         fast_dump()
         ic(current_file)
 
 
-def open_file(root_win: Tk = desktop_win):
+def open_file(root_win: Tk = desktop_win, initialfile: str = 'Open a File', **kw):
     """
-    OpenFile opens a file selected from the following interface
+    open_file opens a file selected from the following interface
 
     Args:
         root_win (Tk): WriterClassic's main window
     """
+    
+    filetypes: list[tuple[str, str]] = kw.get('filetypes', FILETYPES.copy())
+    
+    file_path: str = dlg.asksaveasfilename(parent=root_win, filetypes=filetypes, defaultextension="*.*", initialfile=initialfile, confirmoverwrite=False, title=lang[7])
 
-    file_path = dlg.asksaveasfilename(parent=root_win, filetypes=FILETYPES, defaultextension="*.*", initialfile="Open a File", confirmoverwrite=False, title=lang[7])
-
-    if sys.platform != 'linux':
-        # [*] Get the selected file extension
-        selected_extension = None
-        for ft in FILETYPES:
-            if file_path.lower().endswith(ft[1]):
-                selected_extension = ft[1]
-                break
-
-        # [*] Append the selected extension if not already included
-        if selected_extension and not file_path.lower().endswith(selected_extension):
-            file_path += selected_extension
-
+    if not file_path:
+        return
+    
     open_file_manually(file_path)
 
 
@@ -2057,18 +2045,17 @@ def save_as_file(root_win: Tk = desktop_win):
     data = text_widget.content
     save_status = True
     file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=FILETYPES, defaultextension="*.*", initialfile="New File To Save")
+    
+    # [*] Get the selected file extension
+    selected_extension = None
+    for ft in FILETYPES:
+        if file_path.lower().endswith(ft[1]):
+            selected_extension = ft[1]
+            break
 
-    if sys.platform != 'linux':
-        # [*] Get the selected file extension
-        selected_extension = None
-        for ft in FILETYPES:
-            if file_path.lower().endswith(ft[1]):
-                selected_extension = ft[1]
-                break
-
-        # [*] Append the selected extension if not already included
-        if selected_extension and not file_path.lower().endswith(selected_extension):
-            file_path += selected_extension
+    # [*] Append the selected extension if not already included
+    if selected_extension and not file_path.lower().endswith(selected_extension):
+        file_path += selected_extension
 
     if file_path.lower().endswith(".wclassic") and "$VARS" in data:
         for __var in WCLASSIC_VARS:
@@ -2484,9 +2471,9 @@ def markdown_preview() -> None:
 def tips_tricks():
     picked_text = random.choice((
         lang[140],
+        lang[141],
         lang[142],
         lang[299],
-        lang[300],
         lang[301],
         lang[302],
         lang[303],
@@ -3224,6 +3211,80 @@ def theme_maker():
     w.mainloop()
 
 
+def close_confirm() -> None:
+    ic()
+
+    if not has_been_modified():
+        choice = mb.askyesnocancel(lang[53], f"{lang[199]}\n{lang[200]}")
+
+        if choice is None:
+            ic()
+            return None
+
+        if choice:
+            ic()
+            save_file(desktop_win)
+            ic("Called the save function.")
+
+    ic()
+    desktop_win.destroy()
+    LOG.close()
+    sys.exit()
+
+
+COMMANDS: dict[str, Any] = {
+    "Editor:Undo": text_widget.edit_undo,
+    "Editor:Redo": text_widget.edit_redo,
+    "Editor:Reset": new_file,
+    "Editor:Stats": document_status,
+    "Editor:SelectAll": select_all,
+    "Editor:Lorem": lorem_ipsum,
+    "Editor:Readme": readme_writer_classic,
+    "Editor:Select": select_all,
+    
+    "File:Open": open_file,
+    "File:SaveAs": save_as_file,
+    
+    "Status:Save": save_file,
+    "Status:Refresh": has_been_modified,
+    
+    "Plugins:Install": install_plugin,
+    "Plugins:Run": run_plugin,
+    "Plugins:Remove": remove_plugin,
+    
+    "History:Reset": text_widget.edit_reset,
+    
+    "Software:Quit": close_confirm,
+    "Software:ForceQuit": quickway,
+    "Software:About": about_writerclassic,
+    "Software:Help": APP_HELP,
+    "Software:Repo": repository,
+    "Software:Reload": grp.restore,
+    "Software:Credits": app_credits,
+    "Software:Tips": tips_tricks,
+    "Software:Version": update_check.manual_check,
+    
+    "Log:Clear": clear_log_file,
+    "Log:Preview": show_log,
+    
+    "Settings:Dump": fast_dump,
+    "Settings:Save": fast_dump,
+    "Settings:Size": set_window_size,
+    "Settings:Reset": reset_writerclassic,
+    "Settings:Backup": lambda: backup_system.run_action("zip"),
+    "Settings:Load": lambda: backup_system.run_action('unzip'),
+    
+    "Tools:Notepad": draft_notepad,
+    "Tools:WipeFile": wipe_file,
+    "Tools:Markdown": markdown_preview,
+    "Tools:Terminal": terminal_inputs,
+    
+    "Advanced:DesktopFile": desktop_create_win,
+    
+    "Internet:Website": internet_plugin.goto_website,
+}
+
+
 def command_menu() -> None | bool:
     new = Toplevel(desktop_win)
 
@@ -3235,58 +3296,10 @@ def command_menu() -> None | bool:
             return
 
     def action_logic(_scope: str, _action: str):
-        commands: dict[str, Any] = {
-            "Editor:Undo": text_widget.edit_undo,
-            "Editor:Redo": text_widget.edit_redo,
-            "Editor:Reset": new_file,
-            "File:Open": open_file,
-            "File:SaveAs": save_as_file,
-            "Status:Save": save_file,
-            "Status:Refresh": has_been_modified,
-            "Plugins:Install": install_plugin,
-            "Plugins:Run": run_plugin,
-            "Plugins:Remove": remove_plugin,
-            "History:Reset": text_widget.edit_reset,
-            "Software:Quit": close_confirm,
-            "Software:ForceQuit": quickway,
-            "Software:About": about_writerclassic,
-            "Software:Help": APP_HELP,
-            "Software:Repo": repository,
-            "Software:Reload": grp.restore,
-            "Software:Credits": app_credits,
-            "Log:Clear": clear_log_file,
-            "Log:Preview": show_log,
-            "Advanced:Send": adv_login,
-            "Debug:Swap": show_debug,
-            "Tools:ReadmeGen": readme_gen_win,
-            "Tools:D3Ncryp7": dencrypt,
-            "Advanced:Dencrypt": dencrypt,
-            "Software:Version": update_check.manual_check,
-            "Advanced:Version": show_advanced_version,
-            "File:OpenWith": open_with_adv,
-            "Advanced:Open": open_with_adv,
-            "Settings:Dump": fast_dump,
-            "Settings:Save": fast_dump,
-            "Settings:Size": set_window_size,
-            "Tools:Notepad": draft_notepad,
-            "Editor:Stats": document_status,
-            "Tools:WipeFile": wipe_file,
-            "Editor:Select": select_all,
-            "Editor:SelectAll": select_all,
-            "Editor:Lorem": lorem_ipsum,
-            "Editor:Readme": readme_writer_classic,
-            "Advanced:DesktopFile": desktop_create_win,
-            "Tools:Markdown": markdown_preview,
-            "Software:Tips": tips_tricks,
-            "Settings:Reset": reset_writerclassic,
-            "Tools:Terminal": terminal_inputs,
-            "Internet:Website": internet_plugin.goto_website,
-            "File:Reload": reload_file,
-            "Settings:Backup": lambda: backup_system.run_action("zip"),
-            "Settings:Load": lambda: backup_system.run_action('unzip')
-        }
+        commands: dict[str, Any] = COMMANDS.copy()
+        commands["File:Reload"] = reload_file
 
-        a = f"{_scope}:{_action}"
+        a: str = f"{_scope}:{_action}"
 
         if a in commands.keys():
             commands[a]()
@@ -3453,27 +3466,6 @@ text_widget.bind('<Control-a>', lambda _:
 # [*] Update the modified status
 text_widget.bind('<KeyRelease>', lambda _:
     has_been_modified())
-
-
-def close_confirm() -> None:
-    ic()
-
-    if not has_been_modified():
-        choice = mb.askyesnocancel(lang[53], f"{lang[199]}\n{lang[200]}")
-
-        if choice is None:
-            ic()
-            return None
-
-        if choice:
-            ic()
-            save_file(desktop_win)
-            ic("Called the save function.")
-
-    ic()
-    desktop_win.destroy()
-    LOG.close()
-    sys.exit()
 
 
 # [i] Creating the menu dropdowns and buttons
