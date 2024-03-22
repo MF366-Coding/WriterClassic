@@ -493,8 +493,8 @@ ic(ignore_checking)
 ic(LATEST)
 
 # [!] Very Important: Keeping track of versions and commits
-APP_VERSION = "v10.7.0"
-ADVANCED_VERSION ="v10.7.0.337"
+APP_VERSION = "v10.8.0"
+ADVANCED_VERSION ="v10.8.0.338"
 
 # [i] the fourth number up here, is the commit where this changes have been made
 
