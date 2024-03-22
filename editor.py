@@ -21,6 +21,19 @@ from tkinter.font import Font
 from tkinter import messagebox as mb
 from tkinter import colorchooser as picker
 
+# [*] Samples
+TITLE_CASING = 'Title Casing'
+UPPER_CASING = 'UPPER CASING'
+LOWER_CASING = 'lower casing'
+
+PASCAL_CASING = 'PascalCasing'
+CONSTANT_CASING = 'CONSTANT_CASING',
+SNAKE_CASING = 'snake_casing',
+CAMEL_CASING = 'camelCasing'
+
+INVERTED_CASING_1 = 'InVeRtEd cAsInG 1'
+INVERTED_CASING_2 = 'iNvErTeD CaSiNg 2'
+
 
 class WriterClassicEditor(_ScrolledText):
     """
@@ -63,12 +76,80 @@ class WriterClassicEditor(_ScrolledText):
             super().mark_set(INSERT, _see)
 
         super().see(INSERT)
-
+        
+    def change_selection_casing(self, casing: str):
+        if not self.selection:
+            return
+        
+        casing = casing.lower().strip()
+        cur_selection: str = self.selection
+        
+        match casing:
+            case 'title':
+                result = cur_selection.title()
+                
+            case 'upper':
+                result = cur_selection.upper()
+                
+            case 'lower':
+                result = cur_selection.lower()
+            
+            case 'pascal':
+                result = cur_selection.title().replace(' ', '')
+                
+            case 'constant':
+                result = cur_selection.upper().replace(' ', '_')
+                
+            case 'snake':
+                result = cur_selection.lower().replace(' ', '_')
+            
+            case 'camel':
+                result = cur_selection[0].lower() + cur_selection.title()[1:].replace(' ', '')
+            
+            case 'inverted' | 'inverted1':
+                cache = [i for i in cur_selection]
+                
+                for index, elem in enumerate(cache, 0):
+                    if index == 0:
+                        cache[index] = elem.upper()
+                        continue
+                    
+                    if cache[index - 1].islower():
+                        cache[index] = elem.upper()
+                        continue
+                    
+                    if cache[index - 1].isupper():
+                        cache[index] = elem.lower()
+                        continue
+                    
+                result: str = ''.join(cache)
+            
+            case 'inverted2':
+                cache = [i for i in cur_selection]
+                
+                for index, elem in enumerate(cache, 0):
+                    if index == 0:
+                        cache[index] = elem.lower()
+                        continue
+                    
+                    if cache[index - 1].islower():
+                        cache[index] = elem.upper()
+                        continue
+                    
+                    if cache[index - 1].isupper():
+                        cache[index] = elem.lower()
+                        continue
+                    
+                result: str = ''.join(cache)
+            
+            case _:
+                raise ValueError('no such casing')
+        
+        self.replace(SEL_FIRST, SEL_LAST, result)
 
     @property
     def wrapping(self) -> str:
         return self._wrapline
-
 
     @property
     def selection(self) -> str | Literal[False]:
@@ -84,7 +165,6 @@ class WriterClassicEditor(_ScrolledText):
         except TclError:
             return False
 
-
     @property
     def content(self) -> str:
         """
@@ -92,7 +172,6 @@ class WriterClassicEditor(_ScrolledText):
         """
 
         return self.get(0.0, END)
-
 
     @property
     def num_lines(self) -> int:

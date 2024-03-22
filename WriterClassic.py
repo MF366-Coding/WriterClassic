@@ -424,7 +424,7 @@ def clip_actions(__id: Literal['copy', 'paste'], __s: str = '') -> str:
             raise WrongClipboardAction('Can only copy or paste.')
 
 
-settings = get_settings(f"{config}/settings.json")
+settings: dict[str, dict[str, str | int | bool] | bool | str | list[str] | int] = get_settings(f"{config}/settings.json")
 
 LOG.action("Got the settings")
 
@@ -455,11 +455,9 @@ ic(f"{data_dir}/logo.png")
 
 ic(now())
 
-setLang = settings["language"]
+ic(settings['language'])
 
-ic(setLang)
-
-with open(f'{locale}/'+str(setLang[:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
+with open(f'{locale}/'+str(settings['language'][:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
     lang = usedLang.split('\n')
     LOG.write(f"{str(now())} - Language has been configured correctly: OK\n")
@@ -564,9 +562,7 @@ copy, paste, cut = lambda: advanced_clipping('copy'), lambda: advanced_clipping(
 ic(APP_VERSION)
 ic(ADVANCED_VERSION)
 
-theme = settings["theme"]
-
-ic(theme)
+ic(settings['theme'])
 
 LOG.write(f"{str(now())} - Got the current theme: OK\n")
 
@@ -817,7 +813,7 @@ except TclError:
     showerror(lang[166], f"{lang[167]}\n{lang[168]}")
 
 try:
-    text_widget.configure(background=theme["color"], foreground=theme["fg"], width=int(geom_values[0]), height=int(geom_values[1]), insertbackground=theme["ct"], font=config_font)
+    text_widget.configure(background=settings['theme']["color"], foreground=settings['theme']["fg"], width=int(geom_values[0]), height=int(geom_values[1]), insertbackground=settings['theme']["ct"], font=config_font)
     LOG.write(f"{str(now())} - Applied configurations to the editing interface: OK\n")
 
 except TclError:
@@ -834,7 +830,7 @@ LOG.write(f"{str(now())} - Created the menu bar: OK\n")
 
 try:
     if sys.platform == "linux":
-        menu_bar.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_bar.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
         LOG.write(f"{str(now())} - Applied the theme to the menu bar: OK\n")
 
 except TclError:
@@ -1391,7 +1387,7 @@ def draft_notepad():
 
     other_widget = WriterClassicEditor(new_window, borderwidth=5)
 
-    other_widget.configure(background=theme["color"], foreground=theme["fg"], width=geom_values[0], height=geom_values[1], insertbackground=theme["ct"], font=config_font)
+    other_widget.configure(background=settings['theme']["color"], foreground=settings['theme']["fg"], width=geom_values[0], height=geom_values[1], insertbackground=settings['theme']["ct"], font=config_font)
     other_widget.pack()
 
     LOG.write(f"{str(now())} - Notes Plugin's window has been fully configured: OK\n")
@@ -3044,7 +3040,7 @@ Log File
 def show_log():
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
-    _new_editor = WriterClassicEditor(_new_window, background=theme["color"], foreground=theme["fg"], insertbackground=theme["ct"], font=config_font, borderwidth=5)
+    _new_editor = WriterClassicEditor(_new_window, background=settings['theme']["color"], foreground=settings['theme']["fg"], insertbackground=settings['theme']["ct"], font=config_font, borderwidth=5)
     _new_window.title(lang[180])
     _new_editor.pack()
 
@@ -3241,7 +3237,17 @@ COMMANDS: dict[str, Any] = {
     "Editor:Lorem": lorem_ipsum,
     "Editor:Readme": readme_writer_classic,
     "Editor:Select": select_all,
-    
+    "Editor:Camel": lambda: text_widget.change_selection_casing('camel'),
+    "Editor:Pascal": lambda: text_widget.change_selection_casing('pascal'),
+    "Editor:Lower": lambda: text_widget.change_selection_casing('lower'),
+    "Editor:Title": lambda: text_widget.change_selection_casing('title'),
+    "Editor:Upper": lambda: text_widget.change_selection_casing('upper'),
+    "Editor:Snake": lambda: text_widget.change_selection_casing('snake'),
+    "Editor:Constant": lambda: text_widget.change_selection_casing('constant'),
+    "Editor:Inverted": lambda: text_widget.change_selection_casing('inverted'),
+    "Editor:Inverted1": lambda: text_widget.change_selection_casing('inverted1'),
+    "Editor:Inverted2": lambda: text_widget.change_selection_casing('inverted2'),
+        
     "File:Open": open_file,
     "File:SaveAs": save_as_file,
     
@@ -3259,7 +3265,7 @@ COMMANDS: dict[str, Any] = {
     "Software:About": about_writerclassic,
     "Software:Help": APP_HELP,
     "Software:Repo": repository,
-    "Software:Reload": grp.restore,
+    "Software:Reload": None,
     "Software:Credits": app_credits,
     "Software:Tips": tips_tricks,
     "Software:Version": update_check.manual_check,
@@ -3942,7 +3948,7 @@ def message_write(mail: str, pwd: str, _variable, win):
     entry_1 = Entry(window, font=("Noto Sans", 13))
     entry_2 = Entry(window, font=("Noto Sans", 13))
 
-    text_1 = WriterClassicEditor(window, borderwidth=5, font=config_font, insertbackground=theme["ct"], foreground=theme["fg"], background=theme["color"], height=10)
+    text_1 = WriterClassicEditor(window, borderwidth=5, font=config_font, insertbackground=settings['theme']["ct"], foreground=settings['theme']["fg"], background=settings['theme']["color"], height=10)
 
     butt_1 = Button(window, text=lang[241], command=lambda:
         send_email_with_attachment(window, False, mail, pwd, entry_2.get(), entry_1.get(), text_1.content))
@@ -4025,23 +4031,23 @@ if ADVANCED:
 
 if sys.platform == "linux":
     try:
-        menu_10.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_11.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_1.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_5.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_4.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_6.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_12.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_8.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_9.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_13.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_10.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
+        menu_11.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
+        menu_1.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
+        menu_5.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
+        menu_4.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
+        menu_6.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
+        menu_12.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
+        menu_8.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
+        menu_9.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
+        menu_13.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
 
         if ADVANCED:
-            menu_14.configure(background=theme["menu"], foreground=theme["mfg"])
+            menu_14.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
 
-        menu_15.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_16.configure(background=theme["menu"], foreground=theme["mfg"])
-        menu_17.configure(background=theme["menu"], foreground=theme["mfg"])
+        menu_15.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
+        menu_16.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
+        menu_17.configure(background=settings['theme']["menu"], foreground=settings['theme']["mfg"])
         LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
     except TclError:
@@ -4145,6 +4151,7 @@ else:
         open_file_manually(file_path=last_file)
 
 grp: GlobalRestorePoint = GlobalRestorePoint()
+COMMANDS['Software:Reload'] = grp.restore
 
 # [*] Auto WSCRIPTs
 if os.path.exists(path=os.path.join(scripts_dir, "auto.wscript")):
