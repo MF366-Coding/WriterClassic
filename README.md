@@ -56,9 +56,7 @@ Go to https://github.com/MF366-Coding/WriterClassic/releases/latest to get the l
 Then, run it! 
 
 ## For Linux and MacOS (or if you simply want the source)
-Do the same thing but for the source code. Either run the main Python file or compile it yourself.
-
-All files and folders inside the zipped one **must** be on the same location!
+Clone the repo or download as a zip file.
 
 ### Comamnd for running
 Use:
@@ -74,9 +72,7 @@ You need:
 
 * [X] Python 3 (Comes with MacOS and Linux, usually | Requires installation on Windows, unless you use the executable version of WriterClassic)
 
-* [X] requests (Python3 Module)
-
-* [X] simple_webbrowser (Python3 Module made by me) 
+* [X] every module in `requirements.txt`
 
 * [X] all the datafiles that come with WriterClassic
 
@@ -122,28 +118,6 @@ You can also enjoy WriterClassic offline, by just changing one simple setting: C
 You can press **Ctrl + Shift + P* (check the Shotcuts area for more info) to open this **hidden** feature.
 
 In here, you can type a command and click 'OK' and something will happen.
-
-Available commands:
-
-- **open** or **openfile** - Opens the 'Open a file to read' dialog
-- **about** - Opens the 'About' dialog
-- **help** - Opens the Help at GitHub
-- **fun** or **egg** - Opens the Super Secret Easter Egg (a.k.a *SSEE*)
-- **data** - Opens the 'Who made this app?' dialog (hint: it was me LMAO)
-- **exit** or **quit** - Shows the 'Confirm exit' dialog
-- **clear** - Opens the 'Pick a file to erase' dialog
-- **newfile** - Creates a new file
-- **save** - Saves the document
-- **save as** - Saves the document as/at...
-- **clock open** - Opens the Clock Plugin
-- **font family** - Shows the 'Pick a font family' dialog
-- **font size** - Shows the 'Pick a font size' dialog
-- **ragequit** - Kills the app without confirmation **(NOT RECOMMENDED)**
-- **repo** - Opens the GitHub repo
-- **notes** - Opens the 'Notes' Plugin
-- **win size** - Shows the 'Pick window dimensions/size' dialog
-
-In case you don't pick any of these, you'll just get an error.
 
 ## Shortcuts (v10.0.0+)
 > This shortcuts won't work on versions older than v10.0.0.
