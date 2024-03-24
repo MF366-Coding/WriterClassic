@@ -457,9 +457,9 @@ ic(now())
 
 ic(settings['language'])
 
-with open(f'{locale}/'+str(settings['language'][:2])+'.wclassic', 'r', encoding='utf-8') as usedLangFile:
+with open(os.path.join(locale, f"{settings['language'][:2]}.wclassic"), 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
-    lang = usedLang.split('\n')
+    lang = usedLang.split('\n') 
     LOG.write(f"{str(now())} - Language has been configured correctly: OK\n")
 
 # [*] Windowing
@@ -494,7 +494,7 @@ ic(LATEST)
 
 # [!] Very Important: Keeping track of versions and commits
 APP_VERSION = "v10.8.0"
-ADVANCED_VERSION ="v10.8.0.338"
+ADVANCED_VERSION ="v10.8.0.339"
 
 # [i] the fourth number up here, is the commit where this changes have been made
 
@@ -1371,7 +1371,7 @@ def set_language(language_set, root_win):
 
 
 # [i] Notepad
-def draft_notepad():
+def draft_notepad() -> None:
     """
     draf_notepad loads the GUI for the Notepad plugin/tool
 
@@ -1384,6 +1384,9 @@ def draft_notepad():
     # [i] Windowing
     new_window.title(lang[22])
     new_window.geometry("600x400")
+    
+    if sys.platform == "win32":
+        new_window.iconbitmap(f"{data_dir}/app_icon.ico")
 
     other_widget = WriterClassicEditor(new_window, borderwidth=5)
 
@@ -2186,12 +2189,77 @@ def has_been_modified(text_widget: WriterClassicEditor = text_widget, main_win: 
     save_status = False
     return save_status
 
+
+def change_casing() -> None:
+    def _swap_casing(casing: str):
+        if not text_widget.selection:
+            showerror(lang[1], lang[372])
+            
+        else:
+            text_widget.change_selection_casing(casing)
+    
+    w = Toplevel()
+    w.title(lang[371])
+    w.resizable(False, False)
+    
+    if sys.platform == 'win32':
+        w.iconbitmap(os.path.join(data_dir, 'app_icon.ico'))
+    
+    f1 = Frame(w)
+    f2 = Frame(w)
+    
+    lower_butt = Button(f1, text="lower case", command=lambda:
+        _swap_casing('lower'))
+    upper_butt = Button(f1, text="UPPER CASE", command=lambda:
+        _swap_casing('upper'))
+    title_butt = Button(f1, text="Title Case", command=lambda:
+        _swap_casing('title'))
+    pascal_butt = Button(f1, text="PascalCase", command=lambda:
+        _swap_casing('pascal'))
+    constant_butt = Button(f1, text="CONSTANT_CASE", command=lambda:
+        _swap_casing('constant'))
+    snake_butt = Button(f1, text="snake_case", command=lambda:
+        _swap_casing('snake'))
+    camel_butt = Button(f2, text="camelCase", command=lambda:
+        _swap_casing('camel'))
+    train_butt = Button(f2, text="Train-Case", command=lambda:
+        _swap_casing('train'))
+    cobol_butt = Button(f2, text="COBOL-CASE", command=lambda:
+        _swap_casing('cobol'))
+    kebab_butt = Button(f2, text="kebab-case", command=lambda:
+        _swap_casing('kebab'))
+    inverted_butt = Button(f2, text="InVeRtEd cAsE", command=lambda:
+        _swap_casing('inverted'))
+    alternating_butt = Button(f2, text="aLtErNaTiNg cAsE", command=lambda:
+        _swap_casing('alternating'))
+    
+    lower_butt.grid(column=0, row=0, padx=5, pady=5)
+    upper_butt.grid(column=1, row=0, padx=5, pady=5)
+    title_butt.grid(column=2, row=0, padx=5, pady=5)
+    pascal_butt.grid(column=3, row=0, padx=5, pady=5)
+    constant_butt.grid(column=4, row=0, padx=5, pady=5)
+    snake_butt.grid(column=5, row=0, padx=5, pady=5)
+    
+    camel_butt.grid(column=0, row=0, padx=5, pady=5)
+    train_butt.grid(column=1, row=0, padx=5, pady=5)
+    cobol_butt.grid(column=2, row=0, padx=5, pady=5)
+    kebab_butt.grid(column=3, row=0, padx=5, pady=5)
+    inverted_butt.grid(column=4, row=0, padx=5, pady=5)
+    alternating_butt.grid(column=5, row=0, padx=5, pady=5)
+    
+    f1.pack()
+    f2.pack()
+    
+    w.mainloop()
+
+
 rmb_menu = Menu(desktop_win, tearoff = 0)
 rmb_menu.add_command(label=lang[293], command=text_widget.edit_undo, accelerator="Ctrl + Z")
 rmb_menu.add_command(label=lang[294], command=text_widget.edit_redo, accelerator="Ctrl + Y")
 rmb_menu.add_separator()
 rmb_menu.add_command(label=lang[341], command=lambda:
     snippet_picker(default_snippets))
+rmb_menu.add_command(label=lang[371], command=change_casing)
 rmb_menu.add_separator()
 rmb_menu.add_command(label=lang[331], command=select_all, accelerator="Ctrl + A")
 rmb_menu.add_separator()
@@ -2375,15 +2443,17 @@ def _help():
 
 APP_HELP = _help
 
-# [i] This is... well the About section
 
+# [i] This is... well the About section
 def about_writerclassic():
     about_data = ABOUT_WRITER
 
     about_dialogue = Toplevel(desktop_win)
     about_dialogue.geometry("600x275")
-
     about_dialogue.resizable(False, False)
+    
+    if sys.platform == "win32":
+        about_dialogue.iconbitmap(f"{data_dir}/app_icon.ico")
 
     about_dialogue.title(lang[64])
     label_1 = Label(about_dialogue, text=str(about_data), font=("Calibri", 13))
@@ -2555,8 +2625,10 @@ def terminal_inputs():
         ic(_data)
 
     terminal = Toplevel(desktop_win)
-
     terminal.title(lang[183])
+    
+    if sys.platform == "win32":
+        terminal.iconbitmap(f"{data_dir}/app_icon.ico")
 
     LOG.write(f"{str(now())} - Opened the Terminal Inputs: OK\n")
 
@@ -3040,6 +3112,10 @@ Log File
 def show_log():
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
+    
+    if sys.platform == "win32":
+        _new_window.iconbitmap(f"{data_dir}/app_icon.ico")
+        
     _new_editor = WriterClassicEditor(_new_window, background=settings['theme']["color"], foreground=settings['theme']["fg"], insertbackground=settings['theme']["ct"], font=config_font, borderwidth=5)
     _new_window.title(lang[180])
     _new_editor.pack()
@@ -3161,7 +3237,7 @@ backup_system = BackupSystem()
 signature_plugin = SignaturePlugin()
 
 
-def change_wrap(**kw):
+def change_wrap(**kw) -> None:
     def inner(win, val: StringVar, editor: WriterClassicEditor):
         editor.change_wrapping(val.get())
         win.destroy()
@@ -3194,7 +3270,7 @@ def change_wrap(**kw):
     w.mainloop()
 
 
-def theme_maker():
+def theme_maker() -> None:
     w = Toplevel()
     w.title(lang[365])
 
@@ -3211,7 +3287,7 @@ def close_confirm() -> None:
     ic()
 
     if not has_been_modified():
-        choice = mb.askyesnocancel(lang[53], f"{lang[199]}\n{lang[200]}")
+        choice: bool | None = mb.askyesnocancel(lang[53], f"{lang[199]}\n{lang[200]}")
 
         if choice is None:
             ic()
@@ -3726,8 +3802,10 @@ def dencrypt():
             showinfo(lang[1], lang[275])
 
     new = Toplevel(desktop_win)
+    
     if sys.platform == "win32":
         new.iconbitmap(f"{data_dir}/app_icon.ico")
+    
     new.title(f"{lang[1]} - {lang[274]}")
     new.resizable(False, False)
 
@@ -3797,6 +3875,7 @@ def readme_gen_win():
     window = Toplevel(desktop_win)
     window.title(f"{lang[1]} - {lang[226]}")
     window.resizable(False, False)
+    
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 
@@ -3847,6 +3926,7 @@ def open_with_adv():
     window = Toplevel(desktop_win)
     window.title(f"{lang[1]} - {lang[254]}")
     window.resizable(False, False)
+    
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 
@@ -3935,8 +4015,8 @@ def message_write(mail: str, pwd: str, _variable, win):
     # [*] Window Creation
     window = Toplevel(desktop_win)
     window.title(f"{lang[1]} - {lang[246]}")
-
     window.resizable(False, False)
+    
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 

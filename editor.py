@@ -30,6 +30,9 @@ PASCAL_CASING = 'PascalCasing'
 CONSTANT_CASING = 'CONSTANT_CASING',
 SNAKE_CASING = 'snake_casing',
 CAMEL_CASING = 'camelCasing'
+KEBAB_CASING = 'kebab-case'
+TRAIN_CASING = 'Train-Case'
+COBOL_CASING = 'COBOL-CASE'
 
 INVERTED_CASING_1 = 'InVeRtEd cAsInG 1'
 INVERTED_CASING_2 = 'iNvErTeD CaSiNg 2'
@@ -92,11 +95,20 @@ class WriterClassicEditor(_ScrolledText):
                 result = cur_selection.upper()
                 
             case 'lower':
-                result = cur_selection.lower()
+                result = cur_selection.lower()                
             
             case 'pascal':
                 result = cur_selection.title().replace(' ', '')
                 
+            case 'train':
+                result = cur_selection.title().replace(' ', '-')
+            
+            case 'cobol':
+                result = cur_selection.upper().replace(' ', '-')
+                
+            case 'kebab':
+                result = cur_selection.lower().replace(' ', '-')
+            
             case 'constant':
                 result = cur_selection.upper().replace(' ', '_')
                 
@@ -107,7 +119,7 @@ class WriterClassicEditor(_ScrolledText):
                 result = cur_selection[0].lower() + cur_selection.title()[1:].replace(' ', '')
             
             case 'inverted' | 'inverted1':
-                cache = [i for i in cur_selection]
+                cache: list[str] = [i for i in cur_selection]
                 
                 for index, elem in enumerate(cache, 0):
                     if index == 0:
@@ -124,7 +136,7 @@ class WriterClassicEditor(_ScrolledText):
                     
                 result: str = ''.join(cache)
             
-            case 'inverted2':
+            case 'inverted2' | 'alternating':
                 cache = [i for i in cur_selection]
                 
                 for index, elem in enumerate(cache, 0):
