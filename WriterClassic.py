@@ -40,7 +40,7 @@ from getpass import getuser # [i] Used in order to obtain the username of the cu
 import zipfile as zipper # [i] Used to extract the zip files used by plugins
 
 # [i] tkinter is used for the UI, duh?!
-from tkinter import Listbox, Event, DISABLED, NORMAL, SINGLE, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, WORD, CHAR, NONE
+from tkinter import Listbox, Event, DISABLED, NORMAL, SINGLE, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, WORD, CHAR, NONE, Variable
 from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu, Radiobutton # [i] Used because of the auto syling in tkinter.ttk
 from tkinter import SEL_FIRST, SEL_LAST
 from tkinter.scrolledtext import ScrolledText # [!?] Only here so pyinstaller compiles it - not needed and gets removed later on
@@ -61,7 +61,7 @@ from email import encoders
 # [i] Custom widgets for WriterClassic specifically (a custom ScrolledText widget and a custom Toplevel for Search & Replace)
 from editor import WriterClassicEditor, SearchReplace, CustomThemeMaker, deprecated
 
-from plugin_system import initializer, run_a_plugin # [i] For WriterClassic's Plugin "API"
+# /-/ from plugin_system import PluginCentral, Plugin # [i] For WriterClassic's Plugin "API"
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
 from pygame import mixer # [i] Playing the sucessful sound => Only in this file so it gets compiled
@@ -289,12 +289,12 @@ def showerror(title: str | None = None, message: str | None = None, **options) -
     Returns:
         str: value returned by `tkinter.messagebox.showerror(title, message, **options)`
     """
-    
+
     s: str = mb.showerror(title, message, **options)
-    
+
     if title is not None and message is not None:
         LOG.error(message.split('\n')[-1], title.strip())
-        
+
     return s
 
 
@@ -309,12 +309,12 @@ def showwarning(title: str | None = None, message: str | None = None, **options)
     Returns:
         str: value returned by `tkinter.messagebox.showwarning(title, message, **options)`
     """
-    
+
     s = mb.showwarning(title, message, **options)
-    
+
     if title is not None and message is not None:
         LOG.warning(message.split('\n')[-1], title.strip())
-        
+
     return s
 
 
@@ -329,12 +329,12 @@ def showinfo(title: str | None = None, message: str | None = None, **options) ->
     Returns:
         str: value returned by `tkinter.messagebox.showinfo(title, message, **options)`
     """
-    
+
     s = mb.showinfo(title, message, **options)
-    
+
     if title is not None and message is not None:
         LOG.action(message.split('\n')[-1], f"- MESSAGEBOX => {title.strip()}")
-        
+
     return s
 
 
@@ -459,7 +459,7 @@ ic(settings['language'])
 
 with open(os.path.join(locale, f"{settings['language'][:2]}.wclassic"), 'r', encoding='utf-8') as usedLangFile:
     usedLang = usedLangFile.read()
-    lang = usedLang.split('\n') 
+    lang = usedLang.split('\n')
     LOG.write(f"{str(now())} - Language has been configured correctly: OK\n")
 
 # [*] Windowing
@@ -1384,7 +1384,7 @@ def draft_notepad() -> None:
     # [i] Windowing
     new_window.title(lang[22])
     new_window.geometry("600x400")
-    
+
     if sys.platform == "win32":
         new_window.iconbitmap(f"{data_dir}/app_icon.ico")
 
@@ -1469,7 +1469,7 @@ class BackupSystem:
 
                     else:
                         os.system(f'rm -rf {path_to_remove}')
-                        
+
                 except FileNotFoundError as e:
                     LOG.error(text="File/directory missing while trying to extract the backup", error_details=str(object=e))
                     raise Exception from e # [i] it will be caught by the statement below
@@ -1977,7 +1977,7 @@ def stem_only(__s: str) -> str:
 
 def open_file_manually(file_path: str, root_win: Tk = desktop_win) -> None:
     global current_file, cur_data, save_status
-    
+
     file_path = os.path.abspath(file_path)
 
     try:
@@ -1988,7 +1988,7 @@ def open_file_manually(file_path: str, root_win: Tk = desktop_win) -> None:
             root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
             text_widget.delete(index1=0.0, index2=END)
             text_widget.insert(chars=file_data, index=END)
-            
+
             current_file = file_path
             cur_data = text_widget.content
             save_status = True
@@ -1998,13 +1998,13 @@ def open_file_manually(file_path: str, root_win: Tk = desktop_win) -> None:
     except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
         showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
         run_default = mb.askyesno(title=lang[187], message=lang[189])
-        
+
         if run_default:
             os.system(str(file_path))
-    
+
     else:
         recent_stack.append(current_file)
-        
+
     finally:
         fast_dump()
         ic(current_file)
@@ -2017,14 +2017,14 @@ def open_file(root_win: Tk = desktop_win, initialfile: str = 'Open a File', **kw
     Args:
         root_win (Tk): WriterClassic's main window
     """
-    
+
     filetypes: list[tuple[str, str]] = kw.get('filetypes', FILETYPES.copy())
-    
+
     file_path: str = dlg.asksaveasfilename(parent=root_win, filetypes=filetypes, defaultextension="*.*", initialfile=initialfile, confirmoverwrite=False, title=lang[7])
 
     if not file_path:
         return
-    
+
     open_file_manually(file_path)
 
 
@@ -2044,7 +2044,7 @@ def save_as_file(root_win: Tk = desktop_win):
     data = text_widget.content
     save_status = True
     file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=FILETYPES, defaultextension="*.*", initialfile="New File To Save")
-    
+
     # [*] Get the selected file extension
     selected_extension = None
     for ft in FILETYPES:
@@ -2194,20 +2194,20 @@ def change_casing() -> None:
     def _swap_casing(casing: str):
         if not text_widget.selection:
             showerror(lang[1], lang[372])
-            
+
         else:
             text_widget.change_selection_casing(casing)
-    
+
     w = Toplevel()
     w.title(lang[371])
     w.resizable(False, False)
-    
+
     if sys.platform == 'win32':
         w.iconbitmap(os.path.join(data_dir, 'app_icon.ico'))
-    
+
     f1 = Frame(w)
     f2 = Frame(w)
-    
+
     lower_butt = Button(f1, text="lower case", command=lambda:
         _swap_casing('lower'))
     upper_butt = Button(f1, text="UPPER CASE", command=lambda:
@@ -2232,24 +2232,24 @@ def change_casing() -> None:
         _swap_casing('inverted'))
     alternating_butt = Button(f2, text="aLtErNaTiNg cAsE", command=lambda:
         _swap_casing('alternating'))
-    
+
     lower_butt.grid(column=0, row=0, padx=5, pady=5)
     upper_butt.grid(column=1, row=0, padx=5, pady=5)
     title_butt.grid(column=2, row=0, padx=5, pady=5)
     pascal_butt.grid(column=3, row=0, padx=5, pady=5)
     constant_butt.grid(column=4, row=0, padx=5, pady=5)
     snake_butt.grid(column=5, row=0, padx=5, pady=5)
-    
+
     camel_butt.grid(column=0, row=0, padx=5, pady=5)
     train_butt.grid(column=1, row=0, padx=5, pady=5)
     cobol_butt.grid(column=2, row=0, padx=5, pady=5)
     kebab_butt.grid(column=3, row=0, padx=5, pady=5)
     inverted_butt.grid(column=4, row=0, padx=5, pady=5)
     alternating_butt.grid(column=5, row=0, padx=5, pady=5)
-    
+
     f1.pack()
     f2.pack()
-    
+
     w.mainloop()
 
 
@@ -2451,7 +2451,7 @@ def about_writerclassic():
     about_dialogue = Toplevel(desktop_win)
     about_dialogue.geometry("600x275")
     about_dialogue.resizable(False, False)
-    
+
     if sys.platform == "win32":
         about_dialogue.iconbitmap(f"{data_dir}/app_icon.ico")
 
@@ -2509,10 +2509,10 @@ def about_writerclassic():
 
 
 def search_replace():
-    s = SearchReplace(desktop_win, text_widget, True, lang_exps=lang.copy(), ico=os.path.join(data_dir, 'app_icon.ico'))
-    s.initiate_setup(s)
-    s.resizable(False, False)
-    s.mainloop()
+    search_window = SearchReplace(desktop_win, text_widget, True, lang_exps=lang.copy(), ico=os.path.join(data_dir, 'app_icon.ico'))
+    search_window.initiate_setup(search_window)
+    search_window.resizable(False, False)
+    search_window.mainloop()
 
 
 def markdown_preview() -> None:
@@ -2626,7 +2626,7 @@ def terminal_inputs():
 
     terminal = Toplevel(desktop_win)
     terminal.title(lang[183])
-    
+
     if sys.platform == "win32":
         terminal.iconbitmap(f"{data_dir}/app_icon.ico")
 
@@ -2870,6 +2870,9 @@ class Plugin:
                     with zipper.ZipFile(zip_filepath, mode="r") as zip_ref:
                         zip_ref.extractall(new_folder_path)
 
+                    with open('Details.txt', 'a', encoding='utf-8') as f:
+                        f.write(f'\n{datax.strip()}')
+
                     # [!?] Delete the downloaded zip file
                     os.remove(zip_filepath)
 
@@ -2892,7 +2895,7 @@ class Plugin:
                     counter += 1
 
                 with open(os.path.join(new_folder_path, 'Details.txt'), 'w', encoding='utf-8') as f:
-                    f.write(f"{name.strip()}\n{author.strip()}\n{description.strip()}")
+                    f.write(f"{name.strip()}\n{author.strip()}\n{description.strip()}\n{datax.strip()}")
 
                 response = get(pyfile, timeout=1)
                 response.raise_for_status()
@@ -2912,16 +2915,16 @@ class Plugin:
 
         except VersionError:
             showerror(lang[1], lang[358])
-            
+
         except ValueError as e:
             LOG.error("Invalid version or missing Python file while attempting to download a plugin using a MANIFEST", str(e))
             raise Exception from e
-            
+
         except Exception as e:
             showerror(lang[133], f"{lang[134]}\n{e}")
 
     _get_files = _get_files_by_manifest
-    
+
     @deprecated('since the addition of manifests, using version files isn\'t recommended and is planned for removal in v10.9.0')
     def _get_files_by_version(self) -> None:
         """
@@ -2980,23 +2983,120 @@ class Plugin:
                 os.remove(zip_filepath)
 
 
-def install_plugin(**options):
+class PluginCentral:
     """
-    install_plugin installs a plugin using Plugin
+    PluginCentral
+
+    A feature rich plugin central
     """
 
-    questiony = None
+    def __init__(self, plugin_folder: str = plugin_dir) -> None:
+        self.PLUGIN_FOLDER: str = plugin_folder
+        self._plugins: dict[str, tuple[str, str, str, str, str]] = {}
+        
+        self.CENTRAL, self.TITLE, self.FRAME = None, None, None
+        
+        self._list_plugins()
+        
+    def display_ui(self, root: Tk | Toplevel = desktop_win):
+        self.CENTRAL = Toplevel(root)
+        
+        self._plugins_var = Variable(self.CENTRAL, tuple(self._plugins.keys()))
+        
+        self.FRAME = Frame(self.CENTRAL)
+        
+        self.TITLE = Label(self.CENTRAL, text="Plugin Central", font=Font(family=config_font.actual()['family'], size=16, weight='bold', slant='roman', overstrike=False))
+        self.SELECTION_BOX = Listbox(self.CENTRAL, listvariable=self._plugins_var, background='black', foreground='white', selectmode=SINGLE)
+            
+        self.RUN_BUTT = Button(self.FRAME, text='Run')
+        self.INSTALL_BUTT = Button(self.FRAME, text='Install', command=self.install_plugin)
+        self.REMOVE_BUTT = Button(self.FRAME, text='Remove')
+        
+        self.INFO_BUTT = Button(self.FRAME, text='Info')
+        self.SHOW_BUTT = Button(self.FRAME, text='Show in File Manager')
+        self.EXIT_BUTT = Button(self.FRAME, text='Quit the Central', command=self.CENTRAL.destroy)
+        
+        self.RUN_BUTT.grid(column=0, row=0, padx=5, pady=5)
+        self.INSTALL_BUTT.grid(column=1, row=0, padx=5, pady=5)
+        self.REMOVE_BUTT.grid(column=2, row=0, padx=5, pady=5)
+        
+        self.INFO_BUTT.grid(column=0, row=1, padx=5, pady=5)
+        self.SHOW_BUTT.grid(column=1, row=1, padx=5, pady=5)
+        self.EXIT_BUTT.grid(column=2, row=1, padx=5, pady=5)
+        
+        self.TITLE.pack()
+        self.SELECTION_BOX.pack()
+        self.FRAME.pack()
+        
+        self.CENTRAL.mainloop()
 
-    try:
-        if len(options["folder_name"]) >= 1:
-            questiony = options["folder_name"]
+    def run_plugin(self, name: str | None = None):
+        '''XXX'''
+        
+        if not name:
+            try:
+                name: str = self.SELECTION_BOX.curselection()
+                
+            except TclError:
+                pass        
 
-    except KeyError:
-        questiony = sdg.askstring(lang[1], f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
+    def install_plugin(self, plugin_name: str | None = None, **_):
+        """
+        install_plugin installs a plugin using Plugin
+        
+        If `plugin_name` is None or an empty string, launch the GUI.
+        
+        Else, no GUI is launched whatsoever.
+        """
+        
+        if not plugin_name:
+            plugin_name = sdg.askstring(lang[1], f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
 
-    finally:
-        plugin = Plugin(folder_name=str(questiony))
+        plugin = Plugin(folder_name=plugin_name)
         plugin.obtain_files()
+        
+        self._list_plugins()
+
+    def _list_plugins(self) -> None:
+        plugin_folder = self.PLUGIN_FOLDER
+        installed_plugins: dict[str, tuple[str, str, str, str, str]] = {}
+        
+        for root, _, filenames in os.walk(plugin_folder, False):
+            root = os.path.abspath(root)
+            directory = os.path.basename(root)
+
+            if directory == 'plugins':
+                continue
+
+            if not directory.startswith('plugin_'):
+                continue
+
+            if not directory[7:].isdigit():
+                continue
+
+            if 'Details.txt' not in filenames:
+                continue
+
+            if 'WriterPlugin.png' not in filenames:
+                continue
+
+            details: list | None = None
+
+            with open(os.path.join(root, 'Details.txt'), 'r', encoding='utf-8') as f:
+                details = f.read().split('\n', maxsplit=4)
+
+            if len(details) < 4:
+                continue
+
+            if f"{details[0].replace(' ', '_')}.py" not in filenames:
+                continue
+            
+            details: list[str] = details[:4]
+            details.append(os.path.join(root, f"{details[0].replace(' ', '_')}.py"))
+
+            installed_plugins[f"{details[0].strip()} ({details[4].strip()})"] = tuple(details.copy())
+            
+        self._plugins = installed_plugins.copy()
 
 
 def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: int = 1):
@@ -3019,7 +3119,7 @@ def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: i
         7 - Dir where data like versioning and logos are (data)
         8 - Dir where all language files are stored (locale)
         9 - Dir where all temporary files get stored (temp; this folder is cleared every time you open WriterClassic)
-        10 - Dir where auto scripts are stored (scripts)
+        10 - Dir where WSCRIPTs are stored (scripts)
     """
 
     ids = (
@@ -3043,20 +3143,20 @@ def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: i
     if path_to_remove == "plugx":
         path_to_remove = os.path.join(plugin_dir, f"plugin_{_plug}")
 
-    c = mb.askyesno(lang[308], f"{lang[307]} '{path_to_remove}'.")
+    confirmation = mb.askyesno(lang[308], f"{lang[307]} '{path_to_remove}'.")
 
-    if c:
+    if confirmation:
         try:
             if sys.platform == "win32":
                 os.system(f'rmdir /s /q {path_to_remove}')
                 return
 
             os.system(f'rm -rf {path_to_remove}')
-        
+
         except FileNotFoundError as e:
             LOG.error(text="File/directory missing while trying to extract the backup", error_details=str(object=e))
             raise Exception from e # [i] it will be caught by the statement below
-        
+
         except Exception as e:
             showerror(lang[308], f"{lang[309]} '{path_to_remove}':\n{e}")
 
@@ -3082,7 +3182,7 @@ def remove_plugin():
             return
 
         os.system(f'rm -rf {os.path.join(plugin_dir, f"plugin_{datax}")}')
-    
+
     except Exception as e:
         showerror(lang[311], f"{lang[309]} '{os.path.join(plugin_dir, f'plugin_{datax}')}':\n{e}")
 
@@ -3112,10 +3212,10 @@ Log File
 def show_log():
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
-    
+
     if sys.platform == "win32":
         _new_window.iconbitmap(f"{data_dir}/app_icon.ico")
-        
+
     _new_editor = WriterClassicEditor(_new_window, background=settings['theme']["color"], foreground=settings['theme']["fg"], insertbackground=settings['theme']["ct"], font=config_font, borderwidth=5)
     _new_window.title(lang[180])
     _new_editor.pack()
@@ -3323,19 +3423,19 @@ COMMANDS: dict[str, Any] = {
     "Editor:Inverted": lambda: text_widget.change_selection_casing('inverted'),
     "Editor:Inverted1": lambda: text_widget.change_selection_casing('inverted1'),
     "Editor:Inverted2": lambda: text_widget.change_selection_casing('inverted2'),
-        
+
     "File:Open": open_file,
     "File:SaveAs": save_as_file,
-    
+
     "Status:Save": save_file,
     "Status:Refresh": has_been_modified,
-    
+
     "Plugins:Install": install_plugin,
     "Plugins:Run": run_plugin,
     "Plugins:Remove": remove_plugin,
-    
+
     "History:Reset": text_widget.edit_reset,
-    
+
     "Software:Quit": close_confirm,
     "Software:ForceQuit": quickway,
     "Software:About": about_writerclassic,
@@ -3345,24 +3445,24 @@ COMMANDS: dict[str, Any] = {
     "Software:Credits": app_credits,
     "Software:Tips": tips_tricks,
     "Software:Version": update_check.manual_check,
-    
+
     "Log:Clear": clear_log_file,
     "Log:Preview": show_log,
-    
+
     "Settings:Dump": fast_dump,
     "Settings:Save": fast_dump,
     "Settings:Size": set_window_size,
     "Settings:Reset": reset_writerclassic,
     "Settings:Backup": lambda: backup_system.run_action("zip"),
     "Settings:Load": lambda: backup_system.run_action('unzip'),
-    
+
     "Tools:Notepad": draft_notepad,
     "Tools:WipeFile": wipe_file,
     "Tools:Markdown": markdown_preview,
     "Tools:Terminal": terminal_inputs,
-    
+
     "Advanced:DesktopFile": desktop_create_win,
-    
+
     "Internet:Website": internet_plugin.goto_website,
 }
 
@@ -3802,10 +3902,10 @@ def dencrypt():
             showinfo(lang[1], lang[275])
 
     new = Toplevel(desktop_win)
-    
+
     if sys.platform == "win32":
         new.iconbitmap(f"{data_dir}/app_icon.ico")
-    
+
     new.title(f"{lang[1]} - {lang[274]}")
     new.resizable(False, False)
 
@@ -3875,7 +3975,7 @@ def readme_gen_win():
     window = Toplevel(desktop_win)
     window.title(f"{lang[1]} - {lang[226]}")
     window.resizable(False, False)
-    
+
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 
@@ -3926,7 +4026,7 @@ def open_with_adv():
     window = Toplevel(desktop_win)
     window.title(f"{lang[1]} - {lang[254]}")
     window.resizable(False, False)
-    
+
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 
@@ -3986,19 +4086,19 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
         message['To'] = recipient_email
         message['Subject'] = subject
         message.attach(MIMEText(body, 'plain'))
-        
+
         with open(current_file, "r", encoding="utf-8") as attachment:
             part = MIMEBase('application', 'octet-stream')
             part.set_payload(attachment.read())
             encoders.encode_base64(part)
             part.add_header('Content-Disposition', f"attachment; filename= {os.path.basename(current_file)}")
             message.attach(part)
-        
+
         server.sendmail(sender_email, recipient_email, message.as_string())
 
     except (ConnectionError, TimeoutError) as e:
         showerror(lang[133], f"{lang[134]}\n{e}")
-    
+
     except Exception as e:
         showerror(lang[1], f"{lang[247]}\n{lang[248]}\n{e}")
 
@@ -4016,7 +4116,7 @@ def message_write(mail: str, pwd: str, _variable, win):
     window = Toplevel(desktop_win)
     window.title(f"{lang[1]} - {lang[246]}")
     window.resizable(False, False)
-    
+
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 
@@ -4243,9 +4343,9 @@ if os.path.exists(path=os.path.join(scripts_dir, "auto.wscript")):
     if _run_auto:
         try:
             auto_script.run()
-        
-        # [*] in this case, a general Exception is used because any type of error can happen    
-        
+
+        # [*] in this case, a general Exception is used because any type of error can happen
+
         except Exception as e:
             showerror(lang[133], f"{lang[134]}\n{e}")
 

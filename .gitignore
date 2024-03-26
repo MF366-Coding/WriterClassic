@@ -2,3 +2,5 @@ __pycache__
 canary
 test
 .venv
+.WriterClassic.py.un~
+WriterClassic.py~
