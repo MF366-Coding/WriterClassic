@@ -24,6 +24,7 @@ Small but lovely contributions by:
 
 # [*] Sorting the imports
 import os
+import shutil
 import sys
 import json
 import random
@@ -61,7 +62,7 @@ from email import encoders
 # [i] Custom widgets for WriterClassic specifically (a custom ScrolledText widget and a custom Toplevel for Search & Replace)
 from editor import WriterClassicEditor, SearchReplace, CustomThemeMaker, deprecated
 
-# /-/ from plugin_system import PluginCentral, Plugin # [i] For WriterClassic's Plugin "API"
+from plugin_system import load_module_from_source # [i] For WriterClassic's Plugin "API"
 from setting_loader import get_settings, dump_settings # [i] Used to load and dump WriterClassic's settings
 
 from pygame import mixer # [i] Playing the sucessful sound => Only in this file so it gets compiled
@@ -79,7 +80,7 @@ import markdown2 # [i] Used to make HTML files from Markdown
 import simple_webbrowser # [i] My own Python module (used for the Search with... options)
 from requests import get, exceptions # [i] Used for regular interactions with the Internet
 
-del ScrolledText, colorchooser, mixer
+del ScrolledText, colorchooser
 
 current_file = False # [*] current file, otherwise False
 cur_data: str = ""
@@ -118,6 +119,9 @@ Powered by: Python 3.11+
 
 # [*] String statement doesn't have any effect
 # pylint: disable=W0105
+
+# [*] Consider explicitly re-raising...
+# pylint: disable=W0707
 
 # [*] Get the absolute path of the script
 script_path: str = os.path.abspath(__file__)
@@ -390,6 +394,7 @@ class InvalidSnippet(Exception): ...
 class InvalidEngine(Exception): ...
 class ScriptError(Exception): ...
 class VersionError(Exception): ...
+class PluginNotFoundError(Exception): ...
 
 
 def clip_actions(__id: Literal['copy', 'paste'], __s: str = '') -> str:
@@ -2993,74 +2998,221 @@ class PluginCentral:
     def __init__(self, plugin_folder: str = plugin_dir) -> None:
         self.PLUGIN_FOLDER: str = plugin_folder
         self._plugins: dict[str, tuple[str, str, str, str, str]] = {}
-        
-        self.CENTRAL, self.TITLE, self.FRAME = None, None, None
-        
+
+        self.CENTRAL, self.TITLE, self.FRAME, self.TITLE = None, None, None, None
+        self.SELECTION_BOX, self.RUN_BUTT, self.INSTALL_BUTT, self.REMOVE_BUTT = None, None, None, None
+        self.INFO_BUTT, self.SHOW_BUTT, self.EXIT_BUTT = None, None, None
+        self._plugins_var = None
+
         self._list_plugins()
-        
-    def display_ui(self, root: Tk | Toplevel = desktop_win):
+
+    def destroy_ui(self):
+        if self.CENTRAL is None:
+            return
+
+        self.CENTRAL.destroy()
+
+        self.CENTRAL, self.TITLE, self.FRAME, self.TITLE = None, None, None, None
+        self.SELECTION_BOX, self.RUN_BUTT, self.INSTALL_BUTT, self.REMOVE_BUTT = None, None, None, None
+        self.INFO_BUTT, self.SHOW_BUTT, self.EXIT_BUTT = None, None, None
+        self._plugins_var = None
+
+    def display_ui(self, root: Tk | Toplevel = desktop_win, limit_windows: bool = True):
+        if isinstance(self.CENTRAL, Toplevel) and limit_windows:
+            self.CENTRAL.focus_set()
+            return
+
         self.CENTRAL = Toplevel(root)
-        
+        self.CENTRAL.title(f"{lang[1]} - Plugin Central")
+
+        if sys.platform == "win32":
+            self.CENTRAL.iconbitmap(f"{data_dir}/app_icon.ico")
+
         self._plugins_var = Variable(self.CENTRAL, tuple(self._plugins.keys()))
-        
+
         self.FRAME = Frame(self.CENTRAL)
-        
+
         self.TITLE = Label(self.CENTRAL, text="Plugin Central", font=Font(family=config_font.actual()['family'], size=16, weight='bold', slant='roman', overstrike=False))
         self.SELECTION_BOX = Listbox(self.CENTRAL, listvariable=self._plugins_var, background='black', foreground='white', selectmode=SINGLE)
-            
-        self.RUN_BUTT = Button(self.FRAME, text='Run')
+
+        self.RUN_BUTT = Button(self.FRAME, text='Run', command=self.run_plugin)
         self.INSTALL_BUTT = Button(self.FRAME, text='Install', command=self.install_plugin)
-        self.REMOVE_BUTT = Button(self.FRAME, text='Remove')
-        
-        self.INFO_BUTT = Button(self.FRAME, text='Info')
+        self.REMOVE_BUTT = Button(self.FRAME, text='Remove', command=self.remove_plugin)
+
+        self.INFO_BUTT = Button(self.FRAME, text='Info', command=self.display_plugin_info_on_window())
         self.SHOW_BUTT = Button(self.FRAME, text='Show in File Manager')
         self.EXIT_BUTT = Button(self.FRAME, text='Quit the Central', command=self.CENTRAL.destroy)
-        
+
         self.RUN_BUTT.grid(column=0, row=0, padx=5, pady=5)
         self.INSTALL_BUTT.grid(column=1, row=0, padx=5, pady=5)
         self.REMOVE_BUTT.grid(column=2, row=0, padx=5, pady=5)
-        
+
         self.INFO_BUTT.grid(column=0, row=1, padx=5, pady=5)
         self.SHOW_BUTT.grid(column=1, row=1, padx=5, pady=5)
         self.EXIT_BUTT.grid(column=2, row=1, padx=5, pady=5)
-        
+
         self.TITLE.pack()
         self.SELECTION_BOX.pack()
         self.FRAME.pack()
-        
-        self.CENTRAL.mainloop()
 
-    def run_plugin(self, name: str | None = None):
-        '''XXX'''
-        
+        self.CENTRAL.mainloop()
+    
+    def _display_plugin_info(self, name: str | None = None):
         if not name:
             try:
                 name: str = self.SELECTION_BOX.curselection()
-                
+
             except TclError:
-                pass        
+                mb.showerror(lang[1], "You must select a plugin to remove!")
+                return
+
+        try:
+            module_info: list[str, str, str, str, str] = self._plugins[name]
+
+        except (KeyError, IndexError) as e:
+            raise PluginNotFoundError(f"no plugin results for '{name}' or no version details: {e}")
+
+        subwindow = Toplevel(desktop_win if self.CENTRAL is None else self.CENTRAL)
+        subwindow.title(f"{lang[1]} - Plugin Info")
+
+        if sys.platform == "win32":
+            subwindow.iconbitmap(f"{data_dir}/app_icon.ico")
+
+        image = Image.open(os.path.join(os.path.abspath(os.path.dirname(module_info[4])), "WriterPlugin.png"))
+        image_width, image_height = image.size
+
+        max_width = 200
+        max_height = 200
+
+        if image_width > image_height:
+            desired_width = min(image_width, max_width)
+            desired_height = int(desired_width * image_height / image_width)
+
+        else:
+            desired_height = min(image_height, max_height)
+            desired_width = int(desired_height * image_width / image_height)
+
+        resized_image: Image.Image = image.resize((desired_width, desired_height), Image.LANCZOS)
+
+        short_description: str = module_info[2].strip()
+
+        if len(short_description) > 60:
+            short_description = f"{short_description[:60]}..."
+
+        photo = ImageTk.PhotoImage(resized_image)
+
+        image_label = Label(subwindow, image=photo)
+        plugin_name_label = Label(subwindow, text=module_info[0].strip(), font=Font(family=config_font.actual()['family'], size=16, weight='bold', slant='roman', overstrike=False))
+        plugin_version_label = Label(subwindow, text=f"Version: {module_info[3].strip()}")
+        plugin_author_label = Label(subwindow, text=f"Author: {module_info[1].strip()}")
+        plugin_description_label = Label(subwindow, text=f"Description:\n{short_description}")
+
+        plugin_name_label.pack()
+        image_label.pack()
+        plugin_version_label.pack()
+        plugin_author_label.pack()
+        plugin_description_label.pack()
+
+        subwindow.mainloop()
+        
+    display_plugin_info_on_window = _display_plugin_info
+
+    def _remove_plugin(self, name: str | None = None):
+        if not name:
+            try:
+                name: str = self.SELECTION_BOX.curselection()
+
+            except TclError:
+                mb.showerror(lang[1], "You must select a plugin to remove!")
+                return
+
+        try:
+            module_path: str = self._plugins[name][4]
+
+        except (KeyError, IndexError) as e:
+            raise PluginNotFoundError(f"no plugin results for '{name}' or no version details: {e}")
+
+        confirmation = mb.askyesno(lang[1], f"Are you sure you want to remove plugin {name}?\nThis action is permanent and cannot be undone!")
+
+        if not confirmation:
+            return
+
+        module_folder = os.path.dirname(module_path)
+
+        try:
+            shutil.rmtree(os.path.abspath(module_folder))
+
+        except (PermissionError, OSError) as e:
+            mb.showerror(lang[1], f"WriterClassic lacks the permissions to remove the plugin.\nA manual removal might be necessary.\n{e}")
+
+    def remove_plugin(self, name: str | None = None):
+        try:
+            self._remove_plugin(name)
+
+        except PluginNotFoundError as e:
+            showerror(lang[1], f"The selected plugin doesn't exist.\n{e}")
+
+        except Exception as e:
+            showerror(lang[133], f"{lang[134]}\n{e}")
+
+    def _run_plugin(self, name: str | None = None):
+        if not name:
+            try:
+                name: str = self.SELECTION_BOX.curselection()
+
+            except TclError:
+                mb.showerror(lang[1], "You must select a plugin to run!")
+                return
+
+        try:
+            module_path = self._plugins[name][4]
+
+        except (KeyError, IndexError) as e:
+            raise PluginNotFoundError(f"no plugin results for '{name}' or no version details: {e}")
+
+        wclassic_vars = globals().copy()
+
+        mixer.quit()
+        mixer.init()
+        mixer.music.load(os.path.join(wclassic_vars['data_dir'], 'sucessful.mp3'))
+        mixer.music.set_volume(0.5)
+        mixer.music.play()
+
+        module = load_module_from_source(self._plugins[name][0].replace(" ", "_"), module_path)
+
+        module.start(wclassic_vars)
+
+    def run_plugin(self, name: str | None = None):
+        try:
+            self._run_plugin(name)
+
+        except PluginNotFoundError as e:
+            showerror(lang[1], f"The selected plugin doesn't exist.\n{e}")
+
+        except Exception as e:
+            showerror(lang[133], f"{lang[134]}\n{e}")
 
     def install_plugin(self, plugin_name: str | None = None, **_):
         """
         install_plugin installs a plugin using Plugin
-        
+
         If `plugin_name` is None or an empty string, launch the GUI.
-        
+
         Else, no GUI is launched whatsoever.
         """
-        
+
         if not plugin_name:
             plugin_name = sdg.askstring(lang[1], f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
 
         plugin = Plugin(folder_name=plugin_name)
         plugin.obtain_files()
-        
+
         self._list_plugins()
 
     def _list_plugins(self) -> None:
         plugin_folder = self.PLUGIN_FOLDER
         installed_plugins: dict[str, tuple[str, str, str, str, str]] = {}
-        
+
         for root, _, filenames in os.walk(plugin_folder, False):
             root = os.path.abspath(root)
             directory = os.path.basename(root)
@@ -3090,12 +3242,12 @@ class PluginCentral:
 
             if f"{details[0].replace(' ', '_')}.py" not in filenames:
                 continue
-            
+
             details: list[str] = details[:4]
             details.append(os.path.join(root, f"{details[0].replace(' ', '_')}.py"))
 
-            installed_plugins[f"{details[0].strip()} ({details[4].strip()})"] = tuple(details.copy())
-            
+            installed_plugins[f"{details[0].strip()} ({details[3].strip()})"] = tuple(details.copy())
+
         self._plugins = installed_plugins.copy()
 
 
