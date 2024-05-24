@@ -27,6 +27,7 @@ import os
 import shutil
 import sys
 import json
+import subprocess
 import random
 import datetime
 import platform
@@ -378,6 +379,17 @@ def clamp(val: float | int, _min: float | int, _max: float | int) -> object:
         return _max
 
     return val
+
+
+def open_in_file_explorer(path: str):
+    if sys.platform == "win32":
+        os.startfile(path)
+
+    elif sys.platform == "darwin":
+        subprocess.Popen(["open", path])
+
+    else:
+        subprocess.Popen(["xdg-open", path])
 
 
 desktop_win = Tk()
@@ -2875,7 +2887,7 @@ class Plugin:
                     with zipper.ZipFile(zip_filepath, mode="r") as zip_ref:
                         zip_ref.extractall(new_folder_path)
 
-                    with open('Details.txt', 'a', encoding='utf-8') as f:
+                    with open(os.path.join(new_folder_path, 'Details.txt'), 'a', encoding='utf-8') as f:
                         f.write(f'\n{datax.strip()}')
 
                     # [!?] Delete the downloaded zip file
@@ -3001,7 +3013,7 @@ class PluginCentral:
 
         self.CENTRAL, self.TITLE, self.FRAME, self.TITLE = None, None, None, None
         self.SELECTION_BOX, self.RUN_BUTT, self.INSTALL_BUTT, self.REMOVE_BUTT = None, None, None, None
-        self.INFO_BUTT, self.SHOW_BUTT, self.EXIT_BUTT = None, None, None
+        self.INFO_BUTT, self.SHOW_BUTT, self.EXIT_BUTT, self.REFRESH_BUTT = None, None, None, None
         self._plugins_var = None
 
         self._list_plugins()
@@ -3014,16 +3026,19 @@ class PluginCentral:
 
         self.CENTRAL, self.TITLE, self.FRAME, self.TITLE = None, None, None, None
         self.SELECTION_BOX, self.RUN_BUTT, self.INSTALL_BUTT, self.REMOVE_BUTT = None, None, None, None
-        self.INFO_BUTT, self.SHOW_BUTT, self.EXIT_BUTT = None, None, None
+        self.INFO_BUTT, self.SHOW_BUTT, self.EXIT_BUTT, self.REFRESH_BUTT = None, None, None, None
         self._plugins_var = None
 
     def display_ui(self, root: Tk | Toplevel = desktop_win, limit_windows: bool = True):
+        self._list_plugins()
+        
         if isinstance(self.CENTRAL, Toplevel) and limit_windows:
             self.CENTRAL.focus_set()
             return
 
-        self.CENTRAL = Toplevel(root)
+        self.CENTRAL = Toplevel(root)        
         self.CENTRAL.title(f"{lang[1]} - Plugin Central")
+        self.CENTRAL.resizable(False, False)
 
         if sys.platform == "win32":
             self.CENTRAL.iconbitmap(f"{data_dir}/app_icon.ico")
@@ -3038,42 +3053,93 @@ class PluginCentral:
         self.RUN_BUTT = Button(self.FRAME, text='Run', command=self.run_plugin)
         self.INSTALL_BUTT = Button(self.FRAME, text='Install', command=self.install_plugin)
         self.REMOVE_BUTT = Button(self.FRAME, text='Remove', command=self.remove_plugin)
+        self.REFRESH_BUTT = Button(self.FRAME, text='Refresh', command=self.refresh_selection_listbox)
 
-        self.INFO_BUTT = Button(self.FRAME, text='Info', command=self.display_plugin_info_on_window())
-        self.SHOW_BUTT = Button(self.FRAME, text='Show in File Manager')
-        self.EXIT_BUTT = Button(self.FRAME, text='Quit the Central', command=self.CENTRAL.destroy)
+        self.INFO_BUTT = Button(self.FRAME, text='Info', command=self.display_plugin_info_on_window)
+        self.SHOW_BUTT = Button(self.FRAME, text='Show in File Manager', command=self.show_plugin_in_explorer)
+        self.EXIT_BUTT = Button(self.FRAME, text='Quit the Central', command=self.destroy_ui)
 
         self.RUN_BUTT.grid(column=0, row=0, padx=5, pady=5)
         self.INSTALL_BUTT.grid(column=1, row=0, padx=5, pady=5)
         self.REMOVE_BUTT.grid(column=2, row=0, padx=5, pady=5)
-
-        self.INFO_BUTT.grid(column=0, row=1, padx=5, pady=5)
-        self.SHOW_BUTT.grid(column=1, row=1, padx=5, pady=5)
-        self.EXIT_BUTT.grid(column=2, row=1, padx=5, pady=5)
+        
+        self.REFRESH_BUTT.grid(column=0, row=1, padx=5, pady=5)
+        self.INFO_BUTT.grid(column=1, row=1, padx=5, pady=5)
+        self.SHOW_BUTT.grid(column=2, row=1, padx=5, pady=5)
+        
+        self.EXIT_BUTT.grid(column=1, row=2, padx=5, pady=5)
 
         self.TITLE.pack()
         self.SELECTION_BOX.pack()
         self.FRAME.pack()
 
+        self.CENTRAL.protocol(name="WM_DELETE_WINDOW", func=self.destroy_ui)
+
         self.CENTRAL.mainloop()
-    
+
+    def refresh_selection_listbox(self):
+        self._list_plugins()
+        
+        if isinstance(self._plugins_var, Variable):
+            self._plugins_var.set(tuple(self._plugins.keys()))
+            
+    def _show_in_file_explorer(self, name: str | None = None):        
+        if not name:
+            try:
+                name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
+
+            except TclError:
+                showerror(lang[1], "You must select a plugin to open in Explorer!")
+                return
+            
+        ic(name)
+        ic(self._plugins)
+        ic(self._plugins[name])
+
+        try:
+            module_path: str = self._plugins[name][4]
+
+        except (KeyError, IndexError) as e:
+            raise PluginNotFoundError(f"no plugin results for '{name}' or no version details: {e}")
+        
+        try:
+            open_in_file_explorer(os.path.abspath(os.path.dirname(module_path)))
+
+        except Exception as e:
+            showerror(lang[1], f"Seems like something went wrong...\n{e}")
+
+    def show_plugin_in_explorer(self, name: str | None = None):
+        try:
+            self._show_in_file_explorer(name)
+
+        except PluginNotFoundError as e:
+            showerror(lang[1], f"The selected plugin doesn't exist.\n{e}")
+
+        except Exception as e:
+            showerror(lang[133], f"{lang[134]}\n{e}")
+
     def _display_plugin_info(self, name: str | None = None):
         if not name:
             try:
-                name: str = self.SELECTION_BOX.curselection()
+                name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
 
             except TclError:
-                mb.showerror(lang[1], "You must select a plugin to remove!")
+                showerror(lang[1], "You must select a plugin!")
                 return
-
+        
+        ic(name)
+        ic(self._plugins)
+        ic(self._plugins[name])
+        
         try:
-            module_info: list[str, str, str, str, str] = self._plugins[name]
+            module_info: tuple[str, str, str, str, str] = self._plugins[name]
 
         except (KeyError, IndexError) as e:
             raise PluginNotFoundError(f"no plugin results for '{name}' or no version details: {e}")
 
         subwindow = Toplevel(desktop_win if self.CENTRAL is None else self.CENTRAL)
         subwindow.title(f"{lang[1]} - Plugin Info")
+        subwindow.resizable(False, False)
 
         if sys.platform == "win32":
             subwindow.iconbitmap(f"{data_dir}/app_icon.ico")
@@ -3114,18 +3180,30 @@ class PluginCentral:
         plugin_description_label.pack()
 
         subwindow.mainloop()
-        
-    display_plugin_info_on_window = _display_plugin_info
+
+    def display_plugin_info_on_window(self, name: str | None = None):
+        try:
+            self._display_plugin_info(name)
+
+        except PluginNotFoundError as e:
+            showerror(lang[1], f"The selected plugin doesn't exist.\n{e}")
+
+        except Exception as e:
+            showerror(lang[133], f"{lang[134]}\n{e}")
 
     def _remove_plugin(self, name: str | None = None):
         if not name:
             try:
-                name: str = self.SELECTION_BOX.curselection()
+                name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
 
             except TclError:
-                mb.showerror(lang[1], "You must select a plugin to remove!")
+                showerror(lang[1], "You must select a plugin to remove!")
                 return
 
+        ic(name)
+        ic(self._plugins)
+        ic(self._plugins[name])
+        
         try:
             module_path: str = self._plugins[name][4]
 
@@ -3143,7 +3221,7 @@ class PluginCentral:
             shutil.rmtree(os.path.abspath(module_folder))
 
         except (PermissionError, OSError) as e:
-            mb.showerror(lang[1], f"WriterClassic lacks the permissions to remove the plugin.\nA manual removal might be necessary.\n{e}")
+            showerror(lang[1], f"WriterClassic lacks the permissions to remove the plugin.\nA manual removal might be necessary.\n{e}")
 
     def remove_plugin(self, name: str | None = None):
         try:
@@ -3158,12 +3236,16 @@ class PluginCentral:
     def _run_plugin(self, name: str | None = None):
         if not name:
             try:
-                name: str = self.SELECTION_BOX.curselection()
+                name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
 
             except TclError:
-                mb.showerror(lang[1], "You must select a plugin to run!")
+                showerror(lang[1], "You must select a plugin to run!")
                 return
 
+        ic(name)
+        ic(self._plugins)
+        ic(self._plugins[name])
+        
         try:
             module_path = self._plugins[name][4]
 
@@ -3209,7 +3291,7 @@ class PluginCentral:
 
         self._list_plugins()
 
-    def _list_plugins(self) -> None:
+    def _list_plugins(self) -> None:       
         plugin_folder = self.PLUGIN_FOLDER
         installed_plugins: dict[str, tuple[str, str, str, str, str]] = {}
 
@@ -3247,8 +3329,9 @@ class PluginCentral:
             details.append(os.path.join(root, f"{details[0].replace(' ', '_')}.py"))
 
             installed_plugins[f"{details[0].strip()} ({details[3].strip()})"] = tuple(details.copy())
-
+        
         self._plugins = installed_plugins.copy()
+        ic(self._plugins)
 
 
 def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: int = 1):
@@ -3311,46 +3394,6 @@ def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: i
 
         except Exception as e:
             showerror(lang[308], f"{lang[309]} '{path_to_remove}':\n{e}")
-
-
-def execute(datay: int | str):
-    # [i] Initializes the plugin system
-    initializer(globals())
-
-    run_a_plugin(datay)
-
-
-def remove_plugin():
-    c = mb.askyesno(lang[311], lang[314])
-
-    if not c:
-        return
-
-    datax = sdg.askinteger(lang[311], f"{lang[312]}\n{lang[313]}", initialvalue=1, minvalue=1)
-
-    try:
-        if sys.platform == "win32":
-            os.system(f'rmdir /s /q {os.path.join(plugin_dir, f"plugin_{datax}")}')
-            return
-
-        os.system(f'rm -rf {os.path.join(plugin_dir, f"plugin_{datax}")}')
-
-    except Exception as e:
-        showerror(lang[311], f"{lang[309]} '{os.path.join(plugin_dir, f'plugin_{datax}')}':\n{e}")
-
-
-def run_plugin():
-    questionx = mb.askyesnocancel(title=lang[1], message=lang[218])
-
-    if not questionx or questionx is None:
-        return
-
-    datax: str = sdg.askstring(lang[1], lang[315], initialvalue=1)
-
-    if datax.isdigit():
-        datax = int(datax)
-
-    execute(datay=datax)
 
 
 def clear_log_file():
@@ -3487,6 +3530,7 @@ class SignaturePlugin:
 
 backup_system = BackupSystem()
 signature_plugin = SignaturePlugin()
+plugin_central = PluginCentral()
 
 
 def change_wrap(**kw) -> None:
@@ -3582,9 +3626,8 @@ COMMANDS: dict[str, Any] = {
     "Status:Save": save_file,
     "Status:Refresh": has_been_modified,
 
-    "Plugins:Install": install_plugin,
-    "Plugins:Run": run_plugin,
-    "Plugins:Remove": remove_plugin,
+    "Plugins:Central": plugin_central.display_ui,
+    "Plugins:NewCentral": lambda: plugin_central.display_ui(limit_windows=False),
 
     "History:Reset": text_widget.edit_reset,
 
@@ -3764,34 +3807,10 @@ text_widget.bind('<Control-greater>', lambda _:
 
 # [*] Execute plugins 1 - 10
 desktop_win.bind('<Control-Key-0>', lambda _:
-    execute(10)) # [i] 0 for 10 I guess
+    plugin_central.display_ui()) # [i] creates new window if non existant, else uses existing
 
-desktop_win.bind('<Control-Key-1>', lambda _:
-    execute(1))
-
-desktop_win.bind('<Control-Key-2>', lambda _:
-    execute(2))
-
-desktop_win.bind('<Control-Key-3>', lambda _:
-    execute(3))
-
-desktop_win.bind('<Control-Key-4>', lambda _:
-    execute(4))
-
-desktop_win.bind('<Control-Key-5>', lambda _:
-    execute(5))
-
-desktop_win.bind('<Control-Key-6>', lambda _:
-    execute(6))
-
-desktop_win.bind('<Control-Key-7>', lambda _:
-    execute(7))
-
-desktop_win.bind('<Control-Key-8>', lambda _:
-    execute(8))
-
-desktop_win.bind('<Control-Key-9>', lambda _:
-    execute(9))
+desktop_win.bind('<Control-Shift-Key-0>', lambda _:
+    plugin_central.display_ui(limit_windows=False)) # [i] creates new window no mather what
 
 # [*] Select all text in the editor
 text_widget.bind('<Control-a>', lambda _:
@@ -3851,9 +3870,7 @@ menu_8.add_separator()
 menu_8.add_command(label=lang[10], command=lambda:
     wipe_file(desktop_win))
 menu_8.add_separator()
-menu_8.add_command(label=lang[217], command=install_plugin)
-menu_8.add_command(label=lang[216], command=run_plugin)
-menu_8.add_command(label=lang[310], command=remove_plugin)
+menu_8.add_command(label="Plugin Central", command=plugin_central.display_ui)
 
 menu_9.add_command(label=lang[81], command=internet_plugin.goto_website)
 menu_9.add_separator()
