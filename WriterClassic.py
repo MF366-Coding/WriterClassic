@@ -3031,12 +3031,12 @@ class PluginCentral:
 
     def display_ui(self, root: Tk | Toplevel = desktop_win, limit_windows: bool = True):
         self._list_plugins()
-        
+
         if isinstance(self.CENTRAL, Toplevel) and limit_windows:
             self.CENTRAL.focus_set()
             return
 
-        self.CENTRAL = Toplevel(root)        
+        self.CENTRAL = Toplevel(root)
         self.CENTRAL.title(f"{lang[1]} - Plugin Central")
         self.CENTRAL.resizable(False, False)
 
@@ -3062,11 +3062,11 @@ class PluginCentral:
         self.RUN_BUTT.grid(column=0, row=0, padx=5, pady=5)
         self.INSTALL_BUTT.grid(column=1, row=0, padx=5, pady=5)
         self.REMOVE_BUTT.grid(column=2, row=0, padx=5, pady=5)
-        
+
         self.REFRESH_BUTT.grid(column=0, row=1, padx=5, pady=5)
         self.INFO_BUTT.grid(column=1, row=1, padx=5, pady=5)
         self.SHOW_BUTT.grid(column=2, row=1, padx=5, pady=5)
-        
+
         self.EXIT_BUTT.grid(column=1, row=2, padx=5, pady=5)
 
         self.TITLE.pack()
@@ -3079,11 +3079,11 @@ class PluginCentral:
 
     def refresh_selection_listbox(self):
         self._list_plugins()
-        
+
         if isinstance(self._plugins_var, Variable):
             self._plugins_var.set(tuple(self._plugins.keys()))
-            
-    def _show_in_file_explorer(self, name: str | None = None):        
+
+    def _show_in_file_explorer(self, name: str | None = None):
         if not name:
             try:
                 name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
@@ -3091,7 +3091,7 @@ class PluginCentral:
             except TclError:
                 showerror(lang[1], "You must select a plugin to open in Explorer!")
                 return
-            
+
         ic(name)
         ic(self._plugins)
         ic(self._plugins[name])
@@ -3101,7 +3101,7 @@ class PluginCentral:
 
         except (KeyError, IndexError) as e:
             raise PluginNotFoundError(f"no plugin results for '{name}' or no version details: {e}")
-        
+
         try:
             open_in_file_explorer(os.path.abspath(os.path.dirname(module_path)))
 
@@ -3126,11 +3126,11 @@ class PluginCentral:
             except TclError:
                 showerror(lang[1], "You must select a plugin!")
                 return
-        
+
         ic(name)
         ic(self._plugins)
         ic(self._plugins[name])
-        
+
         try:
             module_info: tuple[str, str, str, str, str] = self._plugins[name]
 
@@ -3203,7 +3203,7 @@ class PluginCentral:
         ic(name)
         ic(self._plugins)
         ic(self._plugins[name])
-        
+
         try:
             module_path: str = self._plugins[name][4]
 
@@ -3232,6 +3232,8 @@ class PluginCentral:
 
         except Exception as e:
             showerror(lang[133], f"{lang[134]}\n{e}")
+            
+        self.refresh_selection_listbox()
 
     def _run_plugin(self, name: str | None = None):
         if not name:
@@ -3245,7 +3247,7 @@ class PluginCentral:
         ic(name)
         ic(self._plugins)
         ic(self._plugins[name])
-        
+
         try:
             module_path = self._plugins[name][4]
 
@@ -3289,9 +3291,9 @@ class PluginCentral:
         plugin = Plugin(folder_name=plugin_name)
         plugin.obtain_files()
 
-        self._list_plugins()
+        self.refresh_selection_listbox()
 
-    def _list_plugins(self) -> None:       
+    def _list_plugins(self) -> None:
         plugin_folder = self.PLUGIN_FOLDER
         installed_plugins: dict[str, tuple[str, str, str, str, str]] = {}
 
@@ -3329,7 +3331,7 @@ class PluginCentral:
             details.append(os.path.join(root, f"{details[0].replace(' ', '_')}.py"))
 
             installed_plugins[f"{details[0].strip()} ({details[3].strip()})"] = tuple(details.copy())
-        
+
         self._plugins = installed_plugins.copy()
         ic(self._plugins)
 
