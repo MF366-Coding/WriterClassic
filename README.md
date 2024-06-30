@@ -58,7 +58,7 @@ Then, run it!
 ## For Linux and MacOS (or if you simply want the source)
 Clone the repo or download as a zip file.
 
-### Comamnd for running
+### Command for running
 Use:
 
 ```python3 WriterClassic.py```
@@ -91,9 +91,9 @@ To open a plain text file, go to **File** > **Open...** and pick the file you wa
 To save a document, go to **File** > **Save...** and name the file. Pick its location and click Save. Boom!
 
 ## Sparkles and sparkles
-To change the default window size of WriterClassic, go to **Appearance** > **Window dimensions** and follow the instructions.
+To change the default window size of WriterClassic, go to **Appearence** > **Window dimensions** and follow the instructions.
 
-To pick a theme, just go to **Appearance** and pick, from Default and Modern themes, the one you like the best.
+To pick a theme, just go to **Appearence** and pick, from Default and Modern themes, the one you like the best.
 
 ## Plugins
 Enjoy default plugins and custom plugins.
@@ -120,7 +120,7 @@ You can press **Ctrl + Shift + P* (check the Shotcuts area for more info) to ope
 In here, you can type a command and click 'OK' and something will happen.
 
 ## Shortcuts (v10.0.0+)
-> This shortcuts won't work on versions older than v10.0.0.
+> These shortcuts won't work on versions older than v10.0.0.
 
 You can use some useful shortcuts instead of menu itens to use Writer Classic faster.
 All of those make use of control key plus another key so that you have to press both at once. **Ctrl** stands for control key. Here are some of the most useful shortcuts available:  
