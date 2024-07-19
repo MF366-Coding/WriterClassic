@@ -6,6 +6,18 @@ WriterClassic is a Python project that keeps growing and brings to the user a wh
 [![Latest Version](https://img.shields.io/github/v/tag/MF366-Coding/WriterClassic?color=%23000184)](https://github.com/MF366-Coding/WriterClassic/releases/latest)
 [![Documentation](https://img.shields.io/badge/old-now?label=docs%20status&color=%23000085)](https://mf366-coding.github.io/writerclassic.html#docs)
 [![License](https://img.shields.io/github/license/MF366-Coding/WriterClassic)](https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/LICENSE)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/MF366-Coding/WriterClassic/total?color=blue)
+![GitHub top language](https://img.shields.io/github/languages/top/MF366-Coding/WriterClassic)
+
+![GitHub contributors](https://img.shields.io/github/contributors/MF366-Coding/WriterClassic?color=blue)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/MF366-Coding/WriterClassic?style=flat&color=blue)
+
+![GitHub Repo stars](https://img.shields.io/github/stars/MF366-Coding/WriterClassic?style=for-the-badge&color=blue)
+
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/MF366-Coding/WriterClassic?style=flat&color=blue)
+
+
+
 
 > **NOTE:** `main` is the most stable branch, unless I prefix a commit with UNSTABLE.
 
