@@ -43,7 +43,7 @@ import zipfile as zipper # [i] Used to extract the zip files used by plugins
 
 # [i] tkinter is used for the UI, duh?!
 from tkinter import Listbox, Event, DISABLED, NORMAL, SINGLE, Tk, Toplevel, TclError, StringVar, END, Menu, IntVar, INSERT, Frame, WORD, CHAR, NONE, Variable
-from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu, Radiobutton # [i] Used because of the auto syling in tkinter.ttk
+from tkinter.ttk import Button, Checkbutton, Label, Entry, OptionMenu, Radiobutton, Style # [i] Used because of the auto styling in tkinter.ttk
 from tkinter import SEL_FIRST, SEL_LAST
 from tkinter.scrolledtext import ScrolledText # [!?] Only here so pyinstaller compiles it - not needed and gets removed later on
 import tkinter.messagebox as mb # [i] Used for the message boxes
@@ -80,6 +80,9 @@ import markdown2 # [i] Used to make HTML files from Markdown
 
 import simple_webbrowser # [i] My own Python module (used for the Search with... options)
 from requests import get, exceptions # [i] Used for regular interactions with the Internet
+
+import sv_ttk # [i] Sun Valley theme by rdbende (https://github.com/rdbende/Sun-Valley-ttk-theme)
+# /-/ import chlorophyl # [i] Code view for Snippets
 
 del ScrolledText, colorchooser
 
@@ -334,7 +337,7 @@ def showinfo(title: str | None = None, message: str | None = None, **options) ->
     Returns:
         str: value returned by `tkinter.messagebox.showinfo(title, message, **options)`
     """
-
+    
     s = mb.showinfo(title, message, **options)
 
     if title is not None and message is not None:
@@ -393,11 +396,8 @@ def open_in_file_explorer(path: str):
 
 
 desktop_win = Tk()
-
 LOG.action("The window has been created")
-
 text_widget = WriterClassicEditor(desktop_win, font=("Calibri", 13), borderwidth=5, undo=True)
-
 LOG.action("The editor has been created sucessfully")
 
 
@@ -814,6 +814,9 @@ except TclError:
 
 LOG.write(f"{str(now())} - The editing interface has been created: OK\n")
 
+sv_ttk.set_theme('dark', desktop_win)
+style = Style(desktop_win)
+
 geom_value = settings["geometry"]
 LOG.write(f"{str(now())} - Got the window's dimensions settings: OK\n")
 geom_values = geom_value.split('x')
@@ -1177,11 +1180,11 @@ def set_window_size(root: Tk = desktop_win, **_) -> None:
     frame1 = Frame(frame0)
     frame2 = Frame(frame0)
 
-    width_label = Label(frame1, text=lang[57])
-    height_label = Label(frame2, text=lang[58])
+    width_label = Label(frame1, text=lang[57], font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    height_label = Label(frame2, text=lang[58], font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
-    width_set = Entry(frame1)
-    height_set = Entry(frame2)
+    width_set = Entry(frame1, font=Font(family=config_font.actual('family'), size=11, weight='normal', slant='roman', underline=False, overstrike=False))
+    height_set = Entry(frame2, font=Font(family=config_font.actual('family'), size=11, weight='normal', slant='roman', underline=False, overstrike=False))
 
     confirm_butt = Button(geometry_set, text='Ok', command=lambda:
         _change_window_size(width_set, height_set, geometry_set, root))
@@ -2425,8 +2428,8 @@ def desktop_create_win():
         desktop_created_win.iconbitmap(f"{data_dir}/app_icon.ico")
     desktop_created_win.resizable(False, False)
 
-    LabA = Label(desktop_created_win, text=lang[193], font=("Segoe UI", 15))
-    LabB = Label(desktop_created_win, text=lang[194], font=("Segoe UI", 12))
+    LabA = Label(desktop_created_win, text=lang[193], font=Font(family=config_font.actual('family'), size=15, weight='bold'))
+    LabB = Label(desktop_created_win, text=lang[194], font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
     Butt = Button(desktop_created_win, text='Ok', command=desktop_create)
 
     LabA.pack()
@@ -2473,7 +2476,7 @@ def about_writerclassic():
         about_dialogue.iconbitmap(f"{data_dir}/app_icon.ico")
 
     about_dialogue.title(lang[64])
-    label_1 = Label(about_dialogue, text=str(about_data), font=("Calibri", 13))
+    label_1 = Label(about_dialogue, text=str(about_data), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
     # [!?] ChatGPT instrusion down here (lol)
 
@@ -2649,7 +2652,7 @@ def terminal_inputs():
 
     LOG.write(f"{str(now())} - Opened the Terminal Inputs: OK\n")
 
-    entry_1 = Entry(terminal, font=("Calibri", 13))
+    entry_1 = Entry(terminal)
     butt_1 = Button(terminal, text=lang[178], command=lambda:
         _terminal_get(entry_1))
     butt_2 = Button(terminal, text=lang[184], command=lambda:
@@ -2791,6 +2794,13 @@ internet_plugin = InternetOnWriter()
 
 def lock_a_win(window: Tk = desktop_win):
     window.resizable(bool(window_lock_status.get()), bool(window_lock_status.get()))
+
+
+class Listener:
+    def __init__(self, _id: str, target: Callable, output: Callable, condition: bool = True):
+        pass
+    # [!!] work on this
+    # TODO
 
 
 class Plugin:
@@ -3358,7 +3368,7 @@ def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: i
         9 - Dir where all temporary files get stored (temp; this folder is cleared every time you open WriterClassic)
         10 - Dir where WSCRIPTs are stored (scripts)
     """
-
+    
     ids = (
         plugin_dir,
         script_dir,
@@ -4080,10 +4090,10 @@ def dencrypt():
     new.title(f"{lang[1]} - {lang[274]}")
     new.resizable(False, False)
 
-    label_1 = Label(new, text=f"{lang[273]}: ", font=("Segoe UI", 13))
-    entry_1 = Entry(new, font=('Segoe UI', 13), width=58)
-    label_2 = Label(new, text=f"{lang[272]}: ", font=("Segoe UI", 13))
-    entry_2 = Entry(new, font=('Segoe UI', 13), width=58)
+    label_1 = Label(new, text=f"{lang[273]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    entry_1 = Entry(new, width=58, font=Font(family=config_font.cget('family'), size=11, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_2 = Label(new, text=f"{lang[272]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    entry_2 = Entry(new, width=58, font=Font(family=config_font.cget('family'), size=11, weight='normal', slant='roman', underline=False, overstrike=False))
 
     entry_1.insert(0, settings["dencrypt"])
     entry_2.insert(0, "-e")
@@ -4150,21 +4160,21 @@ def readme_gen_win():
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 
-    label_1 = Label(window, text=f'{lang[264]}:', font=('Calibri', 13))
-    label_2 = Label(window, text=f'{lang[263]}:', font=('Calibri', 13))
-    label_3 = Label(window, text=f'{lang[262]}:', font=('Calibri', 13))
-    label_4 = Label(window, text=f'{lang[261]}:', font=('Calibri', 13))
-    label_5 = Label(window, text=f'{lang[260]}:', font=('Calibri', 13))
-    label_6 = Label(window, text=f'{lang[259]}:', font=('Calibri', 13))
-    label_7 = Label(window, text=f"{lang[258]}:".upper(), font=("Calibri", 13))
-    label_8 = Label(window, text=lang[257], font=("Calibri", 13))
+    label_1 = Label(window, text=f'{lang[264]}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_2 = Label(window, text=f'{lang[263]}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_3 = Label(window, text=f'{lang[262]}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_4 = Label(window, text=f'{lang[261]}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_5 = Label(window, text=f'{lang[260]}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_6 = Label(window, text=f'{lang[259]}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_7 = Label(window, text=f"{lang[258]}:".upper(), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_8 = Label(window, text=lang[257], font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
-    _title = Entry(window, font=('Calibri', 12))
-    _describe = Entry(window, font=('Calibri', 12))
-    _author_email = Entry(window, font=('Calibri', 12))
-    _author_website = Entry(window, font=('Calibri', 12))
-    _project_website = Entry(window, font=('Calibri', 12))
-    _sponsor_site = Entry(window, font=('Calibri', 12))
+    _title = Entry(window)
+    _describe = Entry(window)
+    _author_email = Entry(window)
+    _author_website = Entry(window)
+    _project_website = Entry(window)
+    _sponsor_site = Entry(window)
 
     butt_1 = Button(window, text=lang[256], command=lambda:
         readme_gen(_title.get(), _describe.get(), _author_email.get(), _author_website.get(), _project_website.get(), _sponsor_site.get()))
@@ -4221,9 +4231,9 @@ def open_with_adv():
         window.destroy()
 
     butt_1 = Button(window, text=lang[253], command=action_1)
-    label_1 = Label(window, text=lang[252].upper(), font=("Arial", 15))
-    label_2 = Label(window, text=lang[251], font=("Calibri", 13))
-    entry_1 = Entry(window, font=("Calibri", 13))
+    label_1 = Label(window, text=lang[252].upper(), font=Font(family=config_font.actual('family'), size=15, weight='bold'))
+    label_2 = Label(window, text=lang[251], font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    entry_1 = Entry(window)
     butt_2 = Button(window, text=lang[250], command=lambda:
         action_2(entry_1.get()))
 
@@ -4291,13 +4301,13 @@ def message_write(mail: str, pwd: str, _variable, win):
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 
-    label_1 = Label(window, text=f"{lang[245]}: ", font=("Noto Sans", 13))
-    label_2 = Label(window, text=lang[244], font=("Noto Sans", 11))
-    label_3 = Label(window, text=f"{lang[243]}: ", font=("Noto Sans", 13))
-    label_4 = Label(window, text=f"{lang[242]}: ", font=("Noto Sans", 13))
+    label_1 = Label(window, text=f"{lang[245]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_2 = Label(window, text=lang[244], font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_3 = Label(window, text=f"{lang[243]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_4 = Label(window, text=f"{lang[242]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
-    entry_1 = Entry(window, font=("Noto Sans", 13))
-    entry_2 = Entry(window, font=("Noto Sans", 13))
+    entry_1 = Entry(window)
+    entry_2 = Entry(window)
 
     text_1 = WriterClassicEditor(window, borderwidth=5, font=config_font, insertbackground=settings['theme']["ct"], foreground=settings['theme']["fg"], background=settings['theme']["color"], height=10)
 
@@ -4336,14 +4346,14 @@ def adv_login():
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 
-    label_1 = Label(window, text=lang[237], font=("Noto Sans", 14))
-    label_2 = Label(window, text=lang[236], font=("Noto Sans", 11))
-    label_3 = Label(window, text=lang[235], font=("Noto Sans", 12))
-    label_4 = Label(window, text=f"{lang[234]}: ", font=("Noto Sans", 13))
-    label_5 = Label(window, text=f"{lang[233]}: ", font=("Noto Sans", 13))
+    label_1 = Label(window, text=lang[237], font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_2 = Label(window, text=lang[236], font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_3 = Label(window, text=lang[235], font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_4 = Label(window, text=f"{lang[234]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_5 = Label(window, text=f"{lang[233]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
-    entry_1 = Entry(window, font=("Noto Sans", 12))
-    entry_2 = Entry(window, font=("Noto Sans", 10), show="*")
+    entry_1 = Entry(window)
+    entry_2 = Entry(window, show="*")
 
     entry_1.insert(0, settings["email"])
 
@@ -4535,6 +4545,8 @@ if len(sys.argv) > 2:
     startup_script.run(scope='write')
 
     ic(globals().copy())
+
+style.configure(style='prev.TLabel', foreground='black')
 
 desktop_win.protocol(name="WM_DELETE_WINDOW", func=close_confirm)
 
