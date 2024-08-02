@@ -412,7 +412,7 @@ class PluginNotFoundError(Exception): ...
 
 
 class Listener:
-    def __init__(self, _id: bytes, target: Callable, output: Callable, condition: str = "True"):
+    def __init__(self, _id: bytes, target: Callable, output: Callable, condition: str = "True") -> None:
         self._id: str = str(base64.b64encode(gzip.compress(_id)), 'utf-8')
         self._target: Callable = target
         self._output: Callable = output
@@ -446,26 +446,38 @@ class FunctionListeners:
         
     def _create_subgroup(self, subgroup_function: Callable, listener: Listener, *other_listeners: Listener) -> int:
         if subgroup_function in self._listeners.keys():
-            return 1 # [!?] Subgroup already exists
-              
-        self._listeners[subgroup_function] = {listener}
+            return 9 # [!?] Subgroup already exists 
+        
+        if self.edit_listener(listener.listener_id, 4) == 2:
+            self._listeners[subgroup_function] = {listener}
+            
+        else:
+            return 10 # [!?] ID already exists
         
         for other_listener in other_listeners:
-            self._listeners[subgroup_function].add(other_listener)
+            if self.edit_listener(other_listener.listener_id, 4) == 2:
+                self._listeners[subgroup_function].add(other_listener)
+                
+            else:
+                return 10 # [i] see above
             
         return 0 # [*] Success!
     
-    def add_listeners(self, listeners: set[Listener]):
+    def add_listeners(self, listeners: set[Listener]) -> int:
         for listener in listeners:
             if listener.target in self._listeners:
-                self._listeners[listener.target] = listener
+                if self.edit_listener(listener.listener_id, 4) == 2:
+                    self._listeners[listener.target] = listener
+                    
+                else:
+                    return 10 # [!?] ID already exists
                 
             else:
                 self._create_subgroup(listener.target, listener)
 
         return 0 # [*] Success!
     
-    def edit_listener(self, listener_id: str, operation_type: int):
+    def edit_listener(self, listener_id: str, operation_type: int) -> int:
         correct_group = None
         correct_listener = None
         
@@ -495,15 +507,15 @@ class FunctionListeners:
                 self.add_listeners({correct_listener})
                 
             case 3:
-                self._listeners[correct_group].remove(listener)
-                return listener
+                self._listeners[correct_group].remove(correct_listener)
+                return correct_listener
             
             case _:
                 return 5 # [!?] Invalid operation type (must be 1, 2 or 3)
         
         return 0 # [*] Success!
     
-    def run_group(self, group: Callable, auto_purge: bool = True):
+    def run_group(self, group: Callable, auto_purge: bool = True) -> int:
         exception_occured = False
         
         if group == self._stop_group:
