@@ -403,16 +403,21 @@ LOG.action("The window has been created")
 text_widget = WriterClassicEditor(desktop_win, font=("Calibri", 13), borderwidth=5, undo=True)
 LOG.action("The editor has been created sucessfully")
 
+
 class WrongClipboardAction(Exception): ...
 class InvalidSnippet(Exception): ...
 class InvalidEngine(Exception): ...
 class ScriptError(Exception): ...
 class VersionError(Exception): ...
 class PluginNotFoundError(Exception): ...
+class CircularListenning(Exception): ...
 
 
 class Listener:
     def __init__(self, _id: bytes, target: Callable, output: Callable, condition: str = "True") -> None:
+        if self.target == self.output:
+            raise CircularListenning('cannot target the output function')
+        
         self._id: str = str(base64.b64encode(gzip.compress(_id)), 'utf-8')
         self._target: Callable = target
         self._output: Callable = output
@@ -542,8 +547,24 @@ class FunctionListeners:
         
         return 0 # [*] Succesful with no errors or purges        
 
+    @property
+    def listeners(self) -> dict[Callable | str, set[Listener]]:
+        return self._listeners.copy()
 
-listeners = FunctionListeners()
+before_listeners = FunctionListeners()
+after_listeners = FunctionListeners()
+
+
+def is_being_listened(target: Callable, *groups: FunctionListeners):
+    if len(groups) == 0:
+        groups = (before_listeners, after_listeners)
+        
+    for group in groups:
+        for possible_target in group.listeners:
+            if possible_target == target:
+                return True
+    
+    return False     
 
 
 def clip_actions(__id: Literal['copy', 'paste'], __s: str = '') -> str:
@@ -647,8 +668,8 @@ ic(ignore_checking)
 ic(LATEST)
 
 # [!] Very Important: Keeping track of versions and commits
-APP_VERSION = "v10.8.0"
-ADVANCED_VERSION ="v10.8.0.339"
+APP_VERSION = "v11.0.0-beta"
+ADVANCED_VERSION ="v11.0.0-beta.369"
 
 # [i] the fourth number up here, is the commit where this changes have been made
 
@@ -677,7 +698,7 @@ def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: Wr
         str: either the value of a copy/paste operation or an empty string
     """
 
-    listeners.run_group(advanced_clipping)
+    before_listeners.run_group(advanced_clipping)
     
     selection: str = ''
 
@@ -710,6 +731,8 @@ def advanced_clipping(__action: Literal['copy', 'paste', 'cut'], text_widget: Wr
     else:
         text_widget.replace(SEL_FIRST, SEL_LAST, __s)
 
+    after_listeners.run_group(advanced_clipping)
+    
     return __s
 
 copy, paste, cut = lambda: advanced_clipping('copy'), lambda: advanced_clipping('paste'), lambda: advanced_clipping('cut')
@@ -908,7 +931,7 @@ def fast_dump(*_):
         - No arguments needed (hence the use of *_)
     """
 
-    listeners.run_group(fast_dump)
+    before_listeners.run_group(fast_dump)
     
     if len(recent_stack) > 10:
         settings['recent'] = recent_stack.content[-10:]
@@ -916,6 +939,8 @@ def fast_dump(*_):
     else:
         settings['recent'] = recent_stack.content
 
+    after_listeners.run_group(advanced_clipping)
+    
     dump_settings(os.path.join(config, 'settings.json'), settings)
 
 
@@ -1064,12 +1089,14 @@ def writeStartup(text: bool) -> None:
         text (bool): the new startup value
     """
 
-    listeners.run_group(writeStartup)
+    before_listeners.run_group(writeStartup)
     
     settings["startup"] = text
     fast_dump()
     LOG.write(f"{str(now())} - Check for updates on Startup (True - 1/False - 0) has been changed to {text}: OK\n")
 
+    after_listeners.run_group(advanced_clipping)
+    
 
 class WScript:
     def __init__(self):
@@ -1293,7 +1320,7 @@ def set_window_size(root: Tk = desktop_win, **_) -> None:
     No other arguments needed.
     """
 
-    listeners.run_group(set_window_size)
+    before_listeners.run_group(set_window_size)
     
     def _change_window_size(*params) -> bool:
         try:
@@ -1310,6 +1337,7 @@ def set_window_size(root: Tk = desktop_win, **_) -> None:
             settings["geometry"] = f"{e1}x{e2}"
 
         finally:
+            after_listeners.run_group(advanced_clipping)
             fast_dump()
 
         return True
@@ -1373,7 +1401,7 @@ def evaluate_expression(start: str | float | None = None, end: str | float | Non
         tuple: expression, value returnes by eval(), evaluated expression. (If all are None, then SEL_FIRST and SEL_LAST are not marked.)
     """
 
-    listeners.run_group(evaluate_expression)
+    before_listeners.run_group(evaluate_expression)
     
     widget: WriterClassicEditor = kwargs.get('widget', text_widget)
 
@@ -1425,6 +1453,9 @@ def evaluate_expression(start: str | float | None = None, end: str | float | Non
     ic(type(EVALUATED_EXP))
 
     widget.replace(start, end, str(eval_exp))
+    
+    after_listeners.run_group(advanced_clipping)
+    
     return exp, EVALUATED_EXP, eval_exp
 
 
@@ -1450,7 +1481,7 @@ def set_theme(**kw):
         special_cond: boolean condition that decides whether to trigger `special_menu` or not
     """
 
-    listeners.run_group(set_theme)
+    before_listeners.run_group(advanced_clipping)
     
     logger: Logger = kw.get('logger', LOG)
     widget: WriterClassicEditor = kw.get('widget', text_widget)
@@ -1497,6 +1528,7 @@ def set_theme(**kw):
 
             logger.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
+    after_listeners.run_group(set_theme)
 
 # [!] WARNING: QUICKWAY() WILL BE DEPREACTED IN V11.0.1
 def quickway():
@@ -1504,7 +1536,7 @@ def quickway():
     quickway instantly quits the app without any confirmation
     """
 
-    listeners.run_group(quickway)
+    before_listeners.run_group(quickway)
     
     LOG.write(f"{str(now())} - End of session: QUIT\n")
     LOG.close()
@@ -1522,7 +1554,7 @@ def set_language(language_set, root_win):
         root_win (Tk | Toplevel): the window where this change takes place
     """
 
-    listeners.run_group(set_language)
+    before_listeners.run_group(set_language)
     
     settings["language"] = language_set
     LOG.write(f"{str(now())} - A new language has been set ({str(language_set)}): OK\n")
@@ -1537,6 +1569,8 @@ def set_language(language_set, root_win):
 
     else:
         LOG.write(f"{str(now())} - Cancel/No as response: OK\n")
+        
+    after_listeners.run_group(set_language)
 
 
 # [i] Notepad
@@ -1547,7 +1581,7 @@ def draft_notepad() -> None:
     In the early days, this function was supposed to launch a new WriterClassic window.
     """
 
-    listeners.run_group(draft_notepad)
+    before_listeners.run_group(draft_notepad)
     
     new_window = Toplevel(desktop_win)
     LOG.write(f"{str(now())} - A new window has been called: AWAITING CONFIGURATION\n")
@@ -1566,6 +1600,8 @@ def draft_notepad() -> None:
 
     LOG.write(f"{str(now())} - Notes Plugin's window has been fully configured: OK\n")
 
+    after_listeners.run_group(draft_notepad)
+    
     new_window.mainloop()
 
 
@@ -1577,9 +1613,11 @@ def document_status(widget: WriterClassicEditor = text_widget):
     - No of lines
     """
 
-    listeners.run_group(document_status)
+    before_listeners.run_group(document_status)
     
     showinfo(lang[164], f"{lang[165]}: {widget.num_lines - 1}")
+    
+    after_listeners.run_group(document_status)
 
 
 # [i] Repo
@@ -1588,11 +1626,13 @@ def repository():
     repo sends the user to the official repository
     """
 
-    listeners.run_group(repository)
+    before_listeners.run_group(repository)
     
     simple_webbrowser.website("https://github.com/MF366-Coding/WriterClassic/")
     LOG.write(f"{str(now())} - Opened the repository: AWAITING FOR FUNCTION OR ERROR\n")
 
+    after_listeners.run_group(repository)
+    
 
 class BackupSystem:
     def __init__(self, autoscr_path: str = scripts_dir, config_path: str = config, main_dir: str = script_dir) -> None:
@@ -1714,7 +1754,7 @@ def recent_files(**kw):
     recents (Stack) = stack object containing the recent files
     """
 
-    listeners.run_group(recent_files)
+    before_listeners.run_group(recent_files)
     
     def _open(lb: Listbox, root: Tk | Toplevel, aux: list[str], exps: list[str], win: Toplevel):
         """
@@ -1761,6 +1801,8 @@ def recent_files(**kw):
     lb.pack()
     b.pack()
 
+    after_listeners.run_group(recent_files)
+    
     w.mainloop()
 
 
@@ -1920,7 +1962,7 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
         widget (WriterClassicEditor, optional): text editor where the snippet is inserted onto. Defaults to text_widget.
     """
 
-    listeners.run_group(snippet_picker)
+    before_listeners.run_group(snippet_picker)
     
     def update_info_view(*labels):
         n: str = labels[1].get()
@@ -1999,6 +2041,8 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
     desc_label.pack()
     insert_butt.pack()
 
+    after_listeners.run_group(snippet_picker)
+    
     w.mainloop()
 
 default_snippets = Snippets(lang[333])
@@ -2030,7 +2074,7 @@ def set_font(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = te
         Font | dict[bytes, bytes]: font configurations
     """
 
-    listeners.run_group(set_font)
+    before_listeners.run_group(set_font)
     
     __dump_func = kw.get('__dump_func', dump_func)
     __sample = kw.get('__sample', sample)
@@ -2043,6 +2087,8 @@ def set_font(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = te
 
     editor.configure(font=config_font)
 
+    after_listeners.run_group(set_font)
+    
     return config_font or font_details
 
 
@@ -2058,7 +2104,7 @@ def new_file(skip_confirmation: bool = False):
 
     global current_file, cur_data, save_status
 
-    listeners.run_group(new_file)
+    before_listeners.run_group(new_file)
     
     if not skip_confirmation:
         ic()
@@ -2090,6 +2136,8 @@ def new_file(skip_confirmation: bool = False):
     LOG.write(f"{str(now())} - A new file has been created: OK\n")
 
     ic(current_file)
+    
+    after_listeners.run_group(new_file)
 
 
 FILETYPES = [(lang[32], '*.txt'),
@@ -2149,7 +2197,7 @@ def stem_only(__s: str) -> str:
         str: the stem part of the filename
     """
 
-    listeners.run_group(stem_only)
+    before_listeners.run_group(stem_only)
     
     generated_list: list[str] = __s.split('.')
 
@@ -2157,13 +2205,15 @@ def stem_only(__s: str) -> str:
 
     stem_part: str = '.'.join(modified_list)
 
+    after_listeners.run_group(stem_only)
+    
     return stem_part
 
 
 def open_file_manually(file_path: str, root_win: Tk = desktop_win) -> None:
     global current_file, cur_data, save_status
 
-    listeners.run_group(open_file_manually)
+    before_listeners.run_group(open_file_manually)
     
     file_path = os.path.abspath(file_path)
 
@@ -2195,6 +2245,8 @@ def open_file_manually(file_path: str, root_win: Tk = desktop_win) -> None:
     finally:
         fast_dump()
         ic(current_file)
+        
+    after_listeners.run_group(open_file_manually)
 
 
 def open_file(root_win: Tk = desktop_win, initialfile: str = 'Open a File', **kw):
@@ -2205,7 +2257,7 @@ def open_file(root_win: Tk = desktop_win, initialfile: str = 'Open a File', **kw
         root_win (Tk): WriterClassic's main window
     """
 
-    listeners.run_group(open_file)
+    before_listeners.run_group(open_file)
     
     filetypes: list[tuple[str, str]] = kw.get('filetypes', FILETYPES.copy())
 
@@ -2230,7 +2282,7 @@ def save_as_file(root_win: Tk = desktop_win):
 
     global current_file, cur_data, save_status
 
-    listeners.run_group(save_as_file)
+    before_listeners.run_group(save_as_file)
     
     data = text_widget.content
     save_status = True
@@ -2264,6 +2316,8 @@ def save_as_file(root_win: Tk = desktop_win):
     current_file = str(file_path)
     ic(current_file)
 
+    after_listeners.run_group(save_as_file)
+    
     open_file_manually(current_file)
 
 
@@ -2281,7 +2335,7 @@ def save_file(root_win: Tk = desktop_win):
 
     global current_file, cur_data, save_status
 
-    listeners.run_group(save_file)
+    before_listeners.run_group(save_file)
     
     if current_file is False:
         return save_as_file(root_win=root_win)
@@ -2314,7 +2368,7 @@ def save_file(root_win: Tk = desktop_win):
 
 # [!] WARNING: THIS FUNCTION WILL BE DEPRECATED IN V11.0.1
 def wipe_file(root_win: Tk = desktop_win):
-    listeners.run_group(wipe_file)
+    before_listeners.run_group(wipe_file)
     
     sureConfirm = mb.askyesno(title=lang[55], message=lang[56])
     if sureConfirm:
@@ -2338,22 +2392,27 @@ def wipe_file(root_win: Tk = desktop_win):
 
         LOG.write(f"{str(now())} - A file has been wiped at {str(file_path)}: OK\n")
         file_input.close()
+        
+    after_listeners.run_group(wipe_file)
+
 
 desktop_entry = None
 
 
 def select_all(**kw):
-    listeners.run_group(select_all)
+    before_listeners.run_group(select_all)
     
     widget: WriterClassicEditor = kw.get('widget', text_widget)
     mark: bool = kw.get('mark', True)
     see: float | str = kw.get('see', END)
 
     widget.select_text(start=0.0, end=END, see=see, mark=mark)
+    
+    after_listeners.run_group(select_all)
 
 
 def lorem_ipsum():
-    listeners.run_group(lorem_ipsum)
+    before_listeners.run_group(lorem_ipsum)
     
     text_widget.insert(text_widget.index(INSERT), """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque lobortis lacus nibh, ut mattis nisi cursus nec. In aliquam scelerisque eleifend. Suspendisse tempor sem ut ipsum imperdiet, a iaculis dui congue. In in ex massa. Aliquam in dignissim ligula. Mauris pretium mi at molestie feugiat. Cras quam ipsum, congue tempus erat id, rhoncus facilisis mauris. Nam augue nunc, porta ac vestibulum nec, euismod ac est. Duis consectetur risus eu justo pretium volutpat. Vestibulum fringilla purus velit, sed sagittis augue porta a. Vivamus vestibulum turpis ac quam eleifend, ut luctus eros placerat. Praesent pellentesque faucibus ligula, nec varius mi viverra ut. Mauris blandit vitae purus auctor imperdiet. Nullam non sem nisi.
 
@@ -2364,10 +2423,12 @@ Maecenas hendrerit diam id mi blandit, vitae dignissim tellus consequat. Vestibu
 In pulvinar gravida condimentum. Proin nec sem vitae urna egestas mollis nec vel tortor. Ut sodales eget felis in bibendum. Fusce eu lacus a purus tempus rhoncus non nec magna. Donec sed egestas eros, ut vulputate leo. Sed non libero purus. Suspendisse suscipit nisi vel fringilla suscipit. Integer dapibus tincidunt iaculis. Vivamus risus tortor, cursus vel tincidunt vel, ullamcorper non quam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel magna dui.
 
 Nam gravida nibh leo, eget tincidunt neque facilisis sed. Integer malesuada dui sit amet nulla cursus, eget porttitor nulla fringilla. Proin condimentum mattis posuere. Vivamus sit amet sem non felis aliquet vehicula vel a lorem. Nam accumsan tortor a mattis lacinia. Curabitur ultricies eros lacus, tempor pretium nibh laoreet vel. Curabitur a orci sit amet massa iaculis imperdiet. Phasellus porta aliquet nunc vitae vulputate. Ut non elementum nibh. Sed bibendum ultricies sapien eget dapibus. Pellentesque at lacus sed elit gravida dignissim. Phasellus eu tempus nisl. Suspendisse feugiat risus in laoreet fringilla. Nam sit amet purus laoreet, aliquam augue a, fringilla diam. """)
+    
+    after_listeners.run_group(lorem_ipsum)
 
 
 def readme_writer_classic():
-    listeners.run_group(readme_writer_classic)
+    before_listeners.run_group(readme_writer_classic)
     
     with open(os.path.join(script_dir, "README.md"), "r", encoding='utf-8') as readme_wrcl_f:
         text_widget.insert(text_widget.index(INSERT), f"README.md (WriterClassic at GitHub; Markdown)\n{readme_wrcl_f.read()}")
@@ -2377,24 +2438,28 @@ def readme_writer_classic():
 def has_been_modified(text_widget: WriterClassicEditor = text_widget, main_win: Tk | Toplevel = desktop_win) -> bool | None:
     global save_status
     
-    listeners.run_group(has_been_modified)
+    before_listeners.run_group(has_been_modified)
 
     if cur_data == text_widget.content:
         if " (*)" in main_win.title():
             main_win.title(main_win.title().removesuffix(" (*)"))
 
         save_status = True
+        after_listeners.run_group(save_status)        
         return save_status
 
     if " (*)" not in main_win.title():
         main_win.title(f"{main_win.title()} (*)")
 
     save_status = False
+    
+    after_listeners.run_group(save_status)
+    
     return save_status
 
 
 def change_casing() -> None:
-    listeners.run_group(change_casing)
+    before_listeners.run_group(change_casing)
     
     def _swap_casing(casing: str):
         if not text_widget.selection:
@@ -2484,7 +2549,7 @@ class _XYEvent:
 
 
 def rmb_popup(event: _XYEvent | Event):
-    listeners.run_group(rmb_popup)
+    before_listeners.run_group(rmb_popup)
     
     x, y = event.x_root, event.y_root
 
@@ -2507,7 +2572,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
         None: return is only used to end the function
     """
 
-    listeners.run_group(dev_option)
+    before_listeners.run_group(dev_option)
     
     mode = mode.replace(" ", "_").lower()
     prog_lang = prog_lang.strip()
@@ -2570,7 +2635,7 @@ def create_desktop_file_linux(pycommand: str = sys.executable):
 
     global desktop_entry
 
-    listeners.run_group(create_desktop_file_linux)
+    before_listeners.run_group(create_desktop_file_linux)
     
     desktop_entry = f"""#!/usr/bin/env xdg-open
 [Desktop Entry]
@@ -2604,6 +2669,7 @@ X-KDE-Username=
         showinfo(lang[1], lang[101])
         desktop_file.close()
 
+    after_listeners.run_group(create_desktop_file_linux)
     ic(desktop_entry)
 
 
@@ -2614,7 +2680,7 @@ def create_window_desktop_file_linux():
     No args needed or wanted.
     """
     
-    listeners.run_group(create_window_desktop_file_linux)
+    before_listeners.run_group(create_window_desktop_file_linux)
     
     desktop_created_win = Toplevel(desktop_win)
     desktop_created_win.title(lang[197])
@@ -2638,7 +2704,7 @@ def app_credits():
 
 
 def surprise_egg():
-    listeners.run_group(surprise_egg)
+    before_listeners.run_group(surprise_egg)
     
     askNow = sdg.askstring(lang[29], lang[66])
 
@@ -2649,22 +2715,26 @@ def surprise_egg():
     else:
         showerror(lang[29], lang[67])
         ic()
+        
+    after_listeners.run_group(surprise_egg)
 
 # [i] The Help section
 
 def _help():
-    listeners.run_group(_help)
+    before_listeners.run_group(_help)
     
     simple_webbrowser.website("https://mf366-coding.github.io/writerclassic.html#docs")
     LOG.write(f"{str(now())} - Requested online help: AWAITING FOR CONNECTION\n")
     ic()
+    
+    after_listeners.run_group(_help)
 
 APP_HELP = _help
 
 
 # [i] This is... well the About section
 def about_writerclassic():
-    listeners.run_group(about_writerclassic)
+    before_listeners.run_group(about_writerclassic)
     
     about_data = ABOUT_WRITER
 
@@ -2721,6 +2791,8 @@ def about_writerclassic():
     button_1.grid(column=1, row=2)
     button_2.grid(column=2, row=2)
 
+    after_listeners.run_group(about_writerclassic)
+    
     about_dialogue.mainloop()
 
     LOG.action('The About dialogue has been shown')
@@ -2729,17 +2801,18 @@ def about_writerclassic():
 
 
 def search_replace():
-    listeners.run_group(search_replace)
+    before_listeners.run_group(search_replace)
     
     search_window = SearchReplace(desktop_win, text_widget, True, lang_exps=lang.copy(), ico=os.path.join(data_dir, 'app_icon.ico'))
     search_window.initiate_setup(search_window)
     search_window.resizable(False, False)
     search_window.mainloop()
+    
+    after_listeners.run_group(search_replace)
 
 
 def markdown_preview() -> None:
-    # TODO
-    # [!!] continue the listeners.run_group(save_as_file) - listener setup!!
+    before_listeners.run_group(markdown_preview)
     
     if not current_file:
         showerror(lang[1], lang[221])
@@ -2756,10 +2829,14 @@ def markdown_preview() -> None:
         temp_html_f.write(html_content)
         temp_html_f.close()
 
+    after_listeners.run_group(markdown_preview)
+    
     os.system(temp_html_path)
 
 
 def tips_tricks():
+    before_listeners.run_group(tips_tricks)
+    
     picked_text = random.choice((
         lang[140],
         lang[141],
@@ -2776,12 +2853,16 @@ def tips_tricks():
     showinfo(lang[1], picked_text)
     LOG.write(f"{str(now())} - Requested Tips & Tricks: OK\n")
 
+    after_listeners.run_group(tips_tricks)
+    
     ic()
 
 
 def reset_writerclassic():
     global settings
 
+    before_listeners.run_group(reset_writerclassic)
+    
     ic(settings)
 
     confirmation = mb.askyesno(lang[77], lang[78])
@@ -2829,10 +2910,15 @@ def reset_writerclassic():
             sigFILE.write("--\nBest regards,\nThis is a customizable signature in a file named signature.wclassic in the data folder...")
             LOG.write(f"{str(now())} - The Custom Signature has been reset: OK\n")
 
+    after_listeners.run_group(reset_writerclassic)
+    
     ic(settings)
 
 
+# TODO: Terminal will go thru a renaissence
 def terminal_inputs():
+    before_listeners.run_group(terminal_inputs)
+    
     def _trick_terminal(entry: Entry):
         entry.delete(0, END)
 
@@ -2845,6 +2931,8 @@ def terminal_inputs():
 
         os.system(_data)
 
+        after_listeners.run_group(terminal_inputs)
+        
         LOG.write(f"{str(now())} - Used the following command on the Terminal - {str(_data)}: OK\n")
 
         ic(_data)
@@ -2866,7 +2954,7 @@ def terminal_inputs():
     entry_1.pack()
     butt_1.pack()
     butt_2.pack()
-
+    
     terminal.mainloop()
 
 
@@ -2998,8 +3086,10 @@ internet_plugin = InternetOnWriter()
 
 
 def lock_a_win(window: Tk = desktop_win):
+    before_listeners.run_group(lock_a_win)
     window.resizable(bool(window_lock_status.get()), bool(window_lock_status.get()))
-
+    after_listeners.run_group(lock_a_win)
+    
 
 class Plugin:
     def __init__(self, folder_name: str, **kw) -> None:
@@ -3567,6 +3657,8 @@ def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: i
         10 - Dir where WSCRIPTs are stored (scripts)
     """
     
+    before_listeners.run_group(remove_action)
+    
     ids = (
         plugin_dir,
         script_dir,
@@ -3594,9 +3686,12 @@ def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: i
         try:
             if sys.platform == "win32":
                 os.system(f'rmdir /s /q {path_to_remove}')
+                after_listeners.run_group(remove_action)
                 return
 
             os.system(f'rm -rf {path_to_remove}')
+            after_listeners.run_group(remove_action)
+            return
 
         except FileNotFoundError as e:
             LOG.error(text="File/directory missing while trying to extract the backup", error_details=str(object=e))
@@ -3605,16 +3700,25 @@ def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: i
         except Exception as e:
             showerror(lang[308], f"{lang[309]} '{path_to_remove}':\n{e}")
 
+    after_listeners.run_group(remove_action)
+
 
 def clear_log_file():
+    before_listeners.run_group(clear_log_file)
+    
     with open(os.path.join(user_data, "log.wclassic"), "w", encoding="utf-8") as f:
         f.write("""--
 Log File
 --
 """)
         f.close()
+        
+    after_listeners.run_group(clear_log_file)
+
 
 def show_log():
+    before_listeners.run_group(show_log)
+    
     _new_window = Toplevel(desktop_win)
     _new_window.resizable(False, False)
 
@@ -3633,6 +3737,8 @@ def show_log():
     _new_editor.configure(state=DISABLED)
 
     LOG.write(f"{str(now())} - The Log File has been shown: OK\n")
+    
+    after_listeners.run_group(show_log)
 
 ic(settings["dencrypt"])
 
@@ -3744,10 +3850,12 @@ plugin_central = PluginCentral()
 
 
 def change_wrap(**kw) -> None:
+    before_listeners.run_group(change_wrap)
+    
     def inner(win, val: StringVar, editor: WriterClassicEditor):
         editor.change_wrapping(val.get())
+        after_listeners.run_group(change_wrap)
         win.destroy()
-
 
     widget: WriterClassicEditor = kw.get('widget', text_widget)
     root: Tk = kw.get('root', desktop_win)
@@ -3772,11 +3880,13 @@ def change_wrap(**kw) -> None:
     r2.pack()
     r3.pack()
     b.pack()
-
+    
     w.mainloop()
 
 
 def theme_maker() -> None:
+    before_listeners.run_group(theme_maker)
+    
     w = Toplevel()
     w.title(lang[365])
 
@@ -3786,10 +3896,14 @@ def theme_maker() -> None:
     c = CustomThemeMaker(lang, settings, set_theme, w)
     c.pack()
 
+    after_listeners.run_group(theme_maker)
+    
     w.mainloop()
 
 
 def close_confirm() -> None:
+    before_listeners.run_group(close_confirm)
+    
     ic()
 
     if not has_been_modified():
@@ -3797,6 +3911,7 @@ def close_confirm() -> None:
 
         if choice is None:
             ic()
+            after_listeners.run_group(close_confirm)
             return None
 
         if choice:
@@ -3805,6 +3920,7 @@ def close_confirm() -> None:
             ic("Called the save function.")
 
     ic()
+    after_listeners.run_group(close_confirm)
     desktop_win.destroy()
     LOG.close()
     sys.exit()
@@ -3873,6 +3989,8 @@ COMMANDS: dict[str, Any] = {
 
 
 def command_menu() -> None | bool:
+    before_listeners.run_group(command_menu)
+    
     new = Toplevel(desktop_win)
 
     def reload_file():
@@ -3890,12 +4008,15 @@ def command_menu() -> None | bool:
 
         if a in commands.keys():
             commands[a]()
+            after_listeners.run_group(command_menu)
             return
 
         if a.strip() in (None, ''):
+            after_listeners.run_group(command_menu)
             return
 
         showerror(lang[68], lang[70])
+        after_listeners.run_group(group=command_menu)
         return
 
     if sys.platform == "win32":
@@ -4243,12 +4364,16 @@ ic(settings["debugging"])
 
 
 def adv_change():
+    before_listeners.run_group(adv_change)
+    
     settings["advanced-mode"] = bool(advanced_mode_status.get())
 
     ic(settings["advanced-mode"])
     fast_dump()
 
     showinfo(message=lang[63], title=lang[1])
+    
+    after_listeners.run_group(adv_change)
 
 
 menu_12.add_separator()
@@ -4256,6 +4381,8 @@ menu_12.add_checkbutton(label=lang[306], variable=advanced_mode_status, command=
 
 
 def show_debug():
+    before_listeners.run_group(show_debug)
+    
     if settings["debugging"]:
         settings["debugging"] = False
 
@@ -4266,9 +4393,13 @@ def show_debug():
     fast_dump()
 
     showinfo(message=lang[63], title=lang[1])
+    
+    after_listeners.run_group(show_debug)
 
 
 def dencrypt():
+    before_listeners.run_group(dencrypt)
+    
     def runx(pathx: str, parameters: str):
         settings["dencrypt"] = pathx
         fast_dump()
@@ -4308,10 +4439,14 @@ def dencrypt():
     butt_1.grid(column=1, row=3)
     butt_2.grid(column=2, row=3)
 
+    after_listeners.run_group(dencrypt)
+    
     new.mainloop()
 
 
 def readme_gen(*entries):
+    before_listeners.run_group(readme_gen)
+    
     _title = entries[0]
     _describe = entries[1]
     _author_email = entries[2]
@@ -4346,6 +4481,8 @@ def readme_gen(*entries):
 
     text_widget.insert(chars=readme_generated, index=0.0)
 
+    after_listeners.run_group(readme_gen)
+    
     ic(readme_generated)
 
 
@@ -4402,18 +4539,24 @@ def readme_gen_win():
 
 
 def open_with_adv():
+    before_listeners.run_group(open_with_adv)
+    
     window = Toplevel(desktop_win)
     window.title(f"{lang[1]} - {lang[254]}")
     window.resizable(False, False)
 
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
+        
+    
 
     def action_1():
         if not current_file:
             showinfo(lang[1], lang[239])
         else:
             os.system(f'"{str(current_file)}"')
+        
+        after_listeners.run_group(open_with_adv)
 
         window.destroy()
 
@@ -4425,6 +4568,8 @@ def open_with_adv():
                 os.system(f'"{requested_entry}" "{str(current_file)}"')
             else:
                 os.system(f'{requested_entry} "{str(current_file)}"')
+                
+        after_listeners.run_group(open_with_adv)
 
         window.destroy()
 
@@ -4575,8 +4720,12 @@ def adv_login():
 
 
 def show_advanced_version():
+    before_listeners.run_group(show_advanced_version)
+    
     showinfo(lang[1], f"{lang[230]} {ADVANCED_VERSION}.")
     ic(ADVANCED_VERSION)
+    
+    after_listeners.run_group(show_advanced_version)
 
 
 if ADVANCED:
