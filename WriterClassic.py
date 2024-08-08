@@ -83,8 +83,6 @@ import markdown2 # [i] Used to make HTML files from Markdown
 import simple_webbrowser # [i] My own Python module (used for the Search with... options)
 from requests import get, exceptions # [i] Used for regular interactions with the Internet
 
-import sv_ttk # [i] Sun Valley theme by rdbende (https://github.com/rdbende/Sun-Valley-ttk-theme)
-
 # /-/ import chlorophyl # [i] Code view for Snippets
 
 del ScrolledText, colorchooser
@@ -735,8 +733,8 @@ ic(ignore_checking)
 ic(LATEST)
 
 # [!] Very Important: Keeping track of versions and commits
-APP_VERSION = "v11.0.0-beta"
-ADVANCED_VERSION ="v11.0.0-beta.369"
+APP_VERSION = "v11.0.0"
+ADVANCED_VERSION ="v11.0.0.371"
 
 # [i] the fourth number up here, is the commit where this changes have been made
 
@@ -1049,7 +1047,10 @@ except TclError:
 
 LOG.write(f"{str(now())} - The editing interface has been created: OK\n")
 
-sv_ttk.set_theme('dark', desktop_win)
+# [!?] https://github.com/rdbende/Azure-ttk-theme (Azure theme)
+desktop_win.tk.call("source", os.path.join(data_dir, "azure.tcl"))
+desktop_win.tk.call("set_theme", "dark")
+
 style = Style(desktop_win)
 
 geom_value = settings["geometry"]
@@ -2814,10 +2815,36 @@ def surprise_egg():
     
     askNow = sdg.askstring(lang[29], lang[66])
 
-    if askNow == "":
+    if not askNow:
         ic()
-        return None
+        return
 
+    elif askNow == 'Entities lurk in the dark.':
+        if sys.platform != 'win32':
+            if mb.askyesno('ENTITIES!', "This compiled binary is for Windows\nYou can compile it yourself for Linux though.\nCHECK ENTITIES2 OUT BY NORB!!!"):
+                simple_webbrowser.website("https://github.com/norbcodes/entities")
+            
+            else:
+                mb.showinfo('ENTITIES! is now sad :(', ":(")
+        
+        try:
+            response = get("https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/.github/entities2_by_norb.exe", timeout=2)
+            
+            with open(os.path.join(script_dir, "entities2_by_norb.exe"), 'wb') as f:
+                f.write(response.content)
+                
+            if mb.askyesno('ENTITIES!!', "Yay, your entities2 is ready on the WriterClassic directory!\nCheck the creator's profile? (entities2 by Norb)"):
+                simple_webbrowser.website("https://github.com/norbcodes/entities")
+            
+            else:
+                mb.showinfo('ENTITIES! is now sad :(', ":(")
+            
+        except Exception:
+            mb.showerror('ENTITIES!!', "Bad internet :(")
+            
+        ic()
+        return
+    
     else:
         showerror(lang[29], lang[67])
         ic()
@@ -4312,6 +4339,7 @@ menu_11.add_separator()
 menu_11.add_command(label=lang[28], command=app_credits)
 menu_11.add_separator()
 menu_11.add_command(label=lang[137], command=tips_tricks)
+menu_11.add_command(label='Return of the Easter Eggs (ENGLISH ONLY)', command=surprise_egg)
 
 menu_1.add_command(label=lang[12], command=set_window_size, accelerator="Ctrl + Shift + G")
 menu_1.add_command(label=lang[332], command=set_font)
