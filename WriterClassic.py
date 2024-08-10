@@ -734,7 +734,7 @@ ic(LATEST)
 
 # [!] Very Important: Keeping track of versions and commits
 APP_VERSION = "v11.0.0"
-ADVANCED_VERSION ="v11.0.0.371"
+ADVANCED_VERSION ="v11.0.0.372"
 
 # [i] the fourth number up here, is the commit where this changes have been made
 
@@ -2844,6 +2844,18 @@ def surprise_egg():
             
         ic()
         return
+    
+    elif askNow == 'Psst, I see dead people':
+        simple_webbrowser.SpotifyOnline("Not Like Us Kendrick Lamar")
+        
+    elif askNow == str(base64.b64encode(bytes('MaybeHawk', 'utf-8')), 'utf-8'):
+        simple_webbrowser.website("https://github.com/maybehawk1")
+    
+    elif askNow == "Are you ready?":
+        simple_webbrowser.SpotifyOnline('Blind Korn')
+        
+    elif askNow == "Em's fastest rap :O":
+        simple_webbrowser.SpotifyOnline('Godzilla Eminem')
     
     else:
         showerror(lang[29], lang[67])
