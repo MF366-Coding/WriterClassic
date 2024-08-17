@@ -6,9 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "pip" # See documentation for possible values
-    directories:
-      - "/" # Location of package manifests
-      - "*"
+    directory: "/.github/"
     schedule:
       time: "10:00"
       timezone: "Europe/Lisbon"
