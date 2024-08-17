@@ -8,6 +8,8 @@ updates:
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
+      time: "10:00"
+      timezone: "Europe/Lisbon"
       interval: "daily"
     reviewers:
       - "MF366-Coding"
