@@ -1,6 +1,4 @@
 # Requirements for WriterClassic
-# chlorophyll==0.4.2 (not needed)
-# colorama (is installed by icecream)
 icecream==2.1.3
 markdown2==2.5.0
 Pillow==10.4.0
@@ -12,4 +10,3 @@ requests==2.32.3
 simple_webbrowser==0.2.2
 sv-ttk==2.6.0
 tkfontchooser==2.0.2
-# tklinenums==1.7.1 (installed by chlorophyll)
