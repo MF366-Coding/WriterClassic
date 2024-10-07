@@ -5,7 +5,7 @@ Pillow==10.4.0
 pygame==2.6.1
 Pygments==2.18.0
 pyperclip==1.9.0
-pywin32==306
+pywin32==307
 requests==2.32.3
 simple_webbrowser==0.2.2
 tkfontchooser==2.0.2
