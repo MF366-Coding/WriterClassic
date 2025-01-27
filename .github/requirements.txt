@@ -1,6 +1,6 @@
 # Requirements for WriterClassic
 icecream==2.1.4
-markdown2==2.5.2
+markdown2==2.5.3
 Pillow==11.1.0
 pygame==2.6.1
 Pygments==2.18.0
