@@ -2313,7 +2313,7 @@ def save_as_file(root_win: Tk = desktop_win):
     data = text_widget.content
     save_status = True
     file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=FILETYPES, defaultextension="*.*", initialfile="New File To Save")
-
+    
     # [*] Get the selected file extension
     selected_extension = None
     for ft in FILETYPES:
@@ -2784,17 +2784,11 @@ def surprise_egg():
         ic()
         return
 
-    elif askNow == 'Psst, I see dead people':
-        simple_webbrowser.SpotifyOnline("Not Like Us Kendrick Lamar")
-
-    elif askNow == str(base64.b64encode(bytes('MaybeHawk', 'utf-8')), 'utf-8'):
-        simple_webbrowser.website("https://github.com/maybehawk1")
+    elif askNow == str(base64.b64encode(bytes('NorbCodes', 'utf-8')), 'utf-8'):
+        simple_webbrowser.website("https://github.com/norbcodes")
 
     elif askNow == "Are you ready?":
         simple_webbrowser.SpotifyOnline('Blind Korn')
-
-    elif askNow == "Em's fastest rap :O":
-        simple_webbrowser.SpotifyOnline('Godzilla Eminem')
 
     else:
         showerror(lang[29], lang[67])
@@ -4162,8 +4156,9 @@ desktop_win.bind('<Key>', lambda _:
     event_main.update((text_widget.winfo_rootx(), text_widget.winfo_rooty())))
 
 # [*] Same as RMB Menu but via keyboard
-text_widget.bind('<App>', lambda _:
-    rmb_popup(event_main))
+if sys.platform == 'win32':
+    text_widget.bind('<App>', lambda _:
+        rmb_popup(event_main))
 
 # [*] Evaluate expression via keyboard
 text_widget.bind('<Control-r>', lambda _:
