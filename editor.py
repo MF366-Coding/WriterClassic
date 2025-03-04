@@ -14,7 +14,7 @@ from typing import Any, Callable, Literal, Iterable
 import sys
 
 # [i] Tkinter imports
-from tkinter import Misc, END, WORD, INSERT, SEL, SEL_FIRST, SEL_LAST, Toplevel, IntVar, TclError
+from tkinter import Canvas, Misc, END, WORD, INSERT, SEL, SEL_FIRST, SEL_LAST, Toplevel, IntVar, TclError
 from tkinter.ttk import Checkbutton, Button, Frame, Label, Entry
 from tkinter.scrolledtext import ScrolledText as _ScrolledText
 from tkinter.font import Font
@@ -436,17 +436,32 @@ class CustomThemeMaker(Frame):
         self._L3 = Label(self._F1, text=str(self._lang[362]))
         self._L4 = Label(self._F1, text=str(self._lang[363]))
         self._L5 = Label(self._F1, text=str(self._lang[364]))
-
+        self._L6 = Label(self._F1, text="Dark Mode")
+        
+        self._DARK = IntVar(self._F1, 1 if str(self._config['theme']['sv']) == 'dark' else 0)
+        
         self._B1 = Button(self._F1, text=str(self._config['theme']['color']), command=lambda:
-            self.askcolor(self._B1))
+            self.askcolor(self._B1, self._C1))
         self._B2 = Button(self._F1, text=str(self._config['theme']['fg']), command=lambda:
-            self.askcolor(self._B2))
+            self.askcolor(self._B2, self._C2))
         self._B3 = Button(self._F1, text=str(self._config['theme']['ct']), command=lambda:
-            self.askcolor(self._B3))
+            self.askcolor(self._B3, self._C3))
         self._B4 = Button(self._F1, text=str(self._config['theme']['menu']), command=lambda:
-            self.askcolor(self._B4))
+            self.askcolor(self._B4, self._C4))
         self._B5 = Button(self._F1, text=str(self._config['theme']['mfg']), command=lambda:
-            self.askcolor(self._B5))
+            self.askcolor(self._B5, self._C5))
+        self._B6 = Checkbutton(self._F1, variable=self._DARK)
+        
+        self._C1 = Canvas(self._F1, width=50, height=50)
+        self._C2 = Canvas(self._F1, width=50, height=50)
+        self._C3 = Canvas(self._F1, width=50, height=50)
+        self._C4 = Canvas(self._F1, width=50, height=50)
+        self._C5 = Canvas(self._F1, width=50, height=50)
+        
+        a = ('color', 'fg', 'ct', 'menu', 'mfg')
+        
+        for i, j in enumerate((self._C1, self._C2, self._C3, self._C4, self._C5), 0):
+            j.create_rectangle(0, 0, 51, 51, fill=str(self._config['theme'][a[i]]))
 
         self._butt_text_rel: dict[Button, str | bytes] = {
             self._B1: self._config['theme']['color'],
@@ -457,21 +472,29 @@ class CustomThemeMaker(Frame):
         }
 
         self._L1.grid(column=0, row=0, padx=10, pady=10)
-        self._L2.grid(column=1, row=0, padx=10, pady=10)
-        self._L3.grid(column=2, row=0, padx=10, pady=10)
-        self._L4.grid(column=3, row=0, padx=10, pady=10)
-        self._L5.grid(column=4, row=0, padx=10, pady=10)
+        self._L2.grid(column=0, row=1, padx=10, pady=10)
+        self._L3.grid(column=0, row=2, padx=10, pady=10)
+        self._L4.grid(column=0, row=3, padx=10, pady=10)
+        self._L5.grid(column=0, row=4, padx=10, pady=10)
+        self._L6.grid(column=0, row=5, padx=10, pady=10)
 
-        self._B1.grid(column=0, row=1, padx=10, pady=10)
+        self._B1.grid(column=1, row=0, padx=10, pady=10)
         self._B2.grid(column=1, row=1, padx=10, pady=10)
-        self._B3.grid(column=2, row=1, padx=10, pady=10)
-        self._B4.grid(column=3, row=1, padx=10, pady=10)
-        self._B5.grid(column=4, row=1, padx=10, pady=10)
+        self._B3.grid(column=1, row=2, padx=10, pady=10)
+        self._B4.grid(column=1, row=3, padx=10, pady=10)
+        self._B5.grid(column=1, row=4, padx=10, pady=10)
+        self._B6.grid(column=1, row=5, padx=10, pady=10)
+        
+        self._C1.grid(column=2, row=0, padx=10, pady=10)
+        self._C2.grid(column=2, row=1, padx=10, pady=10)
+        self._C3.grid(column=2, row=2, padx=10, pady=10)
+        self._C4.grid(column=2, row=3, padx=10, pady=10)
+        self._C5.grid(column=2, row=4, padx=10, pady=10)
 
         self._F1.pack(pady=5)
         self._exit_butt.pack(pady=5)
 
-    def askcolor(self, butt_scope: Button):
+    def askcolor(self, butt_scope: Button, canvas: Canvas):
         color: str = picker.askcolor(self._butt_text_rel[butt_scope], title=self._lang[365])[1]
 
         self.focus_set()
@@ -481,6 +504,7 @@ class CustomThemeMaker(Frame):
 
         self._butt_text_rel[butt_scope] = color
         butt_scope.configure(text=str(color))
+        canvas.create_rectangle(0, 0, 51, 51, fill=str(color))
 
     def _leave(self):
         self._master.destroy()
@@ -489,7 +513,7 @@ class CustomThemeMaker(Frame):
         dump_func(**kwargs)
 
     def save_and_leave(self, dump_func: Callable, **kw):
-        self._save(dump_func, bg=self._butt_text_rel[self._B1], fg=self._butt_text_rel[self._B2], ct=self._butt_text_rel[self._B3], mbg=self._butt_text_rel[self._B4], mfg=self._butt_text_rel[self._B5], *kw)
+        self._save(dump_func, bg=self._butt_text_rel[self._B1], fg=self._butt_text_rel[self._B2], ct=self._butt_text_rel[self._B3], mbg=self._butt_text_rel[self._B4], mfg=self._butt_text_rel[self._B5], sv='dark' if self._DARK.get() else 'light', *kw)
         self._leave()
 
 

@@ -12,7 +12,8 @@
         "ct": "white",
         "fg": "#fcfcfc",
         "mfg": "#f4f8f8",
-        "menu": "black"
+        "menu": "black",
+        "sv": "dark"
     },
     "advanced-mode": false,
     "startup": true,
@@ -21,5 +22,7 @@
     "dencrypt": "",
     "debugging": false,
     "email": "",
-    "recent": []
+    "recent": [
+        "C:\\Users\\mateu\\Downloads\\lol.md"
+    ]
 }
