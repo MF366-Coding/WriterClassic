@@ -82,6 +82,9 @@ import markdown2 # [i] Used to make HTML files from Markdown
 import simple_webbrowser # [i] My own Python module (used for the Search with... options)
 from requests import get, exceptions # [i] Used for regular interactions with the Internet
 
+from PyLocalizer import EntryFormatting
+from PyLocalizer.internal import JSONLocalization
+
 # /-/ import chlorophyl # [i] Code view for Snippets
 
 del ScrolledText, colorchooser
@@ -144,6 +147,11 @@ temp_dir: str = os.path.join(script_dir, 'temp')
 scripts_dir: str = os.path.join(script_dir, "scripts")
 
 now = datetime.datetime.now
+
+
+EFORMATTER = EntryFormatting.EntryFormatter(False, False, False)
+LOCALIZER = JSONLocalization.JSONLocalization(EFORMATTER, f"{locale}/en")
+LOCALIZER.get_entry_value()
 
 
 def check_paths(var: str) -> str:
