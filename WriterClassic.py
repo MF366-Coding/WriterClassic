@@ -4946,7 +4946,7 @@ toolbar_commands = [new_file,
                     # --
                     close_confirm]
 
-__ico_paths = [os.path.join(data_dir, 'toolbar', f"{i + 1}.png") for i in range(TOOLBAR_LEN)]
+__ico_paths = [os.path.join(data_dir, 'toolbar', f"{i + 1}{settings['theme']['sv'][0].upper()}.png") for i in range(TOOLBAR_LEN)]
 
 icon_images = [Image.open(__ico_paths[i]) for i in range(TOOLBAR_LEN)]
 tk_icon_images = [ImageTk.PhotoImage(icon_images[i]) for i in range(TOOLBAR_LEN)]
