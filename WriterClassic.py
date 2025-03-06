@@ -91,6 +91,7 @@ cur_data: str = ""
 grp: None = None # [i] Redefined later on...
 save_status: bool = True
 TOOLBAR_LEN: int = 11
+LAST_THEME_CALL = datetime.datetime.now()
 
 CREDITS = """WriterClassic by: MF366
 Powered by: Python 3.11+
@@ -1483,6 +1484,7 @@ def set_theme(**kw):
         mfg: the color of the text in the menus (LINUX ONLY; menu foreground)
         sv: the sun valley theme to use
         widget: the widget where changes take place
+        menubar_: the menubar
         settings_: mapping that contains the settings
         dump: function that allows to dump/save the changed settings
         menus: list containing existing menus
@@ -1490,7 +1492,17 @@ def set_theme(**kw):
         special_menu: special menu that is only trigerred by `special_cond`
         special_cond: boolean condition that decides whether to trigger `special_menu` or not
     """
+    
+    global LAST_THEME_CALL
 
+    cond = datetime.datetime.now() - LAST_THEME_CALL
+    
+    if cond.seconds < 2:
+        showwarning("WriterClassic - Theme", "You are making too many theme change calls.\nPlease wait 2 seconds before changing theme again.\nIf you're getting this message without changing themes, it might be because a plugin is doing so.")
+        return
+    
+    LAST_THEME_CALL = datetime.datetime.now()    
+    
     before_listeners.run_group(set_theme)
     writerclassic_call_history.register_call(id(set_theme))
 
@@ -1498,6 +1510,7 @@ def set_theme(**kw):
     widget: WriterClassicEditor = kw.get('widget', text_widget)
     menus: list[Menu] = kw.get('menus', [menu_1, menu_4, menu_5, menu_6, menu_8, menu_9, menu_10, menu_11, menu_12, menu_13, menu_15, menu_16, menu_17])
     special_cond: bool = kw.get('special_cond', ADVANCED)
+    menubar_ = kw.get("menubar_", menu_bar)
 
     if special_cond:
         special_menu: Menu = kw.get('special_menu', menu_14)
@@ -1527,6 +1540,8 @@ def set_theme(**kw):
     if sys.platform == 'linux':
         # [i] Themed menus only on Linux Python3
         try:
+            menubar_.configure(background=mbg, foreground=mfg) # [i] fixes weird-ass menu bar behavior when changing themes
+
             for menu in menus:
                 menu.configure(background=mbg, foreground=mfg)
 
@@ -1534,9 +1549,6 @@ def set_theme(**kw):
 
         except (TypeError, ValueError, TclError):
             showerror(lang[150], f"{lang[151]}\n{lang[152]}")
-
-            for menu in menus:
-                menu.configure(background=mbg, foreground=mfg)
 
             logger.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
