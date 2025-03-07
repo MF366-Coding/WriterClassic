@@ -147,12 +147,7 @@ temp_dir: str = os.path.join(script_dir, 'temp')
 scripts_dir: str = os.path.join(script_dir, "scripts")
 
 now = datetime.datetime.now
-
-
-EFORMATTER = EntryFormatting.EntryFormatter(False, False, False)
-LOCALIZER = JSONLocalization.JSONLocalization(EFORMATTER, f"{locale}/en")
-LOCALIZER.get_entry_value()
-
+   
 
 def check_paths(var: str) -> str:
     """
@@ -294,6 +289,17 @@ tracemalloc.start()
 
 ic.configureOutput(prefix="ic debug statement | -> ")
 
+# [!] Very Important: Keeping track of versions and commits
+APP_VERSION = "v12.0.0"
+ADVANCED_VERSION ="v11.0.0.372"
+
+EFORMATTER = EntryFormatting.EntryFormatter(False, False, False, creator="MF366", version=APP_VERSION, name="WriterClassic")
+LOCALIZER = JSONLocalization.JSONLocalization(EFORMATTER, f"{locale}/en")
+LOCALIZER.get_entry_value()
+
+def lang(key: str):
+    return LOCALIZER[key]
+
 
 def showerror(title: str | None = None, message: str | None = None, **options) -> str:
     """
@@ -359,7 +365,7 @@ def asklink(title: str, prompt: str, encoding: str | None = 'utf-8', require_htt
     link: str = sdg.askstring(title, prompt, initialvalue=initialvalue, show=show)
 
     if not warning_message:
-        warning_message = f"{lang[133]}\n{lang[359]}"
+        warning_message = f"{lang('nope')}\n{lang("https")}"
 
     if require_https:
         while not link.lstrip().startswith('https://'):
@@ -694,10 +700,7 @@ ic(now())
 
 ic(settings['language'])
 
-with open(os.path.join(locale, f"{settings['language'][:2]}.wclassic"), 'r', encoding='utf-8') as usedLangFile:
-    usedLang = usedLangFile.read()
-    lang = usedLang.split('\n')
-    LOG.write(f"{str(now())} - Language has been configured correctly: OK\n")
+LOCALIZER.change_language(f"{locale}/{settings['language']}")
 
 # [*] Windowing
 LOG.write(f"{str(now())} - WriterClassic launched: OK\n")
@@ -708,10 +711,6 @@ if sys.platform == "win32":
 
 LATEST = None
 ic(LATEST)
-
-# [!] Very Important: Keeping track of versions and commits
-APP_VERSION = "v12.0.0"
-ADVANCED_VERSION ="v11.0.0.372"
 
 # [i] the fourth number up here, is the commit where this changes have been made
 
@@ -992,7 +991,7 @@ fast_dump()
 
 # [i] Windowing... again
 if current_file is False:
-    desktop_win.title(lang[1])
+    desktop_win.title(lang("writerclassic"))
 
 LOG.write(f"{str(now())} - Window's title was set to WriterClassic: OK\n")
 
@@ -1004,7 +1003,7 @@ try:
     LOG.write(f"{str(now())} - Font family/type is {str(settings['font']['size'])}: OK\n")
 
 except TclError:
-    showerror(lang[149], f"{lang[144]}\n{lang[145]}\n{lang[146]}")
+    showerror(lang('fterror'), f"{lang('nullftsize')}\n{lang('backtozero')}\n{lang('change_later')}")
     LOG.write(f"{str(now())} - Font size is set to 14 because of a font error: OK\n")
 
     config_font = Font(family="Segoe UI", size=12, slant='roman', weight='normal', underline=False, overstrike=False)
@@ -1042,7 +1041,7 @@ except TclError:
     geom_values = [700, 500]
     LOG.write(f"{str(now())} - Applied the window's dimensions: ERROR\n")
     LOG.write(f"{str(now())} - Reverted to 700x500: OK\n")
-    showerror(lang[166], f"{lang[167]}\n{lang[168]}")
+    showerror(lang('winerror'), f"{lang('bad_winsize')}\n{lang('backtoresetsize')}")
 
 try:
     text_widget.configure(background=settings['theme']["color"], foreground=settings['theme']["fg"], width=int(geom_values[0]), height=int(geom_values[1]), insertbackground=settings['theme']["ct"], font=config_font)
@@ -1050,7 +1049,7 @@ try:
 
 except TclError:
     LOG.write(f"{str(now())} - Applied configurations to the editing interface: ERROR\n")
-    showerror(lang[150], f"{lang[151]}\n{lang[152]}")
+    showerror(lang('themerror'), f"{lang('badtheme')}\n{lang('diff_theme')}")
     text_widget.configure(background="black", foreground="white", width=int(geom_values[0]), height=int(geom_values[1]), insertbackground="white", font=config_font)
     LOG.write(f"{str(now())} - Reconfigured the editing interface: OK\n")
 
@@ -1068,7 +1067,7 @@ try:
 except TclError:
     if sys.platform == "linux":
         LOG.write(f"{str(now())} - Applied the theme to the menu bar: ERROR\n")
-        showerror(lang[150], f"{lang[151]}\n{lang[152]}")
+        showerror(lang('themerror'), f"{lang('badtheme')}\n{lang('diff_theme')}")
         menu_bar.configure(background="white", foreground="black")
         LOG.write(f"{str(now())} - Applied the light theme to the menu bar as last resource: OK\n")
 
@@ -1192,7 +1191,7 @@ class WScript:
         if os.path.basename(location) == "EightBall.wscript":
             self.script = """_prompts = ['Yes!', "Don't think so...", "Doubtly.", "Absolutely.", "Nope.", "Not happening.", "WriterClassic is a good text editor!", "MF366 is cool.", "Of course!"]
 
-showinfo(f"{lang[1]} - Eight Ball", random.choice(_prompts))
+showinfo(f"{lang('writerclassic')} - Eight Ball", random.choice(_prompts))
 """
             return
 
@@ -1309,14 +1308,14 @@ class UpdateCheck:
         """
 
         if self.app_version != self.latest:
-            askForUpdate = mb.askyesno(lang[72], lang[73])
+            askForUpdate = mb.askyesno(lang('chkupd_dlg'), lang('update_now'))
 
             if askForUpdate:
                 LOG.write(f"{str(now())} - Went to the latest release at GitHub: OK\n")
                 simple_webbrowser.website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
 
         elif self.app_version == self.latest:
-            showinfo(title=lang[93], message=lang[92])
+            showinfo(title=lang('uptodate_dlg'), message=lang('uptodate'))
             LOG.write(f"{str(now())} - Versions match | WriterClassic is up to date: OK\n")
 
         else:
