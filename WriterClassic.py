@@ -1319,7 +1319,7 @@ class UpdateCheck:
             LOG.write(f"{str(now())} - Versions match | WriterClassic is up to date: OK\n")
 
         else:
-            showerror(lang[148], f"{lang[135]}\n{lang[136]}")
+            showerror(lang("interneterror"), f"{lang('no_internet')}\n{lang('chkupd_fail')}")
             LOG.write(f"{str(now())} - Couldn't check for updates (Bad Internet, Connection Timeout, Restricted Internet): WARNING\n")
 
 
@@ -1344,7 +1344,7 @@ def set_window_size(root: Tk = desktop_win, **_) -> None:
             e2 = int(params[1].get())
 
         except TypeError as e:
-            showerror(lang[147], f"{lang[133]}\n{lang[134]}\n{e}")
+            showerror(lang('operror'), f"{lang('notallowed')}\n{lang('nope')}\n{e}")
             params[2].destroy()
             return False
 
@@ -1359,7 +1359,7 @@ def set_window_size(root: Tk = desktop_win, **_) -> None:
         return True
 
     geometry_set = Toplevel()
-    geometry_set.title(string=f"{lang[1]} - {lang[12]}")
+    geometry_set.title(string=f"{lang('writerclassic')} - {lang('winsize')}")
     geometry_set.resizable(width=False, height=False)
 
     if sys.platform == 'win32':
@@ -1369,8 +1369,8 @@ def set_window_size(root: Tk = desktop_win, **_) -> None:
     frame1 = Frame(frame0)
     frame2 = Frame(frame0)
 
-    width_label = Label(frame1, text=lang[57], font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    height_label = Label(frame2, text=lang[58], font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    width_label = Label(frame1, text=lang('width'), font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    height_label = Label(frame2, text=lang('height'), font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
     width_set = Entry(frame1, font=Font(family=config_font.actual('family'), size=11, weight='normal', slant='roman', underline=False, overstrike=False))
     height_set = Entry(frame2, font=Font(family=config_font.actual('family'), size=11, weight='normal', slant='roman', underline=False, overstrike=False))
@@ -1555,7 +1555,7 @@ def set_theme(**kw):
             logger.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
         except (TypeError, ValueError, TclError):
-            showerror(lang[150], f"{lang[151]}\n{lang[152]}")
+            showerror(lang('themerror'), f"{lang('badtheme')}")
 
             logger.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
@@ -1594,7 +1594,7 @@ def set_language(language_set, root_win):
     LOG.write(f"{str(now())} - A new language has been set ({str(language_set)}): OK\n")
     fast_dump()
 
-    popup_define = mb.askyesno(parent=root_win, title=lang[30], message=lang[31])
+    popup_define = mb.askyesno(parent=root_win, title=lang('exit_now'), message=lang('reopen_apply'))
     LOG.write(f"{str(now())} - Asked for app restart: AWAITING RESPONSE\n")
 
     if popup_define:
@@ -1622,7 +1622,7 @@ def draft_notepad() -> None:
     LOG.write(f"{str(now())} - A new window has been called: AWAITING CONFIGURATION\n")
 
     # [i] Windowing
-    new_window.title(lang[22])
+    new_window.title(lang('notes'))
     new_window.geometry("600x400")
 
     if sys.platform == "win32":
@@ -1651,7 +1651,7 @@ def document_status(widget: WriterClassicEditor = text_widget):
     before_listeners.run_group(document_status)
     writerclassic_call_history.register_call(id(document_status))
 
-    showinfo(lang[164], f"{lang[165]}: {widget.num_lines - 1}")
+    showinfo(lang('linecount_dlg'), f"{lang('lines')}: {widget.num_lines - 1}")
 
     after_listeners.run_group(document_status)
 
@@ -1727,7 +1727,7 @@ class BackupSystem:
                     raise Exception from e # [i] it will be caught by the statement below
 
                 except Exception:
-                    showerror(title=lang[1], message=lang[322])
+                    showerror(title=lang('writerclassic'), message=lang('restorerror'))
                     continue
 
             zip_file.extractall(path=self._main_dir)
@@ -1748,21 +1748,21 @@ class BackupSystem:
         making_types = ("zip", "make", "create")
 
         if _type in making_types:
-            _DIR = dlg.askdirectory(mustexist=True, title=lang[316])
+            _DIR = dlg.askdirectory(mustexist=True, title=lang('svbackup'))
 
             self._zip_files(_DIR)
 
         elif _type in loading_types:
-            file_path = dlg.asksaveasfilename(parent=root_win, filetypes=[(lang[318], '*.zip')], defaultextension="*.*", initialfile="Load a Backup", confirmoverwrite=False, title=lang[317])
+            file_path = dlg.asksaveasfilename(parent=root_win, filetypes=[(lang('zipped'), '*.zip')], defaultextension="*.*", initialfile="Load a Backup", confirmoverwrite=False, title=lang('ldbackup'))
 
             if not file_path.lower().endswith(".zip") or not os.path.exists(file_path):
-                showerror(lang[1], lang[319])
+                showerror(lang('writerclassic'), lang('ldbackup'))
                 return
 
             self._extract_files(file_path)
 
         else:
-            showerror(lang[1], lang[319])
+            showerror(lang('writerclassic'), lang('file_not_backup'))
 
 
 def recent_files(**kw):
@@ -1881,7 +1881,7 @@ class Snippets:
             raise InvalidSnippet(f'{name} is already taken')
 
         if desc is None:
-            desc = lang[337]
+            desc = lang('nodesc')
 
         self.__taken_names.append(name)
 
@@ -2013,7 +2013,7 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
         labels[3].configure(state=NORMAL)
 
         labels[3].delete(0.0, END)
-        labels[3].insert(0.0, f"{lang[334]}:\n---\n{s[1]}\n---\n{s[3]}")
+        labels[3].insert(0.0, f"{lang('val')}:\n---\n{s[1]}\n---\n{s[3]}")
 
         labels[3].configure(state=DISABLED)
 
@@ -2026,7 +2026,7 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
         args[4].destroy()
 
     w = Toplevel(root)
-    w.title(f"{lang[1]} - {lang[341]}")
+    w.title(f"{lang('writerclassic')} - {lang[341]}")
     w.resizable(False, False)
 
     if sys.platform == "win32":
@@ -2119,7 +2119,7 @@ def set_font(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = te
     __dump_func = kw.get('__dump_func', dump_func)
     __sample = kw.get('__sample', sample)
 
-    font_details = dict(tkfontchooser.askfont(root, __sample, f"{lang[1]} - {lang[332]}", family=settings['font']['family'], size=settings['font']['size'], weight=settings['font']['weight'], slant=settings['font']['slant'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike']))
+    font_details = dict(tkfontchooser.askfont(root, __sample, f"{lang('writerclassic')} - {lang[332]}", family=settings['font']['family'], size=settings['font']['size'], weight=settings['font']['weight'], slant=settings['font']['slant'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike']))
     config_font.configure(family=font_details['family'], size=font_details['size'], weight=font_details['weight'], slant=font_details['slant'], underline=font_details['underline'], overstrike=font_details['overstrike'])
 
     settings['font'] = font_details
@@ -2153,7 +2153,7 @@ def new_file(skip_confirmation: bool = False):
         a = has_been_modified()
 
         if not a:
-            b = mb.askyesnocancel(lang[1], f"{lang[352]}\n{lang[353]}")
+            b = mb.askyesnocancel(lang('writerclassic'), f"{lang[352]}\n{lang[353]}")
 
             if b is None:
                 ic()
@@ -2168,7 +2168,7 @@ def new_file(skip_confirmation: bool = False):
 
     save_status = True
 
-    desktop_win.title(lang[1])
+    desktop_win.title(lang('writerclassic'))
     text_widget.delete(index1=0.0, index2=END)
     cur_data = text_widget.content
 
@@ -2265,7 +2265,7 @@ def open_file_manually(file_path: str, root_win: Tk = desktop_win) -> None:
             file_input = open(file_path, "rt", encoding="utf-8")
             file_data = file_input.read()
 
-            root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
+            root_win.title(f"{lang('writerclassic')} - {os.path.basename(file_path)}")
             text_widget.delete(index1=0.0, index2=END)
             text_widget.insert(chars=file_data, index=END)
 
@@ -2353,8 +2353,8 @@ def save_as_file(root_win: Tk = desktop_win):
     file.write(str(data.rstrip('\n')) + '\n')
     cur_data = data
     file.close()
-    showinfo(lang[1], lang[101])
-    root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
+    showinfo(lang('writerclassic'), lang[101])
+    root_win.title(f"{lang('writerclassic')} - {os.path.basename(file_path)}")
 
     LOG.write(f"{str(now())} - A file has been saved as {str(file_path)}: OK\n")
 
@@ -2401,8 +2401,8 @@ def save_file(root_win: Tk = desktop_win):
     file.write(str(data.rstrip('\n')) + '\n') # [i] save the document with 1 newline in the end
     cur_data = data
     file.close()
-    showinfo(lang[1], lang[101])
-    root_win.title(f"{lang[1]} - {os.path.basename(file_path)}")
+    showinfo(lang('writerclassic'), lang[101])
+    root_win.title(f"{lang('writerclassic')} - {os.path.basename(file_path)}")
 
     current_file = str(file_path)
     ic(current_file)
@@ -2435,7 +2435,7 @@ def wipe_file(root_win: Tk = desktop_win):
 
         file_input = open(file_path, "wt", encoding="utf-8")
         file_input.write('')
-        showinfo(title=lang[1], message=lang[101])
+        showinfo(title=lang('writerclassic'), message=lang[101])
 
         LOG.write(f"{str(now())} - A file has been wiped at {str(file_path)}: OK\n")
         file_input.close()
@@ -2515,7 +2515,7 @@ def change_casing() -> None:
 
     def _swap_casing(casing: str):
         if not text_widget.selection:
-            showerror(lang[1], lang[372])
+            showerror(lang('writerclassic'), lang[372])
 
         else:
             text_widget.change_selection_casing(casing)
@@ -2632,7 +2632,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
     prog_lang = prog_lang.strip()
 
     if current_file is False:
-        showerror(lang[1], lang[239])
+        showerror(lang('writerclassic'), lang[239])
         return
 
     match mode:
@@ -2640,7 +2640,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
             match prog_lang.lower():
                 case "c++": # [!] THIS ASSUMES YOUR COMPILATION HAS NO EXTRA LIBRARIES
                     if not current_file.strip().endswith("cpp"):
-                        showerror(lang[1], lang[284])
+                        showerror(lang('writerclassic'), lang[284])
                         return
 
                     os.system(f"g++ \"{os.path.dirname(current_file)}\"")
@@ -2648,7 +2648,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
 
                 case "c#":
                     if not current_file.strip().endswith(("cs", "csproj")):
-                        showerror(lang[1], lang[284])
+                        showerror(lang('writerclassic'), lang[284])
                         return
 
                     os.system(f"dotnet build \"{os.path.dirname(current_file)}\"")
@@ -2661,7 +2661,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
             match prog_lang.lower():
                 case "c#":
                     if not current_file.strip().endswith((".cs", ".csproj")):
-                        showerror(lang[1], lang[284])
+                        showerror(lang('writerclassic'), lang[284])
                         return
 
                     os.system(f"dotnet run --project \"{os.path.dirname(current_file)}\"")
@@ -2669,7 +2669,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
 
                 case "python":
                     if not current_file.strip().endswith('.py'):
-                        showerror(lang[1], lang[284])
+                        showerror(lang('writerclassic'), lang[284])
                         return
 
                     if sys.platform == "win32":
@@ -2729,7 +2729,7 @@ X-KDE-Username=
 
     with open(f"{script_dir}/WriterClassic.desktop", mode="w", encoding='utf-8') as desktop_file:
         desktop_file.write(desktop_entry)
-        showinfo(lang[1], lang[101])
+        showinfo(lang('writerclassic'), lang[101])
         desktop_file.close()
 
     after_listeners.run_group(create_desktop_file_linux)
@@ -2916,11 +2916,11 @@ def markdown_preview() -> None:
     writerclassic_call_history.register_call(id(markdown_preview))
 
     if not current_file:
-        showerror(lang[1], lang[221])
+        showerror(lang('writerclassic'), lang[221])
         return
 
     if not current_file.lower().endswith((".md", ".mdown", ".mkd", ".mkdn")):
-        showerror(lang[1], lang[222])
+        showerror(lang('writerclassic'), lang[222])
         return
 
     temp_html_path = os.path.join(temp_dir, f"{random.randint(1, 1000)}_{os.path.basename(current_file).replace(' ', '_')}.html")
@@ -2955,7 +2955,7 @@ def tips_tricks():
 
     ic(picked_text)
 
-    showinfo(lang[1], picked_text)
+    showinfo(lang('writerclassic'), picked_text)
     LOG.write(f"{str(now())} - Requested Tips & Tricks: OK\n")
 
     after_listeners.run_group(tips_tricks)
@@ -3241,7 +3241,7 @@ class Plugin:
             __versions: list = [int(i[1:]) for i in manifest]
 
             # [*] Window Creation
-            datax = sdg.askinteger(title=f'{lang[1]} - {lang[203]}', prompt=f'{lang[202]}\n{lang[204]} {max(__versions)}.', initialvalue=max(__versions), minvalue=1, maxvalue=max(__versions))
+            datax = sdg.askinteger(title=f'{lang('writerclassic')} - {lang[203]}', prompt=f'{lang[202]}\n{lang[204]} {max(__versions)}.', initialvalue=max(__versions), minvalue=1, maxvalue=max(__versions))
 
             datax = f"v{datax}"
 
@@ -3338,7 +3338,7 @@ class Plugin:
             showerror(lang[148], lang[135])
 
         except VersionError:
-            showerror(lang[1], lang[358])
+            showerror(lang('writerclassic'), lang[358])
 
         except ValueError as e:
             LOG.error("Invalid version or missing Python file while attempting to download a plugin using a MANIFEST", str(e))
@@ -3361,7 +3361,7 @@ class Plugin:
             versioning_data = versioning_file.text
 
             # [*] Window Creation
-            datax = sdg.askinteger(title=f"{lang[1]} - {lang[203]}", prompt=f'{lang[202]}\n{lang[204]} {int(versioning_data)}.', initialvalue=int(versioning_data), minvalue=1, maxvalue=int(versioning_data))
+            datax = sdg.askinteger(title=f"{lang('writerclassic')} - {lang[203]}", prompt=f'{lang[202]}\n{lang[204]} {int(versioning_data)}.', initialvalue=int(versioning_data), minvalue=1, maxvalue=int(versioning_data))
 
             # [!?] Some of the following code belongs to ChatGPT and other AIs!
 
@@ -3444,7 +3444,7 @@ class PluginCentral:
             return
 
         self.CENTRAL = Toplevel(root)
-        self.CENTRAL.title(f"{lang[1]} - Plugin Central")
+        self.CENTRAL.title(f"{lang('writerclassic')} - Plugin Central")
         self.CENTRAL.resizable(False, False)
 
         if sys.platform == "win32":
@@ -3496,7 +3496,7 @@ class PluginCentral:
                 name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
 
             except TclError:
-                showerror(lang[1], "You must select a plugin to open in Explorer!")
+                showerror(lang('writerclassic'), "You must select a plugin to open in Explorer!")
                 return
 
         ic(name)
@@ -3513,14 +3513,14 @@ class PluginCentral:
             open_in_file_explorer(os.path.abspath(os.path.dirname(module_path)))
 
         except Exception as e:
-            showerror(lang[1], f"Seems like something went wrong...\n{e}")
+            showerror(lang('writerclassic'), f"Seems like something went wrong...\n{e}")
 
     def show_plugin_in_explorer(self, name: str | None = None):
         try:
             self._show_in_file_explorer(name)
 
         except PluginNotFoundError as e:
-            showerror(lang[1], f"The selected plugin doesn't exist.\n{e}")
+            showerror(lang('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
 
         except Exception as e:
             showerror(lang[133], f"{lang[134]}\n{e}")
@@ -3531,7 +3531,7 @@ class PluginCentral:
                 name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
 
             except TclError:
-                showerror(lang[1], "You must select a plugin!")
+                showerror(lang('writerclassic'), "You must select a plugin!")
                 return
 
         ic(name)
@@ -3545,7 +3545,7 @@ class PluginCentral:
             raise PluginNotFoundError(f"no plugin results for '{name}' or no version details: {e}")
 
         subwindow = Toplevel(desktop_win if self.CENTRAL is None else self.CENTRAL)
-        subwindow.title(f"{lang[1]} - Plugin Info")
+        subwindow.title(f"{lang('writerclassic')} - Plugin Info")
         subwindow.resizable(False, False)
 
         if sys.platform == "win32":
@@ -3593,7 +3593,7 @@ class PluginCentral:
             self._display_plugin_info(name)
 
         except PluginNotFoundError as e:
-            showerror(lang[1], f"The selected plugin doesn't exist.\n{e}")
+            showerror(lang('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
 
         except Exception as e:
             showerror(lang[133], f"{lang[134]}\n{e}")
@@ -3604,7 +3604,7 @@ class PluginCentral:
                 name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
 
             except TclError:
-                showerror(lang[1], "You must select a plugin to remove!")
+                showerror(lang('writerclassic'), "You must select a plugin to remove!")
                 return
 
         ic(name)
@@ -3617,7 +3617,7 @@ class PluginCentral:
         except (KeyError, IndexError) as e:
             raise PluginNotFoundError(f"no plugin results for '{name}' or no version details: {e}")
 
-        confirmation = mb.askyesno(lang[1], f"Are you sure you want to remove plugin {name}?\nThis action is permanent and cannot be undone!")
+        confirmation = mb.askyesno(lang('writerclassic'), f"Are you sure you want to remove plugin {name}?\nThis action is permanent and cannot be undone!")
 
         if not confirmation:
             return
@@ -3628,14 +3628,14 @@ class PluginCentral:
             shutil.rmtree(os.path.abspath(module_folder))
 
         except (PermissionError, OSError) as e:
-            showerror(lang[1], f"WriterClassic lacks the permissions to remove the plugin.\nA manual removal might be necessary.\n{e}")
+            showerror(lang('writerclassic'), f"WriterClassic lacks the permissions to remove the plugin.\nA manual removal might be necessary.\n{e}")
 
     def remove_plugin(self, name: str | None = None):
         try:
             self._remove_plugin(name)
 
         except PluginNotFoundError as e:
-            showerror(lang[1], f"The selected plugin doesn't exist.\n{e}")
+            showerror(lang('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
 
         except Exception as e:
             showerror(lang[133], f"{lang[134]}\n{e}")
@@ -3648,7 +3648,7 @@ class PluginCentral:
                 name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
 
             except TclError:
-                showerror(lang[1], "You must select a plugin to run!")
+                showerror(lang('writerclassic'), "You must select a plugin to run!")
                 return
 
         ic(name)
@@ -3678,7 +3678,7 @@ class PluginCentral:
             self._run_plugin(name)
 
         except PluginNotFoundError as e:
-            showerror(lang[1], f"The selected plugin doesn't exist.\n{e}")
+            showerror(lang('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
 
         except Exception as e:
             showerror(lang[133], f"{lang[134]}\n{e}")
@@ -3693,7 +3693,7 @@ class PluginCentral:
         """
 
         if not plugin_name:
-            plugin_name = sdg.askstring(lang[1], f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
+            plugin_name = sdg.askstring(lang('writerclassic'), f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
 
         plugin = Plugin(folder_name=plugin_name)
         plugin.obtain_files()
@@ -4492,7 +4492,7 @@ def adv_change():
     ic(settings["advanced-mode"])
     fast_dump()
 
-    showinfo(message=lang[63], title=lang[1])
+    showinfo(message=lang[63], title=lang('writerclassic'))
 
     after_listeners.run_group(adv_change)
 
@@ -4514,7 +4514,7 @@ def show_debug():
     ic(settings["debugging"])
     fast_dump()
 
-    showinfo(message=lang[63], title=lang[1])
+    showinfo(message=lang[63], title=lang('writerclassic'))
 
     after_listeners.run_group(show_debug)
 
@@ -4528,18 +4528,18 @@ def dencrypt():
         fast_dump()
 
         if not current_file:
-            showinfo(lang[1], lang[239])
+            showinfo(lang('writerclassic'), lang[239])
 
         else:
             os.system(f'"{pathx}" "{current_file}" {parameters}')
-            showinfo(lang[1], lang[275])
+            showinfo(lang('writerclassic'), lang[275])
 
     new = Toplevel(desktop_win)
 
     if sys.platform == "win32":
         new.iconbitmap(f"{data_dir}/app_icon.ico")
 
-    new.title(f"{lang[1]} - {lang[274]}")
+    new.title(f"{lang('writerclassic')} - {lang[274]}")
     new.resizable(False, False)
 
     label_1 = Label(new, text=f"{lang[273]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
@@ -4613,7 +4613,7 @@ def readme_gen(*entries):
 def readme_gen_win():
     # [i] Window Creation
     window = Toplevel(desktop_win)
-    window.title(f"{lang[1]} - {lang[226]}")
+    window.title(f"{lang('writerclassic')} - {lang[226]}")
     window.resizable(False, False)
 
     if sys.platform == 'win32':
@@ -4667,7 +4667,7 @@ def open_with_adv():
     writerclassic_call_history.register_call(id(open_with_adv))
 
     window = Toplevel(desktop_win)
-    window.title(f"{lang[1]} - {lang[254]}")
+    window.title(f"{lang('writerclassic')} - {lang[254]}")
     window.resizable(False, False)
 
     if sys.platform == 'win32':
@@ -4677,7 +4677,7 @@ def open_with_adv():
 
     def action_1():
         if not current_file:
-            showinfo(lang[1], lang[239])
+            showinfo(lang('writerclassic'), lang[239])
         else:
             os.system(f'"{str(current_file)}"')
 
@@ -4687,7 +4687,7 @@ def open_with_adv():
 
     def action_2(requested_entry):
         if not current_file:
-            showinfo(lang[1], lang[239])
+            showinfo(lang('writerclassic'), lang[239])
         else:
             if " " in requested_entry:
                 os.system(f'"{requested_entry}" "{str(current_file)}"')
@@ -4749,7 +4749,7 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
         showerror(lang[133], f"{lang[134]}\n{e}")
 
     except Exception as e:
-        showerror(lang[1], f"{lang[247]}\n{lang[248]}\n{e}")
+        showerror(lang('writerclassic'), f"{lang[247]}\n{lang[248]}\n{e}")
 
     finally:
         del sender_password
@@ -4766,7 +4766,7 @@ def message_write(mail: str, pwd: str, _variable, win):
 
     # [*] Window Creation
     window = Toplevel(desktop_win)
-    window.title(f"{lang[1]} - {lang[246]}")
+    window.title(f"{lang('writerclassic')} - {lang[246]}")
     window.resizable(False, False)
 
     if sys.platform == 'win32':
@@ -4807,11 +4807,11 @@ def message_write(mail: str, pwd: str, _variable, win):
 def adv_login():
     # [*] Window Creation
     if not current_file:
-        showerror(lang[1], lang[239])
+        showerror(lang('writerclassic'), lang[239])
         return
 
     window = Toplevel(desktop_win)
-    window.title(f"{lang[1]} - {lang[238]}")
+    window.title(f"{lang('writerclassic')} - {lang[238]}")
 
     window.resizable(False, False)
     if sys.platform == 'win32':
@@ -4851,7 +4851,7 @@ def show_advanced_version():
     before_listeners.run_group(show_advanced_version)
     writerclassic_call_history.register_call(id(show_advanced_version))
 
-    showinfo(lang[1], f"{lang[230]} {ADVANCED_VERSION}.")
+    showinfo(lang('writerclassic'), f"{lang[230]} {ADVANCED_VERSION}.")
     ic(ADVANCED_VERSION)
 
     after_listeners.run_group(show_advanced_version)
@@ -4995,7 +4995,7 @@ if os.path.exists(path=os.path.join(scripts_dir, "auto.wscript")):
     auto_script = WScript()
     auto_script.loadpath(location=os.path.join(scripts_dir, "auto.wscript"))
 
-    _run_auto: bool = mb.askyesno(title=lang[1], message=f"{lang[289]}\n{lang[290]}\n{lang[291]}")
+    _run_auto: bool = mb.askyesno(title=lang('writerclassic'), message=f"{lang[289]}\n{lang[290]}\n{lang[291]}")
 
     if _run_auto:
         try:
