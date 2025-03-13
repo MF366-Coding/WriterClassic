@@ -295,10 +295,11 @@ ADVANCED_VERSION ="v11.0.0.372"
 
 EFORMATTER = EntryFormatting.EntryFormatter(False, False, False, creator="MF366", version=APP_VERSION, name="WriterClassic")
 LOCALIZER = JSONLocalization.JSONLocalization(EFORMATTER, f"{locale}/en")
-LOCALIZER.get_entry_value()
+LOCALIZER.change_language(f"{locale}/en") # [i] Load English, will be changed later on
+
 
 def lang(key: str):
-    return LOCALIZER[key]
+    return LOCALIZER.get_formatted_entry(key, in_case_of_error=key)
 
 
 def showerror(title: str | None = None, message: str | None = None, **options) -> str:
@@ -365,7 +366,7 @@ def asklink(title: str, prompt: str, encoding: str | None = 'utf-8', require_htt
     link: str = sdg.askstring(title, prompt, initialvalue=initialvalue, show=show)
 
     if not warning_message:
-        warning_message = f"{lang('nope')}\n{lang("https")}"
+        warning_message = f"{lang('nope')}\n{lang('https')}"
 
     if require_https:
         while not link.lstrip().startswith('https://'):
@@ -2026,7 +2027,7 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
         args[4].destroy()
 
     w = Toplevel(root)
-    w.title(f"{lang('writerclassic')} - {lang[341]}")
+    w.title(f"{lang('writerclassic')} - {lang('snippets')}")
     w.resizable(False, False)
 
     if sys.platform == "win32":
@@ -2042,7 +2043,7 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
     title_label = Label(w, font=h1, text=snippets.name)
     adjust_frame = Frame(w)
 
-    snippet_label = Label(adjust_frame, font=body1, text=f'{lang[338]}: ')
+    snippet_label = Label(adjust_frame, font=body1, text=f'{lang("name")}: ')
 
     snippet_name = StringVar(w)
 
@@ -2051,11 +2052,11 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
     for i in snippets.get_taken_names():
         g = (*g, i)
 
-    name_label = Label(w, font=h2, text=lang[339])
+    name_label = Label(w, font=h2, text=lang('nosnippet'))
     desc_label = WriterClassicEditor(w, font=body2)
     desc_label.configure(borderwidth=0, insertbackground='white')
 
-    desc_label.insert(0.0, lang[340])
+    desc_label.insert(0.0, lang('selectsnippet'))
 
     desc_label.configure(state=DISABLED)
 
@@ -2063,10 +2064,10 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
 
     name_picker = OptionMenu(adjust_frame, snippet_name, None, *g, direction='below')
 
-    ok_butt = Button(adjust_frame, text=lang[335], command=lambda:
+    ok_butt = Button(adjust_frame, text=lang('select'), command=lambda:
         update_info_view(*z))
 
-    insert_butt = Button(w, text=lang[336], command=lambda:
+    insert_butt = Button(w, text=lang('ins'), command=lambda:
         insert_val(snippets, snippet_name, pos, widget, w))
 
     title_label.pack()
@@ -2084,7 +2085,7 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
 
     w.mainloop()
 
-default_snippets = Snippets(lang[333])
+default_snippets = Snippets(lang('defaultsnippets'))
 
 default_snippets.register('if-elif-else', 'if !!!:\n\t!!!\nelif !!!:\n\t!!!\nelse:\n\t!!!', 'Python 3', "Python's if-elif-else statement, where the '!!!' marks the things you might want to change.")
 default_snippets.register('try-except-else-finally', 'try:\n\t!!!\nexcept !!!:\n\t!!!\nelse:\n\t!!!\nfinally:\n\t!!!', 'Python 3', "Python's try-except clause but with additional else and finally for a better error handling.")
@@ -2119,7 +2120,7 @@ def set_font(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = te
     __dump_func = kw.get('__dump_func', dump_func)
     __sample = kw.get('__sample', sample)
 
-    font_details = dict(tkfontchooser.askfont(root, __sample, f"{lang('writerclassic')} - {lang[332]}", family=settings['font']['family'], size=settings['font']['size'], weight=settings['font']['weight'], slant=settings['font']['slant'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike']))
+    font_details = dict(tkfontchooser.askfont(root, __sample, f"{lang('writerclassic')} - {lang('ftpicker')}", family=settings['font']['family'], size=settings['font']['size'], weight=settings['font']['weight'], slant=settings['font']['slant'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike']))
     config_font.configure(family=font_details['family'], size=font_details['size'], weight=font_details['weight'], slant=font_details['slant'], underline=font_details['underline'], overstrike=font_details['overstrike'])
 
     settings['font'] = font_details
@@ -2153,7 +2154,7 @@ def new_file(skip_confirmation: bool = False):
         a = has_been_modified()
 
         if not a:
-            b = mb.askyesnocancel(lang('writerclassic'), f"{lang[352]}\n{lang[353]}")
+            b = mb.askyesnocancel(lang('writerclassic'), f"{lang('notsaved_warn')}\n{lang('saveforenew')}")
 
             if b is None:
                 ic()
@@ -2180,48 +2181,39 @@ def new_file(skip_confirmation: bool = False):
 
     after_listeners.run_group(new_file)
 
+FILETYPES: list[tuple[str, str]] | None = None
 
-FILETYPES = [(lang[32], '*.txt'),
-              (lang[33], '*.config'),
-              (lang[34], '*.css'),
-              (lang[35], '*.csv'),
-              (lang[36], '*.html'),
-              (lang[37], '*.inf'),
-              (lang[38], '*.info'),
-              (lang[39], '*.ini'),
-              (lang[40], '*.js'),
-              (lang[41], '*.py'),
-              (lang[42], '*.log'),
-              (lang[43], '*.xml'),
-              (lang[44], '*.1st'),
-              (lang[45], '*.a'),
-              (lang[46], '*.a8s'),
-              (lang[47], '*.ans'),
-              (lang[48], '*.arena'),
-              (lang[49], '*.as'),
-              (lang[50], '*.asa'),
-              (lang[51], '*.asm'),
-              (lang[52], '*.md'),
-              (lang[102], '*.json'),
-              (lang[185], '*.wclassic'),
-              (lang[288], "*.wscript"),
-              (lang[110], '*.ath'),
-              (lang[111], "*.att"),
-              (lang[112], "*.avs"),
-              (lang[113], "*.bbz"),
-              (lang[114], "*.bcs"),
-              (lang[115], "*.bmk"),
-              (lang[116], "*.book"),
-              (lang[117], "*.bpw"),
-              (lang[118], "*.bsd"),
-              (lang[119], "*.bsdl"),
-              (lang[120], "*.bsh"),
-              (lang[121], "*.camp"),
-              (lang[122], "*.cel"),
-              (lang[123], "*.celx"),
-              (lang[124], "*.cgi"),
-              (lang[127], "*.*")
-              ]
+if sys.platform == 'win32':
+    FILETYPES = [
+        (lang("txt"), "*.txt"),
+        (lang("config"), "*.config"),
+        (lang("css"), "*.css"),
+        (lang("csv"), "*.csv"),
+        (lang("html"), "*.html"),
+        (lang("js"), "*.js"),
+        (lang("py"), "*.py"),
+        (lang("log"), "*.log"),
+        (lang("xml"), "*.xml"),
+        (lang("readme"), "*.1st"),
+        (lang("a"), "*.a"),
+        (lang("ans"), "*.ans"),
+        (lang("asm"), "*.asm"),
+        (lang("md"), "*.md"),
+        (lang("json"), "*.json"),
+        (lang("wclassic"), "*.wclassic"),
+        (lang("wscript"), "*.wscript"),
+        (lang("all"), "*.*")
+    ]
+
+else:
+    FILETYPES = [
+        (lang('txt'), '*.txt'),
+        (lang('html'), '*.html'),
+        (lang('md'), '*.md'),
+        (lang('wclassic'), '*.wclassic'),
+        (lang('wscript'), '*.wscript'),
+        (lang("all"), "*.*")
+    ]
 
 LOG.write(f"{str(now())} - Filetypes have been configured correctly: OK\n")
 
@@ -2276,8 +2268,8 @@ def open_file_manually(file_path: str, root_win: Tk = desktop_win) -> None:
             LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
 
     except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
-        showerror(title=lang[187], message=f"{lang[188]} {str(file_path)}.")
-        run_default = mb.askyesno(title=lang[187], message=lang[189])
+        showerror(title=lang('encerror'), message=f"{lang('unicoderror')} {str(file_path)}.")
+        run_default = mb.askyesno(title=lang('encerror'), message=lang('defaulteditor'))
 
         if run_default:
             os.system(str(file_path))
@@ -2305,7 +2297,7 @@ def open_file(root_win: Tk = desktop_win, initialfile: str = 'Open a File', **kw
 
     filetypes: list[tuple[str, str]] = kw.get('filetypes', FILETYPES.copy())
 
-    file_path: str = dlg.asksaveasfilename(parent=root_win, filetypes=filetypes, defaultextension="*.*", initialfile=initialfile, confirmoverwrite=False, title=lang[7])
+    file_path: str = dlg.asksaveasfilename(parent=root_win, filetypes=filetypes, defaultextension="*.*", initialfile=initialfile, confirmoverwrite=False, title=lang('open'))
 
     if not file_path:
         return
@@ -2331,18 +2323,18 @@ def save_as_file(root_win: Tk = desktop_win):
 
     data = text_widget.content
     save_status = True
-    file_path = dlg.asksaveasfilename(parent=root_win, title=lang[9], confirmoverwrite=True, filetypes=FILETYPES, defaultextension="*.*", initialfile="New File To Save")
+    file_path = dlg.asksaveasfilename(parent=root_win, title=lang('save_as'), confirmoverwrite=True, filetypes=FILETYPES, defaultextension="*.*", initialfile="New File To Save")
     
-    # [*] Get the selected file extension
+    """    # [*] Get the selected file extension
     selected_extension = None
     for ft in FILETYPES:
-        if file_path.lower().endswith(ft[1]):
-            selected_extension = ft[1]
+        if file_path.lower().endswith(ft[1][1:]):
+            selected_extension = ft[1][1:]
             break
 
     # [*] Append the selected extension if not already included
     if selected_extension and not file_path.lower().endswith(selected_extension):
-        file_path += selected_extension
+        file_path += selected_extension"""
 
     if file_path.lower().endswith(".wclassic") and "$VARS" in data:
         for __var in WCLASSIC_VARS:
@@ -2353,7 +2345,7 @@ def save_as_file(root_win: Tk = desktop_win):
     file.write(str(data.rstrip('\n')) + '\n')
     cur_data = data
     file.close()
-    showinfo(lang('writerclassic'), lang[101])
+    showinfo(lang('writerclassic'), lang('done'))
     root_win.title(f"{lang('writerclassic')} - {os.path.basename(file_path)}")
 
     LOG.write(f"{str(now())} - A file has been saved as {str(file_path)}: OK\n")
@@ -2401,7 +2393,7 @@ def save_file(root_win: Tk = desktop_win):
     file.write(str(data.rstrip('\n')) + '\n') # [i] save the document with 1 newline in the end
     cur_data = data
     file.close()
-    showinfo(lang('writerclassic'), lang[101])
+    showinfo(lang('writerclassic'), lang('done'))
     root_win.title(f"{lang('writerclassic')} - {os.path.basename(file_path)}")
 
     current_file = str(file_path)
@@ -2410,40 +2402,6 @@ def save_file(root_win: Tk = desktop_win):
     open_file_manually(current_file)
 
     LOG.write(f"{str(now())} - An existing file has been saved over ({str(file_path)}): OK\n")
-
-
-# [!] WARNING: THIS FUNCTION WILL BE DEPRECATED IN V11.0.1
-def wipe_file(root_win: Tk = desktop_win):
-    before_listeners.run_group(wipe_file)
-    writerclassic_call_history.register_call(id(wipe_file))
-
-    sureConfirm = mb.askyesno(title=lang[55], message=lang[56])
-    if sureConfirm:
-        file_path = dlg.asksaveasfilename(parent=root_win, confirmoverwrite=False, filetypes=FILETYPES, defaultextension="*.*", initialfile="File to Wipe")
-
-        if sys.platform != 'linux':
-            # [*] Get the selected file extension
-            selected_extension = None
-            for ft in FILETYPES:
-                if file_path.lower().endswith(ft[1]):
-                    selected_extension = ft[1]
-                    break
-
-            # [*] Append the selected extension if not already included
-            if selected_extension and not file_path.lower().endswith(selected_extension):
-                file_path += selected_extension
-
-        file_input = open(file_path, "wt", encoding="utf-8")
-        file_input.write('')
-        showinfo(title=lang('writerclassic'), message=lang[101])
-
-        LOG.write(f"{str(now())} - A file has been wiped at {str(file_path)}: OK\n")
-        file_input.close()
-
-    after_listeners.run_group(wipe_file)
-
-
-desktop_entry = None
 
 
 def select_all(**kw):
@@ -2515,13 +2473,13 @@ def change_casing() -> None:
 
     def _swap_casing(casing: str):
         if not text_widget.selection:
-            showerror(lang('writerclassic'), lang[372])
+            showerror(lang('writerclassic'), lang('notextselected'))
 
         else:
             text_widget.change_selection_casing(casing)
 
     w = Toplevel()
-    w.title(lang[371])
+    w.title(lang('changecasing'))
     w.resizable(False, False)
 
     if sys.platform == 'win32':
@@ -2576,16 +2534,16 @@ def change_casing() -> None:
 
 
 rmb_menu = Menu(desktop_win, tearoff = 0)
-rmb_menu.add_command(label=lang[293], command=text_widget.edit_undo, accelerator="Ctrl + Z")
-rmb_menu.add_command(label=lang[294], command=text_widget.edit_redo, accelerator="Ctrl + Y")
+rmb_menu.add_command(label=lang('undo'), command=text_widget.edit_undo, accelerator="Ctrl + Z")
+rmb_menu.add_command(label=lang('redo'), command=text_widget.edit_redo, accelerator="Ctrl + Y")
 rmb_menu.add_separator()
-rmb_menu.add_command(label=lang[341], command=lambda:
+rmb_menu.add_command(label=lang('snippets'), command=lambda:
     snippet_picker(default_snippets))
-rmb_menu.add_command(label=lang[371], command=change_casing)
+rmb_menu.add_command(label=lang('changecasing'), command=change_casing)
 rmb_menu.add_separator()
-rmb_menu.add_command(label=lang[331], command=select_all, accelerator="Ctrl + A")
+rmb_menu.add_command(label=lang('selectall'), command=select_all, accelerator="Ctrl + A")
 rmb_menu.add_separator()
-rmb_menu.add_command(label=lang[354], command=evaluate_expression, accelerator="Ctrl + R")
+rmb_menu.add_command(label=lang('eval'), command=evaluate_expression, accelerator="Ctrl + R")
 rmb_menu.add_separator()
 rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
 rmb_menu.add_command(label="README.md", command=readme_writer_classic)
@@ -2632,15 +2590,15 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
     prog_lang = prog_lang.strip()
 
     if current_file is False:
-        showerror(lang('writerclassic'), lang[239])
+        showerror(lang('writerclassic'), lang('nosaved'))
         return
 
     match mode:
         case "build":
             match prog_lang.lower():
-                case "c++": # [!] THIS ASSUMES YOUR COMPILATION HAS NO EXTRA LIBRARIES
+                case "c++": # [i] inferior way to compile, might get rid of it
                     if not current_file.strip().endswith("cpp"):
-                        showerror(lang('writerclassic'), lang[284])
+                        showerror(lang('writerclassic'), lang('not_language'))
                         return
 
                     os.system(f"g++ \"{os.path.dirname(current_file)}\"")
@@ -2648,7 +2606,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
 
                 case "c#":
                     if not current_file.strip().endswith(("cs", "csproj")):
-                        showerror(lang('writerclassic'), lang[284])
+                        showerror(lang('writerclassic'), lang('not_language'))
                         return
 
                     os.system(f"dotnet build \"{os.path.dirname(current_file)}\"")
@@ -2661,7 +2619,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
             match prog_lang.lower():
                 case "c#":
                     if not current_file.strip().endswith((".cs", ".csproj")):
-                        showerror(lang('writerclassic'), lang[284])
+                        showerror(lang('writerclassic'), lang('not_language'))
                         return
 
                     os.system(f"dotnet run --project \"{os.path.dirname(current_file)}\"")
@@ -2669,7 +2627,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
 
                 case "python":
                     if not current_file.strip().endswith('.py'):
-                        showerror(lang('writerclassic'), lang[284])
+                        showerror(lang('writerclassic'), lang('not_language'))
                         return
 
                     if sys.platform == "win32":
@@ -2729,7 +2687,7 @@ X-KDE-Username=
 
     with open(f"{script_dir}/WriterClassic.desktop", mode="w", encoding='utf-8') as desktop_file:
         desktop_file.write(desktop_entry)
-        showinfo(lang('writerclassic'), lang[101])
+        showinfo(lang('writerclassic'), lang('done'))
         desktop_file.close()
 
     after_listeners.run_group(create_desktop_file_linux)
@@ -2747,13 +2705,13 @@ def create_window_desktop_file_linux():
     writerclassic_call_history.register_call(id(create_window_desktop_file_linux))
 
     desktop_created_win = Toplevel(desktop_win)
-    desktop_created_win.title(lang[197])
+    desktop_created_win.title(lang('gendesktop_dlg'))
     if sys.platform == "win32":
         desktop_created_win.iconbitmap(f"{data_dir}/app_icon.ico")
     desktop_created_win.resizable(False, False)
 
-    LabA = Label(desktop_created_win, text=lang[193], font=Font(family=config_font.actual('family'), size=15, weight='bold'))
-    LabB = Label(desktop_created_win, text=lang[194], font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    LabA = Label(desktop_created_win, text=lang('entrysent'), font=Font(family=config_font.actual('family'), size=15, weight='bold'))
+    LabB = Label(desktop_created_win, text=lang('thanks_zeca70'), font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
     Butt = Button(desktop_created_win, text='Ok', command=create_desktop_file_linux)
 
     LabA.pack()
@@ -2763,7 +2721,7 @@ def create_window_desktop_file_linux():
 
 # [!] WARNING: The deprecation of this function is planned but not confirmed
 def app_credits():
-    showinfo(title=lang[28], message=CREDITS)
+    showinfo(title=lang('credits'), message=CREDITS)
     LOG.write(f"{str(now())} - The Credits have been shown: OK\n")
 
 
@@ -2771,7 +2729,7 @@ def surprise_egg():
     before_listeners.run_group(surprise_egg)
     writerclassic_call_history.register_call(id(surprise_egg))
 
-    askNow = sdg.askstring(lang[29], lang[66])
+    askNow = sdg.askstring(lang('egg'), lang('egg_code'))
 
     if not askNow:
         ic()
@@ -2810,7 +2768,7 @@ def surprise_egg():
         simple_webbrowser.SpotifyOnline('Blind Korn')
 
     else:
-        showerror(lang[29], lang[67])
+        showerror(lang('egg'), lang('problem_egg'))
         ic()
 
     after_listeners.run_group(surprise_egg)
@@ -2844,7 +2802,7 @@ def about_writerclassic():
     if sys.platform == "win32":
         about_dialogue.iconbitmap(f"{data_dir}/app_icon.ico")
 
-    about_dialogue.title(lang[64])
+    about_dialogue.title(lang('about_dlg'))
     label_1 = Label(about_dialogue, text=str(about_data), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
     # [!?] ChatGPT instrusion down here (lol)
@@ -2879,7 +2837,7 @@ def about_writerclassic():
     photo = ImageTk.PhotoImage(resized_image)
 
     button_1 = Button(about_dialogue, text="Ok", command=about_dialogue.destroy)
-    button_2 = Button(about_dialogue, text=lang[278], command=lambda:
+    button_2 = Button(about_dialogue, text=lang('website'), command=lambda:
         simple_webbrowser.website("https://mf366-coding.github.io/writerclassic.html", new=2))
 
     # [*] Create a Label widget to display the image
@@ -2916,11 +2874,11 @@ def markdown_preview() -> None:
     writerclassic_call_history.register_call(id(markdown_preview))
 
     if not current_file:
-        showerror(lang('writerclassic'), lang[221])
+        showerror(lang('writerclassic'), lang('nosaved_preview'))
         return
 
     if not current_file.lower().endswith((".md", ".mdown", ".mkd", ".mkdn")):
-        showerror(lang('writerclassic'), lang[222])
+        showerror(lang('writerclassic'), lang('only_markdown'))
         return
 
     temp_html_path = os.path.join(temp_dir, f"{random.randint(1, 1000)}_{os.path.basename(current_file).replace(' ', '_')}.html")
@@ -2943,14 +2901,14 @@ def tips_tricks():
     writerclassic_call_history.register_call(id(tips_tricks))
 
     picked_text = random.choice((
-        lang[140],
-        lang[141],
-        lang[142],
-        lang[299],
-        lang[301],
-        lang[302],
-        lang[303],
-        lang[305]
+        lang('tip1'),
+        lang('tip2'),
+        lang('tip3'),
+        lang('autotip'),
+        lang('tip5'),
+        lang('tip6'),
+        lang('tip7'),
+        lang('tip9')
     ))
 
     ic(picked_text)
@@ -3241,7 +3199,7 @@ class Plugin:
             __versions: list = [int(i[1:]) for i in manifest]
 
             # [*] Window Creation
-            datax = sdg.askinteger(title=f'{lang('writerclassic')} - {lang[203]}', prompt=f'{lang[202]}\n{lang[204]} {max(__versions)}.', initialvalue=max(__versions), minvalue=1, maxvalue=max(__versions))
+            datax = sdg.askinteger(title=f'{lang("writerclassic")} - {lang[203]}', prompt=f'{lang[202]}\n{lang[204]} {max(__versions)}.', initialvalue=max(__versions), minvalue=1, maxvalue=max(__versions))
 
             datax = f"v{datax}"
 
@@ -4093,7 +4051,6 @@ COMMANDS: dict[str, Any] = {
     "Settings:Load": lambda: backup_system.run_action('unzip'),
 
     "Tools:Notepad": draft_notepad,
-    "Tools:WipeFile": wipe_file,
     "Tools:Markdown": markdown_preview,
     "Tools:Terminal": terminal_inputs,
 
@@ -4276,13 +4233,13 @@ text_widget.bind('<KeyRelease>', lambda _:
 
 # [i] Creating the menu dropdowns and buttons
 menu_10.add_command(label=lang[94], command=new_file, accelerator="Ctrl + N")
-menu_10.add_command(label=lang[7], command=lambda:
+menu_10.add_command(label=lang('open'), command=lambda:
     open_file(desktop_win), accelerator="Ctrl + O")
 menu_10.add_command(label=lang[355], command=recent_files, accelerator="Ctrl + Shift + O")
 menu_10.add_separator()
-menu_10.add_command(label=lang[8], command=lambda:
+menu_10.add_command(label=lang('save'), command=lambda:
     save_file(desktop_win), accelerator="Ctrl + S")
-menu_10.add_command(label=lang[9], command=lambda:
+menu_10.add_command(label=lang('save_as'), command=lambda:
     save_as_file(desktop_win), accelerator="Ctrl + Shift + S")
 menu_10.add_separator()
 menu_10.add_command(label=lang[293], command=text_widget.edit_undo, accelerator="Ctrl + Z")
@@ -4292,7 +4249,7 @@ menu_10.add_command(label=lang[329], command=search_replace, accelerator="Ctrl +
 menu_10.add_separator()
 menu_10.add_command(label=lang[163], command=document_status)
 menu_10.add_separator()
-menu_10.add_command(label=lang[11], command=close_confirm, accelerator="Alt + F4")
+menu_10.add_command(label=lang('exit'), command=close_confirm, accelerator="Alt + F4")
 
 menu_11.add_command(label=lang[75], command=update_check.manual_check)
 menu_11.add_separator()
@@ -4309,7 +4266,7 @@ menu_11.add_separator()
 menu_11.add_command(label=lang[137], command=tips_tricks)
 menu_11.add_command(label='Return of the Easter Eggs (ENGLISH ONLY)', command=surprise_egg)
 
-menu_1.add_command(label=lang[12], command=set_window_size, accelerator="Ctrl + Shift + G")
+menu_1.add_command(label=lang('winsize'), command=set_window_size, accelerator="Ctrl + Shift + G")
 menu_1.add_command(label=lang[332], command=set_font)
 menu_1.add_command(label=lang[351], command=change_wrap)
 menu_1.add_command(label=lang[365], command=theme_maker)
@@ -4319,9 +4276,6 @@ menu_8.add_command(label=lang[182], command=terminal_inputs)
 menu_8.add_separator()
 menu_8.add_command(label=lang[131], command=signature_plugin.custom)
 menu_8.add_command(label=lang[130], command=signature_plugin.auto)
-menu_8.add_separator()
-menu_8.add_command(label=lang[10], command=lambda:
-    wipe_file(desktop_win))
 menu_8.add_separator()
 menu_8.add_command(label="Plugin Central", command=plugin_central.display_ui)
 
@@ -4444,9 +4398,9 @@ menu_17.add_command(label="Python", command=lambda:
     dev_option("Python", "run"))
 
 
-menu_5.add_command(label=lang[16], command=lambda:
+menu_5.add_command(label=lang('ltheme'), command=lambda:
     set_theme(bg='#fcfcfc', fg='#020202', ct='black', mbg='#f4f8f8', mfg='black', sv='light'), accelerator="Ctrl + L")
-menu_5.add_command(label=lang[17], command=lambda:
+menu_5.add_command(label=lang('dtheme'), command=lambda:
     set_theme(bg='#020202', fg='#fcfcfc', ct='white', mbg='black', mfg='#f4f8f8', sv='dark'), accelerator="Ctrl + D")
 
 
@@ -4909,18 +4863,18 @@ if sys.platform == "linux":
         LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
 # [*] dropdowns/cascades
-menu_bar.add_cascade(label=lang[2],menu=menu_10)
-menu_bar.add_cascade(label=lang[3],menu=menu_1)
-menu_1.add_cascade(label=lang[13], menu=menu_4)
-menu_4.add_cascade(label=lang[15], menu=menu_5)
-menu_4.add_cascade(label=lang[19], menu=menu_6)
+menu_bar.add_cascade(label=lang('file'), menu=menu_10)
+menu_bar.add_cascade(label=lang('appearance'), menu=menu_1)
+menu_1.add_cascade(label=lang('themes'), menu=menu_4)
+menu_4.add_cascade(label=lang('dthemes'), menu=menu_5)
+menu_4.add_cascade(label=lang('themes2'), menu=menu_6)
 menu_4.add_separator()
 menu_4.add_command(label=lang[153], command=lambda:
     simple_webbrowser.website(url="https://github.com/MF366-Coding/WriterClassic-ExtraThemes"))
-menu_bar.add_cascade(label=lang[4], menu=menu_8)
+menu_bar.add_cascade(label=lang('plugins'), menu=menu_8)
 menu_bar.add_cascade(label=lang[79], menu=menu_9)
-menu_bar.add_cascade(label=lang[5], menu=menu_12)
-menu_bar.add_cascade(label=lang[6], menu=menu_11)
+menu_bar.add_cascade(label=lang('settings'), menu=menu_12)
+menu_bar.add_cascade(label=lang('info'), menu=menu_11)
 menu_bar.add_cascade(label=lang[280], menu=menu_15)
 
 if ADVANCED:
