@@ -4,7 +4,7 @@ markdown2==2.5.3
 Pillow==11.1.0
 pygame==2.6.1
 pyperclip==1.9.0
-pywin32==309
+pywin32==310
 requests==2.32.3
 simple_webbrowser==0.2.2
 tkfontchooser==2.0.2
