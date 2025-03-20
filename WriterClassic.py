@@ -4456,7 +4456,7 @@ def adv_change():
 
 
 menu_12.add_separator()
-menu_12.add_checkbutton(label=lang[306], variable=advanced_mode_status, command=adv_change)
+menu_12.add_checkbutton(label=lang('advancedon'), variable=advanced_mode_status, command=adv_change)
 
 
 def show_debug():
@@ -4472,8 +4472,12 @@ def show_debug():
     ic(settings["debugging"])
     fast_dump()
 
-    showinfo(message=lang[63], title=lang('writerclassic'))
+    opt = mb.askyesno(message=lang('reponen_apply'), title=lang('writerclassic'))
 
+    if opt:
+        close_confirm()
+        return    
+    
     after_listeners.run_group(show_debug)
 
 
@@ -4486,31 +4490,33 @@ def dencrypt():
         fast_dump()
 
         if not current_file:
-            showinfo(lang('writerclassic'), lang[239])
+            showinfo(lang('writerclassic'), lang('nosaved'))
 
         else:
             os.system(f'"{pathx}" "{current_file}" {parameters}')
-            showinfo(lang('writerclassic'), lang[275])
+            
+            if '-o' not in parameters:
+                open_file_manually(current_file)
 
     new = Toplevel(desktop_win)
 
     if sys.platform == "win32":
         new.iconbitmap(f"{data_dir}/app_icon.ico")
 
-    new.title(f"{lang('writerclassic')} - {lang[274]}")
+    new.title(f"{lang('writerclassic')} - {lang('dencrypt_use')}")
     new.resizable(False, False)
 
-    label_1 = Label(new, text=f"{lang[273]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_1 = Label(new, text=f"{lang('dencrypt_path')}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
     entry_1 = Entry(new, width=58, font=Font(family=config_font.cget('family'), size=11, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_2 = Label(new, text=f"{lang[272]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_2 = Label(new, text=f"{lang('flags')}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
     entry_2 = Entry(new, width=58, font=Font(family=config_font.cget('family'), size=11, weight='normal', slant='roman', underline=False, overstrike=False))
 
     entry_1.insert(0, settings["dencrypt"])
     entry_2.insert(0, "-e")
 
-    butt_1 = Button(new, text=f"{lang[178]}!", command=lambda:
+    butt_1 = Button(new, text=f"{lang('run')}!", command=lambda:
         runx(entry_1.get(), entry_2.get()))
-    butt_2 = Button(new, text=lang[271], command=lambda:
+    butt_2 = Button(new, text=lang('wtf_dencrypt'), command=lambda:
         simple_webbrowser.website("https://github.com/MF366-Coding/d3NCRYP7#d3ncryp7---simple-encryption-and-decryption-system"))
 
     label_1.grid(column=1, row=1)
@@ -4539,10 +4545,10 @@ def readme_gen(*entries):
     text_widget.delete(0.0, END)
 
     if _title.strip() == '':
-        _title = lang[270]
+        _title = lang('institle')
 
     if _describe.strip() == '':
-        _describe = f"{lang[269]} {_title}"
+        _describe = f"{lang('describe')} {_title}"
 
     readme_generated = f"""{_title}
 **{_describe}**
@@ -4550,16 +4556,16 @@ def readme_gen(*entries):
 """
 
     if _author_email.strip() != '':
-        readme_generated += f"""[{lang[268]}]({_author_email})\n"""
+        readme_generated += f"""[{lang('contact')}]({_author_email})\n"""
 
     if _author_website.strip() != '':
-        readme_generated += f"""[{lang[267]}: {_author_website}]({_author_website})\n"""
+        readme_generated += f"""[{lang('onlineat')}: {_author_website}]({_author_website})\n"""
 
     if _project_website.strip() != '':
-        readme_generated += f"""[{lang[266]}: {_project_website}]({_project_website})\n"""
+        readme_generated += f"""[{lang('projat')}: {_project_website}]({_project_website})\n"""
 
     if _sponsor_site.strip() != '':
-        readme_generated += f"""[{lang[265]}]({_sponsor_site})\n"""
+        readme_generated += f"""[{lang('liked_sponsor')}]({_sponsor_site})\n"""
 
     text_widget.insert(chars=readme_generated, index=0.0)
 
@@ -4571,20 +4577,20 @@ def readme_gen(*entries):
 def readme_gen_win():
     # [i] Window Creation
     window = Toplevel(desktop_win)
-    window.title(f"{lang('writerclassic')} - {lang[226]}")
+    window.title(f"{lang('writerclassic')} - {lang('readmegen')}")
     window.resizable(False, False)
 
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 
-    label_1 = Label(window, text=f'{lang[264]}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_2 = Label(window, text=f'{lang[263]}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_3 = Label(window, text=f'{lang[262]}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_4 = Label(window, text=f'{lang[261]}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_5 = Label(window, text=f'{lang[260]}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_6 = Label(window, text=f'{lang[259]}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_7 = Label(window, text=f"{lang[258]}:".upper(), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_8 = Label(window, text=lang[257], font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_1 = Label(window, text=f'{lang('title')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_2 = Label(window, text=f'{lang('shortdesc')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_3 = Label(window, text=f'{lang('authormail')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_4 = Label(window, text=f'{lang('authorsite')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_5 = Label(window, text=f'{lang('projsite')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_6 = Label(window, text=f'{lang('sponsor')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_7 = Label(window, text=f"{lang('note')}:".upper(), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_8 = Label(window, text=lang('will_erase'), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
     _title = Entry(window)
     _describe = Entry(window)
@@ -4593,10 +4599,10 @@ def readme_gen_win():
     _project_website = Entry(window)
     _sponsor_site = Entry(window)
 
-    butt_1 = Button(window, text=lang[256], command=lambda:
+    butt_1 = Button(window, text=lang('gen'), command=lambda:
         readme_gen(_title.get(), _describe.get(), _author_email.get(), _author_website.get(), _project_website.get(), _sponsor_site.get()))
 
-    butt_2 = Button(window, text=lang[255], command=window.destroy)
+    butt_2 = Button(window, text=lang('cancel'), command=window.destroy)
 
     label_1.grid(column=1, row=2)
     label_2.grid(column=1, row=3)
@@ -4625,7 +4631,7 @@ def open_with_adv():
     writerclassic_call_history.register_call(id(open_with_adv))
 
     window = Toplevel(desktop_win)
-    window.title(f"{lang('writerclassic')} - {lang[254]}")
+    window.title(f"{lang('writerclassic')} - {lang('openwith')}")
     window.resizable(False, False)
 
     if sys.platform == 'win32':
@@ -4635,7 +4641,7 @@ def open_with_adv():
 
     def action_1():
         if not current_file:
-            showinfo(lang('writerclassic'), lang[239])
+            showinfo(lang('writerclassic'), lang('nosaved'))
         else:
             os.system(f'"{str(current_file)}"')
 
@@ -4645,7 +4651,7 @@ def open_with_adv():
 
     def action_2(requested_entry):
         if not current_file:
-            showinfo(lang('writerclassic'), lang[239])
+            showinfo(lang('writerclassic'), lang('nosaved'))
         else:
             if " " in requested_entry:
                 os.system(f'"{requested_entry}" "{str(current_file)}"')
@@ -4656,11 +4662,11 @@ def open_with_adv():
 
         window.destroy()
 
-    butt_1 = Button(window, text=lang[253], command=action_1)
-    label_1 = Label(window, text=lang[252].upper(), font=Font(family=config_font.actual('family'), size=15, weight='bold'))
-    label_2 = Label(window, text=lang[251], font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    butt_1 = Button(window, text=lang('defaultapp'), command=action_1)
+    label_1 = Label(window, text=lang('or').upper(), font=Font(family=config_font.actual('family'), size=15, weight='bold'))
+    label_2 = Label(window, text=lang('custompath'), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
     entry_1 = Entry(window)
-    butt_2 = Button(window, text=lang[250], command=lambda:
+    butt_2 = Button(window, text=lang('openwithat'), command=lambda:
         action_2(entry_1.get()))
 
     butt_1.grid(column=1, row=1)
@@ -4676,7 +4682,7 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
     win.destroy()
 
     if not signa:
-        body += f"\n\n{lang[249]} (https://mf366-coding.github.io/writerclassic.html)"
+        body += f"\n\n{lang('sent_with')} (https://mf366-coding.github.io/writerclassic.html)"
 
     elif signa:
         body += f"\n\n{signature_plugin.get_custom_sig()}"
