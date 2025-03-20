@@ -2929,7 +2929,7 @@ def reset_writerclassic():
 
     ic(settings)
 
-    confirmation = mb.askyesno(lang[77], lang[78])
+    confirmation = mb.askyesno(lang('clear_dlg'), lang('you_nuts'))
 
     if confirmation:
         settings = {
@@ -3004,7 +3004,7 @@ def terminal_inputs():
         ic(_data)
 
     terminal = Toplevel(desktop_win)
-    terminal.title(lang[183])
+    terminal.title(lang('tinputs_dlg'))
 
     if sys.platform == "win32":
         terminal.iconbitmap(f"{data_dir}/app_icon.ico")
@@ -3012,9 +3012,9 @@ def terminal_inputs():
     LOG.write(f"{str(now())} - Opened the Terminal Inputs: OK\n")
 
     entry_1 = Entry(terminal)
-    butt_1 = Button(terminal, text=lang[178], command=lambda:
+    butt_1 = Button(terminal, text=lang('run'), command=lambda:
         _terminal_get(entry_1))
-    butt_2 = Button(terminal, text=lang[184], command=lambda:
+    butt_2 = Button(terminal, text=lang('clsinput'), command=lambda:
         _trick_terminal(entry_1))
 
     entry_1.pack()
@@ -3029,7 +3029,7 @@ class InternetOnWriter:
         self.AUTORAISE = autoraise
 
     def goto_website(self, new: Literal[0, 1, 2] = 0):
-        website_url = asklink(lang[80], lang[91], require_https=True).link
+        website_url = asklink(lang('go_url_dlg'), lang('url_enter'), require_https=True).link
 
         if website_url:
             simple_webbrowser.website(website_url, new, self.AUTORAISE)
@@ -3040,14 +3040,14 @@ class InternetOnWriter:
     def search_with_engine(self, engine: Literal['google', 'bing', 'ysearch', 'ddgo', 'yt', 'ecosia', 'stack', 'soundcloud', 'archive', 'qwant', 'spotify', 'brave', 'github', 'gitlab']):
         match engine:
             case 'google':
-                search_query = sdg.askstring(lang[83], lang[90])
+                search_query = sdg.askstring(lang('google_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.Google(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on Google: OK\n")
 
             case 'bing':
-                search_query = sdg.askstring(lang[82], lang[90])
+                search_query = sdg.askstring(lang('bing_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.Bing(search_query)
@@ -3055,7 +3055,7 @@ class InternetOnWriter:
 
             case 'ysearch':
                 # [i] stands for Yahoo!
-                search_query = sdg.askstring(lang[85], lang[90])
+                search_query = sdg.askstring(lang('yahoo_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.Yahoo(search_query)
@@ -3063,7 +3063,7 @@ class InternetOnWriter:
 
             case 'ddgo':
                 # [i] stands for DuckDuckGo
-                search_query = sdg.askstring(lang[84], lang[90])
+                search_query = sdg.askstring(lang('ddg_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.DuckDuckGo(search_query)
@@ -3071,14 +3071,14 @@ class InternetOnWriter:
 
             case "yt":
                 # [i] stands for YouTube
-                search_query = sdg.askstring(lang[99], lang[90])
+                search_query = sdg.askstring(lang('yt_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.YouTube(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on YouTube: OK\n")
 
             case "ecosia":
-                search_query = sdg.askstring(lang[98], lang[90])
+                search_query = sdg.askstring(lang('ecosia_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.Ecosia(search_query)
@@ -3086,14 +3086,14 @@ class InternetOnWriter:
 
             case "stack":
                 # [i] stands for Stack Overflow
-                search_query = sdg.askstring(lang[100], lang[90])
+                search_query = sdg.askstring(lang('sov_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.StackOverflow(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on StackOverflow: OK\n")
 
             case "soundcloud":
-                search_query = sdg.askstring(lang[104], lang[90])
+                search_query = sdg.askstring(lang('sound_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.SoundCloud(search_query)
@@ -3101,7 +3101,7 @@ class InternetOnWriter:
 
             case "archive":
                 # [i] stands for The Internet Archive
-                search_query = sdg.askstring(lang[109], lang[90])
+                search_query = sdg.askstring(lang('arch_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.Archive(search_query)
@@ -3109,7 +3109,7 @@ class InternetOnWriter:
 
             case "qwant":
                 # [i] stands for Qwant.com
-                search_query = sdg.askstring(lang[108], lang[90])
+                search_query = sdg.askstring(lang('qwant_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.Qwant(search_query)
@@ -3117,7 +3117,7 @@ class InternetOnWriter:
 
             case "spotify":
                 # [i] stands for Spotify Online
-                search_query = sdg.askstring(lang[126], lang[90])
+                search_query = sdg.askstring(lang('spot_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.SpotifyOnline(search_query)
@@ -3125,21 +3125,21 @@ class InternetOnWriter:
 
             case 'brave':
                 # [i] stands for Brave Search
-                search_query = sdg.askstring(lang[139], lang[90])
+                search_query = sdg.askstring(lang('brave_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.Brave(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on Brave Search: OK\n")
 
             case "github":
-                search_query = sdg.askstring(lang[170], lang[90])
+                search_query = sdg.askstring(lang('github_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.GitHub(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on GitHub: OK\n")
 
             case "gitlab":
-                search_query = sdg.askstring(lang[172], lang[90])
+                search_query = sdg.askstring(lang('gitlab_dlg'), lang('what_search'))
 
                 if search_query:
                     simple_webbrowser.GitLab(search_query)
@@ -3199,7 +3199,7 @@ class Plugin:
             __versions: list = [int(i[1:]) for i in manifest]
 
             # [*] Window Creation
-            datax = sdg.askinteger(title=f'{lang("writerclassic")} - {lang[203]}', prompt=f'{lang[202]}\n{lang[204]} {max(__versions)}.', initialvalue=max(__versions), minvalue=1, maxvalue=max(__versions))
+            datax = sdg.askinteger(title=f'{lang("writerclassic")} - {lang('plug_wizard')}', prompt=f'{lang('version_of_plug')}\n{lang('choose_between')} {max(__versions)}.', initialvalue=max(__versions), minvalue=1, maxvalue=max(__versions))
 
             datax = f"v{datax}"
 
@@ -3293,17 +3293,17 @@ class Plugin:
                         file.write(chunk)
 
         except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout):
-            showerror(lang[148], lang[135])
+            showerror(lang('interneterror'), lang('no_internet'))
 
         except VersionError:
-            showerror(lang('writerclassic'), lang[358])
+            showerror(lang('writerclassic'), lang('notcompat'))
 
         except ValueError as e:
             LOG.error("Invalid version or missing Python file while attempting to download a plugin using a MANIFEST", str(e))
             raise Exception from e
 
         except Exception as e:
-            showerror(lang[133], f"{lang[134]}\n{e}")
+            showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
 
     _get_files = _get_files_by_manifest
 
@@ -3319,7 +3319,7 @@ class Plugin:
             versioning_data = versioning_file.text
 
             # [*] Window Creation
-            datax = sdg.askinteger(title=f"{lang('writerclassic')} - {lang[203]}", prompt=f'{lang[202]}\n{lang[204]} {int(versioning_data)}.', initialvalue=int(versioning_data), minvalue=1, maxvalue=int(versioning_data))
+            datax = sdg.askinteger(title=f"{lang('writerclassic')} - {lang('plug_wizard')}", prompt=f'{lang('version_of_plug')}\n{lang('choose_between')} {int(versioning_data)}.', initialvalue=int(versioning_data), minvalue=1, maxvalue=int(versioning_data))
 
             # [!?] Some of the following code belongs to ChatGPT and other AIs!
 
@@ -3330,10 +3330,10 @@ class Plugin:
             zip_response = get(zip_url, timeout=3)
 
         except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout) as e:
-            showerror(lang[148], f"{lang[135]}\n{e}")
+            showerror(lang('interneterror'), f"{lang('no_internet')}\n{e}")
 
         except Exception:
-            showerror(lang[133], lang[134])
+            showerror(lang('notallowed'), lang('nope'))
 
         else:
             parent_directory = plugin_dir
@@ -3481,7 +3481,7 @@ class PluginCentral:
             showerror(lang('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
 
         except Exception as e:
-            showerror(lang[133], f"{lang[134]}\n{e}")
+            showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
 
     def _display_plugin_info(self, name: str | None = None):
         if not name:
@@ -3554,7 +3554,7 @@ class PluginCentral:
             showerror(lang('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
 
         except Exception as e:
-            showerror(lang[133], f"{lang[134]}\n{e}")
+            showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
 
     def _remove_plugin(self, name: str | None = None):
         if not name:
@@ -3596,7 +3596,7 @@ class PluginCentral:
             showerror(lang('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
 
         except Exception as e:
-            showerror(lang[133], f"{lang[134]}\n{e}")
+            showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
 
         self.refresh_selection_listbox()
 
@@ -3639,7 +3639,7 @@ class PluginCentral:
             showerror(lang('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
 
         except Exception as e:
-            showerror(lang[133], f"{lang[134]}\n{e}")
+            showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
 
     def install_plugin(self, plugin_name: str | None = None, **_):
         """
@@ -3651,7 +3651,7 @@ class PluginCentral:
         """
 
         if not plugin_name:
-            plugin_name = sdg.askstring(lang('writerclassic'), f'{lang[220]}\n{lang[219]}', initialvalue="Type here.")
+            plugin_name = sdg.askstring(lang('writerclassic'), f'{lang('name_of_folder')}\n{lang('verified_here')}', initialvalue="Type here.")
 
         plugin = Plugin(folder_name=plugin_name)
         plugin.obtain_files()
@@ -3748,7 +3748,7 @@ def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: i
     if path_to_remove == "plugx":
         path_to_remove = os.path.join(plugin_dir, f"plugin_{_plug}")
 
-    confirmation = mb.askyesno(lang[308], f"{lang[307]} '{path_to_remove}'.")
+    confirmation = mb.askyesno(lang('removalaction'), f"{lang('plugwantsto')} '{path_to_remove}'.")
 
     if confirmation:
         try:
@@ -3766,7 +3766,7 @@ def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: i
             raise Exception from e # [i] it will be caught by the statement below
 
         except Exception as e:
-            showerror(lang[308], f"{lang[309]} '{path_to_remove}':\n{e}")
+            showerror(lang('removalaction'), f"{lang('removerror')} '{path_to_remove}':\n{e}")
 
     after_listeners.run_group(remove_action)
 
@@ -3796,7 +3796,7 @@ def show_log():
         _new_window.iconbitmap(f"{data_dir}/app_icon.ico")
 
     _new_editor = WriterClassicEditor(_new_window, background=settings['theme']["color"], foreground=settings['theme']["fg"], insertbackground=settings['theme']["ct"], font=config_font, borderwidth=5)
-    _new_window.title(lang[180])
+    _new_window.title(lang('log_dlg'))
     _new_editor.pack()
 
     with open(f"{user_data}/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
@@ -3890,7 +3890,7 @@ class SignaturePlugin:
         Internal function.
         """
 
-        _signature = f"--\n{lang[132]}\n{self.USERNAME}"
+        _signature = f"--\n{lang('signed')}\n{self.USERNAME}"
 
         widget.insert(pos, f"\n\n{_signature}")
 
@@ -3932,7 +3932,7 @@ def change_wrap(**kw) -> None:
     root: Tk = kw.get('root', desktop_win)
 
     w = Toplevel(root)
-    w.title(lang[351])
+    w.title(lang('linewrap'))
     w.resizable(False, False)
 
     if sys.platform == 'win32':
@@ -3940,9 +3940,9 @@ def change_wrap(**kw) -> None:
 
     s = StringVar(w, value=widget.wrapping)
 
-    r1 = Radiobutton(w, variable=s, value=NONE, text=lang[342])
-    r2 = Radiobutton(w, variable=s, value=CHAR, text=lang[344])
-    r3 = Radiobutton(w, variable=s, value=WORD, text=lang[343])
+    r1 = Radiobutton(w, variable=s, value=NONE, text=lang('disable'))
+    r2 = Radiobutton(w, variable=s, value=CHAR, text=lang('charlevel'))
+    r3 = Radiobutton(w, variable=s, value=WORD, text=lang('wordlevel'))
 
     b = Button(w, text='Ok', command=lambda:
         inner(w, s, widget))
@@ -3960,7 +3960,7 @@ def theme_maker() -> None:
     writerclassic_call_history.register_call(id(theme_maker))
 
     w = Toplevel()
-    w.title(lang[365])
+    w.title(lang('thememaker'))
 
     if sys.platform == 'win32':
         w.iconbitmap(os.path.join(data_dir, 'app_icon.ico'))
@@ -3980,7 +3980,7 @@ def close_confirm() -> None:
     ic()
 
     if not has_been_modified():
-        choice: bool | None = mb.askyesnocancel(lang[53], f"{lang[199]}\n{lang[200]}")
+        choice: bool | None = mb.askyesnocancel(lang('logout'), f"{lang('filemod')}\n{lang('save_before_bye')}")
 
         if choice is None:
             ic()
@@ -4093,14 +4093,14 @@ def command_menu() -> None | bool:
             after_listeners.run_group(command_menu)
             return
 
-        showerror(lang[68], lang[70])
+        showerror(lang('cmd_menu_dlg'), lang('not_command'))
         after_listeners.run_group(group=command_menu)
         return
 
     if sys.platform == "win32":
         new.iconbitmap(f"{data_dir}/app_icon.ico")
 
-    new.title(lang[68])
+    new.title(lang('cmd_menu_dlg'))
     new.resizable(False, False)
 
     action_picker = Entry(new, justify='left', width=65)
@@ -4232,86 +4232,86 @@ text_widget.bind('<KeyRelease>', lambda _:
 
 
 # [i] Creating the menu dropdowns and buttons
-menu_10.add_command(label=lang[94], command=new_file, accelerator="Ctrl + N")
+menu_10.add_command(label=lang('new'), command=new_file, accelerator="Ctrl + N")
 menu_10.add_command(label=lang('open'), command=lambda:
     open_file(desktop_win), accelerator="Ctrl + O")
-menu_10.add_command(label=lang[355], command=recent_files, accelerator="Ctrl + Shift + O")
+menu_10.add_command(label=lang('recent'), command=recent_files, accelerator="Ctrl + Shift + O")
 menu_10.add_separator()
 menu_10.add_command(label=lang('save'), command=lambda:
     save_file(desktop_win), accelerator="Ctrl + S")
 menu_10.add_command(label=lang('save_as'), command=lambda:
     save_as_file(desktop_win), accelerator="Ctrl + Shift + S")
 menu_10.add_separator()
-menu_10.add_command(label=lang[293], command=text_widget.edit_undo, accelerator="Ctrl + Z")
-menu_10.add_command(label=lang[294], command=text_widget.edit_redo, accelerator="Ctrl + Y")
+menu_10.add_command(label=lang('undo'), command=text_widget.edit_undo, accelerator="Ctrl + Z")
+menu_10.add_command(label=lang('redo'), command=text_widget.edit_redo, accelerator="Ctrl + Y")
 menu_10.add_separator()
-menu_10.add_command(label=lang[329], command=search_replace, accelerator="Ctrl + F")
+menu_10.add_command(label=lang('findreplace'), command=search_replace, accelerator="Ctrl + F")
 menu_10.add_separator()
-menu_10.add_command(label=lang[163], command=document_status)
+menu_10.add_command(label=lang('linecount'), command=document_status)
 menu_10.add_separator()
 menu_10.add_command(label=lang('exit'), command=close_confirm, accelerator="Alt + F4")
 
-menu_11.add_command(label=lang[75], command=update_check.manual_check)
+menu_11.add_command(label=lang('chkupd_dlg'), command=update_check.manual_check)
 menu_11.add_separator()
 
-menu_11.add_command(label=lang[25], command=about_writerclassic, accelerator="Ctrl + I")
-menu_11.add_command(label=lang[186], command=lambda:
+menu_11.add_command(label=lang('about'), command=about_writerclassic, accelerator="Ctrl + I")
+menu_11.add_command(label=lang('support'), command=lambda:
     simple_webbrowser.website("https://www.buymeacoffee.com/mf366"))
-menu_11.add_command(label=lang[26], command=APP_HELP, accelerator="F1")
-menu_11.add_command(label=lang[27], command=repository)
-menu_11.add_command(label=lang[179], command=show_log)
+menu_11.add_command(label=lang('help'), command=APP_HELP, accelerator="F1")
+menu_11.add_command(label=lang('repo'), command=repository)
+menu_11.add_command(label=lang('viewlog'), command=show_log)
 menu_11.add_separator()
-menu_11.add_command(label=lang[28], command=app_credits)
+menu_11.add_command(label=lang('credits'), command=app_credits)
 menu_11.add_separator()
-menu_11.add_command(label=lang[137], command=tips_tricks)
+menu_11.add_command(label=lang('tips_tricks'), command=tips_tricks)
 menu_11.add_command(label='Return of the Easter Eggs (ENGLISH ONLY)', command=surprise_egg)
 
 menu_1.add_command(label=lang('winsize'), command=set_window_size, accelerator="Ctrl + Shift + G")
-menu_1.add_command(label=lang[332], command=set_font)
-menu_1.add_command(label=lang[351], command=change_wrap)
-menu_1.add_command(label=lang[365], command=theme_maker)
+menu_1.add_command(label=lang('ftpicker'), command=set_font)
+menu_1.add_command(label=lang('linewrap'), command=change_wrap)
+menu_1.add_command(label=lang('thememaker'), command=theme_maker)
 
-menu_8.add_command(label=lang[22], command=draft_notepad)
-menu_8.add_command(label=lang[182], command=terminal_inputs)
+menu_8.add_command(label=lang('notes'), command=draft_notepad)
+menu_8.add_command(label=lang('tinputs'), command=terminal_inputs)
 menu_8.add_separator()
-menu_8.add_command(label=lang[131], command=signature_plugin.custom)
-menu_8.add_command(label=lang[130], command=signature_plugin.auto)
+menu_8.add_command(label=lang('customsig'), command=signature_plugin.custom)
+menu_8.add_command(label=lang('autosig'), command=signature_plugin.auto)
 menu_8.add_separator()
 menu_8.add_command(label="Plugin Central", command=plugin_central.display_ui)
 
-menu_9.add_command(label=lang[81], command=internet_plugin.goto_website)
+menu_9.add_command(label=lang('go_url'), command=internet_plugin.goto_website)
 menu_9.add_separator()
-menu_9.add_command(label=lang[87], command=lambda:
+menu_9.add_command(label=lang('google'), command=lambda:
     internet_plugin.search_with_engine('google'))
-menu_9.add_command(label=lang[86], command=lambda:
+menu_9.add_command(label=lang('bing'), command=lambda:
     internet_plugin.search_with_engine('bing'))
-menu_9.add_command(label=lang[89], command=lambda:
+menu_9.add_command(label=lang('yahoo'), command=lambda:
     internet_plugin.search_with_engine('ysearch'))
-menu_9.add_command(label=lang[88], command=lambda:
+menu_9.add_command(label=lang('ddg_go'), command=lambda:
     internet_plugin.search_with_engine('ddgo'))
-menu_9.add_command(label=lang[138], command=lambda:
+menu_9.add_command(label=lang('brave'), command=lambda:
     internet_plugin.search_with_engine("brave"))
-menu_9.add_command(label=lang[95], command=lambda:
+menu_9.add_command(label=lang('ecosia'), command=lambda:
     internet_plugin.search_with_engine("ecosia"))
-menu_9.add_command(label=lang[106], command=lambda:
+menu_9.add_command(label=lang('qwant_go'), command=lambda:
     internet_plugin.search_with_engine("qwant"))
 menu_9.add_separator()
-menu_9.add_command(label=lang[97], command=lambda:
+menu_9.add_command(label=lang('stack_overflow'), command=lambda:
     internet_plugin.search_with_engine("stack"))
 menu_9.add_separator()
-menu_9.add_command(label=lang[96], command=lambda:
+menu_9.add_command(label=lang('yt'), command=lambda:
     internet_plugin.search_with_engine("yt"))
-menu_9.add_command(label=lang[103], command=lambda:
+menu_9.add_command(label=lang('sound_go'), command=lambda:
     internet_plugin.search_with_engine("soundcloud"))
-menu_9.add_command(label=lang[125], command=lambda:
+menu_9.add_command(label=lang('spot_go'), command=lambda:
     internet_plugin.search_with_engine("spotify"))
 menu_9.add_separator()
-menu_9.add_command(label=lang[107], command=lambda:
+menu_9.add_command(label=lang('arch_go'), command=lambda:
     internet_plugin.search_with_engine("archive"))
 menu_9.add_separator()
-menu_9.add_command(label=lang[169], command=lambda:
+menu_9.add_command(label=lang('github_go'), command=lambda:
     internet_plugin.search_with_engine("github"))
-menu_9.add_command(label=lang[171], command=lambda:
+menu_9.add_command(label=lang('gitlab'), command=lambda:
     internet_plugin.search_with_engine("gitlab"))
 
 # [!!] Languages need to be fixed
@@ -4360,34 +4360,34 @@ menu_13.add_command(label="Українська (Україна)", command=lambd
     LanguageSet("uk", desktop_win), state='disabled')
 '''
 
-menu_12.add_cascade(label=lang[198], menu=menu_13)
+menu_12.add_cascade(label=lang('lang'), menu=menu_13)
 menu_12.add_separator()
 
 if sys.platform == "linux":
-    menu_12.add_command(label=lang[192], command=create_window_desktop_file_linux)
+    menu_12.add_command(label=lang('gendesktop'), command=create_window_desktop_file_linux)
     menu_12.add_separator()
 
-menu_12.add_checkbutton(label=lang[191], variable=window_lock_status, command=lock_a_win)
+menu_12.add_checkbutton(label=lang('unlockwin'), variable=window_lock_status, command=lock_a_win)
 menu_12.add_separator()
-menu_12.add_command(label=lang[320], command=lambda:
+menu_12.add_command(label=lang('createbackup'), command=lambda:
     backup_system.run_action("zip"))
-menu_12.add_command(label=lang[321], command=lambda:
+menu_12.add_command(label=lang('restorebackup'), command=lambda:
     backup_system.run_action("load"))
 menu_12.add_separator()
-menu_12.add_command(label=lang[76], command=reset_writerclassic)
+menu_12.add_command(label=lang('clear'), command=reset_writerclassic)
 '''
 menu_12.add_separator()
-menu_12.add_command(label=lang[105], command=article_md, state='disabled')
+menu_12.add_command(label=lang('undefined'), command=article_md, state='disabled')
 '''
 
 
-menu_15.add_command(label=lang[279], command=markdown_preview)
+menu_15.add_command(label=lang('mdprev'), command=markdown_preview)
 menu_15.add_separator()
-menu_15.add_command(label=lang[341], command=lambda:
+menu_15.add_command(label=lang('snippets'), command=lambda:
     snippet_picker(default_snippets))
 menu_15.add_separator()
-menu_15.add_cascade(menu=menu_16, label=lang[282])
-menu_15.add_cascade(menu=menu_17, label=lang[283])
+menu_15.add_cascade(menu=menu_16, label=lang('build'))
+menu_15.add_cascade(menu=menu_17, label=lang('runcode'))
 
 menu_16.add_command(label="C#", command=lambda:
     dev_option("C#"))
@@ -4446,8 +4446,12 @@ def adv_change():
     ic(settings["advanced-mode"])
     fast_dump()
 
-    showinfo(message=lang[63], title=lang('writerclassic'))
+    opt = mb.askyesno(message=lang('reopen_apply'), title=lang('writerclassic'))
 
+    if opt:
+        close_confirm()
+        return
+    
     after_listeners.run_group(adv_change)
 
 
@@ -4700,7 +4704,7 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
         server.sendmail(sender_email, recipient_email, message.as_string())
 
     except (ConnectionError, TimeoutError) as e:
-        showerror(lang[133], f"{lang[134]}\n{e}")
+        showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
 
     except Exception as e:
         showerror(lang('writerclassic'), f"{lang[247]}\n{lang[248]}\n{e}")
@@ -4958,7 +4962,7 @@ if os.path.exists(path=os.path.join(scripts_dir, "auto.wscript")):
         # [*] in this case, a general Exception is used because any type of error can happen
 
         except Exception as e:
-            showerror(lang[133], f"{lang[134]}\n{e}")
+            showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
 
 # [*] You can use the following syntax when running WriterClassic:
 # [*] name [filepath] [debugscript]
