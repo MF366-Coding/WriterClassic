@@ -10,7 +10,7 @@
 # pylint: disable=W0105
 
 # [i] General imports
-from typing import Any, Callable, Literal, Iterable
+from typing import Any, Callable, Literal
 import sys
 
 # [i] Tkinter imports
@@ -195,17 +195,14 @@ class WriterClassicEditor(_ScrolledText):
 
 
 class SearchReplace(Toplevel):
-    def __init__(self, master: Misc | None = None, widget: WriterClassicEditor | None = None, regexp: bool = False, lang_exps: Iterable[str] | None = None, **kwargs) -> None:
+    def __init__(self, master: Misc | None = None, widget: WriterClassicEditor | None = None, regexp: bool = False, lang_exps: Callable = None, **kwargs) -> None:
         ico = kwargs.pop('ico', None)
-
-        if not isinstance(lang_exps, (list, tuple)):
-            raise ValueError('lang expressions must be tuple or list')
-
+        
         if not widget:
             raise TypeError('a widget must be specified and match type WriterClassicEditor')
 
         self._regexp = regexp
-        self._exps = lang_exps
+        self.lang = lang_exps
 
         self._MARKED: bool = False
 
@@ -216,7 +213,7 @@ class SearchReplace(Toplevel):
         self.master = master
 
         super().__init__(master, **kwargs)
-        super().title(f"{self.lang[1]} - {self.lang[345]}")
+        super().title(f"{self.lang('writerclassic')} - {self.lang('findreplace')}")
 
         if sys.platform == 'win32':
             super().iconbitmap(ico)
@@ -229,9 +226,9 @@ class SearchReplace(Toplevel):
         self._F2 = Frame(widget)
         self._F3 = Frame(widget)
         self._F4 = Frame(widget)
-        self._B3 = Button(widget, text=self.lang[367], command=self._mark_matches)
+        self._B3 = Button(widget, text=self.lang('markmatch'), command=self._mark_matches)
 
-        self._L1 = Label(self._F1, text=self.lang[346].strip() + ' ')
+        self._L1 = Label(self._F1, text=self.lang('find').strip() + ' ')
         self._E1 = Entry(self._F1)
         self._PREVBUTT = Button(self._F1, text=chr(9650), command=lambda:
             self._find('prev'))
@@ -240,13 +237,13 @@ class SearchReplace(Toplevel):
         
         self._CASING = IntVar(widget, value=0)
         
-        self._C1 = Checkbutton(self._F2, text=self.lang[347], variable=self._CASING)
+        self._C1 = Checkbutton(self._F2, text=self.lang('casedep'), variable=self._CASING)
 
         self._E2 = Entry(self._F3)
 
-        self._B1 = Button(self._F4, text=self.lang[368], command=lambda:
+        self._B1 = Button(self._F4, text=self.lang('replace'), command=lambda:
             self._replace_next(self.replacewith))
-        self._B2 = Button(self._F4, text=self.lang[369], command=lambda:
+        self._B2 = Button(self._F4, text=self.lang('replaceall'), command=lambda:
             self._replace_all(self.replacewith))
 
         # [*] Frame 1 content
@@ -276,7 +273,7 @@ class SearchReplace(Toplevel):
         self.editor.tag_remove(SEL, 0.0, END)
 
         if not self.pattern:
-            mb.showwarning(self.lang[1], self.lang[348])
+            mb.showwarning(self.lang('writerclassic'), self.lang('emptypattern'))
             return
 
         match direction:
@@ -296,7 +293,7 @@ class SearchReplace(Toplevel):
 
     def __n(self, ind: str | float = INSERT) -> tuple[str | None, str | None]:
         if not self.pattern:
-            mb.showwarning(self.lang[1], self.lang[366])
+            mb.showwarning(self.lang('writerclassic'), self.lang('emptypattern'))
             return None, None
         
         use_regexp = self.regexp
@@ -306,7 +303,7 @@ class SearchReplace(Toplevel):
         first_index = self.editor.search(pattern, ind, END, True, False, use_exact_sentences, use_regexp, self.nocasing)
 
         if not first_index:
-            mb.showwarning(self.lang[1], self.lang[349])
+            mb.showwarning(self.lang('writerclassic'), self.lang('eoe'))
             return None, None
 
         first_index = self.editor.index(first_index)
@@ -322,7 +319,7 @@ class SearchReplace(Toplevel):
 
     def __p(self) -> tuple[str | None, str | None]:
         if not self.pattern:
-            mb.showwarning(self.lang[1], self.lang[366])
+            mb.showwarning(self.lang('writerclassic'), self.lang('emptypattern'))
             return None, None
         
         use_regexp = self.regexp
@@ -332,7 +329,7 @@ class SearchReplace(Toplevel):
         first_index = self.editor.search(pattern, INSERT, 0.0, False, True, use_exact_sentences, use_regexp, self.nocasing)
 
         if not first_index:
-            mb.showwarning(self.lang[1], self.lang[350])
+            mb.showwarning(self.lang('writerclassic'), self.lang('soe'))
             return None, None
 
         first_index = self.editor.index(first_index)
@@ -375,7 +372,7 @@ class SearchReplace(Toplevel):
         last_index = 0.0
         
         if not self.pattern:
-            mb.showwarning(self.lang[1], self.lang[370])
+            mb.showwarning(self.lang('writerclassic'), self.lang('emptypattern.mark'))
             return
         
         while True:
@@ -391,13 +388,6 @@ class SearchReplace(Toplevel):
         self.editor.focus_set()
 
     rf = return_focus
-
-    @property
-    def lang(self) -> list | tuple:
-        if isinstance(self._exps, list):
-            return self._exps.copy()
-
-        return self._exps
 
     @property
     def regexp(self) -> bool:
@@ -417,10 +407,10 @@ class SearchReplace(Toplevel):
 
 
 class CustomThemeMaker(Frame):
-    def __init__(self, language_data: list[str], settings: dict[str, Any], dump_func: Callable, master: Toplevel | None = None, **kw) -> None:
+    def __init__(self, language_data: Callable, settings: dict[str, Any], dump_func: Callable, master: Toplevel | None = None, **kw) -> None:
         super().__init__(master, *kw)
 
-        self._lang = language_data.copy()
+        self._lang = language_data
         self._dump_func = dump_func
         self._config = settings
         self._master = master
@@ -431,11 +421,11 @@ class CustomThemeMaker(Frame):
         self._exit_butt = Button(master, text='Ok', command=lambda:
             self.save_and_leave(self._dump_func))
 
-        self._L1 = Label(self._F1, text=str(self._lang[360]))
-        self._L2 = Label(self._F1, text=str(self._lang[361]))
-        self._L3 = Label(self._F1, text=str(self._lang[362]))
-        self._L4 = Label(self._F1, text=str(self._lang[363]))
-        self._L5 = Label(self._F1, text=str(self._lang[364]))
+        self._L1 = Label(self._F1, text=str(self._lang('bg')))
+        self._L2 = Label(self._F1, text=str(self._lang('fg')))
+        self._L3 = Label(self._F1, text=str(self._lang('cursorcolor')))
+        self._L4 = Label(self._F1, text=str(self._lang('menubg')))
+        self._L5 = Label(self._F1, text=str(self._lang('menufg')))
         self._L6 = Label(self._F1, text="Dark Mode")
         
         self._DARK = IntVar(self._F1, 1 if str(self._config['theme']['sv']) == 'dark' else 0)
@@ -495,7 +485,7 @@ class CustomThemeMaker(Frame):
         self._exit_butt.pack(pady=5)
 
     def askcolor(self, butt_scope: Button, canvas: Canvas):
-        color: str = picker.askcolor(self._butt_text_rel[butt_scope], title=self._lang[365])[1]
+        color: str = picker.askcolor(self._butt_text_rel[butt_scope], title=self._lang('thememaker'))[1]
 
         self.focus_set()
 

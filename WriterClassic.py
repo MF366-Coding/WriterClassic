@@ -85,8 +85,6 @@ from requests import get, exceptions # [i] Used for regular interactions with th
 from PyLocalizer import EntryFormatting
 from PyLocalizer.internal import JSONLocalization
 
-# /-/ import chlorophyl # [i] Code view for Snippets
-
 del ScrolledText, colorchooser
 
 current_file = False # [*] current file, otherwise False
@@ -294,12 +292,17 @@ APP_VERSION = "v12.0.0"
 ADVANCED_VERSION ="v11.0.0.372"
 
 EFORMATTER = EntryFormatting.EntryFormatter(False, False, False, creator="MF366", version=APP_VERSION, name="WriterClassic")
+ENGLISH_LOCALIZER = JSONLocalization.JSONLocalization(EFORMATTER, f"{locale}/en")
 LOCALIZER = JSONLocalization.JSONLocalization(EFORMATTER, f"{locale}/en")
 LOCALIZER.change_language(f"{locale}/en") # [i] Load English, will be changed later on
 
 
-def lang(key: str):
-    return LOCALIZER.get_formatted_entry(key, in_case_of_error=key)
+def access_language_entry(key: str, *, simple_behavior: bool = False):
+    return LOCALIZER.get_formatted_entry(
+        key,
+        in_case_of_error = key if simple_behavior else ENGLISH_LOCALIZER.get_formatted_entry(key, in_case_of_error=key)
+    )
+lang = access_language_entry # [i] simulate old behavior
 
 
 def showerror(title: str | None = None, message: str | None = None, **options) -> str:
@@ -366,7 +369,7 @@ def asklink(title: str, prompt: str, encoding: str | None = 'utf-8', require_htt
     link: str = sdg.askstring(title, prompt, initialvalue=initialvalue, show=show)
 
     if not warning_message:
-        warning_message = f"{lang('nope')}\n{lang('https')}"
+        warning_message = f"{access_language_entry('nope')}\n{access_language_entry('https')}"
 
     if require_https:
         while not link.lstrip().startswith('https://'):
@@ -992,7 +995,7 @@ fast_dump()
 
 # [i] Windowing... again
 if current_file is False:
-    desktop_win.title(lang("writerclassic"))
+    desktop_win.title(access_language_entry("writerclassic"))
 
 LOG.write(f"{str(now())} - Window's title was set to WriterClassic: OK\n")
 
@@ -1004,7 +1007,7 @@ try:
     LOG.write(f"{str(now())} - Font family/type is {str(settings['font']['size'])}: OK\n")
 
 except TclError:
-    showerror(lang('fterror'), f"{lang('nullftsize')}\n{lang('backtozero')}\n{lang('change_later')}")
+    showerror(access_language_entry('fterror'), f"{access_language_entry('nullftsize')}\n{access_language_entry('backtozero')}\n{access_language_entry('change_later')}")
     LOG.write(f"{str(now())} - Font size is set to 14 because of a font error: OK\n")
 
     config_font = Font(family="Segoe UI", size=12, slant='roman', weight='normal', underline=False, overstrike=False)
@@ -1042,7 +1045,7 @@ except TclError:
     geom_values = [700, 500]
     LOG.write(f"{str(now())} - Applied the window's dimensions: ERROR\n")
     LOG.write(f"{str(now())} - Reverted to 700x500: OK\n")
-    showerror(lang('winerror'), f"{lang('bad_winsize')}\n{lang('backtoresetsize')}")
+    showerror(access_language_entry('winerror'), f"{access_language_entry('bad_winsize')}\n{access_language_entry('backtoresetsize')}")
 
 try:
     text_widget.configure(background=settings['theme']["color"], foreground=settings['theme']["fg"], width=int(geom_values[0]), height=int(geom_values[1]), insertbackground=settings['theme']["ct"], font=config_font)
@@ -1050,7 +1053,7 @@ try:
 
 except TclError:
     LOG.write(f"{str(now())} - Applied configurations to the editing interface: ERROR\n")
-    showerror(lang('themerror'), f"{lang('badtheme')}\n{lang('diff_theme')}")
+    showerror(access_language_entry('themerror'), f"{access_language_entry('badtheme')}\n{access_language_entry('diff_theme')}")
     text_widget.configure(background="black", foreground="white", width=int(geom_values[0]), height=int(geom_values[1]), insertbackground="white", font=config_font)
     LOG.write(f"{str(now())} - Reconfigured the editing interface: OK\n")
 
@@ -1068,7 +1071,7 @@ try:
 except TclError:
     if sys.platform == "linux":
         LOG.write(f"{str(now())} - Applied the theme to the menu bar: ERROR\n")
-        showerror(lang('themerror'), f"{lang('badtheme')}\n{lang('diff_theme')}")
+        showerror(access_language_entry('themerror'), f"{access_language_entry('badtheme')}\n{access_language_entry('diff_theme')}")
         menu_bar.configure(background="white", foreground="black")
         LOG.write(f"{str(now())} - Applied the light theme to the menu bar as last resource: OK\n")
 
@@ -1309,18 +1312,18 @@ class UpdateCheck:
         """
 
         if self.app_version != self.latest:
-            askForUpdate = mb.askyesno(lang('chkupd_dlg'), lang('update_now'))
+            askForUpdate = mb.askyesno(access_language_entry('chkupd_dlg'), access_language_entry('update_now'))
 
             if askForUpdate:
                 LOG.write(f"{str(now())} - Went to the latest release at GitHub: OK\n")
                 simple_webbrowser.website('https://github.com/MF366-Coding/WriterClassic/releases/latest')
 
         elif self.app_version == self.latest:
-            showinfo(title=lang('uptodate_dlg'), message=lang('uptodate'))
+            showinfo(title=access_language_entry('uptodate_dlg'), message=access_language_entry('uptodate'))
             LOG.write(f"{str(now())} - Versions match | WriterClassic is up to date: OK\n")
 
         else:
-            showerror(lang("interneterror"), f"{lang('no_internet')}\n{lang('chkupd_fail')}")
+            showerror(access_language_entry("interneterror"), f"{access_language_entry('no_internet')}\n{access_language_entry('chkupd_fail')}")
             LOG.write(f"{str(now())} - Couldn't check for updates (Bad Internet, Connection Timeout, Restricted Internet): WARNING\n")
 
 
@@ -1345,7 +1348,7 @@ def set_window_size(root: Tk = desktop_win, **_) -> None:
             e2 = int(params[1].get())
 
         except TypeError as e:
-            showerror(lang('operror'), f"{lang('notallowed')}\n{lang('nope')}\n{e}")
+            showerror(access_language_entry('operror'), f"{access_language_entry('notallowed')}\n{access_language_entry('nope')}\n{e}")
             params[2].destroy()
             return False
 
@@ -1360,7 +1363,7 @@ def set_window_size(root: Tk = desktop_win, **_) -> None:
         return True
 
     geometry_set = Toplevel()
-    geometry_set.title(string=f"{lang('writerclassic')} - {lang('winsize')}")
+    geometry_set.title(string=f"{access_language_entry('writerclassic')} - {access_language_entry('winsize')}")
     geometry_set.resizable(width=False, height=False)
 
     if sys.platform == 'win32':
@@ -1370,8 +1373,8 @@ def set_window_size(root: Tk = desktop_win, **_) -> None:
     frame1 = Frame(frame0)
     frame2 = Frame(frame0)
 
-    width_label = Label(frame1, text=lang('width'), font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    height_label = Label(frame2, text=lang('height'), font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    width_label = Label(frame1, text=access_language_entry('width'), font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    height_label = Label(frame2, text=access_language_entry('height'), font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
     width_set = Entry(frame1, font=Font(family=config_font.actual('family'), size=11, weight='normal', slant='roman', underline=False, overstrike=False))
     height_set = Entry(frame2, font=Font(family=config_font.actual('family'), size=11, weight='normal', slant='roman', underline=False, overstrike=False))
@@ -1556,7 +1559,7 @@ def set_theme(**kw):
             logger.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
         except (TypeError, ValueError, TclError):
-            showerror(lang('themerror'), f"{lang('badtheme')}")
+            showerror(access_language_entry('themerror'), f"{access_language_entry('badtheme')}")
 
             logger.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
@@ -1595,7 +1598,7 @@ def set_language(language_set, root_win):
     LOG.write(f"{str(now())} - A new language has been set ({str(language_set)}): OK\n")
     fast_dump()
 
-    popup_define = mb.askyesno(parent=root_win, title=lang('exit_now'), message=lang('reopen_apply'))
+    popup_define = mb.askyesno(parent=root_win, title=access_language_entry('exit_now'), message=access_language_entry('reopen_apply'))
     LOG.write(f"{str(now())} - Asked for app restart: AWAITING RESPONSE\n")
 
     if popup_define:
@@ -1623,7 +1626,7 @@ def draft_notepad() -> None:
     LOG.write(f"{str(now())} - A new window has been called: AWAITING CONFIGURATION\n")
 
     # [i] Windowing
-    new_window.title(lang('notes'))
+    new_window.title(access_language_entry('notes'))
     new_window.geometry("600x400")
 
     if sys.platform == "win32":
@@ -1652,7 +1655,7 @@ def document_status(widget: WriterClassicEditor = text_widget):
     before_listeners.run_group(document_status)
     writerclassic_call_history.register_call(id(document_status))
 
-    showinfo(lang('linecount_dlg'), f"{lang('lines')}: {widget.num_lines - 1}")
+    showinfo(access_language_entry('linecount_dlg'), f"{access_language_entry('lines')}: {widget.num_lines - 1}")
 
     after_listeners.run_group(document_status)
 
@@ -1728,7 +1731,7 @@ class BackupSystem:
                     raise Exception from e # [i] it will be caught by the statement below
 
                 except Exception:
-                    showerror(title=lang('writerclassic'), message=lang('restorerror'))
+                    showerror(title=access_language_entry('writerclassic'), message=access_language_entry('restorerror'))
                     continue
 
             zip_file.extractall(path=self._main_dir)
@@ -1749,21 +1752,21 @@ class BackupSystem:
         making_types = ("zip", "make", "create")
 
         if _type in making_types:
-            _DIR = dlg.askdirectory(mustexist=True, title=lang('svbackup'))
+            _DIR = dlg.askdirectory(mustexist=True, title=access_language_entry('svbackup'))
 
             self._zip_files(_DIR)
 
         elif _type in loading_types:
-            file_path = dlg.asksaveasfilename(parent=root_win, filetypes=[(lang('zipped'), '*.zip')], defaultextension="*.*", initialfile="Load a Backup", confirmoverwrite=False, title=lang('ldbackup'))
+            file_path = dlg.asksaveasfilename(parent=root_win, filetypes=[(access_language_entry('zipped'), '*.zip')], defaultextension="*.*", initialfile="Load a Backup", confirmoverwrite=False, title=access_language_entry('ldbackup'))
 
             if not file_path.lower().endswith(".zip") or not os.path.exists(file_path):
-                showerror(lang('writerclassic'), lang('ldbackup'))
+                showerror(access_language_entry('writerclassic'), access_language_entry('ldbackup'))
                 return
 
             self._extract_files(file_path)
 
         else:
-            showerror(lang('writerclassic'), lang('file_not_backup'))
+            showerror(access_language_entry('writerclassic'), access_language_entry('file_not_backup'))
 
 
 def recent_files(**kw):
@@ -1812,7 +1815,7 @@ def recent_files(**kw):
 
     root: Tk | Toplevel = kw.get('root', desktop_win)
     icopath: str = kw.get('iconbitmap', os.path.join(data_dir, 'app_icon.ico'))
-    exps: list[str] = kw.get('expressions', lang.copy())
+    exps: list[str] = kw.get('expressions', access_language_entry.copy())
     recents: Stack = kw.get('recents', recent_stack).copy()
 
     if recents.is_empty:
@@ -1882,7 +1885,7 @@ class Snippets:
             raise InvalidSnippet(f'{name} is already taken')
 
         if desc is None:
-            desc = lang('nodesc')
+            desc = access_language_entry('nodesc')
 
         self.__taken_names.append(name)
 
@@ -2014,7 +2017,7 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
         labels[3].configure(state=NORMAL)
 
         labels[3].delete(0.0, END)
-        labels[3].insert(0.0, f"{lang('val')}:\n---\n{s[1]}\n---\n{s[3]}")
+        labels[3].insert(0.0, f"{access_language_entry('val')}:\n---\n{s[1]}\n---\n{s[3]}")
 
         labels[3].configure(state=DISABLED)
 
@@ -2027,7 +2030,7 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
         args[4].destroy()
 
     w = Toplevel(root)
-    w.title(f"{lang('writerclassic')} - {lang('snippets')}")
+    w.title(f"{access_language_entry('writerclassic')} - {access_language_entry('snippets')}")
     w.resizable(False, False)
 
     if sys.platform == "win32":
@@ -2043,7 +2046,7 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
     title_label = Label(w, font=h1, text=snippets.name)
     adjust_frame = Frame(w)
 
-    snippet_label = Label(adjust_frame, font=body1, text=f'{lang("name")}: ')
+    snippet_label = Label(adjust_frame, font=body1, text=f'{access_language_entry("name")}: ')
 
     snippet_name = StringVar(w)
 
@@ -2052,11 +2055,11 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
     for i in snippets.get_taken_names():
         g = (*g, i)
 
-    name_label = Label(w, font=h2, text=lang('nosnippet'))
+    name_label = Label(w, font=h2, text=access_language_entry('nosnippet'))
     desc_label = WriterClassicEditor(w, font=body2)
     desc_label.configure(borderwidth=0, insertbackground='white')
 
-    desc_label.insert(0.0, lang('selectsnippet'))
+    desc_label.insert(0.0, access_language_entry('selectsnippet'))
 
     desc_label.configure(state=DISABLED)
 
@@ -2064,10 +2067,10 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
 
     name_picker = OptionMenu(adjust_frame, snippet_name, None, *g, direction='below')
 
-    ok_butt = Button(adjust_frame, text=lang('select'), command=lambda:
+    ok_butt = Button(adjust_frame, text=access_language_entry('select'), command=lambda:
         update_info_view(*z))
 
-    insert_butt = Button(w, text=lang('ins'), command=lambda:
+    insert_butt = Button(w, text=access_language_entry('ins'), command=lambda:
         insert_val(snippets, snippet_name, pos, widget, w))
 
     title_label.pack()
@@ -2085,7 +2088,7 @@ def snippet_picker(snippets: Snippets, pos = INSERT, root: Tk | Toplevel = deskt
 
     w.mainloop()
 
-default_snippets = Snippets(lang('defaultsnippets'))
+default_snippets = Snippets(access_language_entry('defaultsnippets'))
 
 default_snippets.register('if-elif-else', 'if !!!:\n\t!!!\nelif !!!:\n\t!!!\nelse:\n\t!!!', 'Python 3', "Python's if-elif-else statement, where the '!!!' marks the things you might want to change.")
 default_snippets.register('try-except-else-finally', 'try:\n\t!!!\nexcept !!!:\n\t!!!\nelse:\n\t!!!\nfinally:\n\t!!!', 'Python 3', "Python's try-except clause but with additional else and finally for a better error handling.")
@@ -2120,7 +2123,7 @@ def set_font(root: Tk | Toplevel = desktop_win, editor: WriterClassicEditor = te
     __dump_func = kw.get('__dump_func', dump_func)
     __sample = kw.get('__sample', sample)
 
-    font_details = dict(tkfontchooser.askfont(root, __sample, f"{lang('writerclassic')} - {lang('ftpicker')}", family=settings['font']['family'], size=settings['font']['size'], weight=settings['font']['weight'], slant=settings['font']['slant'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike']))
+    font_details = dict(tkfontchooser.askfont(root, __sample, f"{access_language_entry('writerclassic')} - {access_language_entry('ftpicker')}", family=settings['font']['family'], size=settings['font']['size'], weight=settings['font']['weight'], slant=settings['font']['slant'], underline=settings['font']['underline'], overstrike=settings['font']['overstrike']))
     config_font.configure(family=font_details['family'], size=font_details['size'], weight=font_details['weight'], slant=font_details['slant'], underline=font_details['underline'], overstrike=font_details['overstrike'])
 
     settings['font'] = font_details
@@ -2154,7 +2157,7 @@ def new_file(skip_confirmation: bool = False):
         a = has_been_modified()
 
         if not a:
-            b = mb.askyesnocancel(lang('writerclassic'), f"{lang('notsaved_warn')}\n{lang('saveforenew')}")
+            b = mb.askyesnocancel(access_language_entry('writerclassic'), f"{access_language_entry('notsaved_warn')}\n{access_language_entry('saveforenew')}")
 
             if b is None:
                 ic()
@@ -2169,7 +2172,7 @@ def new_file(skip_confirmation: bool = False):
 
     save_status = True
 
-    desktop_win.title(lang('writerclassic'))
+    desktop_win.title(access_language_entry('writerclassic'))
     text_widget.delete(index1=0.0, index2=END)
     cur_data = text_widget.content
 
@@ -2185,34 +2188,34 @@ FILETYPES: list[tuple[str, str]] | None = None
 
 if sys.platform == 'win32':
     FILETYPES = [
-        (lang("txt"), "*.txt"),
-        (lang("config"), "*.config"),
-        (lang("css"), "*.css"),
-        (lang("csv"), "*.csv"),
-        (lang("html"), "*.html"),
-        (lang("js"), "*.js"),
-        (lang("py"), "*.py"),
-        (lang("log"), "*.log"),
-        (lang("xml"), "*.xml"),
-        (lang("readme"), "*.1st"),
-        (lang("a"), "*.a"),
-        (lang("ans"), "*.ans"),
-        (lang("asm"), "*.asm"),
-        (lang("md"), "*.md"),
-        (lang("json"), "*.json"),
-        (lang("wclassic"), "*.wclassic"),
-        (lang("wscript"), "*.wscript"),
-        (lang("all"), "*.*")
+        (access_language_entry("txt"), "*.txt"),
+        (access_language_entry("config"), "*.config"),
+        (access_language_entry("css"), "*.css"),
+        (access_language_entry("csv"), "*.csv"),
+        (access_language_entry("html"), "*.html"),
+        (access_language_entry("js"), "*.js"),
+        (access_language_entry("py"), "*.py"),
+        (access_language_entry("log"), "*.log"),
+        (access_language_entry("xml"), "*.xml"),
+        (access_language_entry("readme"), "*.1st"),
+        (access_language_entry("a"), "*.a"),
+        (access_language_entry("ans"), "*.ans"),
+        (access_language_entry("asm"), "*.asm"),
+        (access_language_entry("md"), "*.md"),
+        (access_language_entry("json"), "*.json"),
+        (access_language_entry("wclassic"), "*.wclassic"),
+        (access_language_entry("wscript"), "*.wscript"),
+        (access_language_entry("all"), "*.*")
     ]
 
 else:
     FILETYPES = [
-        (lang('txt'), '*.txt'),
-        (lang('html'), '*.html'),
-        (lang('md'), '*.md'),
-        (lang('wclassic'), '*.wclassic'),
-        (lang('wscript'), '*.wscript'),
-        (lang("all"), "*.*")
+        (access_language_entry('txt'), '*.txt'),
+        (access_language_entry('html'), '*.html'),
+        (access_language_entry('md'), '*.md'),
+        (access_language_entry('wclassic'), '*.wclassic'),
+        (access_language_entry('wscript'), '*.wscript'),
+        (access_language_entry("all"), "*.*")
     ]
 
 LOG.write(f"{str(now())} - Filetypes have been configured correctly: OK\n")
@@ -2257,7 +2260,7 @@ def open_file_manually(file_path: str, root_win: Tk = desktop_win) -> None:
             file_input = open(file_path, "rt", encoding="utf-8")
             file_data = file_input.read()
 
-            root_win.title(f"{lang('writerclassic')} - {os.path.basename(file_path)}")
+            root_win.title(f"{access_language_entry('writerclassic')} - {os.path.basename(file_path)}")
             text_widget.delete(index1=0.0, index2=END)
             text_widget.insert(chars=file_data, index=END)
 
@@ -2268,8 +2271,8 @@ def open_file_manually(file_path: str, root_win: Tk = desktop_win) -> None:
             LOG.write(f"{str(now())} - A file at the path {str(file_path)} has been opened: OK\n")
 
     except (UnicodeDecodeError, UnicodeEncodeError, UnicodeError, UnicodeTranslateError):
-        showerror(title=lang('encerror'), message=f"{lang('unicoderror')} {str(file_path)}.")
-        run_default = mb.askyesno(title=lang('encerror'), message=lang('defaulteditor'))
+        showerror(title=access_language_entry('encerror'), message=f"{access_language_entry('unicoderror')} {str(file_path)}.")
+        run_default = mb.askyesno(title=access_language_entry('encerror'), message=access_language_entry('defaulteditor'))
 
         if run_default:
             os.system(str(file_path))
@@ -2297,7 +2300,7 @@ def open_file(root_win: Tk = desktop_win, initialfile: str = 'Open a File', **kw
 
     filetypes: list[tuple[str, str]] = kw.get('filetypes', FILETYPES.copy())
 
-    file_path: str = dlg.asksaveasfilename(parent=root_win, filetypes=filetypes, defaultextension="*.*", initialfile=initialfile, confirmoverwrite=False, title=lang('open'))
+    file_path: str = dlg.asksaveasfilename(parent=root_win, filetypes=filetypes, defaultextension="*.*", initialfile=initialfile, confirmoverwrite=False, title=access_language_entry('open'))
 
     if not file_path:
         return
@@ -2323,7 +2326,7 @@ def save_as_file(root_win: Tk = desktop_win):
 
     data = text_widget.content
     save_status = True
-    file_path = dlg.asksaveasfilename(parent=root_win, title=lang('save_as'), confirmoverwrite=True, filetypes=FILETYPES, defaultextension="*.*", initialfile="New File To Save")
+    file_path = dlg.asksaveasfilename(parent=root_win, title=access_language_entry('save_as'), confirmoverwrite=True, filetypes=FILETYPES, defaultextension="*.*", initialfile="New File To Save")
     
     """    # [*] Get the selected file extension
     selected_extension = None
@@ -2345,8 +2348,8 @@ def save_as_file(root_win: Tk = desktop_win):
     file.write(str(data.rstrip('\n')) + '\n')
     cur_data = data
     file.close()
-    showinfo(lang('writerclassic'), lang('done'))
-    root_win.title(f"{lang('writerclassic')} - {os.path.basename(file_path)}")
+    showinfo(access_language_entry('writerclassic'), access_language_entry('done'))
+    root_win.title(f"{access_language_entry('writerclassic')} - {os.path.basename(file_path)}")
 
     LOG.write(f"{str(now())} - A file has been saved as {str(file_path)}: OK\n")
 
@@ -2393,8 +2396,8 @@ def save_file(root_win: Tk = desktop_win):
     file.write(str(data.rstrip('\n')) + '\n') # [i] save the document with 1 newline in the end
     cur_data = data
     file.close()
-    showinfo(lang('writerclassic'), lang('done'))
-    root_win.title(f"{lang('writerclassic')} - {os.path.basename(file_path)}")
+    showinfo(access_language_entry('writerclassic'), access_language_entry('done'))
+    root_win.title(f"{access_language_entry('writerclassic')} - {os.path.basename(file_path)}")
 
     current_file = str(file_path)
     ic(current_file)
@@ -2473,13 +2476,13 @@ def change_casing() -> None:
 
     def _swap_casing(casing: str):
         if not text_widget.selection:
-            showerror(lang('writerclassic'), lang('notextselected'))
+            showerror(access_language_entry('writerclassic'), access_language_entry('notextselected'))
 
         else:
             text_widget.change_selection_casing(casing)
 
     w = Toplevel()
-    w.title(lang('changecasing'))
+    w.title(access_language_entry('changecasing'))
     w.resizable(False, False)
 
     if sys.platform == 'win32':
@@ -2534,16 +2537,16 @@ def change_casing() -> None:
 
 
 rmb_menu = Menu(desktop_win, tearoff = 0)
-rmb_menu.add_command(label=lang('undo'), command=text_widget.edit_undo, accelerator="Ctrl + Z")
-rmb_menu.add_command(label=lang('redo'), command=text_widget.edit_redo, accelerator="Ctrl + Y")
+rmb_menu.add_command(label=access_language_entry('undo'), command=text_widget.edit_undo, accelerator="Ctrl + Z")
+rmb_menu.add_command(label=access_language_entry('redo'), command=text_widget.edit_redo, accelerator="Ctrl + Y")
 rmb_menu.add_separator()
-rmb_menu.add_command(label=lang('snippets'), command=lambda:
+rmb_menu.add_command(label=access_language_entry('snippets'), command=lambda:
     snippet_picker(default_snippets))
-rmb_menu.add_command(label=lang('changecasing'), command=change_casing)
+rmb_menu.add_command(label=access_language_entry('changecasing'), command=change_casing)
 rmb_menu.add_separator()
-rmb_menu.add_command(label=lang('selectall'), command=select_all, accelerator="Ctrl + A")
+rmb_menu.add_command(label=access_language_entry('selectall'), command=select_all, accelerator="Ctrl + A")
 rmb_menu.add_separator()
-rmb_menu.add_command(label=lang('eval'), command=evaluate_expression, accelerator="Ctrl + R")
+rmb_menu.add_command(label=access_language_entry('eval'), command=evaluate_expression, accelerator="Ctrl + R")
 rmb_menu.add_separator()
 rmb_menu.add_command(label="Lorem ipsum", command=lorem_ipsum)
 rmb_menu.add_command(label="README.md", command=readme_writer_classic)
@@ -2590,7 +2593,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
     prog_lang = prog_lang.strip()
 
     if current_file is False:
-        showerror(lang('writerclassic'), lang('nosaved'))
+        showerror(access_language_entry('writerclassic'), access_language_entry('nosaved'))
         return
 
     match mode:
@@ -2598,7 +2601,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
             match prog_lang.lower():
                 case "c++": # [i] inferior way to compile, might get rid of it
                     if not current_file.strip().endswith("cpp"):
-                        showerror(lang('writerclassic'), lang('not_language'))
+                        showerror(access_language_entry('writerclassic'), access_language_entry('not_language'))
                         return
 
                     os.system(f"g++ \"{os.path.dirname(current_file)}\"")
@@ -2606,7 +2609,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
 
                 case "c#":
                     if not current_file.strip().endswith(("cs", "csproj")):
-                        showerror(lang('writerclassic'), lang('not_language'))
+                        showerror(access_language_entry('writerclassic'), access_language_entry('not_language'))
                         return
 
                     os.system(f"dotnet build \"{os.path.dirname(current_file)}\"")
@@ -2619,7 +2622,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
             match prog_lang.lower():
                 case "c#":
                     if not current_file.strip().endswith((".cs", ".csproj")):
-                        showerror(lang('writerclassic'), lang('not_language'))
+                        showerror(access_language_entry('writerclassic'), access_language_entry('not_language'))
                         return
 
                     os.system(f"dotnet run --project \"{os.path.dirname(current_file)}\"")
@@ -2627,7 +2630,7 @@ def dev_option(prog_lang: str, mode: Literal["run", "build"] = "build") -> None:
 
                 case "python":
                     if not current_file.strip().endswith('.py'):
-                        showerror(lang('writerclassic'), lang('not_language'))
+                        showerror(access_language_entry('writerclassic'), access_language_entry('not_language'))
                         return
 
                     if sys.platform == "win32":
@@ -2687,7 +2690,7 @@ X-KDE-Username=
 
     with open(f"{script_dir}/WriterClassic.desktop", mode="w", encoding='utf-8') as desktop_file:
         desktop_file.write(desktop_entry)
-        showinfo(lang('writerclassic'), lang('done'))
+        showinfo(access_language_entry('writerclassic'), access_language_entry('done'))
         desktop_file.close()
 
     after_listeners.run_group(create_desktop_file_linux)
@@ -2705,13 +2708,13 @@ def create_window_desktop_file_linux():
     writerclassic_call_history.register_call(id(create_window_desktop_file_linux))
 
     desktop_created_win = Toplevel(desktop_win)
-    desktop_created_win.title(lang('gendesktop_dlg'))
+    desktop_created_win.title(access_language_entry('gendesktop_dlg'))
     if sys.platform == "win32":
         desktop_created_win.iconbitmap(f"{data_dir}/app_icon.ico")
     desktop_created_win.resizable(False, False)
 
-    LabA = Label(desktop_created_win, text=lang('entrysent'), font=Font(family=config_font.actual('family'), size=15, weight='bold'))
-    LabB = Label(desktop_created_win, text=lang('thanks_zeca70'), font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    LabA = Label(desktop_created_win, text=access_language_entry('entrysent'), font=Font(family=config_font.actual('family'), size=15, weight='bold'))
+    LabB = Label(desktop_created_win, text=access_language_entry('thanks_zeca70'), font=Font(family=config_font.actual('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
     Butt = Button(desktop_created_win, text='Ok', command=create_desktop_file_linux)
 
     LabA.pack()
@@ -2721,7 +2724,7 @@ def create_window_desktop_file_linux():
 
 # [!] WARNING: The deprecation of this function is planned but not confirmed
 def app_credits():
-    showinfo(title=lang('credits'), message=CREDITS)
+    showinfo(title=access_language_entry('credits'), message=CREDITS)
     LOG.write(f"{str(now())} - The Credits have been shown: OK\n")
 
 
@@ -2729,7 +2732,7 @@ def surprise_egg():
     before_listeners.run_group(surprise_egg)
     writerclassic_call_history.register_call(id(surprise_egg))
 
-    askNow = sdg.askstring(lang('egg'), lang('egg_code'))
+    askNow = sdg.askstring(access_language_entry('egg'), access_language_entry('egg_code'))
 
     if not askNow:
         ic()
@@ -2768,7 +2771,7 @@ def surprise_egg():
         simple_webbrowser.SpotifyOnline('Blind Korn')
 
     else:
-        showerror(lang('egg'), lang('problem_egg'))
+        showerror(access_language_entry('egg'), access_language_entry('problem_egg'))
         ic()
 
     after_listeners.run_group(surprise_egg)
@@ -2802,7 +2805,7 @@ def about_writerclassic():
     if sys.platform == "win32":
         about_dialogue.iconbitmap(f"{data_dir}/app_icon.ico")
 
-    about_dialogue.title(lang('about_dlg'))
+    about_dialogue.title(access_language_entry('about_dlg'))
     label_1 = Label(about_dialogue, text=str(about_data), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
     # [!?] ChatGPT instrusion down here (lol)
@@ -2837,7 +2840,7 @@ def about_writerclassic():
     photo = ImageTk.PhotoImage(resized_image)
 
     button_1 = Button(about_dialogue, text="Ok", command=about_dialogue.destroy)
-    button_2 = Button(about_dialogue, text=lang('website'), command=lambda:
+    button_2 = Button(about_dialogue, text=access_language_entry('website'), command=lambda:
         simple_webbrowser.website("https://mf366-coding.github.io/writerclassic.html", new=2))
 
     # [*] Create a Label widget to display the image
@@ -2861,7 +2864,7 @@ def search_replace():
     before_listeners.run_group(search_replace)
     writerclassic_call_history.register_call(id(search_replace))
 
-    search_window = SearchReplace(desktop_win, text_widget, True, lang_exps=lang.copy(), ico=os.path.join(data_dir, 'app_icon.ico'))
+    search_window = SearchReplace(desktop_win, text_widget, True, lang_exps=access_language_entry.copy(), ico=os.path.join(data_dir, 'app_icon.ico'))
     search_window.initiate_setup(search_window)
     search_window.resizable(False, False)
     search_window.mainloop()
@@ -2874,11 +2877,11 @@ def markdown_preview() -> None:
     writerclassic_call_history.register_call(id(markdown_preview))
 
     if not current_file:
-        showerror(lang('writerclassic'), lang('nosaved_preview'))
+        showerror(access_language_entry('writerclassic'), access_language_entry('nosaved_preview'))
         return
 
     if not current_file.lower().endswith((".md", ".mdown", ".mkd", ".mkdn")):
-        showerror(lang('writerclassic'), lang('only_markdown'))
+        showerror(access_language_entry('writerclassic'), access_language_entry('only_markdown'))
         return
 
     temp_html_path = os.path.join(temp_dir, f"{random.randint(1, 1000)}_{os.path.basename(current_file).replace(' ', '_')}.html")
@@ -2901,19 +2904,19 @@ def tips_tricks():
     writerclassic_call_history.register_call(id(tips_tricks))
 
     picked_text = random.choice((
-        lang('tip1'),
-        lang('tip2'),
-        lang('tip3'),
-        lang('autotip'),
-        lang('tip5'),
-        lang('tip6'),
-        lang('tip7'),
-        lang('tip9')
+        access_language_entry('tip1'),
+        access_language_entry('tip2'),
+        access_language_entry('tip3'),
+        access_language_entry('autotip'),
+        access_language_entry('tip5'),
+        access_language_entry('tip6'),
+        access_language_entry('tip7'),
+        access_language_entry('tip9')
     ))
 
     ic(picked_text)
 
-    showinfo(lang('writerclassic'), picked_text)
+    showinfo(access_language_entry('writerclassic'), picked_text)
     LOG.write(f"{str(now())} - Requested Tips & Tricks: OK\n")
 
     after_listeners.run_group(tips_tricks)
@@ -2929,7 +2932,7 @@ def reset_writerclassic():
 
     ic(settings)
 
-    confirmation = mb.askyesno(lang('clear_dlg'), lang('you_nuts'))
+    confirmation = mb.askyesno(access_language_entry('clear_dlg'), access_language_entry('you_nuts'))
 
     if confirmation:
         settings = {
@@ -3004,7 +3007,7 @@ def terminal_inputs():
         ic(_data)
 
     terminal = Toplevel(desktop_win)
-    terminal.title(lang('tinputs_dlg'))
+    terminal.title(access_language_entry('tinputs_dlg'))
 
     if sys.platform == "win32":
         terminal.iconbitmap(f"{data_dir}/app_icon.ico")
@@ -3012,9 +3015,9 @@ def terminal_inputs():
     LOG.write(f"{str(now())} - Opened the Terminal Inputs: OK\n")
 
     entry_1 = Entry(terminal)
-    butt_1 = Button(terminal, text=lang('run'), command=lambda:
+    butt_1 = Button(terminal, text=access_language_entry('run'), command=lambda:
         _terminal_get(entry_1))
-    butt_2 = Button(terminal, text=lang('clsinput'), command=lambda:
+    butt_2 = Button(terminal, text=access_language_entry('clsinput'), command=lambda:
         _trick_terminal(entry_1))
 
     entry_1.pack()
@@ -3029,7 +3032,7 @@ class InternetOnWriter:
         self.AUTORAISE = autoraise
 
     def goto_website(self, new: Literal[0, 1, 2] = 0):
-        website_url = asklink(lang('go_url_dlg'), lang('url_enter'), require_https=True).link
+        website_url = asklink(access_language_entry('go_url_dlg'), access_language_entry('url_enter'), require_https=True).link
 
         if website_url:
             simple_webbrowser.website(website_url, new, self.AUTORAISE)
@@ -3040,14 +3043,14 @@ class InternetOnWriter:
     def search_with_engine(self, engine: Literal['google', 'bing', 'ysearch', 'ddgo', 'yt', 'ecosia', 'stack', 'soundcloud', 'archive', 'qwant', 'spotify', 'brave', 'github', 'gitlab']):
         match engine:
             case 'google':
-                search_query = sdg.askstring(lang('google_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('google_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.Google(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on Google: OK\n")
 
             case 'bing':
-                search_query = sdg.askstring(lang('bing_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('bing_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.Bing(search_query)
@@ -3055,7 +3058,7 @@ class InternetOnWriter:
 
             case 'ysearch':
                 # [i] stands for Yahoo!
-                search_query = sdg.askstring(lang('yahoo_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('yahoo_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.Yahoo(search_query)
@@ -3063,7 +3066,7 @@ class InternetOnWriter:
 
             case 'ddgo':
                 # [i] stands for DuckDuckGo
-                search_query = sdg.askstring(lang('ddg_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('ddg_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.DuckDuckGo(search_query)
@@ -3071,14 +3074,14 @@ class InternetOnWriter:
 
             case "yt":
                 # [i] stands for YouTube
-                search_query = sdg.askstring(lang('yt_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('yt_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.YouTube(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on YouTube: OK\n")
 
             case "ecosia":
-                search_query = sdg.askstring(lang('ecosia_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('ecosia_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.Ecosia(search_query)
@@ -3086,14 +3089,14 @@ class InternetOnWriter:
 
             case "stack":
                 # [i] stands for Stack Overflow
-                search_query = sdg.askstring(lang('sov_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('sov_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.StackOverflow(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on StackOverflow: OK\n")
 
             case "soundcloud":
-                search_query = sdg.askstring(lang('sound_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('sound_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.SoundCloud(search_query)
@@ -3101,7 +3104,7 @@ class InternetOnWriter:
 
             case "archive":
                 # [i] stands for The Internet Archive
-                search_query = sdg.askstring(lang('arch_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('arch_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.Archive(search_query)
@@ -3109,7 +3112,7 @@ class InternetOnWriter:
 
             case "qwant":
                 # [i] stands for Qwant.com
-                search_query = sdg.askstring(lang('qwant_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('qwant_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.Qwant(search_query)
@@ -3117,7 +3120,7 @@ class InternetOnWriter:
 
             case "spotify":
                 # [i] stands for Spotify Online
-                search_query = sdg.askstring(lang('spot_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('spot_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.SpotifyOnline(search_query)
@@ -3125,21 +3128,21 @@ class InternetOnWriter:
 
             case 'brave':
                 # [i] stands for Brave Search
-                search_query = sdg.askstring(lang('brave_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('brave_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.Brave(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on Brave Search: OK\n")
 
             case "github":
-                search_query = sdg.askstring(lang('github_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('github_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.GitHub(search_query)
                     LOG.write(f"{str(now())} - Searched for {str(search_query)} on GitHub: OK\n")
 
             case "gitlab":
-                search_query = sdg.askstring(lang('gitlab_dlg'), lang('what_search'))
+                search_query = sdg.askstring(access_language_entry('gitlab_dlg'), access_language_entry('what_search'))
 
                 if search_query:
                     simple_webbrowser.GitLab(search_query)
@@ -3199,7 +3202,7 @@ class Plugin:
             __versions: list = [int(i[1:]) for i in manifest]
 
             # [*] Window Creation
-            datax = sdg.askinteger(title=f'{lang("writerclassic")} - {lang('plug_wizard')}', prompt=f'{lang('version_of_plug')}\n{lang('choose_between')} {max(__versions)}.', initialvalue=max(__versions), minvalue=1, maxvalue=max(__versions))
+            datax = sdg.askinteger(title=f'{access_language_entry("writerclassic")} - {access_language_entry("plug_wizard")}', prompt=f"{access_language_entry('version_of_plug')}\n{access_language_entry('choose_between')} {max(__versions)}.", initialvalue=max(__versions), minvalue=1, maxvalue=max(__versions))
 
             datax = f"v{datax}"
 
@@ -3293,17 +3296,17 @@ class Plugin:
                         file.write(chunk)
 
         except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout):
-            showerror(lang('interneterror'), lang('no_internet'))
+            showerror(access_language_entry('interneterror'), access_language_entry('no_internet'))
 
         except VersionError:
-            showerror(lang('writerclassic'), lang('notcompat'))
+            showerror(access_language_entry('writerclassic'), access_language_entry('notcompat'))
 
         except ValueError as e:
             LOG.error("Invalid version or missing Python file while attempting to download a plugin using a MANIFEST", str(e))
             raise Exception from e
 
         except Exception as e:
-            showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
+            showerror(access_language_entry('notallowed'), f"{access_language_entry('nope')}\n{e}")
 
     _get_files = _get_files_by_manifest
 
@@ -3319,7 +3322,7 @@ class Plugin:
             versioning_data = versioning_file.text
 
             # [*] Window Creation
-            datax = sdg.askinteger(title=f"{lang('writerclassic')} - {lang('plug_wizard')}", prompt=f'{lang('version_of_plug')}\n{lang('choose_between')} {int(versioning_data)}.', initialvalue=int(versioning_data), minvalue=1, maxvalue=int(versioning_data))
+            datax = sdg.askinteger(title=f"{access_language_entry('writerclassic')} - {access_language_entry('plug_wizard')}", prompt=f"{access_language_entry('version_of_plug')}\n{access_language_entry('choose_between')} {int(versioning_data)}.", initialvalue=int(versioning_data), minvalue=1, maxvalue=int(versioning_data))
 
             # [!?] Some of the following code belongs to ChatGPT and other AIs!
 
@@ -3330,10 +3333,10 @@ class Plugin:
             zip_response = get(zip_url, timeout=3)
 
         except (exceptions.ConnectTimeout, exceptions.ConnectionError, TimeoutError, exceptions.ReadTimeout) as e:
-            showerror(lang('interneterror'), f"{lang('no_internet')}\n{e}")
+            showerror(access_language_entry('interneterror'), f"{access_language_entry('no_internet')}\n{e}")
 
         except Exception:
-            showerror(lang('notallowed'), lang('nope'))
+            showerror(access_language_entry('notallowed'), access_language_entry('nope'))
 
         else:
             parent_directory = plugin_dir
@@ -3402,7 +3405,7 @@ class PluginCentral:
             return
 
         self.CENTRAL = Toplevel(root)
-        self.CENTRAL.title(f"{lang('writerclassic')} - Plugin Central")
+        self.CENTRAL.title(f"{access_language_entry('writerclassic')} - Plugin Central")
         self.CENTRAL.resizable(False, False)
 
         if sys.platform == "win32":
@@ -3454,7 +3457,7 @@ class PluginCentral:
                 name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
 
             except TclError:
-                showerror(lang('writerclassic'), "You must select a plugin to open in Explorer!")
+                showerror(access_language_entry('writerclassic'), "You must select a plugin to open in Explorer!")
                 return
 
         ic(name)
@@ -3471,17 +3474,17 @@ class PluginCentral:
             open_in_file_explorer(os.path.abspath(os.path.dirname(module_path)))
 
         except Exception as e:
-            showerror(lang('writerclassic'), f"Seems like something went wrong...\n{e}")
+            showerror(access_language_entry('writerclassic'), f"Seems like something went wrong...\n{e}")
 
     def show_plugin_in_explorer(self, name: str | None = None):
         try:
             self._show_in_file_explorer(name)
 
         except PluginNotFoundError as e:
-            showerror(lang('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
+            showerror(access_language_entry('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
 
         except Exception as e:
-            showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
+            showerror(access_language_entry('notallowed'), f"{access_language_entry('nope')}\n{e}")
 
     def _display_plugin_info(self, name: str | None = None):
         if not name:
@@ -3489,7 +3492,7 @@ class PluginCentral:
                 name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
 
             except TclError:
-                showerror(lang('writerclassic'), "You must select a plugin!")
+                showerror(access_language_entry('writerclassic'), "You must select a plugin!")
                 return
 
         ic(name)
@@ -3503,7 +3506,7 @@ class PluginCentral:
             raise PluginNotFoundError(f"no plugin results for '{name}' or no version details: {e}")
 
         subwindow = Toplevel(desktop_win if self.CENTRAL is None else self.CENTRAL)
-        subwindow.title(f"{lang('writerclassic')} - Plugin Info")
+        subwindow.title(f"{access_language_entry('writerclassic')} - Plugin Info")
         subwindow.resizable(False, False)
 
         if sys.platform == "win32":
@@ -3551,10 +3554,10 @@ class PluginCentral:
             self._display_plugin_info(name)
 
         except PluginNotFoundError as e:
-            showerror(lang('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
+            showerror(access_language_entry('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
 
         except Exception as e:
-            showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
+            showerror(access_language_entry('notallowed'), f"{access_language_entry('nope')}\n{e}")
 
     def _remove_plugin(self, name: str | None = None):
         if not name:
@@ -3562,7 +3565,7 @@ class PluginCentral:
                 name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
 
             except TclError:
-                showerror(lang('writerclassic'), "You must select a plugin to remove!")
+                showerror(access_language_entry('writerclassic'), "You must select a plugin to remove!")
                 return
 
         ic(name)
@@ -3575,7 +3578,7 @@ class PluginCentral:
         except (KeyError, IndexError) as e:
             raise PluginNotFoundError(f"no plugin results for '{name}' or no version details: {e}")
 
-        confirmation = mb.askyesno(lang('writerclassic'), f"Are you sure you want to remove plugin {name}?\nThis action is permanent and cannot be undone!")
+        confirmation = mb.askyesno(access_language_entry('writerclassic'), f"Are you sure you want to remove plugin {name}?\nThis action is permanent and cannot be undone!")
 
         if not confirmation:
             return
@@ -3586,17 +3589,17 @@ class PluginCentral:
             shutil.rmtree(os.path.abspath(module_folder))
 
         except (PermissionError, OSError) as e:
-            showerror(lang('writerclassic'), f"WriterClassic lacks the permissions to remove the plugin.\nA manual removal might be necessary.\n{e}")
+            showerror(access_language_entry('writerclassic'), f"WriterClassic lacks the permissions to remove the plugin.\nA manual removal might be necessary.\n{e}")
 
     def remove_plugin(self, name: str | None = None):
         try:
             self._remove_plugin(name)
 
         except PluginNotFoundError as e:
-            showerror(lang('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
+            showerror(access_language_entry('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
 
         except Exception as e:
-            showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
+            showerror(access_language_entry('notallowed'), f"{access_language_entry('nope')}\n{e}")
 
         self.refresh_selection_listbox()
 
@@ -3606,7 +3609,7 @@ class PluginCentral:
                 name: str = self.SELECTION_BOX.get(self.SELECTION_BOX.curselection()[0])
 
             except TclError:
-                showerror(lang('writerclassic'), "You must select a plugin to run!")
+                showerror(access_language_entry('writerclassic'), "You must select a plugin to run!")
                 return
 
         ic(name)
@@ -3636,10 +3639,10 @@ class PluginCentral:
             self._run_plugin(name)
 
         except PluginNotFoundError as e:
-            showerror(lang('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
+            showerror(access_language_entry('writerclassic'), f"The selected plugin doesn't exist.\n{e}")
 
         except Exception as e:
-            showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
+            showerror(access_language_entry('notallowed'), f"{access_language_entry('nope')}\n{e}")
 
     def install_plugin(self, plugin_name: str | None = None, **_):
         """
@@ -3651,7 +3654,7 @@ class PluginCentral:
         """
 
         if not plugin_name:
-            plugin_name = sdg.askstring(lang('writerclassic'), f'{lang('name_of_folder')}\n{lang('verified_here')}', initialvalue="Type here.")
+            plugin_name = sdg.askstring(access_language_entry('writerclassic'), f"{access_language_entry('name_of_folder')}\n{access_language_entry('verified_here')}", initialvalue="Type here.")
 
         plugin = Plugin(folder_name=plugin_name)
         plugin.obtain_files()
@@ -3748,7 +3751,7 @@ def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: i
     if path_to_remove == "plugx":
         path_to_remove = os.path.join(plugin_dir, f"plugin_{_plug}")
 
-    confirmation = mb.askyesno(lang('removalaction'), f"{lang('plugwantsto')} '{path_to_remove}'.")
+    confirmation = mb.askyesno(access_language_entry('removalaction'), f"{access_language_entry('plugwantsto')} '{path_to_remove}'.")
 
     if confirmation:
         try:
@@ -3766,7 +3769,7 @@ def remove_action(_id: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] | int, _plug: i
             raise Exception from e # [i] it will be caught by the statement below
 
         except Exception as e:
-            showerror(lang('removalaction'), f"{lang('removerror')} '{path_to_remove}':\n{e}")
+            showerror(access_language_entry('removalaction'), f"{access_language_entry('removerror')} '{path_to_remove}':\n{e}")
 
     after_listeners.run_group(remove_action)
 
@@ -3796,7 +3799,7 @@ def show_log():
         _new_window.iconbitmap(f"{data_dir}/app_icon.ico")
 
     _new_editor = WriterClassicEditor(_new_window, background=settings['theme']["color"], foreground=settings['theme']["fg"], insertbackground=settings['theme']["ct"], font=config_font, borderwidth=5)
-    _new_window.title(lang('log_dlg'))
+    _new_window.title(access_language_entry('log_dlg'))
     _new_editor.pack()
 
     with open(f"{user_data}/log.wclassic", "r", encoding="utf-8") as _TEMP_LOG:
@@ -3890,7 +3893,7 @@ class SignaturePlugin:
         Internal function.
         """
 
-        _signature = f"--\n{lang('signed')}\n{self.USERNAME}"
+        _signature = f"--\n{access_language_entry('signed')}\n{self.USERNAME}"
 
         widget.insert(pos, f"\n\n{_signature}")
 
@@ -3932,7 +3935,7 @@ def change_wrap(**kw) -> None:
     root: Tk = kw.get('root', desktop_win)
 
     w = Toplevel(root)
-    w.title(lang('linewrap'))
+    w.title(access_language_entry('linewrap'))
     w.resizable(False, False)
 
     if sys.platform == 'win32':
@@ -3940,9 +3943,9 @@ def change_wrap(**kw) -> None:
 
     s = StringVar(w, value=widget.wrapping)
 
-    r1 = Radiobutton(w, variable=s, value=NONE, text=lang('disable'))
-    r2 = Radiobutton(w, variable=s, value=CHAR, text=lang('charlevel'))
-    r3 = Radiobutton(w, variable=s, value=WORD, text=lang('wordlevel'))
+    r1 = Radiobutton(w, variable=s, value=NONE, text=access_language_entry('disable'))
+    r2 = Radiobutton(w, variable=s, value=CHAR, text=access_language_entry('charlevel'))
+    r3 = Radiobutton(w, variable=s, value=WORD, text=access_language_entry('wordlevel'))
 
     b = Button(w, text='Ok', command=lambda:
         inner(w, s, widget))
@@ -3960,12 +3963,12 @@ def theme_maker() -> None:
     writerclassic_call_history.register_call(id(theme_maker))
 
     w = Toplevel()
-    w.title(lang('thememaker'))
+    w.title(access_language_entry('thememaker'))
 
     if sys.platform == 'win32':
         w.iconbitmap(os.path.join(data_dir, 'app_icon.ico'))
 
-    c = CustomThemeMaker(lang, settings, set_theme, w)
+    c = CustomThemeMaker(access_language_entry, settings, set_theme, w)
     c.pack()
 
     after_listeners.run_group(theme_maker)
@@ -3980,7 +3983,7 @@ def close_confirm() -> None:
     ic()
 
     if not has_been_modified():
-        choice: bool | None = mb.askyesnocancel(lang('logout'), f"{lang('filemod')}\n{lang('save_before_bye')}")
+        choice: bool | None = mb.askyesnocancel(access_language_entry('logout'), f"{access_language_entry('filemod')}\n{access_language_entry('save_before_bye')}")
 
         if choice is None:
             ic()
@@ -4093,14 +4096,14 @@ def command_menu() -> None | bool:
             after_listeners.run_group(command_menu)
             return
 
-        showerror(lang('cmd_menu_dlg'), lang('not_command'))
+        showerror(access_language_entry('cmd_menu_dlg'), access_language_entry('not_command'))
         after_listeners.run_group(group=command_menu)
         return
 
     if sys.platform == "win32":
         new.iconbitmap(f"{data_dir}/app_icon.ico")
 
-    new.title(lang('cmd_menu_dlg'))
+    new.title(access_language_entry('cmd_menu_dlg'))
     new.resizable(False, False)
 
     action_picker = Entry(new, justify='left', width=65)
@@ -4232,86 +4235,86 @@ text_widget.bind('<KeyRelease>', lambda _:
 
 
 # [i] Creating the menu dropdowns and buttons
-menu_10.add_command(label=lang('new'), command=new_file, accelerator="Ctrl + N")
-menu_10.add_command(label=lang('open'), command=lambda:
+menu_10.add_command(label=access_language_entry('new'), command=new_file, accelerator="Ctrl + N")
+menu_10.add_command(label=access_language_entry('open'), command=lambda:
     open_file(desktop_win), accelerator="Ctrl + O")
-menu_10.add_command(label=lang('recent'), command=recent_files, accelerator="Ctrl + Shift + O")
+menu_10.add_command(label=access_language_entry('recent'), command=recent_files, accelerator="Ctrl + Shift + O")
 menu_10.add_separator()
-menu_10.add_command(label=lang('save'), command=lambda:
+menu_10.add_command(label=access_language_entry('save'), command=lambda:
     save_file(desktop_win), accelerator="Ctrl + S")
-menu_10.add_command(label=lang('save_as'), command=lambda:
+menu_10.add_command(label=access_language_entry('save_as'), command=lambda:
     save_as_file(desktop_win), accelerator="Ctrl + Shift + S")
 menu_10.add_separator()
-menu_10.add_command(label=lang('undo'), command=text_widget.edit_undo, accelerator="Ctrl + Z")
-menu_10.add_command(label=lang('redo'), command=text_widget.edit_redo, accelerator="Ctrl + Y")
+menu_10.add_command(label=access_language_entry('undo'), command=text_widget.edit_undo, accelerator="Ctrl + Z")
+menu_10.add_command(label=access_language_entry('redo'), command=text_widget.edit_redo, accelerator="Ctrl + Y")
 menu_10.add_separator()
-menu_10.add_command(label=lang('findreplace'), command=search_replace, accelerator="Ctrl + F")
+menu_10.add_command(label=access_language_entry('findreplace'), command=search_replace, accelerator="Ctrl + F")
 menu_10.add_separator()
-menu_10.add_command(label=lang('linecount'), command=document_status)
+menu_10.add_command(label=access_language_entry('linecount'), command=document_status)
 menu_10.add_separator()
-menu_10.add_command(label=lang('exit'), command=close_confirm, accelerator="Alt + F4")
+menu_10.add_command(label=access_language_entry('exit'), command=close_confirm, accelerator="Alt + F4")
 
-menu_11.add_command(label=lang('chkupd_dlg'), command=update_check.manual_check)
+menu_11.add_command(label=access_language_entry('chkupd_dlg'), command=update_check.manual_check)
 menu_11.add_separator()
 
-menu_11.add_command(label=lang('about'), command=about_writerclassic, accelerator="Ctrl + I")
-menu_11.add_command(label=lang('support'), command=lambda:
+menu_11.add_command(label=access_language_entry('about'), command=about_writerclassic, accelerator="Ctrl + I")
+menu_11.add_command(label=access_language_entry('support'), command=lambda:
     simple_webbrowser.website("https://www.buymeacoffee.com/mf366"))
-menu_11.add_command(label=lang('help'), command=APP_HELP, accelerator="F1")
-menu_11.add_command(label=lang('repo'), command=repository)
-menu_11.add_command(label=lang('viewlog'), command=show_log)
+menu_11.add_command(label=access_language_entry('help'), command=APP_HELP, accelerator="F1")
+menu_11.add_command(label=access_language_entry('repo'), command=repository)
+menu_11.add_command(label=access_language_entry('viewlog'), command=show_log)
 menu_11.add_separator()
-menu_11.add_command(label=lang('credits'), command=app_credits)
+menu_11.add_command(label=access_language_entry('credits'), command=app_credits)
 menu_11.add_separator()
-menu_11.add_command(label=lang('tips_tricks'), command=tips_tricks)
+menu_11.add_command(label=access_language_entry('tips_tricks'), command=tips_tricks)
 menu_11.add_command(label='Return of the Easter Eggs (ENGLISH ONLY)', command=surprise_egg)
 
-menu_1.add_command(label=lang('winsize'), command=set_window_size, accelerator="Ctrl + Shift + G")
-menu_1.add_command(label=lang('ftpicker'), command=set_font)
-menu_1.add_command(label=lang('linewrap'), command=change_wrap)
-menu_1.add_command(label=lang('thememaker'), command=theme_maker)
+menu_1.add_command(label=access_language_entry('winsize'), command=set_window_size, accelerator="Ctrl + Shift + G")
+menu_1.add_command(label=access_language_entry('ftpicker'), command=set_font)
+menu_1.add_command(label=access_language_entry('linewrap'), command=change_wrap)
+menu_1.add_command(label=access_language_entry('thememaker'), command=theme_maker)
 
-menu_8.add_command(label=lang('notes'), command=draft_notepad)
-menu_8.add_command(label=lang('tinputs'), command=terminal_inputs)
+menu_8.add_command(label=access_language_entry('notes'), command=draft_notepad)
+menu_8.add_command(label=access_language_entry('tinputs'), command=terminal_inputs)
 menu_8.add_separator()
-menu_8.add_command(label=lang('customsig'), command=signature_plugin.custom)
-menu_8.add_command(label=lang('autosig'), command=signature_plugin.auto)
+menu_8.add_command(label=access_language_entry('customsig'), command=signature_plugin.custom)
+menu_8.add_command(label=access_language_entry('autosig'), command=signature_plugin.auto)
 menu_8.add_separator()
 menu_8.add_command(label="Plugin Central", command=plugin_central.display_ui)
 
-menu_9.add_command(label=lang('go_url'), command=internet_plugin.goto_website)
+menu_9.add_command(label=access_language_entry('go_url'), command=internet_plugin.goto_website)
 menu_9.add_separator()
-menu_9.add_command(label=lang('google'), command=lambda:
+menu_9.add_command(label=access_language_entry('google'), command=lambda:
     internet_plugin.search_with_engine('google'))
-menu_9.add_command(label=lang('bing'), command=lambda:
+menu_9.add_command(label=access_language_entry('bing'), command=lambda:
     internet_plugin.search_with_engine('bing'))
-menu_9.add_command(label=lang('yahoo'), command=lambda:
+menu_9.add_command(label=access_language_entry('yahoo'), command=lambda:
     internet_plugin.search_with_engine('ysearch'))
-menu_9.add_command(label=lang('ddg_go'), command=lambda:
+menu_9.add_command(label=access_language_entry('ddg_go'), command=lambda:
     internet_plugin.search_with_engine('ddgo'))
-menu_9.add_command(label=lang('brave'), command=lambda:
+menu_9.add_command(label=access_language_entry('brave'), command=lambda:
     internet_plugin.search_with_engine("brave"))
-menu_9.add_command(label=lang('ecosia'), command=lambda:
+menu_9.add_command(label=access_language_entry('ecosia'), command=lambda:
     internet_plugin.search_with_engine("ecosia"))
-menu_9.add_command(label=lang('qwant_go'), command=lambda:
+menu_9.add_command(label=access_language_entry('qwant_go'), command=lambda:
     internet_plugin.search_with_engine("qwant"))
 menu_9.add_separator()
-menu_9.add_command(label=lang('stack_overflow'), command=lambda:
+menu_9.add_command(label=access_language_entry('stack_overflow'), command=lambda:
     internet_plugin.search_with_engine("stack"))
 menu_9.add_separator()
-menu_9.add_command(label=lang('yt'), command=lambda:
+menu_9.add_command(label=access_language_entry('yt'), command=lambda:
     internet_plugin.search_with_engine("yt"))
-menu_9.add_command(label=lang('sound_go'), command=lambda:
+menu_9.add_command(label=access_language_entry('sound_go'), command=lambda:
     internet_plugin.search_with_engine("soundcloud"))
-menu_9.add_command(label=lang('spot_go'), command=lambda:
+menu_9.add_command(label=access_language_entry('spot_go'), command=lambda:
     internet_plugin.search_with_engine("spotify"))
 menu_9.add_separator()
-menu_9.add_command(label=lang('arch_go'), command=lambda:
+menu_9.add_command(label=access_language_entry('arch_go'), command=lambda:
     internet_plugin.search_with_engine("archive"))
 menu_9.add_separator()
-menu_9.add_command(label=lang('github_go'), command=lambda:
+menu_9.add_command(label=access_language_entry('github_go'), command=lambda:
     internet_plugin.search_with_engine("github"))
-menu_9.add_command(label=lang('gitlab'), command=lambda:
+menu_9.add_command(label=access_language_entry('gitlab'), command=lambda:
     internet_plugin.search_with_engine("gitlab"))
 
 # [!!] Languages need to be fixed
@@ -4360,34 +4363,34 @@ menu_13.add_command(label="Українська (Україна)", command=lambd
     LanguageSet("uk", desktop_win), state='disabled')
 '''
 
-menu_12.add_cascade(label=lang('lang'), menu=menu_13)
+menu_12.add_cascade(label=access_language_entry('lang'), menu=menu_13)
 menu_12.add_separator()
 
 if sys.platform == "linux":
-    menu_12.add_command(label=lang('gendesktop'), command=create_window_desktop_file_linux)
+    menu_12.add_command(label=access_language_entry('gendesktop'), command=create_window_desktop_file_linux)
     menu_12.add_separator()
 
-menu_12.add_checkbutton(label=lang('unlockwin'), variable=window_lock_status, command=lock_a_win)
+menu_12.add_checkbutton(label=access_language_entry('unlockwin'), variable=window_lock_status, command=lock_a_win)
 menu_12.add_separator()
-menu_12.add_command(label=lang('createbackup'), command=lambda:
+menu_12.add_command(label=access_language_entry('createbackup'), command=lambda:
     backup_system.run_action("zip"))
-menu_12.add_command(label=lang('restorebackup'), command=lambda:
+menu_12.add_command(label=access_language_entry('restorebackup'), command=lambda:
     backup_system.run_action("load"))
 menu_12.add_separator()
-menu_12.add_command(label=lang('clear'), command=reset_writerclassic)
+menu_12.add_command(label=access_language_entry('clear'), command=reset_writerclassic)
 '''
 menu_12.add_separator()
 menu_12.add_command(label=lang('undefined'), command=article_md, state='disabled')
 '''
 
 
-menu_15.add_command(label=lang('mdprev'), command=markdown_preview)
+menu_15.add_command(label=access_language_entry('mdprev'), command=markdown_preview)
 menu_15.add_separator()
-menu_15.add_command(label=lang('snippets'), command=lambda:
+menu_15.add_command(label=access_language_entry('snippets'), command=lambda:
     snippet_picker(default_snippets))
 menu_15.add_separator()
-menu_15.add_cascade(menu=menu_16, label=lang('build'))
-menu_15.add_cascade(menu=menu_17, label=lang('runcode'))
+menu_15.add_cascade(menu=menu_16, label=access_language_entry('build'))
+menu_15.add_cascade(menu=menu_17, label=access_language_entry('runcode'))
 
 menu_16.add_command(label="C#", command=lambda:
     dev_option("C#"))
@@ -4398,9 +4401,9 @@ menu_17.add_command(label="Python", command=lambda:
     dev_option("Python", "run"))
 
 
-menu_5.add_command(label=lang('ltheme'), command=lambda:
+menu_5.add_command(label=access_language_entry('ltheme'), command=lambda:
     set_theme(bg='#fcfcfc', fg='#020202', ct='black', mbg='#f4f8f8', mfg='black', sv='light'), accelerator="Ctrl + L")
-menu_5.add_command(label=lang('dtheme'), command=lambda:
+menu_5.add_command(label=access_language_entry('dtheme'), command=lambda:
     set_theme(bg='#020202', fg='#fcfcfc', ct='white', mbg='black', mfg='#f4f8f8', sv='dark'), accelerator="Ctrl + D")
 
 
@@ -4446,7 +4449,7 @@ def adv_change():
     ic(settings["advanced-mode"])
     fast_dump()
 
-    opt = mb.askyesno(message=lang('reopen_apply'), title=lang('writerclassic'))
+    opt = mb.askyesno(message=access_language_entry('reopen_apply'), title=access_language_entry('writerclassic'))
 
     if opt:
         close_confirm()
@@ -4456,7 +4459,7 @@ def adv_change():
 
 
 menu_12.add_separator()
-menu_12.add_checkbutton(label=lang('advancedon'), variable=advanced_mode_status, command=adv_change)
+menu_12.add_checkbutton(label=access_language_entry('advancedon'), variable=advanced_mode_status, command=adv_change)
 
 
 def show_debug():
@@ -4472,7 +4475,7 @@ def show_debug():
     ic(settings["debugging"])
     fast_dump()
 
-    opt = mb.askyesno(message=lang('reponen_apply'), title=lang('writerclassic'))
+    opt = mb.askyesno(message=access_language_entry('reponen_apply'), title=access_language_entry('writerclassic'))
 
     if opt:
         close_confirm()
@@ -4490,7 +4493,7 @@ def dencrypt():
         fast_dump()
 
         if not current_file:
-            showinfo(lang('writerclassic'), lang('nosaved'))
+            showinfo(access_language_entry('writerclassic'), access_language_entry('nosaved'))
 
         else:
             os.system(f'"{pathx}" "{current_file}" {parameters}')
@@ -4503,20 +4506,20 @@ def dencrypt():
     if sys.platform == "win32":
         new.iconbitmap(f"{data_dir}/app_icon.ico")
 
-    new.title(f"{lang('writerclassic')} - {lang('dencrypt_use')}")
+    new.title(f"{access_language_entry('writerclassic')} - {access_language_entry('dencrypt_use')}")
     new.resizable(False, False)
 
-    label_1 = Label(new, text=f"{lang('dencrypt_path')}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_1 = Label(new, text=f"{access_language_entry('dencrypt_path')}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
     entry_1 = Entry(new, width=58, font=Font(family=config_font.cget('family'), size=11, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_2 = Label(new, text=f"{lang('flags')}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_2 = Label(new, text=f"{access_language_entry('flags')}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
     entry_2 = Entry(new, width=58, font=Font(family=config_font.cget('family'), size=11, weight='normal', slant='roman', underline=False, overstrike=False))
 
     entry_1.insert(0, settings["dencrypt"])
     entry_2.insert(0, "-e")
 
-    butt_1 = Button(new, text=f"{lang('run')}!", command=lambda:
+    butt_1 = Button(new, text=f"{access_language_entry('run')}!", command=lambda:
         runx(entry_1.get(), entry_2.get()))
-    butt_2 = Button(new, text=lang('wtf_dencrypt'), command=lambda:
+    butt_2 = Button(new, text=access_language_entry('wtf_dencrypt'), command=lambda:
         simple_webbrowser.website("https://github.com/MF366-Coding/d3NCRYP7#d3ncryp7---simple-encryption-and-decryption-system"))
 
     label_1.grid(column=1, row=1)
@@ -4545,10 +4548,10 @@ def readme_gen(*entries):
     text_widget.delete(0.0, END)
 
     if _title.strip() == '':
-        _title = lang('institle')
+        _title = access_language_entry('institle')
 
     if _describe.strip() == '':
-        _describe = f"{lang('describe')} {_title}"
+        _describe = f"{access_language_entry('describe')} {_title}"
 
     readme_generated = f"""{_title}
 **{_describe}**
@@ -4556,16 +4559,16 @@ def readme_gen(*entries):
 """
 
     if _author_email.strip() != '':
-        readme_generated += f"""[{lang('contact')}]({_author_email})\n"""
+        readme_generated += f"""[{access_language_entry('contact')}]({_author_email})\n"""
 
     if _author_website.strip() != '':
-        readme_generated += f"""[{lang('onlineat')}: {_author_website}]({_author_website})\n"""
+        readme_generated += f"""[{access_language_entry('onlineat')}: {_author_website}]({_author_website})\n"""
 
     if _project_website.strip() != '':
-        readme_generated += f"""[{lang('projat')}: {_project_website}]({_project_website})\n"""
+        readme_generated += f"""[{access_language_entry('projat')}: {_project_website}]({_project_website})\n"""
 
     if _sponsor_site.strip() != '':
-        readme_generated += f"""[{lang('liked_sponsor')}]({_sponsor_site})\n"""
+        readme_generated += f"""[{access_language_entry('liked_sponsor')}]({_sponsor_site})\n"""
 
     text_widget.insert(chars=readme_generated, index=0.0)
 
@@ -4577,20 +4580,20 @@ def readme_gen(*entries):
 def readme_gen_win():
     # [i] Window Creation
     window = Toplevel(desktop_win)
-    window.title(f"{lang('writerclassic')} - {lang('readmegen')}")
+    window.title(f"{access_language_entry('writerclassic')} - {access_language_entry('readmegen')}")
     window.resizable(False, False)
 
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 
-    label_1 = Label(window, text=f'{lang('title')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_2 = Label(window, text=f'{lang('shortdesc')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_3 = Label(window, text=f'{lang('authormail')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_4 = Label(window, text=f'{lang('authorsite')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_5 = Label(window, text=f'{lang('projsite')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_6 = Label(window, text=f'{lang('sponsor')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_7 = Label(window, text=f"{lang('note')}:".upper(), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_8 = Label(window, text=lang('will_erase'), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_1 = Label(window, text=f'{access_language_entry('title')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_2 = Label(window, text=f'{access_language_entry('shortdesc')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_3 = Label(window, text=f'{access_language_entry('authormail')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_4 = Label(window, text=f'{access_language_entry('authorsite')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_5 = Label(window, text=f'{access_language_entry('projsite')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_6 = Label(window, text=f'{access_language_entry('sponsor')}:', font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_7 = Label(window, text=f"{access_language_entry('note')}:".upper(), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_8 = Label(window, text=access_language_entry('will_erase'), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
     _title = Entry(window)
     _describe = Entry(window)
@@ -4599,10 +4602,10 @@ def readme_gen_win():
     _project_website = Entry(window)
     _sponsor_site = Entry(window)
 
-    butt_1 = Button(window, text=lang('gen'), command=lambda:
+    butt_1 = Button(window, text=access_language_entry('gen'), command=lambda:
         readme_gen(_title.get(), _describe.get(), _author_email.get(), _author_website.get(), _project_website.get(), _sponsor_site.get()))
 
-    butt_2 = Button(window, text=lang('cancel'), command=window.destroy)
+    butt_2 = Button(window, text=access_language_entry('cancel'), command=window.destroy)
 
     label_1.grid(column=1, row=2)
     label_2.grid(column=1, row=3)
@@ -4631,7 +4634,7 @@ def open_with_adv():
     writerclassic_call_history.register_call(id(open_with_adv))
 
     window = Toplevel(desktop_win)
-    window.title(f"{lang('writerclassic')} - {lang('openwith')}")
+    window.title(f"{access_language_entry('writerclassic')} - {access_language_entry('openwith')}")
     window.resizable(False, False)
 
     if sys.platform == 'win32':
@@ -4641,7 +4644,7 @@ def open_with_adv():
 
     def action_1():
         if not current_file:
-            showinfo(lang('writerclassic'), lang('nosaved'))
+            showinfo(access_language_entry('writerclassic'), access_language_entry('nosaved'))
         else:
             os.system(f'"{str(current_file)}"')
 
@@ -4651,7 +4654,7 @@ def open_with_adv():
 
     def action_2(requested_entry):
         if not current_file:
-            showinfo(lang('writerclassic'), lang('nosaved'))
+            showinfo(access_language_entry('writerclassic'), access_language_entry('nosaved'))
         else:
             if " " in requested_entry:
                 os.system(f'"{requested_entry}" "{str(current_file)}"')
@@ -4662,11 +4665,11 @@ def open_with_adv():
 
         window.destroy()
 
-    butt_1 = Button(window, text=lang('defaultapp'), command=action_1)
-    label_1 = Label(window, text=lang('or').upper(), font=Font(family=config_font.actual('family'), size=15, weight='bold'))
-    label_2 = Label(window, text=lang('custompath'), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    butt_1 = Button(window, text=access_language_entry('defaultapp'), command=action_1)
+    label_1 = Label(window, text=access_language_entry('or').upper(), font=Font(family=config_font.actual('family'), size=15, weight='bold'))
+    label_2 = Label(window, text=access_language_entry('custompath'), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
     entry_1 = Entry(window)
-    butt_2 = Button(window, text=lang('openwithat'), command=lambda:
+    butt_2 = Button(window, text=access_language_entry('openwithat'), command=lambda:
         action_2(entry_1.get()))
 
     butt_1.grid(column=1, row=1)
@@ -4682,7 +4685,7 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
     win.destroy()
 
     if not signa:
-        body += f"\n\n{lang('sent_with')} (https://mf366-coding.github.io/writerclassic.html)"
+        body += f"\n\n{access_language_entry('sent_with')} (https://mf366-coding.github.io/writerclassic.html)"
 
     elif signa:
         body += f"\n\n{signature_plugin.get_custom_sig()}"
@@ -4710,10 +4713,10 @@ def send_email_with_attachment(win, signa: bool, sender_email: str, sender_passw
         server.sendmail(sender_email, recipient_email, message.as_string())
 
     except (ConnectionError, TimeoutError) as e:
-        showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
+        showerror(access_language_entry('notallowed'), f"{access_language_entry('nope')}\n{e}")
 
     except Exception as e:
-        showerror(lang('writerclassic'), f"{lang[247]}\n{lang[248]}\n{e}")
+        showerror(access_language_entry('writerclassic'), f"{access_language_entry('fatal')}\n{access_language_entry('cached_emails')}\n{e}")
 
     finally:
         del sender_password
@@ -4730,26 +4733,26 @@ def message_write(mail: str, pwd: str, _variable, win):
 
     # [*] Window Creation
     window = Toplevel(desktop_win)
-    window.title(f"{lang('writerclassic')} - {lang[246]}")
+    window.title(f"{access_language_entry('writerclassic')} - {access_language_entry('write_email')}")
     window.resizable(False, False)
 
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 
-    label_1 = Label(window, text=f"{lang[245]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_2 = Label(window, text=lang[244], font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_3 = Label(window, text=f"{lang[243]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_4 = Label(window, text=f"{lang[242]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_1 = Label(window, text=f"{access_language_entry('sendto')}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_2 = Label(window, text=access_language_entry('onlyone'), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_3 = Label(window, text=f"{access_language_entry('subject')}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_4 = Label(window, text=f"{access_language_entry('msg')}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
     entry_1 = Entry(window)
     entry_2 = Entry(window)
 
     text_1 = WriterClassicEditor(window, borderwidth=5, font=config_font, insertbackground=settings['theme']["ct"], foreground=settings['theme']["fg"], background=settings['theme']["color"], height=10)
 
-    butt_1 = Button(window, text=lang[241], command=lambda:
+    butt_1 = Button(window, text=access_language_entry('send'), command=lambda:
         send_email_with_attachment(window, False, mail, pwd, entry_2.get(), entry_1.get(), text_1.content))
 
-    butt_2 = Button(window, text=lang[240], command=lambda:
+    butt_2 = Button(window, text=access_language_entry('sendsig'), command=lambda:
         send_email_with_attachment(window, True, mail, pwd, entry_2.get(), entry_1.get(), text_1.content))
 
     label_1.pack()
@@ -4771,21 +4774,21 @@ def message_write(mail: str, pwd: str, _variable, win):
 def adv_login():
     # [*] Window Creation
     if not current_file:
-        showerror(lang('writerclassic'), lang[239])
+        showerror(access_language_entry('writerclassic'), access_language_entry('nosaved'))
         return
 
     window = Toplevel(desktop_win)
-    window.title(f"{lang('writerclassic')} - {lang[238]}")
+    window.title(f"{access_language_entry('writerclassic')} - {access_language_entry('login_outlook')}")
 
     window.resizable(False, False)
     if sys.platform == 'win32':
         window.iconbitmap(f'{data_dir}/app_icon.ico')
 
-    label_1 = Label(window, text=lang[237], font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_2 = Label(window, text=lang[236], font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_3 = Label(window, text=lang[235], font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_4 = Label(window, text=f"{lang[234]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
-    label_5 = Label(window, text=f"{lang[233]}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_1 = Label(window, text=access_language_entry('login_outlook'), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_2 = Label(window, text=access_language_entry('affiliation'), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_3 = Label(window, text=access_language_entry('never_save_password'), font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_4 = Label(window, text=f"{access_language_entry('email')}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
+    label_5 = Label(window, text=f"{access_language_entry('passwd')}: ", font=Font(family=config_font.cget('family'), size=10, weight='normal', slant='roman', underline=False, overstrike=False))
 
     entry_1 = Entry(window)
     entry_2 = Entry(window, show="*")
@@ -4794,8 +4797,8 @@ def adv_login():
 
     a = StringVar(window)
 
-    butt_1 = Checkbutton(window, text=lang[231], variable=a)
-    butt_2 = Button(window, text=lang[232], command=lambda:
+    butt_1 = Checkbutton(window, text=access_language_entry('email_future'), variable=a)
+    butt_2 = Button(window, text=access_language_entry('login'), command=lambda:
         message_write(entry_1.get(), entry_2.get(), a.get(), window))
 
     label_1.pack()
@@ -4815,20 +4818,20 @@ def show_advanced_version():
     before_listeners.run_group(show_advanced_version)
     writerclassic_call_history.register_call(id(show_advanced_version))
 
-    showinfo(lang('writerclassic'), f"{lang[230]} {ADVANCED_VERSION}.")
+    showinfo(access_language_entry('writerclassic'), f"{access_language_entry('running_wclassic')} {ADVANCED_VERSION}.")
     ic(ADVANCED_VERSION)
 
     after_listeners.run_group(show_advanced_version)
 
 
 if ADVANCED:
-    menu_14.add_command(label=lang[224], command=show_debug)
+    menu_14.add_command(label=access_language_entry('debug_sentences'), command=show_debug)
     if sys.platform == "win32":
-        menu_14.add_command(label=lang[225], command=dencrypt)
-    menu_14.add_command(label=lang[226], command=readme_gen_win)
-    menu_14.add_command(label=lang[227], command=open_with_adv)
-    menu_14.add_command(label=lang[228], command=adv_login)
-    menu_14.add_command(label=lang[229], command=show_advanced_version)
+        menu_14.add_command(label=access_language_entry('dencrypt'), command=dencrypt)
+    menu_14.add_command(label=access_language_entry('readmegen'), command=readme_gen_win)
+    menu_14.add_command(label=access_language_entry('openwith'), command=open_with_adv)
+    menu_14.add_command(label=access_language_entry('viaemail'), command=adv_login)
+    menu_14.add_command(label=access_language_entry('advappversion'), command=show_advanced_version)
 
 if sys.platform == "linux":
     try:
@@ -4852,7 +4855,7 @@ if sys.platform == "linux":
         LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
     except TclError:
-        showerror(lang[150], f"{lang[151]}\n{lang[152]}")
+        showerror(access_language_entry('themerror'), f"{access_language_entry('badtheme')}\n{access_language_entry('diff_theme')}")
         menu_10.configure(background="white", foreground="black")
         menu_11.configure(background="white", foreground="black")
         menu_1.configure(background="white", foreground="black")
@@ -4873,22 +4876,22 @@ if sys.platform == "linux":
         LOG.write(f"{str(now())} - The Menus have been themed [LINUX ONLY]: OK\n")
 
 # [*] dropdowns/cascades
-menu_bar.add_cascade(label=lang('file'), menu=menu_10)
-menu_bar.add_cascade(label=lang('appearance'), menu=menu_1)
-menu_1.add_cascade(label=lang('themes'), menu=menu_4)
-menu_4.add_cascade(label=lang('dthemes'), menu=menu_5)
-menu_4.add_cascade(label=lang('themes2'), menu=menu_6)
+menu_bar.add_cascade(label=access_language_entry('file'), menu=menu_10)
+menu_bar.add_cascade(label=access_language_entry('appearance'), menu=menu_1)
+menu_1.add_cascade(label=access_language_entry('themes'), menu=menu_4)
+menu_4.add_cascade(label=access_language_entry('dthemes'), menu=menu_5)
+menu_4.add_cascade(label=access_language_entry('themes.modern'), menu=menu_6)
 menu_4.add_separator()
-menu_4.add_command(label=lang[153], command=lambda:
+menu_4.add_command(label=access_language_entry('officialthemes'), command=lambda:
     simple_webbrowser.website(url="https://github.com/MF366-Coding/WriterClassic-ExtraThemes"))
-menu_bar.add_cascade(label=lang('plugins'), menu=menu_8)
-menu_bar.add_cascade(label=lang[79], menu=menu_9)
-menu_bar.add_cascade(label=lang('settings'), menu=menu_12)
-menu_bar.add_cascade(label=lang('info'), menu=menu_11)
-menu_bar.add_cascade(label=lang[280], menu=menu_15)
+menu_bar.add_cascade(label=access_language_entry('plugins'), menu=menu_8)
+menu_bar.add_cascade(label=access_language_entry('internet'), menu=menu_9)
+menu_bar.add_cascade(label=access_language_entry('settings'), menu=menu_12)
+menu_bar.add_cascade(label=access_language_entry('info'), menu=menu_11)
+menu_bar.add_cascade(label=access_language_entry('dev'), menu=menu_15)
 
 if ADVANCED:
-    menu_bar.add_cascade(label=lang[277], menu=menu_14)
+    menu_bar.add_cascade(label=access_language_entry('advanced'), menu=menu_14)
 
 ic(ADVANCED)
 
@@ -4959,7 +4962,7 @@ if os.path.exists(path=os.path.join(scripts_dir, "auto.wscript")):
     auto_script = WScript()
     auto_script.loadpath(location=os.path.join(scripts_dir, "auto.wscript"))
 
-    _run_auto: bool = mb.askyesno(title=lang('writerclassic'), message=f"{lang[289]}\n{lang[290]}\n{lang[291]}")
+    _run_auto: bool = mb.askyesno(title=access_language_entry('writerclassic'), message=f"{access_language_entry('autoaction')}\n{access_language_entry('wannarun')}\n{access_language_entry('noaction')}")
 
     if _run_auto:
         try:
@@ -4968,7 +4971,7 @@ if os.path.exists(path=os.path.join(scripts_dir, "auto.wscript")):
         # [*] in this case, a general Exception is used because any type of error can happen
 
         except Exception as e:
-            showerror(lang('notallowed'), f"{lang('nope')}\n{e}")
+            showerror(access_language_entry('notallowed'), f"{access_language_entry('nope')}\n{e}")
 
 # [*] You can use the following syntax when running WriterClassic:
 # [*] name [filepath] [debugscript]
