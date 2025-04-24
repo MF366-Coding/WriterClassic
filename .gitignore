@@ -1,10 +1,4 @@
-__pycache__
-canary
-test
-.venv
-.WriterClassic.py.un~
-WriterClassic.py~
-compile
-command.txt
-release
 .vs
+obj
+bin
+*.sln
