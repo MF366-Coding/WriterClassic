@@ -17,7 +17,7 @@ import importlib.machinery
 wclassic_vars: dict[str, Any] = {}
 _LOG = None
 plugin_dir: str = ""
-lang: list[str] = []
+lang = None
 
 
 # [i] Alternative to using deprecated imp module
@@ -63,7 +63,7 @@ def run_a_plugin(number_or_name: int | str) -> bool:
             new_folder = os.path.join(plugin_dir, f"plugin_{number_or_name}")
 
             if not os.path.exists(path=new_folder):
-                mb.showerror(lang[161], lang[162])
+                mb.showerror(lang('plugerror'), lang('plug_dmg'))
                 return False
 
             details_file = os.path.join(new_folder, "Details.txt")
@@ -75,7 +75,7 @@ def run_a_plugin(number_or_name: int | str) -> bool:
             possible_plugin_filepath = os.path.join(new_folder, f"{_title.replace(' ', '_')}.py")
 
             if not os.path.exists(possible_plugin_filepath):
-                mb.showerror(lang[161], lang[162])
+                mb.showerror(lang('plugerror'), lang('plug_dmg'))
                 return False
 
             plugin_filepath = possible_plugin_filepath
@@ -133,7 +133,7 @@ def run_a_plugin(number_or_name: int | str) -> bool:
         return True
 
     except Exception as e:
-        mb.showerror(lang[133], lang[134] + f"\n{e}")
+        mb.showerror(lang('notallowed'), lang('nope') + f"\n{e}")
 
         if isinstance(number_or_name, int):
             _LOG.write(f"{str(now())} - Running the plugin number {str(number_or_name)}: ERROR - {e}\n")
