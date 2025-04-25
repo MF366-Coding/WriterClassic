@@ -1,22 +1,81 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-  </PropertyGroup>
+	<!-- Generic properties -->
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<PublishSingleFile>true</PublishSingleFile>
+		<PublishTrimmed>true</PublishTrimmed>
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
+		<Optimize>true</Optimize>
+		<!-- this setting gets overwrited if in debug mode -->
+		<RuntimeIdentifiers>win-x64;linux-x64;osx-x64;win-x86;linux-x86</RuntimeIdentifiers>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.2.7" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.2.7" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.7" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.7" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.2.7">
-      <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
-      <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
+	<!-- OS and Platform constants -->
+	<PropertyGroup>
+		<!-- Windows (64 bit) -->
+		<DefineConstants Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+			WINDOWS;X86_64
+		</DefineConstants>
+
+		<!-- Windows (32 bit) -->
+		<!-- It ain't like this one will be supported for much longer but whatever... -->
+		<DefineConstants Condition="'$(RuntimeIdentifier)' == 'win-x86'">
+			WINDOWS;X86
+		</DefineConstants>
+
+		<!-- Linux (64 bit) -->
+		<DefineConstants Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+			LINUX;X86_64
+		</DefineConstants>
+
+		<!-- Linux (32 bit) -->
+		<DefineConstants Condition="'$(RuntimeIdentifier)' == 'linux-x86'">
+			LINUX;X86
+		</DefineConstants>
+
+		<!-- MacOS (64 bit) -->
+		<DefineConstants Condition="'$(RuntimeIdentifier)' == 'osx-x64'">
+			DARWIN;X86_64
+		</DefineConstants>
+	</PropertyGroup>
+
+	<!-- Release Mode -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
+		<DebugType>none</DebugType>
+		<DebugSymbols>false</DebugSymbols>
+	</PropertyGroup>
+
+	<!-- Debug Mode -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<Optimize>false</Optimize>
+	</PropertyGroup>
+
+	<!-- Verbose Information -->
+	<Target Name="BuildInfo" BeforeTargets="Build">
+		<Message Text="Building with $(TargetFramework) for $(RuntimeIdentifier) in $(Configuration) mode" Importance="High" />
+		<Message Condition="'$(Configuration)' == 'Release'" Text="Optimization enabled: $(Optimize)" Importance="High" />
+		<Message Condition="'$(Configuration)' == 'Debug'" Text="THIS IS AN UNOPTIMIZED DEBUG BUILD, please use Release mode for actual releases." Importance="High" />
+	</Target>
+
+	<!-- Avalonia Stuff -->
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="11.2.7" />
+		<PackageReference Include="Avalonia.Desktop" Version="11.2.7" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.7" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.7" />
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Include="Avalonia.Diagnostics" Version="11.2.7">
+			<IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+			<PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
 </Project>

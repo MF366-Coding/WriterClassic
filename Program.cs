@@ -1,10 +1,28 @@
-﻿using System;
+﻿ /*
+  *  ___          _                    ___         _          _   
+  * | __|  _ _   | |_   _ _   _  _    | _ \  ___  (_)  _ _   | |_ 
+  * | _|  | ' \  |  _| | '_| | || |   |  _/ / _ \ | | | ' \  |  _|
+  * |___| |_||_|  \__| |_|    \_, |   |_|   \___/ |_| |_||_|  \__|
+  *                           |__/        
+  *                           
+  * MIT License <=> MF366
+  *                           
+  */
+
+
+// System
+using System;
+
+// Avalonia
 using Avalonia;
+
 
 namespace WriterClassic
 {
+
     internal class Program
     {
+
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
@@ -18,5 +36,7 @@ namespace WriterClassic
                 .UsePlatformDetect()
                 .WithInterFont()
                 .LogToTrace();
+    
     }
+
 }
