@@ -1,4 +1,7 @@
 # WriterClassic
+> [!IMPORTANT]
+> After around 3 years, I'm finally letting go of WriterClassic... Or am I? WriterClassic will be reborn in C# in the new project that is [**WriterSharp**](https://github.com/MF366-Coding/WriterSharp). I don't want you to think WriterSharp is some crappy WriterClassic fork, so I'll start everything from scratch. Thank you!
+
 <img src="https://raw.githubusercontent.com/MF366-Coding/WriterClassic/main/data/logo.png" alt="WriterClassic's Logo by Norb" align="right" width="96" height="96">
 
 WriterClassic is a Python project that keeps growing and brings to the user a whole new text editing experience. 🤔👍
