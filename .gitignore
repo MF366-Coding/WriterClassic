@@ -3,3 +3,4 @@ obj
 bin
 *.sln
 Properties/*
+*.xcf
